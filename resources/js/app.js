@@ -11,7 +11,8 @@ window.Vue = require('vue').default;
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Productos from './components/Productos.vue'
-import ExampleComponent from './components/ExampleComponent.vue'
+import Usuarios from './components/Usuarios.vue'
+import CrearProducto from './components/CrearProducto.vue'
 
 Vue.use(VueRouter)
 
@@ -38,8 +39,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 
  const routes = [
-    { path: '/', component: ExampleComponent },
+    { path: '/usuarios', component: Usuarios },
     { path: '/productos', component:  Productos},
+    { path: '/crear-producto', component:  CrearProducto},
     
   ]
 

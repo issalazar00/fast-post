@@ -1,9 +1,12 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-header">Example Component</div>
+          <div class="col-12">
+            <router-link to="/crear-producto">Crear Producto</router-link>
+          </div>
 
           <div class="card-body">
             <table class="table">
@@ -76,7 +79,6 @@
 
 <script>
 export default {
-    // name: 'Productos',
   mounted() {
     console.log("Component mounted.");
   },

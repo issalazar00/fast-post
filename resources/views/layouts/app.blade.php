@@ -30,6 +30,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <router-link to="/productos">Productos</router-link>
+                <router-link to="/usuarios">Usuarios</router-link>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
@@ -77,8 +78,6 @@
         </nav>
 
         <main class="py-4">
-            <router-view :to="{name : 'example-component'}"/>
-
             @yield('content')
         </main>
     </div>
