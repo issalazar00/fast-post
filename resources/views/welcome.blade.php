@@ -36,7 +36,6 @@
                 </div>
             @endif
             <main id="app">
-                <example-component></example-component>
             </main>
             
 
