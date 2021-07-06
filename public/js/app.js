@@ -38206,7 +38206,7 @@ var staticRenderFns = [
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-row" }, [
-            _c("div", { staticClass: "form-group col-md-6" }, [
+            _c("div", { staticClass: "form-group col-md-9" }, [
               _c("label", { attrs: { for: "inputEmail4" } }, [_vm._v("Hay")]),
               _vm._v(" "),
               _c("input", {
@@ -38215,7 +38215,7 @@ var staticRenderFns = [
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group col-md-6" }, [
+            _c("div", { staticClass: "form-group col-md-3" }, [
               _c(
                 "small",
                 { staticClass: "form-text text-muted mt-4", attrs: { id: "" } },
@@ -38225,7 +38225,7 @@ var staticRenderFns = [
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-row" }, [
-            _c("div", { staticClass: "form-group col-md-6" }, [
+            _c("div", { staticClass: "form-group col-md-9" }, [
               _c("label", { attrs: { for: "inputEmail4" } }, [
                 _vm._v("Mínimo")
               ]),
@@ -38238,7 +38238,7 @@ var staticRenderFns = [
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-row" }, [
-            _c("div", { staticClass: "form-group col-md-6" }, [
+            _c("div", { staticClass: "form-group col-md-9" }, [
               _c("label", { attrs: { for: "inputEmail4" } }, [
                 _vm._v("Máximo")
               ]),

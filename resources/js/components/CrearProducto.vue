@@ -129,24 +129,24 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-9">
             <label for="inputEmail4">Hay</label>
             <input type="number" class="form-control" id="inputEmail4" />
           </div>
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-3">
             <small id="" class="form-text text-muted mt-4">
               En este momento
             </small>
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-9">
             <label for="inputEmail4">Mínimo</label>
             <input type="number" class="form-control" id="inputEmail4" />
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-9">
             <label for="inputEmail4">Máximo</label>
             <input type="number" class="form-control" id="inputEmail4" />
           </div>
