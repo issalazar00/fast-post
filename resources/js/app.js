@@ -14,6 +14,8 @@ import Usuarios from './components/Usuarios.vue'
 import CrearUsuario from './components/CrearUsuario.vue'
 import Productos from './components/Productos.vue'
 import CrearProducto from './components/CrearProducto.vue'
+import Impuestos from './components/Impuestos.vue'
+import CrearImpuesto from './components/CrearImpuesto.vue'
 
 Vue.use(VueRouter)
 
@@ -45,6 +47,8 @@ const routes = [
   { path: '/crear-usuario', component: CrearUsuario },
   { path: '/productos', component: Productos },
   { path: '/crear-producto', component: CrearProducto },
+  { path: '/impuestos', component: Impuestos },
+  { path: '/crear-impuesto', component: CrearImpuesto },
 
 ]
 
