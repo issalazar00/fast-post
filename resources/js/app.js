@@ -10,8 +10,9 @@ window.Vue = require('vue').default;
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Productos from './components/Productos.vue'
 import Usuarios from './components/Usuarios.vue'
+import CrearUsuario from './components/CrearUsuario.vue'
+import Productos from './components/Productos.vue'
 import CrearProducto from './components/CrearProducto.vue'
 
 Vue.use(VueRouter)
@@ -38,21 +39,23 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 
- const routes = [
-    { path: '/usuarios', component: Usuarios },
-    { path: '/productos', component:  Productos},
-    { path: '/crear-producto', component:  CrearProducto},
-    
-  ]
+const routes = [
+  { path: '', component: require('./components/ExampleComponent.vue').default },
+  { path: '/usuarios', component: Usuarios },
+  { path: '/crear-usuario', component: CrearUsuario },
+  { path: '/productos', component: Productos },
+  { path: '/crear-producto', component: CrearProducto },
 
-  const router = new VueRouter({
-    routes // short for `routes: routes`
-  })
+]
 
-  export default router;
+const router = new VueRouter({
+  routes // short for `routes: routes`
+})
+
+export default router;
 
 const app = new Vue({
-    el: '#app',
-    router
+  el: '#app',
+  router
 });
 

@@ -10002,6 +10002,11 @@ h3 {
     border-color: #dee2e6;
   }
 }
+@media (min-width: 1200px) {
+  .container {
+    min-width: 90% !important;
+  }
+}
 .form-control {
   display: block;
   width: 100%;

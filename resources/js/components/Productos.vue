@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header">Example Component</div>
+          <div class="card-header">Productos</div>
           <div class="col-12">
             <router-link to="/crear-producto">Crear Producto</router-link>
           </div>
