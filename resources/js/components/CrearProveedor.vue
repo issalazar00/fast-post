@@ -13,7 +13,7 @@
             />
           </div>
           <div class="form-group col-6">
-            <label for="exampleFormControlInput1">Nombre Usuario</label>
+            <label for="exampleFormControlInput1">Nombre Proveedor</label>
             <input
               type="text"
               class="form-control"

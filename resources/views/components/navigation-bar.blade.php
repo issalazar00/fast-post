@@ -13,11 +13,15 @@
                 <li class="nav-item">
                     <router-link class="nav-link " to="/productos">Productos</router-link>
                 </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/usuarios">Usuarios</router-link>
-                </li>
+                
                 <li class="nav-item">
                     <router-link class="nav-link" to="/impuestos">Impuestos</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/clientes">Clientes</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link" to="/proveedores">Proveedores</router-link>
                 </li>
 
             </ul>

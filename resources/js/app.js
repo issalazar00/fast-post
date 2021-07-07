@@ -10,12 +10,14 @@ window.Vue = require('vue').default;
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Usuarios from './components/Usuarios.vue'
-import CrearUsuario from './components/CrearUsuario.vue'
+import Clientes from './components/Clientes.vue'
+import CrearCliente from './components/CrearCliente.vue'
 import Productos from './components/Productos.vue'
 import CrearProducto from './components/CrearProducto.vue'
 import Impuestos from './components/Impuestos.vue'
 import CrearImpuesto from './components/CrearImpuesto.vue'
+import Proveedores from './components/Proveedores.vue'
+import CrearProveedor from './components/CrearProveedor.vue'
 
 Vue.use(VueRouter)
 
@@ -43,12 +45,14 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const routes = [
   { path: '', component: require('./components/ExampleComponent.vue').default },
-  { path: '/usuarios', component: Usuarios },
-  { path: '/crear-usuario', component: CrearUsuario },
+  { path: '/clientes', component: Clientes },
+  { path: '/crear-cliente', component: CrearCliente },
   { path: '/productos', component: Productos },
   { path: '/crear-producto', component: CrearProducto },
   { path: '/impuestos', component: Impuestos },
   { path: '/crear-impuesto', component: CrearImpuesto },
+  { path: '/proveedores', component: Proveedores },
+  { path: '/crear-proveedor', component: CrearProveedor },
 
 ]
 
