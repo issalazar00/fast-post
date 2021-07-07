@@ -2003,6 +2003,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     console.log("Component mounted.");
@@ -38442,6 +38452,31 @@ var staticRenderFns = [
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "exampleFormControlSelect1" } }, [
+              _vm._v("Impuesto")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { id: "exampleFormControlSelect1" }
+              },
+              [
+                _c("option", [_vm._v("1")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("2")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("3")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("4")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("5")])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
               _vm._v("Precio Costo")
             ]),
@@ -39143,7 +39178,7 @@ var render = function() {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "col-12" },
+      { staticClass: "row justify-content-end mx-4" },
       [
         _c(
           "router-link",
@@ -39226,7 +39261,7 @@ var render = function() {
     _vm._v(" "),
     _c(
       "div",
-      { staticClass: "row justify-content-end" },
+      { staticClass: "row justify-content-end mx-4" },
       [
         _c(
           "router-link",

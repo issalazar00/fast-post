@@ -1,7 +1,7 @@
 <template>
   <div class="col-12">
     <h3 class="page-header">Productos</h3>
-    <div class="col-12">
+    <div class="row justify-content-end mx-4">
       <router-link to="/crear-producto" class="btn btn-primary">Crear Producto</router-link>
     </div>
 

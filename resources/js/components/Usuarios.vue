@@ -2,7 +2,7 @@
   <div class="col-12">
     <h3 class="page-header">Usuarios</h3>
     
-    <div class="row justify-content-end">
+    <div class="row justify-content-end mx-4">
       <router-link to="/crear-usuario" class="btn btn-primary">Crear Usuario</router-link>
 
     </div>
