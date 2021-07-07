@@ -10007,6 +10007,10 @@ h3 {
     min-width: 90% !important;
   }
 }
+.main {
+  border: 1px solid #ddd;
+}
+
 .form-control {
   display: block;
   width: 100%;
