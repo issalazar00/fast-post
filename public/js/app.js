@@ -2427,6 +2427,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     console.log("Component mounted.");
@@ -39158,35 +39163,39 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-body" }, [
-      _c("table", { staticClass: "table table-sm table-responsive-sm" }, [
-        _c("thead", { staticClass: "thead-dark" }, [
-          _c("tr", [
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-            _vm._v(" "),
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("Producto")]),
-            _vm._v(" "),
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("Precio")]),
-            _vm._v(" "),
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("Cantidad")]),
-            _vm._v(" "),
-            _c("th", [_vm._v("Opciones")])
+      _c(
+        "table",
+        { staticClass: "table table-sm table-bordered table-responsive-sm" },
+        [
+          _c("thead", { staticClass: " thead-primary" }, [
+            _c("tr", [
+              _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+              _vm._v(" "),
+              _c("th", { attrs: { scope: "col" } }, [_vm._v("Producto")]),
+              _vm._v(" "),
+              _c("th", { attrs: { scope: "col" } }, [_vm._v("Precio")]),
+              _vm._v(" "),
+              _c("th", { attrs: { scope: "col" } }, [_vm._v("Cantidad")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Opciones")])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tbody", [
+            _c("tr", [
+              _c("th", { attrs: { scope: "row" } }, [_vm._v("2")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("Jacob")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("$ 20000")]),
+              _vm._v(" "),
+              _c("td", [_vm._v("@fat")]),
+              _vm._v(" "),
+              _c("td")
+            ])
           ])
-        ]),
-        _vm._v(" "),
-        _c("tbody", [
-          _c("tr", [
-            _c("th", { attrs: { scope: "row" } }, [_vm._v("2")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Jacob")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("$ 20000")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("@fat")]),
-            _vm._v(" "),
-            _c("td")
-          ])
-        ])
-      ])
+        ]
+      )
     ])
   }
 ]
@@ -39237,16 +39246,24 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-body" }, [
-      _c("table", { staticClass: "table table-borderless table-sm" }, [
+      _c("table", { staticClass: "table table-bordered table-sm" }, [
         _c("thead", [
           _c("tr", [
             _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
             _vm._v(" "),
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("First")]),
+            _c("th", { attrs: { scope: "col" } }, [_vm._v("Nombres")]),
             _vm._v(" "),
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("Last")]),
+            _c("th", { attrs: { scope: "col" } }, [_vm._v("Apellidos")]),
             _vm._v(" "),
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("Handle")])
+            _c("th", { attrs: { scope: "col" } }, [_vm._v("Direccion")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Telefono")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Correo")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Estado")]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Opciones")])
           ])
         ]),
         _vm._v(" "),
@@ -39258,25 +39275,23 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("td", [_vm._v("Otto")]),
             _vm._v(" "),
-            _c("td", [_vm._v("@mdo")])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("th", { attrs: { scope: "row" } }, [_vm._v("2")]),
+            _c("td", [_vm._v("B/ Los Cristales")]),
             _vm._v(" "),
-            _c("td", [_vm._v("Jacob")]),
+            _c("td", [_vm._v("320 012 3456")]),
             _vm._v(" "),
-            _c("td", [_vm._v("Thornton")]),
+            _c("td", [_vm._v("mail@mail.com")]),
             _vm._v(" "),
-            _c("td", [_vm._v("@fat")])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("th", { attrs: { scope: "row" } }, [_vm._v("3")]),
+            _c("td", [
+              _c("span", { staticClass: "badge badge-success" }, [
+                _vm._v("Activo")
+              ])
+            ]),
             _vm._v(" "),
-            _c("td", { attrs: { colspan: "2" } }, [_vm._v("Larry the Bird")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("@twitter")])
+            _c("td", [
+              _c("button", { staticClass: "btn btn-success" }, [
+                _c("i", { staticClass: "bi bi-check-circle-fill" })
+              ])
+            ])
           ])
         ])
       ])

@@ -6,8 +6,8 @@
     </div>
 
     <div class="card-body">
-      <table class="table table-sm table-responsive-sm">
-        <thead class="thead-dark">
+      <table class="table table-sm table-bordered table-responsive-sm">
+        <thead class=" thead-primary">
           <tr>
             <th scope="col">#</th>
             <th scope="col">Producto</th>

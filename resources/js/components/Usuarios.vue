@@ -8,13 +8,17 @@
     </div>
 
     <div class="card-body">
-      <table class="table table-borderless table-sm">
+      <table class="table table-bordered table-sm">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Nombres</th>
+            <th scope="col">Apellidos</th>
+            <th scope="col">Direccion</th>
+            <th>Telefono</th>
+            <th>Correo</th>
+            <th>Estado</th>
+            <th>Opciones</th>
           </tr>
         </thead>
         <tbody>
@@ -22,20 +26,21 @@
             <th scope="row">1</th>
             <td>Mark</td>
             <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
+            <td>B/ Los Cristales</td>
+            <td>320 012 3456</td>
+            <td>mail@mail.com</td>
+            <td>
+              <span class="badge badge-success">Activo</span>
+            </td>
+            <td>
+              <button class="btn btn-success">
+                <i class="bi bi-check-circle-fill"></i>
+              </button>
+
+            </td>
           </tr>
         </tbody>
+         
       </table>
     </div>
   </div>
