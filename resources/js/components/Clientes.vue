@@ -3,7 +3,7 @@
     <h3 class="page-header">Usuarios</h3>
     
     <div class="row justify-content-end mx-4">
-      <router-link to="/crear-usuario" class="btn btn-primary">Crear Cliente</router-link>
+      <router-link to="/crear-cliente" class="btn btn-primary">Crear Cliente</router-link>
 
     </div>
 

@@ -39109,7 +39109,7 @@ var render = function() {
       [
         _c(
           "router-link",
-          { staticClass: "btn btn-primary", attrs: { to: "/crear-usuario" } },
+          { staticClass: "btn btn-primary", attrs: { to: "/crear-cliente" } },
           [_vm._v("Crear Cliente")]
         )
       ],
