@@ -115,7 +115,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="exampleFormControlSelect1">Departamento</label>
+          <label for="exampleFormControlSelect1">Categoría</label>
           <select class="form-control" id="exampleFormControlSelect1">
             <option>1</option>
             <option>2</option>

@@ -39699,7 +39699,7 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Precio Costo")
+              _vm._v("Porcentaje")
             ]),
             _vm._v(" "),
             _c("input", {
@@ -39963,7 +39963,7 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "exampleFormControlSelect1" } }, [
-              _vm._v("Departamento")
+              _vm._v("Categoría")
             ]),
             _vm._v(" "),
             _c(
