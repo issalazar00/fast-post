@@ -2827,7 +2827,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      listadoProductos: []
+    };
+  },
+  created: function created() {
+    var me = this;
+    axios.get("productos").then(function (response) {
+      me.listadoProductos = response.data;
+    });
+  },
   mounted: function mounted() {
     console.log("Component mounted.");
   }
@@ -40681,7 +40699,35 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _vm._m(0)
+    _c("div", { staticClass: "card-body" }, [
+      _c(
+        "table",
+        { staticClass: "table table-sm table-bordered table-responsive-sm" },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.listadoProductos, function(producto) {
+              return _c("tr", { key: producto.id }, [
+                _c("td", [_vm._v(_vm._s(producto.id_producto))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(producto.codigo_barras))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(producto.producto))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(producto.precio_venta))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(producto.cantidad_actual))]),
+                _vm._v(" "),
+                _vm._m(1, true)
+              ])
+            }),
+            0
+          )
+        ]
+      )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -40689,40 +40735,30 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c(
-        "table",
-        { staticClass: "table table-sm table-bordered table-responsive-sm" },
-        [
-          _c("thead", { staticClass: " thead-primary" }, [
-            _c("tr", [
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Producto")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Precio")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Cantidad")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Opciones")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("th", { attrs: { scope: "row" } }, [_vm._v("2")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("Jacob")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("$ 20000")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("@fat")]),
-              _vm._v(" "),
-              _c("td")
-            ])
-          ])
-        ]
-      )
+    return _c("thead", { staticClass: "thead-primary" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Código de barras")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Producto")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Precio Venta")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Cantidad")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Opciones")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("button", { staticClass: "btn btn-success" }, [
+        _c("i", { staticClass: "bi bi-check-circle-fill" })
+      ])
     ])
   }
 ]
