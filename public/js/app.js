@@ -2407,6 +2407,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     console.log("Component mounted.");
@@ -39821,34 +39827,36 @@ var staticRenderFns = [
     return _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "row justify-content-center" }, [
         _c("form", [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Codigo de barras")
+          _c("div", { staticClass: "form-row" }, [
+            _c("div", { staticClass: "form-group col-5" }, [
+              _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
+                _vm._v("Codigo de barras")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  id: "exampleFormControlInput1",
+                  placeholder: ""
+                }
+              })
             ]),
             _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                id: "exampleFormControlInput1",
-                placeholder: ""
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Descripcion Producto")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                id: "exampleFormControlInput1",
-                placeholder: ""
-              }
-            })
+            _c("div", { staticClass: "form-group col-7" }, [
+              _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
+                _vm._v("Descripcion Producto")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  id: "exampleFormControlInput1",
+                  placeholder: ""
+                }
+              })
+            ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
@@ -39941,65 +39949,71 @@ var staticRenderFns = [
             )
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Precio Costo")
+          _c("hr"),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-row" }, [
+            _c("div", { staticClass: "form-group col-6" }, [
+              _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
+                _vm._v("Precio Costo")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  id: "exampleFormControlInput1",
+                  placeholder: ""
+                }
+              })
             ]),
             _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                id: "exampleFormControlInput1",
-                placeholder: ""
-              }
-            })
+            _c("div", { staticClass: "form-group col-6" }, [
+              _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
+                _vm._v("Ganancia")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  id: "exampleFormControlInput1",
+                  placeholder: ""
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group col-6" }, [
+              _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
+                _vm._v("Precio Venta")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  id: "exampleFormControlInput1",
+                  placeholder: ""
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group col-6" }, [
+              _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
+                _vm._v("Precio Mayoreo")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  id: "exampleFormControlInput1",
+                  placeholder: ""
+                }
+              })
+            ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Ganancia")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                id: "exampleFormControlInput1",
-                placeholder: ""
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Precio Venta")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                id: "exampleFormControlInput1",
-                placeholder: ""
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Precio Mayoreo")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                id: "exampleFormControlInput1",
-                placeholder: ""
-              }
-            })
-          ]),
+          _c("hr"),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "exampleFormControlSelect1" } }, [
@@ -40025,8 +40039,6 @@ var staticRenderFns = [
               ]
             )
           ]),
-          _vm._v(" "),
-          _c("hr"),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("div", { staticClass: "form-check" }, [
