@@ -22,16 +22,26 @@
               <th scope="col">Producto</th>
               <th scope="col">Precio Venta</th>
               <th scope="col">Cantidad</th>
+              <th>Estado</th>
               <th>Opciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="producto in listadoProductos" v-bind:key="producto.id">
+            <tr
+              v-for="producto in listadoProductos.data"
+              v-bind:key="producto.id"
+            >
               <td>{{ producto.id_producto }}</td>
               <td>{{ producto.codigo_barras }}</td>
               <td>{{ producto.producto }}</td>
               <td class="text-right">$ {{ producto.precio_venta }}</td>
               <td>{{ producto.cantidad_actual }}</td>
+              <td>
+                <span class="badge badge-success" v-if="producto.estado == 1"
+                  >Activo</span
+                >
+                <span class="badge badge-danger" v-else>Desactivado</span>
+              </td>
               <td>
                 <button class="btn btn-success">
                   <i class="bi bi-check-circle-fill"></i>
@@ -40,8 +50,16 @@
             </tr>
           </tbody>
         </table>
+        <pagination
+          :data="listadoProductos"
+          @pagination-change-page="listarProductos"
+        >
+          <span slot="prev-nav">&lt; Previous</span>
+          <span slot="next-nav">Next &gt;</span></pagination
+        >
       </div>
     </div>
+    <!-- Modal para creacion y edicion de productos -->
     <div
       class="modal fade"
       id="exampleModal"
@@ -63,7 +81,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <crear-producto/>
+            <crear-producto />
           </div>
           <div class="modal-footer">
             <button
@@ -82,21 +100,28 @@
 </template>
 
 <script>
-import CrearProducto from './CrearProducto.vue';
+import CrearProducto from "./CrearProducto.vue";
 export default {
   components: { CrearProducto },
   data() {
     return {
-      listadoProductos: [],
+      listadoProductos: {},
     };
   },
   created() {
-    let me = this;
-    axios.get("productos").then(function (response) {
-      me.listadoProductos = response.data;
-    });
+    this.listarProductos(1);
+  },
+  methods: {
+    listarProductos(page = 1) {
+      let me = this;
+      axios.get("productos?page=" + page).then(function (response) {
+        me.listadoProductos = response.data;
+      });
+    },
   },
 
-  mounted() {},
+  mounted() {
+    // this.listarProductos();
+  },
 };
 </script>
