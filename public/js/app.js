@@ -2407,15 +2407,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     console.log("Component mounted.");
@@ -39783,22 +39774,7 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Nombre Producto")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                id: "exampleFormControlInput1",
-                placeholder: ""
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Descripción")
+              _vm._v("Descripcion Producto")
             ]),
             _vm._v(" "),
             _c("input", {
@@ -39963,7 +39939,7 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
             _c("label", { attrs: { for: "exampleFormControlSelect1" } }, [
-              _vm._v("Departamento")
+              _vm._v("Categoria")
             ]),
             _vm._v(" "),
             _c(

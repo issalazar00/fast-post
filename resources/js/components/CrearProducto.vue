@@ -12,16 +12,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="exampleFormControlInput1">Nombre Producto</label>
-          <input
-            type="text"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder=""
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Descripción</label>
+          <label for="exampleFormControlInput1">Descripcion Producto</label>
           <input
             type="text"
             class="form-control"
@@ -115,7 +106,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="exampleFormControlSelect1">Departamento</label>
+          <label for="exampleFormControlSelect1">Categoria</label>
           <select class="form-control" id="exampleFormControlSelect1">
             <option>1</option>
             <option>2</option>
