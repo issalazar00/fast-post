@@ -14,8 +14,23 @@ class CreateProductosTable extends Migration
     public function up()
     {
         Schema::create('productos', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_producto');
+            $table->string('codigo_barras')->unique();
+            $table->string('producto');
+            $table->tinyInteger('tipo_producto');
+            $table->decimal('precio_costo', 20, 2);
+            $table->decimal('valor_ganancia', 20, 2);
+            $table->decimal('precio_venta', 20, 2);
+            $table->decimal('precio_mayoreo', 20, 2);
+            $table->tinyInteger('inventario');
+            $table->decimal('cantidad_actual', 10, 2);
+            $table->decimal('cantidad_minima', 10, 2);
+            $table->decimal('cantidad_maxima', 10, 2);
+            $table->tinyInteger('estado');
+            $table->foreignId('id_categoria');
+            $table->foreignId('id_impuesto');
             $table->timestamps();
+
         });
     }
 

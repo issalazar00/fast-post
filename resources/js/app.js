@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 window.Vue = require('vue').default;
 

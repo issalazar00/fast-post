@@ -2,32 +2,25 @@
   <div class="container">
     <div class="row justify-content-center">
       <form>
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Codigo de barras</label>
-          <input
-            type="number"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder=""
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Nombre Producto</label>
-          <input
-            type="text"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder=""
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Descripción</label>
-          <input
-            type="text"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder=""
-          />
+        <div class="form-row">
+          <div class="form-group col-5">
+            <label for="exampleFormControlInput1">Codigo de barras</label>
+            <input
+              type="number"
+              class="form-control"
+              id="exampleFormControlInput1"
+              placeholder=""
+            />
+          </div>
+          <div class="form-group col-7">
+            <label for="exampleFormControlInput1">Descripcion Producto</label>
+            <input
+              type="text"
+              class="form-control"
+              id="exampleFormControlInput1"
+              placeholder=""
+            />
+          </div>
         </div>
         <div class="form-group">
           <div class="form-check form-check-inline">
@@ -77,43 +70,47 @@
             <option>5</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Precio Costo</label>
-          <input
-            type="number"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder=""
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Ganancia</label>
-          <input
-            type="number"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder=""
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Precio Venta</label>
-          <input
-            type="number"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder=""
-          />
-        </div>
+        <hr />
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="exampleFormControlInput1">Precio Costo</label>
+            <input
+              type="number"
+              class="form-control"
+              id="exampleFormControlInput1"
+              placeholder=""
+            />
+          </div>
+          <div class="form-group col-6">
+            <label for="exampleFormControlInput1">Ganancia</label>
+            <input
+              type="number"
+              class="form-control"
+              id="exampleFormControlInput1"
+              placeholder=""
+            />
+          </div>
+          <div class="form-group col-6">
+            <label for="exampleFormControlInput1">Precio Venta</label>
+            <input
+              type="number"
+              class="form-control"
+              id="exampleFormControlInput1"
+              placeholder=""
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="exampleFormControlInput1">Precio Mayoreo</label>
-          <input
-            type="number"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder=""
-          />
+          <div class="form-group col-6">
+            <label for="exampleFormControlInput1">Precio Mayoreo</label>
+            <input
+              type="number"
+              class="form-control"
+              id="exampleFormControlInput1"
+              placeholder=""
+            />
+          </div>
         </div>
+         <hr />
         <div class="form-group">
           <label for="exampleFormControlSelect1">Categoría</label>
           <select class="form-control" id="exampleFormControlSelect1">
@@ -124,7 +121,7 @@
             <option>5</option>
           </select>
         </div>
-        <hr />
+       
         <div class="form-group">
           <div class="form-check">
             <input
