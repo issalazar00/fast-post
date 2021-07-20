@@ -191,11 +191,6 @@
             />
           </div>
         </div>
-        <div class="form-group col-12 text-right">
-          <button type="button" class="btn btn-primary" @click="guardar">
-            Guardar
-          </button>
-        </div>
       </form>
     </div>
   </div>
@@ -224,13 +219,7 @@ export default {
     };
   },
   methods: {
-    guardar() {
-      let me = this;
-
-      axios.post("productos", this.formProduct).then(function (response) {
-        this.listarProductos(1);
-      });
-    },
+   
   },
   mounted() {},
 };

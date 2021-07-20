@@ -7,7 +7,7 @@
           type="button"
           class="btn btn-primary"
           data-toggle="modal"
-          data-target="#productoModal"
+          data-target="#exampleModal"
         >
           Crear Producto
         </button>
@@ -20,7 +20,6 @@
               <th scope="col">#</th>
               <th>Código de barras</th>
               <th scope="col">Producto</th>
-              <th>Categoria</th>
               <th scope="col">Precio Venta</th>
               <th scope="col">Cantidad</th>
               <th>Estado</th>
@@ -29,13 +28,12 @@
           </thead>
           <tbody>
             <tr
-              v-for="(producto, index) in listadoProductos.data"
+              v-for="producto in listadoProductos.data"
               v-bind:key="producto.id"
             >
-              <td>{{ index+1 }}</td>
+              <td>{{ producto.id_producto }}</td>
               <td>{{ producto.codigo_barras }}</td>
               <td>{{ producto.producto }}</td>
-              <td>{{ producto.id_categoria }}</td>
               <td class="text-right">$ {{ producto.precio_venta }}</td>
               <td>{{ producto.cantidad_actual }}</td>
               <td>
@@ -52,30 +50,27 @@
             </tr>
           </tbody>
         </table>
-        <nav aria-label="Page navigation">
-          <pagination
-            class="justify-content-center"
-            :data="listadoProductos"
-            @pagination-change-page="listarProductos"
-          >
-            <span slot="prev-nav">&lt; Previous</span>
-            <span slot="next-nav">Next &gt;</span>
-          </pagination>
-        </nav>
+        <pagination
+          :data="listadoProductos"
+          @pagination-change-page="listarProductos"
+        >
+          <span slot="prev-nav">&lt; Previous</span>
+          <span slot="next-nav">Next &gt;</span></pagination
+        >
       </div>
     </div>
     <!-- Modal para creacion y edicion de productos -->
     <div
       class="modal fade"
-      id="productoModal"
+      id="exampleModal"
       tabindex="-1"
-      aria-labelledby="productoModalLabel"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="productoModalLabel">Producto</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Producto</h5>
             <button
               type="button"
               class="close"
@@ -86,9 +81,9 @@
             </button>
           </div>
           <div class="modal-body">
-            <crear-producto />
+            <crear-editar-producto />
           </div>
-          <!-- <div class="modal-footer">
+          <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
@@ -96,7 +91,8 @@
             >
               Close
             </button>
-          </div> -->
+            <button type="button" class="btn btn-primary" @click="CrearProducto">Guardar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -104,9 +100,9 @@
 </template>
 
 <script>
-import CrearProducto from "./CrearProducto.vue";
+import CrearEditarProducto from "./CrearEditarProducto.vue";
 export default {
-  components: { CrearProducto },
+  components: { CrearEditarProducto },
   data() {
     return {
       listadoProductos: {},
@@ -122,10 +118,18 @@ export default {
         me.listadoProductos = response.data;
       });
     },
+
+     CrearProducto() {
+      let me = this;
+
+      axios.post("productos", this.formProduct).then(function (response) {
+        this.listarProductos(1);
+      });
+    },
   },
 
   mounted() {
-
+    // this.listarProductos();
   },
 };
 </script>
