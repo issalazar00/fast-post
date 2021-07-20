@@ -14,7 +14,7 @@ class ProductoController extends Controller
     public function index()
     {
         //
-        return Producto::paginate(15);
+        return Producto::orderBy('codigo_barras', 'asc')->paginate(15);
     }
 
     /**
@@ -35,7 +35,10 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
+        $producto = $request->all();
+        Producto::create($producto);
         //
+        // var_dump($request);}
     }
 
     /**

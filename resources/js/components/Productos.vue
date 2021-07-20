@@ -7,7 +7,7 @@
           type="button"
           class="btn btn-primary"
           data-toggle="modal"
-          data-target="#exampleModal"
+          data-target="#productoModal"
         >
           Crear Producto
         </button>
@@ -20,6 +20,7 @@
               <th scope="col">#</th>
               <th>Código de barras</th>
               <th scope="col">Producto</th>
+              <th>Categoria</th>
               <th scope="col">Precio Venta</th>
               <th scope="col">Cantidad</th>
               <th>Estado</th>
@@ -28,12 +29,13 @@
           </thead>
           <tbody>
             <tr
-              v-for="producto in listadoProductos.data"
+              v-for="(producto, index) in listadoProductos.data"
               v-bind:key="producto.id"
             >
-              <td>{{ producto.id_producto }}</td>
+              <td>{{ index+1 }}</td>
               <td>{{ producto.codigo_barras }}</td>
               <td>{{ producto.producto }}</td>
+              <td>{{ producto.id_categoria }}</td>
               <td class="text-right">$ {{ producto.precio_venta }}</td>
               <td>{{ producto.cantidad_actual }}</td>
               <td>
@@ -50,27 +52,30 @@
             </tr>
           </tbody>
         </table>
-        <pagination
-          :data="listadoProductos"
-          @pagination-change-page="listarProductos"
-        >
-          <span slot="prev-nav">&lt; Previous</span>
-          <span slot="next-nav">Next &gt;</span></pagination
-        >
+        <nav aria-label="Page navigation">
+          <pagination
+            class="justify-content-center"
+            :data="listadoProductos"
+            @pagination-change-page="listarProductos"
+          >
+            <span slot="prev-nav">&lt; Previous</span>
+            <span slot="next-nav">Next &gt;</span>
+          </pagination>
+        </nav>
       </div>
     </div>
     <!-- Modal para creacion y edicion de productos -->
     <div
       class="modal fade"
-      id="exampleModal"
+      id="productoModal"
       tabindex="-1"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="productoModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Producto</h5>
+            <h5 class="modal-title" id="productoModalLabel">Producto</h5>
             <button
               type="button"
               class="close"
@@ -83,7 +88,7 @@
           <div class="modal-body">
             <crear-producto />
           </div>
-          <div class="modal-footer">
+          <!-- <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
@@ -91,8 +96,7 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Guardar</button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -121,7 +125,7 @@ export default {
   },
 
   mounted() {
-    // this.listarProductos();
+
   },
 };
 </script>
