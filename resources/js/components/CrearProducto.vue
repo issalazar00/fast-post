@@ -4,21 +4,24 @@
       <form>
         <div class="form-row">
           <div class="form-group col-5">
-            <label for="exampleFormControlInput1">Codigo de barras</label>
+            <label for="codigo_barras">Codigo de barras</label>
             <input
               type="number"
+              step="any"
               class="form-control"
-              id="exampleFormControlInput1"
-              placeholder=""
+              id="codigo_barras"
+              v-model="formProduct.codigo_barras"
+              placeholder="Código de barras"
             />
           </div>
           <div class="form-group col-7">
-            <label for="exampleFormControlInput1">Descripcion Producto</label>
+            <label for="´producto">Descripcion Producto</label>
             <input
               type="text"
               class="form-control"
-              id="exampleFormControlInput1"
-              placeholder=""
+              id="´producto"
+              v-model="formProduct.producto"
+              placeholder="Nombre o descripción de producto"
             />
           </div>
         </div>
@@ -27,11 +30,12 @@
             <input
               class="form-check-input"
               type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio1"
-              value="option1"
+              name="tipo_producto"
+              id="unidad"
+              v-model="formProduct.tipo_producto"
+              value="1"
             />
-            <label class="form-check-label" for="inlineRadio1"
+            <label class="form-check-label" for="unidad"
               >Por Unidad / Pieza</label
             >
           </div>
@@ -39,11 +43,12 @@
             <input
               class="form-check-input"
               type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio2"
-              value="option2"
+              name="tipo_producto"
+              id="granel"
+              v-model="formProduct.tipo_producto"
+              value="2"
             />
-            <label class="form-check-label" for="inlineRadio2"
+            <label class="form-check-label" for="granel"
               >A granel (Usa decimales)</label
             >
           </div>
@@ -51,94 +56,110 @@
             <input
               class="form-check-input"
               type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio3"
-              value="option3"
+              name="tipo_producto"
+              id="kit"
+              v-model="formProduct.tipo_producto"
+              value="3"
             />
-            <label class="form-check-label" for="inlineRadio3"
-              >Como paquete</label
-            >
+            <label class="form-check-label" for="kit">Como paquete</label>
           </div>
         </div>
         <div class="form-group">
-          <label for="exampleFormControlSelect1">Impuesto</label>
-          <select class="form-control" id="exampleFormControlSelect1">
+          <label for="id_impuesto">Impuesto</label>
+          <select
+            class="form-control"
+            id="id_impuesto"
+            v-model="formProduct.id_impuesto"
+          >
             <option>1</option>
             <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
           </select>
         </div>
         <hr />
         <div class="form-row">
           <div class="form-group col-6">
-            <label for="exampleFormControlInput1">Precio Costo</label>
+            <label for="precio_costo">Precio Costo</label>
             <input
               type="number"
+              step="any"
               class="form-control"
-              id="exampleFormControlInput1"
+              id="precio_costo"
+              v-model="formProduct.precio_costo"
+              placeholder="Precio de costo"
+            />
+          </div>
+          <div class="form-group col-6">
+            <label for="valor_ganancia">Ganancia</label>
+            <input
+              type="number"
+              step="any"
+              class="form-control"
+              id="valor_ganancia"
+              v-model="formProduct.valor_ganancia"
               placeholder=""
             />
           </div>
           <div class="form-group col-6">
-            <label for="exampleFormControlInput1">Ganancia</label>
+            <label for="precio_venta">Precio Venta</label>
             <input
               type="number"
+              step="any"
               class="form-control"
-              id="exampleFormControlInput1"
-              placeholder=""
-            />
-          </div>
-          <div class="form-group col-6">
-            <label for="exampleFormControlInput1">Precio Venta</label>
-            <input
-              type="number"
-              class="form-control"
-              id="exampleFormControlInput1"
+              id="precio_venta"
+              v-model="formProduct.precio_venta"
               placeholder=""
             />
           </div>
 
           <div class="form-group col-6">
-            <label for="exampleFormControlInput1">Precio Mayoreo</label>
+            <label for="precio_mayoreo">Precio Mayoreo</label>
             <input
               type="number"
+              step="any"
               class="form-control"
-              id="exampleFormControlInput1"
+              id="precio_mayoreo"
+              v-model="formProduct.precio_mayoreo"
               placeholder=""
             />
           </div>
         </div>
-         <hr />
+        <hr />
         <div class="form-group">
-          <label for="exampleFormControlSelect1">Categoria</label>
-          <select class="form-control" id="exampleFormControlSelect1">
+          <label for="categoria">Categoria</label>
+          <select
+            class="form-control"
+            id="categoria"
+            v-model="formProduct.id_categoria"
+          >
             <option>1</option>
             <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
           </select>
         </div>
-       
+
         <div class="form-group">
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
-              value=""
-              id="defaultCheck1"
+              value="1"
+              id="inventario"
+              v-model="formProduct.inventario"
             />
-            <label class="form-check-label" for="defaultCheck1">
+            <label class="form-check-label" for="inventario">
               ¿Usa Inventario?
             </label>
           </div>
         </div>
-        <div class="form-row">
+        <div class="form-row" v-if="formProduct.inventario == 1">
           <div class="form-group col-md-9">
-            <label for="inputEmail4">Hay</label>
-            <input type="number" class="form-control" id="inputEmail4" />
+            <label for="cantidad_actual">Hay</label>
+            <input
+              type="number"
+              step="any"
+              class="form-control"
+              id="cantidad_actual"
+              v-model="formProduct.cantidad_actual"
+            />
           </div>
           <div class="form-group col-md-3">
             <small id="" class="form-text text-muted mt-4">
@@ -146,17 +167,34 @@
             </small>
           </div>
         </div>
-        <div class="form-row">
+        <div class="form-row" v-if="formProduct.inventario == 1">
           <div class="form-group col-md-9">
-            <label for="inputEmail4">Mínimo</label>
-            <input type="number" class="form-control" id="inputEmail4" />
+            <label for="cantidad_minima">Mínimo</label>
+            <input
+              type="number"
+              step="any"
+              class="form-control"
+              id="cantidad_minima"
+              v-model="formProduct.cantidad_minima"
+            />
           </div>
         </div>
-        <div class="form-row">
+        <div class="form-row" v-if="formProduct.inventario == 1">
           <div class="form-group col-md-9">
-            <label for="inputEmail4">Máximo</label>
-            <input type="number" class="form-control" id="inputEmail4" />
+            <label for="cantidad_maxima">Máximo</label>
+            <input
+              type="number"
+              step="any"
+              class="form-control"
+              id="cantidad_maxima"
+              v-model="formProduct.cantidad_maxima"
+            />
           </div>
+        </div>
+        <div class="form-group col-12 text-right">
+          <button type="button" class="btn btn-primary" @click="guardar">
+            Guardar
+          </button>
         </div>
       </form>
     </div>
@@ -165,8 +203,35 @@
 
 <script>
 export default {
-  mounted() {
-    console.log("Component mounted.");
+  data() {
+    return {
+      //Variables de producto
+      formProduct: {
+        codigo_barras: "",
+        producto: "",
+        tipo_producto: 0,
+        id_impuesto: 0,
+        precio_costo: 0.0,
+        valor_ganancia: 0.0,
+        precio_venta: 0.0,
+        precio_mayoreo: 0.0,
+        id_categoria: 0,
+        inventario: 0,
+        cantidad_minima: 0.0,
+        cantidad_actual: 0.0,
+        cantidad_maxima: 0.0,
+      },
+    };
   },
+  methods: {
+    guardar() {
+      let me = this;
+
+      axios.post("productos", this.formProduct).then(function (response) {
+        this.listarProductos(1);
+      });
+    },
+  },
+  mounted() {},
 };
 </script>

@@ -22,11 +22,11 @@ class CreateProductosTable extends Migration
             $table->decimal('valor_ganancia', 20, 2);
             $table->decimal('precio_venta', 20, 2);
             $table->decimal('precio_mayoreo', 20, 2);
-            $table->tinyInteger('inventario');
-            $table->decimal('cantidad_actual', 10, 2);
-            $table->decimal('cantidad_minima', 10, 2);
-            $table->decimal('cantidad_maxima', 10, 2);
-            $table->tinyInteger('estado');
+            $table->tinyInteger('inventario')->default('0');
+            $table->decimal('cantidad_actual', 10, 2)->nullable();
+            $table->decimal('cantidad_minima', 10, 2)->nullable();
+            $table->decimal('cantidad_maxima', 10, 2)->nullable();
+            $table->tinyInteger('estado')->default('1');
             $table->foreignId('id_categoria');
             $table->foreignId('id_impuesto');
             $table->timestamps();
