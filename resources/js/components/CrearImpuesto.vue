@@ -13,7 +13,7 @@
         </div>
 
         <div class="form-group">
-          <label for="exampleFormControlInput1">Precio Costo</label>
+          <label for="exampleFormControlInput1">Porcentaje</label>
           <input
             type="number"
             class="form-control"
