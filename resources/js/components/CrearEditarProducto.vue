@@ -34,6 +34,7 @@
               id="unidad"
               v-model="formProduct.type"
               value="1"
+              required
             />
             <label class="form-check-label" for="unidad"
               >Por Unidad / Pieza</label
@@ -70,6 +71,7 @@
             class="form-control"
             id="tax_id"
             v-model="formProduct.tax_id"
+            required
           >
             <option>1</option>
             <option>2</option>
@@ -112,23 +114,23 @@
           </div>
 
           <div class="form-group col-6">
-            <label for="wholesale">Precio Mayoreo</label>
+            <label for="wholesale_price">Precio Mayoreo</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="wholesale"
-              v-model="formProduct.wholesale"
+              id="wholesale_price"
+              v-model="formProduct.wholesale_price"
               placeholder=""
             />
           </div>
         </div>
         <hr />
         <div class="form-group">
-          <label for="category">Categoria</label>
+          <label for="category_id">Categoria</label>
           <select
             class="form-control"
-            id="category"
+            id="category_id"
             v-model="formProduct.category_id"
           >
             <option>1</option>
@@ -209,7 +211,7 @@ export default {
         cost_price: 0.0,
         gain: 0.0,
         sale_price: 0.0,
-        wholesale: 0.0,
+        wholesale_price: 0.0,
         category_id: 0,
         stock: 0,
         minimum: 0.0,
@@ -219,7 +221,23 @@ export default {
     };
   },
   methods: {
-   
+    CrearProducto() {
+      let me = this;
+      axios.post("api/products",this.formProduct).then(function () {
+        $('#productModal').modal('hide');
+        me.formProduct = {}
+      });
+    },
+    AbrirEdicionProducto(producto){
+      let me = this;
+      $('#productModal').modal('show');
+      me.formProduct = producto;
+    },
+    ResetarDatos(){
+      let me= this;
+      $('#productModal').modal('hide');
+      me.formProduct = {}
+    }
   },
   mounted() {},
 };

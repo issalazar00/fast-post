@@ -7,7 +7,7 @@
           type="button"
           class="btn btn-primary"
           data-toggle="modal"
-          data-target="#exampleModal"
+          data-target="#productModal"
         >
           Crear Producto
         </button>
@@ -20,6 +20,7 @@
               <th scope="col">#</th>
               <th>Código de barras</th>
               <th scope="col">Producto</th>
+              <th>Categoria</th>
               <th scope="col">Precio Venta</th>
               <th scope="col">Cantidad</th>
               <th>Estado</th>
@@ -34,7 +35,8 @@
               <td>{{ product.id }}</td>
               <td>{{ product.barcode }}</td>
               <td>{{ product.product }}</td>
-              <td class="text-right">$ {{ product.precio_venta }}</td>
+              <td>{{ product.category }}</td>
+              <td class="text-right">$ {{ product.sale_price }}</td>
               <td>{{ product.quantity }}</td>
               <td>
                 <span class="badge badge-success" v-if="product.state == 1"
@@ -46,11 +48,16 @@
                 <button class="btn btn-success">
                   <i class="bi bi-check-circle-fill"></i>
                 </button>
+
+                <button class="btn btn-success" @click="MostrarDatos(product)">
+                  Editar
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
         <pagination
+          :align="'center'"
           :data="listadoProductos"
           @pagination-change-page="listarProductos"
         >
@@ -62,15 +69,15 @@
     <!-- Modal para creacion y edicion de products -->
     <div
       class="modal fade"
-      id="exampleModal"
+      id="productModal"
       tabindex="-1"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="productModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Producto</h5>
+            <h5 class="modal-title" id="productModalLabel">Producto</h5>
             <button
               type="button"
               class="close"
@@ -81,17 +88,24 @@
             </button>
           </div>
           <div class="modal-body">
-            <crear-editar-producto />
+            <crear-editar-producto ref="CrearEditarProducto" />
           </div>
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
-              data-dismiss="modal"
+              @click="CerrarModal()"
+
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary" @click="CrearProducto">Guardar</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="CrearProducto()"
+            >
+              Guardar
+            </button>
           </div>
         </div>
       </div>
@@ -119,12 +133,17 @@ export default {
       });
     },
 
-     CrearProducto() {
+    CrearProducto: function () {
       let me = this;
+      this.$refs.CrearEditarProducto.CrearProducto();
+      me.listarProductos();
+    },
 
-      axios.post("api/products", this.formProduct).then(function (response) {
-        this.listarProductos(1);
-      });
+    MostrarDatos: function (product) {
+      this.$refs.CrearEditarProducto.AbrirEdicionProducto(product);
+    },
+    CerrarModal: function (product) {
+      this.$refs.CrearEditarProducto.ResetarDatos();
     },
   },
 

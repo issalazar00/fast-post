@@ -24,4 +24,6 @@ Route::post('/register', [App\Http\Controllers\UserController::class,'register']
     Route::resource('/category', App\Http\Controllers\CategoryController::class);
     Route::resource('/tax', App\Http\Controllers\TaxController::class);
     Route::resource('/products',  ProductController::class);
+    Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
+    Route::post('/products/{product}/deactivate',  [ProductController::class, 'deactivate']);
 // });

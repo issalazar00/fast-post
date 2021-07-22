@@ -11,9 +11,6 @@ class Product extends Model
 
     protected $table = 'products';
 
-    protected $primaryKey = 'id_producto';
-
-    
     /**
      * The attributes that are mass assignable.
      *
@@ -38,7 +35,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function tax()

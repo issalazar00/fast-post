@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
     /**
@@ -15,10 +14,19 @@ class ProductController extends Controller
     public function index()
     {
         //
+        $products = new Product;
+        $products = $products
+            ->select('products.*', 'categories.name as category')
+            ->leftJoin('categories', 'categories.id', 'products.category_id')
+            ->orderBy('barcode', 'asc')
+            ->paginate(15)
+        ;
+
+
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'products' => Product::orderBy('barcode', 'asc')->paginate(15)
+            'products' => $products,
         ]);
         // return Product::orderBy('barcode', 'asc')->paginate(15);
     }
@@ -43,8 +51,6 @@ class ProductController extends Controller
     {
         $product = $request->all();
         Product::create($product);
-        //
-        // var_dump($request);}
     }
 
     /**
@@ -98,7 +104,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function activar($id)
+    public function activate($id)
     {
         //
     }
@@ -109,7 +115,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function desactivar($id)
+    public function deactivate($id)
     {
         //
     }

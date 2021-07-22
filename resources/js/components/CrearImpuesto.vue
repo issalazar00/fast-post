@@ -3,16 +3,6 @@
     <div class="row justify-content-center">
       <form>
         <div class="form-group">
-          <label for="exampleFormControlInput1">Nombre Impuesto</label>
-          <input
-            type="text"
-            class="form-control"
-            id="exampleFormControlInput1"
-            placeholder=""
-          />
-        </div>
-
-        <div class="form-group">
           <label for="exampleFormControlInput1">Porcentaje</label>
           <input
             type="number"
