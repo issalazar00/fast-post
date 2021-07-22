@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
     /**
@@ -14,7 +15,12 @@ class ProductController extends Controller
     public function index()
     {
         //
-        return Product::orderBy('codigo_barras', 'asc')->paginate(15);
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'products' => Product::orderBy('barcode', 'asc')->paginate(15)
+        ]);
+        // return Product::orderBy('barcode', 'asc')->paginate(15);
     }
 
     /**
@@ -35,8 +41,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $producto = $request->all();
-        Product::create($producto);
+        $product = $request->all();
+        Product::create($product);
         //
         // var_dump($request);}
     }

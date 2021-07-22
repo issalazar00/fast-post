@@ -28,16 +28,16 @@
           </thead>
           <tbody>
             <tr
-              v-for="producto in listadoProductos.data"
-              v-bind:key="producto.id"
+              v-for="product in listadoProductos.data"
+              v-bind:key="product.id"
             >
-              <td>{{ producto.id_producto }}</td>
-              <td>{{ producto.codigo_barras }}</td>
-              <td>{{ producto.producto }}</td>
-              <td class="text-right">$ {{ producto.precio_venta }}</td>
-              <td>{{ producto.cantidad_actual }}</td>
+              <td>{{ product.id }}</td>
+              <td>{{ product.barcode }}</td>
+              <td>{{ product.product }}</td>
+              <td class="text-right">$ {{ product.precio_venta }}</td>
+              <td>{{ product.quantity }}</td>
               <td>
-                <span class="badge badge-success" v-if="producto.estado == 1"
+                <span class="badge badge-success" v-if="product.state == 1"
                   >Activo</span
                 >
                 <span class="badge badge-danger" v-else>Desactivado</span>
@@ -59,7 +59,7 @@
         >
       </div>
     </div>
-    <!-- Modal para creacion y edicion de productos -->
+    <!-- Modal para creacion y edicion de products -->
     <div
       class="modal fade"
       id="exampleModal"
@@ -114,15 +114,15 @@ export default {
   methods: {
     listarProductos(page = 1) {
       let me = this;
-      axios.get("productos?page=" + page).then(function (response) {
-        me.listadoProductos = response.data;
+      axios.get("api/products?page=" + page).then(function (response) {
+        me.listadoProductos = response.data.products;
       });
     },
 
      CrearProducto() {
       let me = this;
 
-      axios.post("productos", this.formProduct).then(function (response) {
+      axios.post("api/products", this.formProduct).then(function (response) {
         this.listarProductos(1);
       });
     },

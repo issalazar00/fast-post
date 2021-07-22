@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +19,9 @@ Route::post('/login', [App\Http\Controllers\UserController::class,'login']);
 Route::post('/register', [App\Http\Controllers\UserController::class,'register']);
 
 
-Route::middleware('auth:api')->group(function(){
+// Route::middleware('auth:api')->group(function(){
     Route::resource('/user', App\Http\Controllers\UserController::class);
     Route::resource('/category', App\Http\Controllers\CategoryController::class);
     Route::resource('/tax', App\Http\Controllers\TaxController::class);
-});
+    Route::resource('/products',  ProductController::class);
+// });

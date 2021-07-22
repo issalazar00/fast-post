@@ -26,7 +26,7 @@ class CreateProductsTable extends Migration
             $table->decimal('sale_price', 10, 2);
             $table->decimal('wholesale_price', 10, 2);
             $table->tinyInteger('stock')->default('0');
-            $table->decimal('amount', 10, 2)->nullable();
+            $table->decimal('quantity', 10, 2)->nullable();
             $table->decimal('minimum', 10, 2)->nullable();
             $table->decimal('maximum', 10, 2)->nullable();
 

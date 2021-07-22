@@ -32,7 +32,7 @@ class ProductFactory extends Factory
             'sale_price' =>  $this->faker->randomFloat(2,1, 10000),
             'wholesale_price' =>  $this->faker->randomFloat(2,1, 10000),
             'stock' =>  $this->faker->numberBetween(0,1),
-            'amount' =>  $this->faker->numberBetween(0,100),
+            'quantity' =>  $this->faker->numberBetween(0,100),
             'minimum' =>  $this->faker->numberBetween(0,100),
             'maximum' =>  $this->faker->numberBetween(0,100),
             'state' => '1',

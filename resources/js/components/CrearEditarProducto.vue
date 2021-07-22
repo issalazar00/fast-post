@@ -4,23 +4,23 @@
       <form>
         <div class="form-row">
           <div class="form-group col-5">
-            <label for="codigo_barras">Codigo de barras</label>
+            <label for="barcode">Codigo de barras</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="codigo_barras"
-              v-model="formProduct.codigo_barras"
+              id="barcode"
+              v-model="formProduct.barcode"
               placeholder="Código de barras"
             />
           </div>
           <div class="form-group col-7">
-            <label for="´producto">Descripcion Producto</label>
+            <label for="product">Descripcion Producto</label>
             <input
               type="text"
               class="form-control"
-              id="´producto"
-              v-model="formProduct.producto"
+              id="product"
+              v-model="formProduct.product"
               placeholder="Nombre o descripción de producto"
             />
           </div>
@@ -30,9 +30,9 @@
             <input
               class="form-check-input"
               type="radio"
-              name="tipo_producto"
+              name="type"
               id="unidad"
-              v-model="formProduct.tipo_producto"
+              v-model="formProduct.type"
               value="1"
             />
             <label class="form-check-label" for="unidad"
@@ -43,9 +43,9 @@
             <input
               class="form-check-input"
               type="radio"
-              name="tipo_producto"
+              name="type"
               id="granel"
-              v-model="formProduct.tipo_producto"
+              v-model="formProduct.type"
               value="2"
             />
             <label class="form-check-label" for="granel"
@@ -56,20 +56,20 @@
             <input
               class="form-check-input"
               type="radio"
-              name="tipo_producto"
+              name="type"
               id="kit"
-              v-model="formProduct.tipo_producto"
+              v-model="formProduct.type"
               value="3"
             />
             <label class="form-check-label" for="kit">Como paquete</label>
           </div>
         </div>
         <div class="form-group">
-          <label for="id_impuesto">Impuesto</label>
+          <label for="tax_id">Impuesto</label>
           <select
             class="form-control"
-            id="id_impuesto"
-            v-model="formProduct.id_impuesto"
+            id="tax_id"
+            v-model="formProduct.tax_id"
           >
             <option>1</option>
             <option>2</option>
@@ -78,58 +78,58 @@
         <hr />
         <div class="form-row">
           <div class="form-group col-6">
-            <label for="precio_costo">Precio Costo</label>
+            <label for="cost_price">Precio Costo</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="precio_costo"
-              v-model="formProduct.precio_costo"
+              id="cost_price"
+              v-model="formProduct.cost_price"
               placeholder="Precio de costo"
             />
           </div>
           <div class="form-group col-6">
-            <label for="valor_ganancia">Ganancia</label>
+            <label for="gain">Ganancia</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="valor_ganancia"
-              v-model="formProduct.valor_ganancia"
+              id="gain"
+              v-model="formProduct.gain"
               placeholder=""
             />
           </div>
           <div class="form-group col-6">
-            <label for="precio_venta">Precio Venta</label>
+            <label for="sale_price">Precio Venta</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="precio_venta"
-              v-model="formProduct.precio_venta"
+              id="sale_price"
+              v-model="formProduct.sale_price"
               placeholder=""
             />
           </div>
 
           <div class="form-group col-6">
-            <label for="precio_mayoreo">Precio Mayoreo</label>
+            <label for="wholesale">Precio Mayoreo</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="precio_mayoreo"
-              v-model="formProduct.precio_mayoreo"
+              id="wholesale"
+              v-model="formProduct.wholesale"
               placeholder=""
             />
           </div>
         </div>
         <hr />
         <div class="form-group">
-          <label for="categoria">Categoria</label>
+          <label for="category">Categoria</label>
           <select
             class="form-control"
-            id="categoria"
-            v-model="formProduct.id_categoria"
+            id="category"
+            v-model="formProduct.category_id"
           >
             <option>1</option>
             <option>2</option>
@@ -142,23 +142,23 @@
               class="form-check-input"
               type="checkbox"
               value="1"
-              id="inventario"
-              v-model="formProduct.inventario"
+              id="stock"
+              v-model="formProduct.stock"
             />
-            <label class="form-check-label" for="inventario">
+            <label class="form-check-label" for="stock">
               ¿Usa Inventario?
             </label>
           </div>
         </div>
-        <div class="form-row" v-if="formProduct.inventario == 1">
+        <div class="form-row" v-if="formProduct.stock == 1">
           <div class="form-group col-md-9">
-            <label for="cantidad_actual">Hay</label>
+            <label for="quantity">Hay</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="cantidad_actual"
-              v-model="formProduct.cantidad_actual"
+              id="quantity"
+              v-model="formProduct.quantity"
             />
           </div>
           <div class="form-group col-md-3">
@@ -167,27 +167,27 @@
             </small>
           </div>
         </div>
-        <div class="form-row" v-if="formProduct.inventario == 1">
+        <div class="form-row" v-if="formProduct.stock == 1">
           <div class="form-group col-md-9">
-            <label for="cantidad_minima">Mínimo</label>
+            <label for="minimum">Mínimo</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="cantidad_minima"
-              v-model="formProduct.cantidad_minima"
+              id="minimum"
+              v-model="formProduct.minimum"
             />
           </div>
         </div>
-        <div class="form-row" v-if="formProduct.inventario == 1">
+        <div class="form-row" v-if="formProduct.stock == 1">
           <div class="form-group col-md-9">
-            <label for="cantidad_maxima">Máximo</label>
+            <label for="maximum">Máximo</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="cantidad_maxima"
-              v-model="formProduct.cantidad_maxima"
+              id="maximum"
+              v-model="formProduct.maximum"
             />
           </div>
         </div>
@@ -202,19 +202,19 @@ export default {
     return {
       //Variables de producto
       formProduct: {
-        codigo_barras: "",
+        barcode: "",
         producto: "",
-        tipo_producto: 0,
-        id_impuesto: 0,
-        precio_costo: 0.0,
-        valor_ganancia: 0.0,
-        precio_venta: 0.0,
-        precio_mayoreo: 0.0,
-        id_categoria: 0,
-        inventario: 0,
-        cantidad_minima: 0.0,
-        cantidad_actual: 0.0,
-        cantidad_maxima: 0.0,
+        type: 0,
+        tax_id: 0,
+        cost_price: 0.0,
+        gain: 0.0,
+        sale_price: 0.0,
+        wholesale: 0.0,
+        category_id: 0,
+        stock: 0,
+        minimum: 0.0,
+        quantity: 0.0,
+        maximum: 0.0,
       },
     };
   },

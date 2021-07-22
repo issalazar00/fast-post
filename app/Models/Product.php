@@ -28,7 +28,7 @@ class Product extends Model
         'sale_price',
         'wholesale_price',
         'stock',
-        'amount',
+        'quantity',
         'minimum',
         'maximum',
         'state',
