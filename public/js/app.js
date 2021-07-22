@@ -2987,6 +2987,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -3027,6 +3038,18 @@ __webpack_require__.r(__webpack_exports__);
       var me = this;
       this.$refs.CrearEditarProducto.ResetarDatos();
       this.listarProductos(1);
+    },
+    ActivarProducto: function ActivarProducto(id) {
+      var me = this;
+      axios.post("api/products/" + id + "/activate").then(function () {
+        me.listarProductos(1);
+      });
+    },
+    DesactivarProducto: function DesactivarProducto(id) {
+      var me = this;
+      axios.post("api/products/" + id + "/deactivate").then(function () {
+        me.listarProductos(1);
+      });
     }
   },
   mounted: function mounted() {// this.listarProductos();
@@ -41759,12 +41782,34 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [
                       product.state == 1
-                        ? _c("span", { staticClass: "badge badge-success" }, [
-                            _vm._v("Activo")
-                          ])
-                        : _c("span", { staticClass: "badge badge-danger" }, [
-                            _vm._v("Desactivado")
-                          ])
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "badge badge-success",
+                              on: {
+                                click: function($event) {
+                                  return _vm.DesactivarProducto(product.id)
+                                }
+                              }
+                            },
+                            [_vm._v("\n                Activo\n              ")]
+                          )
+                        : _c(
+                            "button",
+                            {
+                              staticClass: "badge badge-danger",
+                              on: {
+                                click: function($event) {
+                                  return _vm.ActivarProducto(product.id)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                Desactivado\n              "
+                              )
+                            ]
+                          )
                     ]),
                     _vm._v(" "),
                     _c("td", [

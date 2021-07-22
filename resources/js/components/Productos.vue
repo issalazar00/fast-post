@@ -40,19 +40,30 @@
               <td class="text-right">$ {{ product.sale_price }}</td>
               <td>{{ product.quantity }}</td>
               <td>
-                <span class="badge badge-success" v-if="product.state == 1"
-                  >Activo</span
+                <button
+                  class="badge badge-success"
+                  v-if="product.state == 1"
+                  @click="DesactivarProducto(product.id)"
                 >
-                <span class="badge badge-danger" v-else>Desactivado</span>
+                  Activo
+                </button>
+                <button
+                  class="badge badge-danger"
+                  v-else
+                  @click="ActivarProducto(product.id)"
+                >
+                  Desactivado
+                </button>
               </td>
               <td>
                 <button class="btn btn-success">
                   <i class="bi bi-check-circle-fill"></i>
                 </button>
 
-                <button 
-                  class="btn btn-success" 
-                  @click="MostrarDatos(product), edit = true">
+                <button
+                  class="btn btn-success"
+                  @click="MostrarDatos(product), (edit = true)"
+                >
                   Editar
                 </button>
               </td>
@@ -139,10 +150,10 @@ export default {
     GuardarProducto: function () {
       let me = this;
       if (this.edit == false) {
-         this.$refs.CrearEditarProducto.CrearProducto();
+        this.$refs.CrearEditarProducto.CrearProducto();
       } else {
         this.$refs.CrearEditarProducto.EditarProducto();
-      }     
+      }
       this.listarProductos(1);
     },
 
@@ -153,6 +164,18 @@ export default {
       let me = this;
       this.$refs.CrearEditarProducto.ResetarDatos();
       this.listarProductos(1);
+    },
+    ActivarProducto: function (id) {
+      let me = this;
+      axios.post("api/products/" + id + "/activate").then(function () {
+        me.listarProductos(1);
+      });
+    },
+    DesactivarProducto : function (id) {
+      let me = this;
+      axios.post("api/products/" + id + "/deactivate").then(function () {
+        me.listarProductos(1);
+      });
     },
   },
 

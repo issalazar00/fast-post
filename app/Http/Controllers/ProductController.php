@@ -122,6 +122,9 @@ class ProductController extends Controller
     public function activate($id)
     {
         //
+        $product = Product::find($id);
+        $product->state = '1';
+        $product->save();
     }
 
     /**
@@ -132,6 +135,8 @@ class ProductController extends Controller
      */
     public function deactivate($id)
     {
-        //
+        $product = Product::find($id);
+        $product->state = '0';
+        $product->save();
     }
 }
