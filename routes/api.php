@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/login', [App\Http\Controllers\UserController::class,'login']);
+Route::post('/register', [App\Http\Controllers\UserController::class,'register']);
+
+
+Route::middleware('auth:api')->group(function(){
+    Route::resource('/user', App\Http\Controllers\UserController::class);
+    Route::resource('/department', App\Http\Controllers\DepartmentController::class);
+    Route::resource('/tax', App\Http\Controllers\TaxController::class);
 });

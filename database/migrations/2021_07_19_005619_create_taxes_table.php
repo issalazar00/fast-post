@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductosTable extends Migration
+class CreateTaxesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,11 @@ class CreateProductosTable extends Migration
      */
     public function up()
     {
+<<<<<<< HEAD:database/migrations/2021_07_19_005609_create_taxes_table.php
+        Schema::create('taxes', function (Blueprint $table) {
+            $table->id();
+            $table->float('percentage');
+=======
         Schema::create('productos', function (Blueprint $table) {
             $table->id('id_producto');
             $table->string('codigo_barras')->unique();
@@ -29,6 +34,7 @@ class CreateProductosTable extends Migration
             $table->tinyInteger('estado')->default('1');
             $table->foreignId('id_categoria');
             $table->foreignId('id_impuesto');
+>>>>>>> be1327880b737581f236b80d08d246093b0aa4a6:database/migrations/2021_06_29_044530_create_productos_table.php
             $table->timestamps();
 
         });
@@ -41,6 +47,6 @@ class CreateProductosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('productos');
+        Schema::dropIfExists('taxes');
     }
 }
