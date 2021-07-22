@@ -2995,9 +2995,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -41785,36 +41782,34 @@ var render = function() {
                         ? _c(
                             "button",
                             {
-                              staticClass: "badge badge-success",
+                              staticClass: "btn btn-success",
                               on: {
                                 click: function($event) {
                                   return _vm.DesactivarProducto(product.id)
                                 }
                               }
                             },
-                            [_vm._v("\n                Activo\n              ")]
+                            [
+                              _c("i", {
+                                staticClass: "bi bi-check-circle-fill"
+                              })
+                            ]
                           )
                         : _c(
                             "button",
                             {
-                              staticClass: "badge badge-danger",
+                              staticClass: "btn btn-danger",
                               on: {
                                 click: function($event) {
                                   return _vm.ActivarProducto(product.id)
                                 }
                               }
                             },
-                            [
-                              _vm._v(
-                                "\n                Desactivado\n              "
-                              )
-                            ]
+                            [_c("i", { staticClass: "bi bi-x-circle" })]
                           )
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._m(1, true),
-                      _vm._v(" "),
                       _c(
                         "button",
                         {
@@ -41870,7 +41865,7 @@ var render = function() {
       [
         _c("div", { staticClass: "modal-dialog" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(2),
+            _vm._m(1),
             _vm._v(" "),
             _c(
               "div",
@@ -41937,14 +41932,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Opciones")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("button", { staticClass: "btn btn-success" }, [
-      _c("i", { staticClass: "bi bi-check-circle-fill" })
     ])
   },
   function() {

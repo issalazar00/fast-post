@@ -41,24 +41,21 @@
               <td>{{ product.quantity }}</td>
               <td>
                 <button
-                  class="badge badge-success"
+                  class="btn btn-success"
                   v-if="product.state == 1"
                   @click="DesactivarProducto(product.id)"
                 >
-                  Activo
+                  <i class="bi bi-check-circle-fill"></i>
                 </button>
                 <button
-                  class="badge badge-danger"
+                  class="btn btn-danger"
                   v-else
                   @click="ActivarProducto(product.id)"
                 >
-                  Desactivado
+                  <i class="bi bi-x-circle"></i>
                 </button>
               </td>
               <td>
-                <button class="btn btn-success">
-                  <i class="bi bi-check-circle-fill"></i>
-                </button>
 
                 <button
                   class="btn btn-success"
