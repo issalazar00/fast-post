@@ -9,7 +9,13 @@ class Tax extends Model
 {
     use HasFactory;
 
+    protected $table = 'taxes';
+
     protected $fillable = [
         'percentage'
     ];
+
+    public function products() {
+        return $this->hasMany(Product::class);
+    }
 }

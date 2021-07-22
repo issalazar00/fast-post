@@ -9,6 +9,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $table = 'products';
+
     protected $primaryKey = 'id_producto';
 
     
@@ -18,19 +20,29 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'codigo_barras',
-        'producto',
-        'tipo_producto',
-        'precio_costo',
-        'valor_ganancia',
-        'precio_venta',
-        'precio_mayoreo',
-        'inventario',
-        'cantidad_actual',
-        'cantidad_minima',
-        'cantidad_maxima',
-        'estado',
-        'id_categoria',
-        'id_impuesto'
+        'barcode',
+        'product',
+        'type',
+        'cost_price',
+        'gain',
+        'sale_price',
+        'wholesale_price',
+        'stock',
+        'amount',
+        'minimum',
+        'maximum',
+        'state',
+        'category_id',
+        'tax_id'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function tax()
+    {
+        return $this->belongsTo(Tax::class);
+    }
 }

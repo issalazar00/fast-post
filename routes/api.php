@@ -20,6 +20,6 @@ Route::post('/register', [App\Http\Controllers\UserController::class,'register']
 
 Route::middleware('auth:api')->group(function(){
     Route::resource('/user', App\Http\Controllers\UserController::class);
-    Route::resource('/department', App\Http\Controllers\DepartmentController::class);
+    Route::resource('/category', App\Http\Controllers\CategoryController::class);
     Route::resource('/tax', App\Http\Controllers\TaxController::class);
 });
