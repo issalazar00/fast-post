@@ -85,6 +85,21 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $product = Product::find($id);
+        $product->barcode = $request['barcode'];
+        $product->product = $request['product'];
+        $product->type = $request['type'];
+        $product->cost_price = $request['cost_price'];
+        $product->gain = $request['gain'];
+        $product->sale_price = $request['sale_price'];
+        $product->wholesale_price = $request['wholesale_price'];
+        $product->stock = $request['stock'];
+        $product->quantity = $request['quantity'];
+        $product->minimum = $request['minimum'];
+        $product->maximum = $request['maximum'];
+        $product->category_id = $request['category_id'];
+        $product->tax_id = $request['tax_id'];
+        $product->save();
     }
 
     /**

@@ -2412,18 +2412,25 @@ __webpack_require__.r(__webpack_exports__);
     CrearProducto: function CrearProducto() {
       var me = this;
       axios.post("api/products", this.formProduct).then(function () {
-        $('#productModal').modal('hide');
+        $("#productModal").modal("hide");
         me.formProduct = {};
       });
     },
     AbrirEdicionProducto: function AbrirEdicionProducto(producto) {
       var me = this;
-      $('#productModal').modal('show');
+      $("#productModal").modal("show");
       me.formProduct = producto;
+    },
+    EditarProducto: function EditarProducto() {
+      var me = this;
+      axios.put("api/products/" + this.formProduct.id, this.formProduct).then(function () {
+        $("#productModal").modal("hide");
+        me.formProduct = {};
+      });
     },
     ResetarDatos: function ResetarDatos() {
       var me = this;
-      $('#productModal').modal('hide');
+      $("#productModal").modal("hide");
       me.formProduct = {};
     }
   },
@@ -2978,6 +2985,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -2985,7 +2994,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      listadoProductos: {}
+      listadoProductos: {},
+      edit: false
     };
   },
   created: function created() {
@@ -2999,16 +3009,24 @@ __webpack_require__.r(__webpack_exports__);
         me.listadoProductos = response.data.products;
       });
     },
-    CrearProducto: function CrearProducto() {
+    GuardarProducto: function GuardarProducto() {
       var me = this;
-      this.$refs.CrearEditarProducto.CrearProducto();
-      me.listarProductos();
+
+      if (this.edit == false) {
+        this.$refs.CrearEditarProducto.CrearProducto();
+      } else {
+        this.$refs.CrearEditarProducto.EditarProducto();
+      }
+
+      this.listarProductos(1);
     },
     MostrarDatos: function MostrarDatos(product) {
       this.$refs.CrearEditarProducto.AbrirEdicionProducto(product);
     },
-    CerrarModal: function CerrarModal(product) {
+    CerrarModal: function CerrarModal() {
+      var me = this;
       this.$refs.CrearEditarProducto.ResetarDatos();
+      this.listarProductos(1);
     }
   },
   mounted: function mounted() {// this.listarProductos();
@@ -41689,7 +41707,25 @@ var render = function() {
     _c("div", { staticClass: "col-12" }, [
       _c("h3", { staticClass: "page-header" }, [_vm._v("Productos")]),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "row justify-content-end mx-4" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: {
+              type: "button",
+              "data-toggle": "modal",
+              "data-target": "#productModal"
+            },
+            on: {
+              click: function($event) {
+                _vm.edit = false
+              }
+            }
+          },
+          [_vm._v("\n        Crear Producto\n      ")]
+        )
+      ]),
       _vm._v(" "),
       _c(
         "div",
@@ -41701,7 +41737,7 @@ var render = function() {
               staticClass: "table table-sm table-bordered table-responsive-sm"
             },
             [
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -41732,7 +41768,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._m(2, true),
+                      _vm._m(1, true),
                       _vm._v(" "),
                       _c(
                         "button",
@@ -41740,7 +41776,7 @@ var render = function() {
                           staticClass: "btn btn-success",
                           on: {
                             click: function($event) {
-                              return _vm.MostrarDatos(product)
+                              _vm.MostrarDatos(product), (_vm.edit = true)
                             }
                           }
                         },
@@ -41789,7 +41825,7 @@ var render = function() {
       [
         _c("div", { staticClass: "modal-dialog" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(3),
+            _vm._m(2),
             _vm._v(" "),
             _c(
               "div",
@@ -41820,7 +41856,7 @@ var render = function() {
                   attrs: { type: "button" },
                   on: {
                     click: function($event) {
-                      return _vm.CrearProducto()
+                      return _vm.GuardarProducto()
                     }
                   }
                 },
@@ -41834,25 +41870,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-end mx-4" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          attrs: {
-            type: "button",
-            "data-toggle": "modal",
-            "data-target": "#productModal"
-          }
-        },
-        [_vm._v("\n        Crear Producto\n      ")]
-      )
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

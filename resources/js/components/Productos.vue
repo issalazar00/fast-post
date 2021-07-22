@@ -8,6 +8,7 @@
           class="btn btn-primary"
           data-toggle="modal"
           data-target="#productModal"
+          @click="edit = false"
         >
           Crear Producto
         </button>
@@ -49,7 +50,9 @@
                   <i class="bi bi-check-circle-fill"></i>
                 </button>
 
-                <button class="btn btn-success" @click="MostrarDatos(product)">
+                <button 
+                  class="btn btn-success" 
+                  @click="MostrarDatos(product), edit = true">
                   Editar
                 </button>
               </td>
@@ -95,14 +98,13 @@
               type="button"
               class="btn btn-secondary"
               @click="CerrarModal()"
-
             >
               Close
             </button>
             <button
               type="button"
               class="btn btn-primary"
-              @click="CrearProducto()"
+              @click="GuardarProducto()"
             >
               Guardar
             </button>
@@ -120,6 +122,7 @@ export default {
   data() {
     return {
       listadoProductos: {},
+      edit: false,
     };
   },
   created() {
@@ -133,17 +136,23 @@ export default {
       });
     },
 
-    CrearProducto: function () {
+    GuardarProducto: function () {
       let me = this;
-      this.$refs.CrearEditarProducto.CrearProducto();
-      me.listarProductos();
+      if (this.edit == false) {
+         this.$refs.CrearEditarProducto.CrearProducto();
+      } else {
+        this.$refs.CrearEditarProducto.EditarProducto();
+      }     
+      this.listarProductos(1);
     },
 
     MostrarDatos: function (product) {
       this.$refs.CrearEditarProducto.AbrirEdicionProducto(product);
     },
-    CerrarModal: function (product) {
+    CerrarModal: function () {
+      let me = this;
       this.$refs.CrearEditarProducto.ResetarDatos();
+      this.listarProductos(1);
     },
   },
 

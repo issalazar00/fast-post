@@ -223,21 +223,32 @@ export default {
   methods: {
     CrearProducto() {
       let me = this;
-      axios.post("api/products",this.formProduct).then(function () {
-        $('#productModal').modal('hide');
-        me.formProduct = {}
+      axios.post("api/products", this.formProduct).then(function () {
+        $("#productModal").modal("hide");
+        me.formProduct = {};
       });
     },
-    AbrirEdicionProducto(producto){
+    AbrirEdicionProducto(producto) {
       let me = this;
-      $('#productModal').modal('show');
+      $("#productModal").modal("show");
       me.formProduct = producto;
     },
-    ResetarDatos(){
-      let me= this;
-      $('#productModal').modal('hide');
-      me.formProduct = {}
-    }
+
+    EditarProducto() {
+      let me = this;
+      axios
+        .put("api/products/" + this.formProduct.id, this.formProduct)
+        .then(function () {
+          $("#productModal").modal("hide");
+          me.formProduct = {};
+        });
+    },
+
+    ResetarDatos() {
+      let me = this;
+      $("#productModal").modal("hide");
+      me.formProduct = {};
+    },
   },
   mounted() {},
 };
