@@ -2176,6 +2176,57 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarImpuesto.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarImpuesto.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  mounted: function mounted() {
+    console.log("Component mounted.");
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarProducto.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarProducto.vue?vue&type=script&lang=js& ***!
@@ -2405,10 +2456,17 @@ __webpack_require__.r(__webpack_exports__);
         minimum: 0.0,
         quantity: 0.0,
         maximum: 0.0
-      }
+      },
+      taxListing: {}
     };
   },
   methods: {
+    listTaxes: function listTaxes() {
+      var me = this;
+      axios.get("api/tax").then(function (response) {
+        me.taxListing = response.data.taxes.data;
+      });
+    },
     CrearProducto: function CrearProducto() {
       var me = this;
       axios.post("api/products", this.formProduct).then(function () {
@@ -2434,57 +2492,8 @@ __webpack_require__.r(__webpack_exports__);
       me.formProduct = {};
     }
   },
-  mounted: function mounted() {}
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearImpuesto.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearImpuesto.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
-    console.log("Component mounted.");
+    this.listTaxes();
   }
 });
 
@@ -2850,7 +2859,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      listadoImpuestos: {},
+      editar: false
+    };
+  },
+  created: function created() {
+    this.listarImpuestos(1);
+  },
+  methods: {
+    listarImpuestos: function listarImpuestos() {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      var me = this;
+      axios.get("api/tax?page=" + page).then(function (response) {
+        me.listadoImpuestos = response.data.taxes;
+      });
+    }
+  },
   mounted: function mounted() {
     console.log("Component mounted.");
   }
@@ -3049,8 +3085,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  mounted: function mounted() {// this.listarProductos();
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -3140,7 +3175,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Productos_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Productos.vue */ "./resources/js/components/Productos.vue");
 /* harmony import */ var _components_CrearEditarProducto_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/CrearEditarProducto.vue */ "./resources/js/components/CrearEditarProducto.vue");
 /* harmony import */ var _components_Impuestos_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/Impuestos.vue */ "./resources/js/components/Impuestos.vue");
-/* harmony import */ var _components_CrearImpuesto_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/CrearImpuesto.vue */ "./resources/js/components/CrearImpuesto.vue");
+/* harmony import */ var _components_CrearEditarImpuesto_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/CrearEditarImpuesto.vue */ "./resources/js/components/CrearEditarImpuesto.vue");
 /* harmony import */ var _components_Proveedores_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/Proveedores.vue */ "./resources/js/components/Proveedores.vue");
 /* harmony import */ var _components_CrearProveedor_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/CrearProveedor.vue */ "./resources/js/components/CrearProveedor.vue");
 /**
@@ -3200,8 +3235,8 @@ var routes = [{
   path: '/impuestos',
   component: _components_Impuestos_vue__WEBPACK_IMPORTED_MODULE_5__.default
 }, {
-  path: '/crear-impuesto',
-  component: _components_CrearImpuesto_vue__WEBPACK_IMPORTED_MODULE_6__.default
+  path: '/crear-editar-impuesto',
+  component: _components_CrearEditarImpuesto_vue__WEBPACK_IMPORTED_MODULE_6__.default
 }, {
   path: '/proveedores',
   component: _components_Proveedores_vue__WEBPACK_IMPORTED_MODULE_7__.default
@@ -39318,6 +39353,45 @@ component.options.__file = "resources/js/components/CrearCliente.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/CrearEditarImpuesto.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/CrearEditarImpuesto.vue ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _CrearEditarImpuesto_vue_vue_type_template_id_e630c30e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CrearEditarImpuesto.vue?vue&type=template&id=e630c30e& */ "./resources/js/components/CrearEditarImpuesto.vue?vue&type=template&id=e630c30e&");
+/* harmony import */ var _CrearEditarImpuesto_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CrearEditarImpuesto.vue?vue&type=script&lang=js& */ "./resources/js/components/CrearEditarImpuesto.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
+  _CrearEditarImpuesto_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
+  _CrearEditarImpuesto_vue_vue_type_template_id_e630c30e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _CrearEditarImpuesto_vue_vue_type_template_id_e630c30e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/CrearEditarImpuesto.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/CrearEditarProducto.vue":
 /*!*********************************************************!*\
   !*** ./resources/js/components/CrearEditarProducto.vue ***!
@@ -39353,45 +39427,6 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/components/CrearEditarProducto.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/CrearImpuesto.vue":
-/*!***************************************************!*\
-  !*** ./resources/js/components/CrearImpuesto.vue ***!
-  \***************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _CrearImpuesto_vue_vue_type_template_id_cba5bbc4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CrearImpuesto.vue?vue&type=template&id=cba5bbc4& */ "./resources/js/components/CrearImpuesto.vue?vue&type=template&id=cba5bbc4&");
-/* harmony import */ var _CrearImpuesto_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CrearImpuesto.vue?vue&type=script&lang=js& */ "./resources/js/components/CrearImpuesto.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__.default)(
-  _CrearImpuesto_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__.default,
-  _CrearImpuesto_vue_vue_type_template_id_cba5bbc4___WEBPACK_IMPORTED_MODULE_0__.render,
-  _CrearImpuesto_vue_vue_type_template_id_cba5bbc4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/CrearImpuesto.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -39623,6 +39658,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/CrearEditarImpuesto.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/CrearEditarImpuesto.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearEditarImpuesto_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CrearEditarImpuesto.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarImpuesto.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearEditarImpuesto_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
+
+/***/ }),
+
 /***/ "./resources/js/components/CrearEditarProducto.vue?vue&type=script&lang=js&":
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/CrearEditarProducto.vue?vue&type=script&lang=js& ***!
@@ -39636,22 +39687,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearEditarProducto_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CrearEditarProducto.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarProducto.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearEditarProducto_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
-
-/***/ }),
-
-/***/ "./resources/js/components/CrearImpuesto.vue?vue&type=script&lang=js&":
-/*!****************************************************************************!*\
-  !*** ./resources/js/components/CrearImpuesto.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearImpuesto_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CrearImpuesto.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearImpuesto.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearImpuesto_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__.default); 
 
 /***/ }),
 
@@ -39769,6 +39804,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/CrearEditarImpuesto.vue?vue&type=template&id=e630c30e&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/CrearEditarImpuesto.vue?vue&type=template&id=e630c30e& ***!
+  \****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearEditarImpuesto_vue_vue_type_template_id_e630c30e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearEditarImpuesto_vue_vue_type_template_id_e630c30e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearEditarImpuesto_vue_vue_type_template_id_e630c30e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CrearEditarImpuesto.vue?vue&type=template&id=e630c30e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarImpuesto.vue?vue&type=template&id=e630c30e&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/CrearEditarProducto.vue?vue&type=template&id=0e14eb87&":
 /*!****************************************************************************************!*\
   !*** ./resources/js/components/CrearEditarProducto.vue?vue&type=template&id=0e14eb87& ***!
@@ -39782,23 +39834,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearEditarProducto_vue_vue_type_template_id_0e14eb87___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearEditarProducto_vue_vue_type_template_id_0e14eb87___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CrearEditarProducto.vue?vue&type=template&id=0e14eb87& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarProducto.vue?vue&type=template&id=0e14eb87&");
-
-
-/***/ }),
-
-/***/ "./resources/js/components/CrearImpuesto.vue?vue&type=template&id=cba5bbc4&":
-/*!**********************************************************************************!*\
-  !*** ./resources/js/components/CrearImpuesto.vue?vue&type=template&id=cba5bbc4& ***!
-  \**********************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearImpuesto_vue_vue_type_template_id_cba5bbc4___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearImpuesto_vue_vue_type_template_id_cba5bbc4___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CrearImpuesto_vue_vue_type_template_id_cba5bbc4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CrearImpuesto.vue?vue&type=template&id=cba5bbc4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearImpuesto.vue?vue&type=template&id=cba5bbc4&");
 
 
 /***/ }),
@@ -40460,6 +40495,75 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarImpuesto.vue?vue&type=template&id=e630c30e&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarImpuesto.vue?vue&type=template&id=e630c30e& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row justify-content-center" }, [
+        _c("form", [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
+              _vm._v("Porcentaje")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: {
+                type: "number",
+                id: "exampleFormControlInput1",
+                placeholder: ""
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("div", { staticClass: "form-check" }, [
+              _c("input", {
+                staticClass: "form-check-input",
+                attrs: { type: "checkbox", value: "", id: "defaultCheck1" }
+              }),
+              _vm._v(" "),
+              _c(
+                "label",
+                {
+                  staticClass: "form-check-label",
+                  attrs: { for: "defaultCheck1" }
+                },
+                [_vm._v("\n            Por defecto\n          ")]
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarProducto.vue?vue&type=template&id=0e14eb87&":
 /*!*******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearEditarProducto.vue?vue&type=template&id=0e14eb87& ***!
@@ -40670,10 +40774,17 @@ var render = function() {
               }
             },
             [
-              _c("option", [_vm._v("1")]),
+              _c("option", { attrs: { value: "0" } }, [_vm._v("--Select--")]),
               _vm._v(" "),
-              _c("option", [_vm._v("2")])
-            ]
+              _vm._l(_vm.taxListing, function(tax) {
+                return _c(
+                  "option",
+                  { key: tax.id, attrs: { value: "tax.id" } },
+                  [_vm._v(_vm._s(tax.percentage))]
+                )
+              })
+            ],
+            2
           )
         ]),
         _vm._v(" "),
@@ -41017,75 +41128,6 @@ var staticRenderFns = [
         { staticClass: "form-text text-muted mt-4", attrs: { id: "" } },
         [_vm._v("\n            En este momento\n          ")]
       )
-    ])
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearImpuesto.vue?vue&type=template&id=cba5bbc4&":
-/*!*************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CrearImpuesto.vue?vue&type=template&id=cba5bbc4& ***!
-  \*************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("form", [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Porcentaje")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                id: "exampleFormControlInput1",
-                placeholder: ""
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("div", { staticClass: "form-check" }, [
-              _c("input", {
-                staticClass: "form-check-input",
-                attrs: { type: "checkbox", value: "", id: "defaultCheck1" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "form-check-label",
-                  attrs: { for: "defaultCheck1" }
-                },
-                [_vm._v("\n            Por defecto\n          ")]
-              )
-            ])
-          ])
-        ])
-      ])
     ])
   }
 ]
@@ -41641,14 +41683,69 @@ var render = function() {
       [
         _c(
           "router-link",
-          { staticClass: "btn btn-primary", attrs: { to: "/crear-impuesto" } },
+          {
+            staticClass: "btn btn-primary",
+            attrs: { to: "/crear-editar-impuesto" }
+          },
           [_vm._v("Crear Impuesto")]
         )
       ],
       1
     ),
     _vm._v(" "),
-    _vm._m(0)
+    _c("section", [
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        [
+          _c(
+            "table",
+            {
+              staticClass: "table table-sm table-bordered table-responsive-sm"
+            },
+            [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.listadoImpuestos.data, function(impuesto, index) {
+                  return _c("tr", { key: impuesto.id }, [
+                    _c("th", { attrs: { scope: "row" } }, [
+                      _vm._v(_vm._s(index + 1))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(impuesto.percentage))]),
+                    _vm._v(" "),
+                    _vm._m(1, true),
+                    _vm._v(" "),
+                    _vm._m(2, true)
+                  ])
+                }),
+                0
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "pagination",
+            {
+              attrs: { align: "center", data: _vm.listadoImpuestos },
+              on: { "pagination-change-page": _vm.listarImpuestos }
+            },
+            [
+              _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+                _vm._v("< Previous")
+              ]),
+              _vm._v(" "),
+              _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+                _vm._v("Next >")
+              ])
+            ]
+          )
+        ],
+        1
+      )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -41656,48 +41753,34 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c(
-        "table",
-        { staticClass: "table table-sm table-bordered table-responsive-sm" },
-        [
-          _c("thead", { staticClass: " thead-primary" }, [
-            _c("tr", [
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Impuesto")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Porcentaje")]),
-              _vm._v(" "),
-              _c("th", { attrs: { scope: "col" } }, [_vm._v("Por defecto")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Opciones")])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c("th", { attrs: { scope: "row" } }, [_vm._v("2")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("IVA")]),
-              _vm._v(" "),
-              _c("td", [_vm._v("19%")]),
-              _vm._v(" "),
-              _c("td", [
-                _c("span", { staticClass: "badge badge-success" }, [
-                  _vm._v("No")
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("button", { staticClass: "btn btn-success" }, [
-                  _c("i", { staticClass: "bi bi-check-circle-fill" })
-                ])
-              ])
-            ])
-          ])
-        ]
-      )
+    return _c("thead", { staticClass: "thead-primary" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Porcentaje")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Por defecto")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Opciones")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("span", { staticClass: "badge badge-success" }, [_vm._v("No")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("button", { staticClass: "btn btn-success" }, [
+        _c("i", { staticClass: "bi bi-check-circle-fill" })
+      ])
     ])
   }
 ]

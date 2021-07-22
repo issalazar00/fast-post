@@ -16,7 +16,7 @@ import CrearCliente from './components/CrearCliente.vue'
 import Productos from './components/Productos.vue'
 import CrearEditarProducto from './components/CrearEditarProducto.vue'
 import Impuestos from './components/Impuestos.vue'
-import CrearImpuesto from './components/CrearImpuesto.vue'
+import CrearEditarImpuesto from './components/CrearEditarImpuesto.vue'
 import Proveedores from './components/Proveedores.vue'
 import CrearProveedor from './components/CrearProveedor.vue'
 
@@ -51,7 +51,7 @@ const routes = [
   { path: '/productos', component: Productos },
   { path: '/crear-editar-producto', component: CrearEditarProducto },
   { path: '/impuestos', component: Impuestos },
-  { path: '/crear-impuesto', component: CrearImpuesto },
+  { path: '/crear-editar-impuesto', component: CrearEditarImpuesto },
   { path: '/proveedores', component: Proveedores },
   { path: '/crear-proveedor', component: CrearProveedor },
 

@@ -18,7 +18,7 @@ class TaxController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'taxes' => Tax::all()
+            'taxes' => Tax::paginate(10)
         ]);
     }
 

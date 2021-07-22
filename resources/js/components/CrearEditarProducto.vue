@@ -73,8 +73,8 @@
             v-model="formProduct.tax_id"
             required
           >
-            <option>1</option>
-            <option>2</option>
+            <option value="0">--Select--</option>
+            <option v-for="tax in taxListing" :key="tax.id" value="tax.id">{{tax.percentage}}</option>
           </select>
         </div>
         <hr />
@@ -218,9 +218,16 @@ export default {
         quantity: 0.0,
         maximum: 0.0,
       },
+      taxListing:{}
     };
   },
   methods: {
+    listTaxes() {
+      let me = this;
+      axios.get("api/tax").then(function (response) {
+        me.taxListing = response.data.taxes.data;
+      });
+    },
     CrearProducto() {
       let me = this;
       axios.post("api/products", this.formProduct).then(function () {
@@ -250,6 +257,8 @@ export default {
       me.formProduct = {};
     },
   },
-  mounted() {},
+  mounted() {
+    this.listTaxes();
+  },
 };
 </script>
