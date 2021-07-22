@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Department;
+use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\ErrorHandler\Debug;
 
-class DepartmentController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class DepartmentController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'departments' => Department::all(),
+            'categories' => Category::all(),
         ]);
     }
 
@@ -54,7 +54,7 @@ class DepartmentController extends Controller
             ], 400);
         }
 
-        $department = Department::create([
+        $category = Category::create([
             'name' => $request->input('name')
         ]);
 
@@ -62,7 +62,7 @@ class DepartmentController extends Controller
             'status' => 'success',
             'code' => 200,
             'message' => 'Registro exitoso',
-            'department' => $department
+            'category' => $category
         ], 200);
     }
 
@@ -74,13 +74,13 @@ class DepartmentController extends Controller
      */
     public function show($id)
     {
-        $department = Department::find($id);
+        $category = Category::find($id);
 
-        if ($department) {
+        if ($category) {
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'department' => $department
+                'category' => $category
             ];
         } else {
             $data = [
@@ -126,16 +126,16 @@ class DepartmentController extends Controller
             ], 400);
         }
 
-        $department = Department::find($id);
+        $category = Category::find($id);
 
-        if ($department) {
-            $department->name = $request->input('name');
-            $department->save();
+        if ($category) {
+            $category->name = $request->input('name');
+            $category->save();
             $data = [
                 'status' => 'success',
                 'code' =>  200,
                 'message' => 'Actualización exitosa',
-                'department' =>  $department
+                'category' =>  $category
             ];
         } else {
             $data = [
@@ -155,14 +155,14 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        $department = Department::find($id);
+        $category = Category::find($id);
 
-        if ($department) {
-            $department->delete();
+        if ($category) {
+            $category->delete();
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'department' => $department
+                'category' => $category
             ];
         } else {
             $data = [

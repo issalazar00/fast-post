@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Producto;
-class ProductoController extends Controller
+use App\Models\Product;
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class ProductoController extends Controller
     public function index()
     {
         //
-        return Producto::orderBy('codigo_barras', 'asc')->paginate(15);
+        return Product::orderBy('codigo_barras', 'asc')->paginate(15);
     }
 
     /**
@@ -36,7 +36,7 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $producto = $request->all();
-        Producto::create($producto);
+        Product::create($producto);
         //
         // var_dump($request);}
     }

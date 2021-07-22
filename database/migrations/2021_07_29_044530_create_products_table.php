@@ -15,22 +15,24 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('tax_id');
-            $table->string('name',100);
-            $table->bigInteger('barcode')->unique();
-            $table->integer('type');
-            $table->double('cost_price');
-            $table->double('gain');
-            $table->double('sale_price');
-            $table->double('wholesale_price');
-            $table->integer('amount');
-            $table->integer('minimum');
-            $table->integer('maximum');
+            $table->string('product',100);
+            $table->string('barcode', 20)->unique();
+            $table->tinyInteger('type');
+            $table->tinyInteger('state');
+            $table->decimal('cost_price', 10, 2);
+            $table->decimal('gain', 10, 2);
+            $table->decimal('sale_price', 10, 2);
+            $table->decimal('wholesale_price', 10, 2);
+            $table->tinyInteger('stock')->default('0');
+            $table->decimal('amount', 10, 2)->nullable();
+            $table->decimal('minimum', 10, 2)->nullable();
+            $table->decimal('maximum', 10, 2)->nullable();
 
-            $table->foreign('department_id')
+            $table->foreign('category_id')
             ->references('id')
-            ->on('departments')
+            ->on('categories')
             ->onDelete('cascade');
 
             $table->foreign('tax_id')
@@ -49,6 +51,6 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('productos');
+        Schema::dropIfExists('products');
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Producto;
+use App\Models\Tax;
 use Illuminate\Database\Seeder;
 
-class ProductoTableSeeder extends Seeder
+class TaxSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,8 @@ class ProductoTableSeeder extends Seeder
      */
     public function run()
     {
-        Producto::factory()
-        ->count(20)
+        Tax::factory()
+        ->count(3)
         ->create();
     }
 }
