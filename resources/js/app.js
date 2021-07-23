@@ -17,6 +17,10 @@ import Productos from './components/Productos.vue'
 import CrearEditarProducto from './components/CrearEditarProducto.vue'
 import Impuestos from './components/Impuestos.vue'
 import CrearEditarImpuesto from './components/CrearEditarImpuesto.vue'
+
+import Categories from './components/Categories.vue'
+import CreateEditCategory from './components/CreateEditCategory.vue'
+
 import Proveedores from './components/Proveedores.vue'
 import CrearProveedor from './components/CrearProveedor.vue'
 
@@ -43,9 +47,10 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-
+// { path: '', component: require('./components/ExampleComponent.vue').default },
 const routes = [
-  { path: '', component: require('./components/ExampleComponent.vue').default },
+  
+  { path: '', component: Categories },
   { path: '/clientes', component: Clientes },
   { path: '/crear-cliente', component: CrearCliente },
   { path: '/productos', component: Productos },
@@ -54,6 +59,8 @@ const routes = [
   { path: '/crear-editar-impuesto', component: CrearEditarImpuesto },
   { path: '/proveedores', component: Proveedores },
   { path: '/crear-proveedor', component: CrearProveedor },
+  { path: '/categories', component: Categories },
+  { path: '/create-edit-category', component: CreateEditCategory },
 
 ]
 

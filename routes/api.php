@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TaxController;
 use Illuminate\Http\Request;
@@ -22,11 +23,15 @@ Route::post('/register', [App\Http\Controllers\UserController::class,'register']
 
 // Route::middleware('auth:api')->group(function(){
     Route::resource('/user', App\Http\Controllers\UserController::class);
+
+    
     Route::resource('/category', App\Http\Controllers\CategoryController::class);
+    Route::post('/category/{category}/activate',  [CategoryController::class, 'activate']);
+    Route::post('/category/{category}/deactivate',  [CategoryController::class, 'deactivate']);
 
     Route::resource('/tax', App\Http\Controllers\TaxController::class);
     Route::post('/tax/{tax}/activate',  [TaxController::class, 'activate']);
-    Route::post('/tax/{product}/deactivate',  [TaxController::class, 'deactivate']);
+    Route::post('/tax/{tax}/deactivate',  [TaxController::class, 'deactivate']);
 
     Route::resource('/products',  ProductController::class);
     Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
