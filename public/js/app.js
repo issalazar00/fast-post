@@ -41458,7 +41458,7 @@ var render = function() {
               ],
               staticClass: "form-control",
               attrs: {
-                type: "number",
+                type: "text",
                 step: "any",
                 id: "barcode",
                 placeholder: "Código de barras"

@@ -6,7 +6,7 @@
           <div class="form-group col-5">
             <label for="barcode">Codigo de barras</label>
             <input
-              type="number"
+              type="text"
               step="any"
               class="form-control"
               id="barcode"
