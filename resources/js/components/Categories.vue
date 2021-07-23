@@ -1,15 +1,15 @@
 <template>
   <div class="col-12">
-    <h3 class="page-header">Impuestos</h3>
+    <h3 class="page-header">Categorias</h3>
     <div class="row justify-content-end mx-4">
       <button
         type="button"
         class="btn btn-primary"
         data-toggle="modal"
-        data-target="#taxModal"
+        data-target="#categoryModal"
         @click="edit = false"
       >
-        Crear Impuesto
+        Crear Categoria
       </button>
     </div>
 
@@ -19,40 +19,30 @@
           <thead class="thead-primary">
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Porcentaje</th>
-              <th scope="col">Por defecto</th>
+              <th scope="col">Categoria</th>
               <th>Estado</th>
               <th>Opciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(tax, index) in taxListing.data" :key="tax.id">
+            <tr
+              v-for="(category, index) in categoryListing.data"
+              :key="category.id"
+            >
               <th scope="row">{{ index + 1 }}</th>
-              <td>{{ tax.percentage }}</td>
-              <td>
-                <span v-if="tax.default == 1" class="badge badge-success"
-                  >Si</span
-                >
-                <span v-else class="badge badge-danger">No</span>
-              </td>
-              <td>
-                <span v-if="tax.state == 1" class="badge badge-success"
-                  >Activo</span
-                >
-                <span v-else class="badge badge-danger">Desactivado</span>
-              </td>
+              <td>{{ category.name }}</td>
               <td>
                 <button
                   class="btn btn-success"
-                  v-if="tax.state == 1"
-                  @click="DeactivateTax(tax.id)"
+                  v-if="category.state == 1"
+                  @click="DeactivateCategory(category.id)"
                 >
                   <i class="bi bi-check-circle-fill"></i>
                 </button>
                 <button
                   class="btn btn-danger"
                   v-else
-                  @click="ActivateTax(tax.id)"
+                  @click="ActivateCategory(category.id)"
                 >
                   <i class="bi bi-x-circle"></i>
                 </button>
@@ -60,7 +50,7 @@
               <td>
                 <button
                   class="btn btn-success"
-                  @click="ShowData(tax), (edit = true)"
+                  @click="ShowData(category), (edit = true)"
                 >
                   Editar
                 </button>
@@ -70,37 +60,37 @@
         </table>
         <pagination
           :align="'center'"
-          :data="taxListing"
-          @pagination-change-page="listTaxes"
+          :data="categoryListing"
+          @pagination-change-page="listCategories"
         >
           <span slot="prev-nav">&lt; Previous</span>
           <span slot="next-nav">Next &gt;</span></pagination
         >
       </div>
     </section>
-    <!-- Modal para creacion y edicion de taxs -->
+    <!-- Modal para creacion y edicion de categorys -->
     <div
       class="modal fade"
-      id="taxModal"
+      id="categoryModal"
       tabindex="-1"
-      aria-labelledby="taxModalLabel"
+      aria-labelledby="categoryModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="taxModalLabel">Tax</h5>
+            <h5 class="modal-title" id="categoryModalLabel">Category</h5>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Cerrar"
+              aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <crear-editar-impuesto ref="CreateEditTax" />
+            <create-edit-category ref="CreateEditCategory" />
           </div>
           <div class="modal-footer">
             <button
@@ -108,9 +98,13 @@
               class="btn btn-secondary"
               @click="closeModal()"
             >
-              Cerrar
+              Close
             </button>
-            <button type="button" class="btn btn-primary" @click="SaveTax()">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="SaveCategory()"
+            >
               Guardar
             </button>
           </div>
@@ -121,53 +115,53 @@
 </template>
 
 <script>
-import CrearEditarImpuesto from "./CrearEditarImpuesto.vue";
+import CreateEditCategory from "./CreateEditCategory.vue";
 export default {
-  components: { CrearEditarImpuesto },
+  components: { CreateEditCategory },
   data() {
     return {
-      taxListing: {},
+      categoryListing: {},
       edit: false,
     };
   },
   created() {
-    this.listTaxes(1);
+    this.listCategories(1);
   },
   methods: {
-    listTaxes(page = 1) {
+    listCategories(page = 1) {
       let me = this;
-      axios.get("api/tax?page=" + page).then(function (response) {
-        me.taxListing = response.data.taxes;
+      axios.get("api/category?page=" + page).then(function (response) {
+        me.categoryListing = response.data.categories;
       });
     },
-    SaveTax: function () {
+    SaveCategory: function () {
       let me = this;
       if (this.edit == false) {
-        this.$refs.CreateEditTax.CreateTax();
+        this.$refs.CreateEditCategory.CreateCategory();
       } else {
-        this.$refs.CreateEditTax.EditTax();
+        this.$refs.CreateEditCategory.EditCategory();
       }
-      me.listTaxes(1);
+      me.listCategories(1);
     },
 
-    ShowData: function (tax) {
-      this.$refs.CreateEditTax.OpenEditTax(tax);
+    ShowData: function (category) {
+      this.$refs.CreateEditCategory.OpenEditCategory(category);
     },
     closeModal: function () {
       let me = this;
-      this.$refs.CreateEditTax.ResetData();
-      me.listTaxes(1);
+      this.$refs.CreateEditCategory.ResetData();
+      me.listCategories(1);
     },
-    ActivateTax: function (id) {
+    ActivateCategory: function (id) {
       let me = this;
-      axios.post("api/tax/" + id + "/activate").then(function () {
-        me.listTaxes(1);
+      axios.post("api/category/" + id + "/activate").then(function () {
+        me.listCategories(1);
       });
     },
-    DeactivateTax: function (id) {
+    DeactivateCategory: function (id) {
       let me = this;
-      axios.post("api/tax/" + id + "/deactivate").then(function () {
-        me.listTaxes(1);
+      axios.post("api/category/" + id + "/deactivate").then(function () {
+        me.listCategories(1);
       });
     },
   },

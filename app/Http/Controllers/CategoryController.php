@@ -19,7 +19,7 @@ class CategoryController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'categories' => Category::all(),
+            'categories' => Category::paginate(20),
         ]);
     }
 
@@ -173,5 +173,32 @@ class CategoryController extends Controller
         }
 
         return response()->json($data, $data['code']);
+    }
+
+      /**
+     * Activate the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function activate($id)
+    {
+        //
+        $category = Category::find($id);
+        $category->state = '1';
+        $category->save();
+    }
+
+    /**
+     * Deactivate the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deactivate($id)
+    {
+        $category = Category::find($id);
+        $category->state = '0';
+        $category->save();
     }
 }

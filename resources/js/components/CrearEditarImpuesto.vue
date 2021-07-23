@@ -9,7 +9,7 @@
             class="form-control"
             id="percentage"
             placeholder=""
-            v-model="formTaxes.percentage"
+            v-model="formTax.percentage"
           />
         </div>
 
@@ -20,7 +20,7 @@
               type="checkbox"
               value=""
               id="defaultCheck1"
-              v-model="formTaxes.default"
+              v-model="formTax.default"
             />
             <label class="form-check-label" for="defaultCheck1">
               Por defecto
@@ -34,42 +34,40 @@
 
 <script>
 export default {
-  data (){
+  data() {
     return {
-      formTaxes : {
+      formTax: {
         percentage: 0,
-        default:0
-      }
-    }
+        default: 0,
+      },
+    };
   },
   methods: {
     CreateTax() {
       let me = this;
-      axios.post("api/tax", this.formTaxes).then(function () {
+      axios.post("api/tax", this.formTax).then(function () {
         $("#taxModal").modal("hide");
-        me.formTaxes = {};
+        me.formTax = {};
       });
     },
     OpenEditTax(producto) {
       let me = this;
       $("#taxModal").modal("show");
-      me.formTaxes = producto;
+      me.formTax = producto;
     },
 
     EditTax() {
       let me = this;
-      axios
-        .put("api/tax/" + this.formTaxes.id, this.formTaxes)
-        .then(function () {
-          $("#taxModal").modal("hide");
-          me.formTaxes = {};
-        });
+      axios.put("api/tax/" + this.formTax.id, this.formTax).then(function () {
+        $("#taxModal").modal("hide");
+        me.formTax = {};
+      });
     },
 
     ResetData() {
       let me = this;
       $("#taxModal").modal("hide");
-      me.formTaxes = {};
+      me.formTax = {};
     },
   },
   mounted() {
