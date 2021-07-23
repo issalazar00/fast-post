@@ -74,7 +74,9 @@
             required
           >
             <option value="0">--Select--</option>
-            <option v-for="tax in taxListing" :key="tax.id" value="tax.id">{{tax.percentage}}</option>
+            <option v-for="tax in taxListing" :key="tax.id" value="tax.id">
+              {{ tax.percentage }}
+            </option>
           </select>
         </div>
         <hr />
@@ -133,8 +135,10 @@
             id="category_id"
             v-model="formProduct.category_id"
           >
-            <option>1</option>
-            <option>2</option>
+            <option value="0">--Select--</option>
+            <option v-for="category in categoriesListing" :key="category.id" value="category.id">
+              {{ category.name }}
+            </option>
           </select>
         </div>
 
@@ -218,7 +222,8 @@ export default {
         quantity: 0.0,
         maximum: 0.0,
       },
-      taxListing:{}
+      taxListing: {},
+      categoriesListing: {},
     };
   },
   methods: {
@@ -226,6 +231,12 @@ export default {
       let me = this;
       axios.get("api/tax").then(function (response) {
         me.taxListing = response.data.taxes.data;
+      });
+    },
+    listCategories() {
+      let me = this;
+      axios.get("api/category").then(function (response) {
+        me.categoriesListing = response.data.categories.data;
       });
     },
     CrearProducto() {
@@ -259,6 +270,7 @@ export default {
   },
   mounted() {
     this.listTaxes();
+    this.listCategories();
   },
 };
 </script>

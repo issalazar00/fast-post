@@ -2663,6 +2663,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2682,7 +2686,8 @@ __webpack_require__.r(__webpack_exports__);
         quantity: 0.0,
         maximum: 0.0
       },
-      taxListing: {}
+      taxListing: {},
+      categoriesListing: {}
     };
   },
   methods: {
@@ -2690,6 +2695,12 @@ __webpack_require__.r(__webpack_exports__);
       var me = this;
       axios.get("api/tax").then(function (response) {
         me.taxListing = response.data.taxes.data;
+      });
+    },
+    listCategories: function listCategories() {
+      var me = this;
+      axios.get("api/category").then(function (response) {
+        me.categoriesListing = response.data.categories.data;
       });
     },
     CrearProducto: function CrearProducto() {
@@ -2719,6 +2730,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.listTaxes();
+    this.listCategories();
   }
 });
 
@@ -41626,7 +41638,11 @@ var render = function() {
                 return _c(
                   "option",
                   { key: tax.id, attrs: { value: "tax.id" } },
-                  [_vm._v(_vm._s(tax.percentage))]
+                  [
+                    _vm._v(
+                      "\n            " + _vm._s(tax.percentage) + "\n          "
+                    )
+                  ]
                 )
               })
             ],
@@ -41809,10 +41825,21 @@ var render = function() {
               }
             },
             [
-              _c("option", [_vm._v("1")]),
+              _c("option", { attrs: { value: "0" } }, [_vm._v("--Select--")]),
               _vm._v(" "),
-              _c("option", [_vm._v("2")])
-            ]
+              _vm._l(_vm.categoriesListing, function(category) {
+                return _c(
+                  "option",
+                  { key: category.id, attrs: { value: "category.id" } },
+                  [
+                    _vm._v(
+                      "\n            " + _vm._s(category.name) + "\n          "
+                    )
+                  ]
+                )
+              })
+            ],
+            2
           )
         ]),
         _vm._v(" "),
