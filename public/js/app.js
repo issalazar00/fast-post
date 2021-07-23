@@ -2219,7 +2219,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      formTaxes: {
+        percentage: 0,
+        "default": 0
+      }
+    };
+  },
+  methods: {
+    CreateTax: function CreateTax() {
+      var me = this;
+      axios.post("api/tax", this.formTaxes).then(function () {
+        $("#taxModal").modal("hide");
+        me.formTaxes = {};
+      });
+    },
+    OpenEditTax: function OpenEditTax(producto) {
+      var me = this;
+      $("#taxModal").modal("show");
+      me.formTaxes = producto;
+    },
+    EditTax: function EditTax() {
+      var me = this;
+      axios.put("api/tax/" + this.formTaxes.id, this.formTaxes).then(function () {
+        $("#taxModal").modal("hide");
+        me.formTaxes = {};
+      });
+    },
+    ResetData: function ResetData() {
+      var me = this;
+      $("#taxModal").modal("hide");
+      me.formTaxes = {};
+    }
+  },
   mounted: function mounted() {
     console.log("Component mounted.");
   }
@@ -2820,6 +2856,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _CrearEditarImpuesto_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CrearEditarImpuesto.vue */ "./resources/js/components/CrearEditarImpuesto.vue");
 //
 //
 //
@@ -2868,22 +2905,132 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    CrearEditarImpuesto: _CrearEditarImpuesto_vue__WEBPACK_IMPORTED_MODULE_0__.default
+  },
   data: function data() {
     return {
-      listadoImpuestos: {},
-      editar: false
+      taxListing: {},
+      edit: false
     };
   },
   created: function created() {
-    this.listarImpuestos(1);
+    this.listTaxes(1);
   },
   methods: {
-    listarImpuestos: function listarImpuestos() {
+    listTaxes: function listTaxes() {
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var me = this;
       axios.get("api/tax?page=" + page).then(function (response) {
-        me.listadoImpuestos = response.data.taxes;
+        me.taxListing = response.data.taxes;
+      });
+    },
+    SaveTax: function SaveTax() {
+      var me = this;
+
+      if (this.edit == false) {
+        this.$refs.CreateEditTax.CreateTax();
+      } else {
+        this.$refs.CreateEditTax.EditTax();
+      }
+
+      me.listTaxes(1);
+    },
+    ShowData: function ShowData(tax) {
+      this.$refs.CreateEditTax.OpenEditTax(tax);
+    },
+    closeModal: function closeModal() {
+      var me = this;
+      this.$refs.CreateEditTax.ResetData();
+      me.listTaxes(1);
+    },
+    ActivateTax: function ActivateTax(id) {
+      var me = this;
+      axios.post("api/tax/" + id + "/activate").then(function () {
+        me.listTaxes(1);
+      });
+    },
+    DeactivateTax: function DeactivateTax(id) {
+      var me = this;
+      axios.post("api/tax/" + id + "/deactivate").then(function () {
+        me.listTaxes(1);
       });
     }
   },
@@ -40511,53 +40658,94 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("form", [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Porcentaje")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "number",
-                id: "exampleFormControlInput1",
-                placeholder: ""
-              }
-            })
-          ]),
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("form", [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "percentage" } }, [_vm._v("Porcentaje")]),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("div", { staticClass: "form-check" }, [
-              _c("input", {
-                staticClass: "form-check-input",
-                attrs: { type: "checkbox", value: "", id: "defaultCheck1" }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.formTaxes.percentage,
+                expression: "formTaxes.percentage"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "number", id: "percentage", placeholder: "" },
+            domProps: { value: _vm.formTaxes.percentage },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.formTaxes, "percentage", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("div", { staticClass: "form-check" }, [
+            _c("input", {
+              directives: [
                 {
-                  staticClass: "form-check-label",
-                  attrs: { for: "defaultCheck1" }
-                },
-                [_vm._v("\n            Por defecto\n          ")]
-              )
-            ])
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.formTaxes.default,
+                  expression: "formTaxes.default"
+                }
+              ],
+              staticClass: "form-check-input",
+              attrs: { type: "checkbox", value: "", id: "defaultCheck1" },
+              domProps: {
+                checked: Array.isArray(_vm.formTaxes.default)
+                  ? _vm._i(_vm.formTaxes.default, "") > -1
+                  : _vm.formTaxes.default
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.formTaxes.default,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = "",
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 &&
+                        _vm.$set(_vm.formTaxes, "default", $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        _vm.$set(
+                          _vm.formTaxes,
+                          "default",
+                          $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                        )
+                    }
+                  } else {
+                    _vm.$set(_vm.formTaxes, "default", $$c)
+                  }
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "label",
+              {
+                staticClass: "form-check-label",
+                attrs: { for: "defaultCheck1" }
+              },
+              [_vm._v("\n            Por defecto\n          ")]
+            )
           ])
         ])
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -41677,21 +41865,25 @@ var render = function() {
   return _c("div", { staticClass: "col-12" }, [
     _c("h3", { staticClass: "page-header" }, [_vm._v("Impuestos")]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "row justify-content-end mx-4" },
-      [
-        _c(
-          "router-link",
-          {
-            staticClass: "btn btn-primary",
-            attrs: { to: "/crear-editar-impuesto" }
+    _c("div", { staticClass: "row justify-content-end mx-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary",
+          attrs: {
+            type: "button",
+            "data-toggle": "modal",
+            "data-target": "#taxModal"
           },
-          [_vm._v("Crear Impuesto")]
-        )
-      ],
-      1
-    ),
+          on: {
+            click: function($event) {
+              _vm.edit = false
+            }
+          }
+        },
+        [_vm._v("\n        Crear Impuesto\n      ")]
+      )
+    ]),
     _vm._v(" "),
     _c("section", [
       _c(
@@ -41708,17 +41900,80 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "tbody",
-                _vm._l(_vm.listadoImpuestos.data, function(impuesto, index) {
-                  return _c("tr", { key: impuesto.id }, [
+                _vm._l(_vm.taxListing.data, function(tax, index) {
+                  return _c("tr", { key: tax.id }, [
                     _c("th", { attrs: { scope: "row" } }, [
                       _vm._v(_vm._s(index + 1))
                     ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(impuesto.percentage))]),
+                    _c("td", [_vm._v(_vm._s(tax.percentage))]),
                     _vm._v(" "),
-                    _vm._m(1, true),
+                    _c("td", [
+                      tax.default == 1
+                        ? _c("span", { staticClass: "badge badge-success" }, [
+                            _vm._v("Si")
+                          ])
+                        : _c("span", { staticClass: "badge badge-danger" }, [
+                            _vm._v("No")
+                          ])
+                    ]),
                     _vm._v(" "),
-                    _vm._m(2, true)
+                    _c("td", [
+                      tax.state == 1
+                        ? _c("span", { staticClass: "badge badge-success" }, [
+                            _vm._v("Activo")
+                          ])
+                        : _c("span", { staticClass: "badge badge-danger" }, [
+                            _vm._v("Desactivado")
+                          ])
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      tax.state == 1
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-success",
+                              on: {
+                                click: function($event) {
+                                  return _vm.DeactivateTax(tax.id)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "bi bi-check-circle-fill"
+                              })
+                            ]
+                          )
+                        : _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger",
+                              on: {
+                                click: function($event) {
+                                  return _vm.ActivateTax(tax.id)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "bi bi-x-circle" })]
+                          )
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success",
+                          on: {
+                            click: function($event) {
+                              _vm.ShowData(tax), (_vm.edit = true)
+                            }
+                          }
+                        },
+                        [_vm._v("\n                Editar\n              ")]
+                      )
+                    ])
                   ])
                 }),
                 0
@@ -41729,8 +41984,8 @@ var render = function() {
           _c(
             "pagination",
             {
-              attrs: { align: "center", data: _vm.listadoImpuestos },
-              on: { "pagination-change-page": _vm.listarImpuestos }
+              attrs: { align: "center", data: _vm.taxListing },
+              on: { "pagination-change-page": _vm.listTaxes }
             },
             [
               _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
@@ -41745,7 +42000,64 @@ var render = function() {
         ],
         1
       )
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "taxModal",
+          tabindex: "-1",
+          "aria-labelledby": "taxModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "modal-body" },
+              [_c("crear-editar-impuesto", { ref: "CreateEditTax" })],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.closeModal()
+                    }
+                  }
+                },
+                [_vm._v("\n            Close\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.SaveTax()
+                    }
+                  }
+                },
+                [_vm._v("\n            Guardar\n          ")]
+              )
+            ])
+          ])
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -41761,6 +42073,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Por defecto")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Estado")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Opciones")])
       ])
     ])
@@ -41769,18 +42083,23 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("span", { staticClass: "badge badge-success" }, [_vm._v("No")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("button", { staticClass: "btn btn-success" }, [
-        _c("i", { staticClass: "bi bi-check-circle-fill" })
-      ])
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "taxModalLabel" } }, [
+        _vm._v("Tax")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
     ])
   }
 ]

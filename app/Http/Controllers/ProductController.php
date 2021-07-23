@@ -114,7 +114,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Activate the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -128,7 +128,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deactivate the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

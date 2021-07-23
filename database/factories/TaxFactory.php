@@ -23,7 +23,9 @@ class TaxFactory extends Factory
     {
         return [
             //
-            'percentage' => '19'
+            'percentage' =>  $this->faker->numberBetween(0,19),
+            'default' => $this->faker->boolean(),
+            'state' => '1'
         ];
     }
 }

@@ -173,4 +173,31 @@ class TaxController extends Controller
 
         return response()->json($data, $data['code']);
     }
+
+     /**
+     * Activate the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function activate($id)
+    {
+        //
+        $tax = Tax::find($id);
+        $tax->state = '1';
+        $tax->save();
+    }
+
+    /**
+     * Deactivate the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deactivate($id)
+    {
+        $tax = Tax::find($id);
+        $tax->state = '0';
+        $tax->save();
+    }
 }

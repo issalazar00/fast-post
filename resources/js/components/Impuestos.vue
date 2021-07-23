@@ -2,9 +2,15 @@
   <div class="col-12">
     <h3 class="page-header">Impuestos</h3>
     <div class="row justify-content-end mx-4">
-      <router-link to="/crear-editar-impuesto" class="btn btn-primary"
-        >Crear Impuesto</router-link
-      >
+       <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#taxModal"
+          @click="edit = false"
+        >
+          Crear Impuesto
+        </button>
     </div>
 
     <section>
@@ -15,19 +21,45 @@
               <th scope="col">#</th>
               <th scope="col">Porcentaje</th>
               <th scope="col">Por defecto</th>
+              <th>Estado</th>
               <th>Opciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(impuesto, index) in listadoImpuestos.data" :key="impuesto.id">
+            <tr v-for="(tax, index) in taxListing.data" :key="tax.id">
               <th scope="row">{{index+1}}</th>
-              <td>{{impuesto.percentage}}</td>              
+              <td>{{tax.percentage}}</td>              
               <td>
-                <span class="badge badge-success">No</span>
+                <span v-if="tax.default==1" class="badge badge-success">Si</span>
+                <span v-else class="badge badge-danger">No</span>
               </td>
               <td>
-                <button class="btn btn-success">
+                <span v-if="tax.state==1" class="badge badge-success">Activo</span>
+                <span v-else class="badge badge-danger">Desactivado</span>
+              </td>
+              <td>
+                <button
+                  class="btn btn-success"
+                  v-if="tax.state == 1"
+                  @click="DeactivateTax(tax.id)"
+                >
                   <i class="bi bi-check-circle-fill"></i>
+                </button>
+                <button
+                  class="btn btn-danger"
+                  v-else
+                  @click="ActivateTax(tax.id)"
+                >
+                  <i class="bi bi-x-circle"></i>
+                </button>
+              </td>
+              <td>
+
+                <button
+                  class="btn btn-success"
+                  @click="ShowData(tax), (edit = true)"
+                >
+                  Editar
                 </button>
               </td>
             </tr>
@@ -35,33 +67,108 @@
         </table>
         <pagination
           :align="'center'"
-          :data="listadoImpuestos"
-          @pagination-change-page="listarImpuestos"
+          :data="taxListing"
+          @pagination-change-page="listTaxes"
         >
           <span slot="prev-nav">&lt; Previous</span>
           <span slot="next-nav">Next &gt;</span></pagination
         >
       </div>
     </section>
+     <!-- Modal para creacion y edicion de taxs -->
+    <div
+      class="modal fade"
+      id="taxModal"
+      tabindex="-1"
+      aria-labelledby="taxModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="taxModalLabel">Tax</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">            
+            <crear-editar-impuesto ref="CreateEditTax" />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="closeModal()"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="SaveTax()"
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import CrearEditarImpuesto from './CrearEditarImpuesto.vue';
 export default {
+  components: { CrearEditarImpuesto },
   data() {
     return {
-      listadoImpuestos: {},
-      editar: false,
+      taxListing: {},
+      edit: false,
     };
   },
   created() {
-    this.listarImpuestos(1);
+    this.listTaxes(1);
   },
   methods: {
-    listarImpuestos(page = 1) {
+    listTaxes(page = 1) {
       let me = this;
       axios.get("api/tax?page=" + page).then(function (response) {
-        me.listadoImpuestos = response.data.taxes;
+        me.taxListing = response.data.taxes;
+      });
+    },
+     SaveTax: function () {
+      let me = this;
+      if (this.edit == false) {
+        this.$refs.CreateEditTax.CreateTax();
+      } else {
+        this.$refs.CreateEditTax.EditTax();
+      }
+      me.listTaxes(1);
+    },
+
+    ShowData: function (tax) {
+      this.$refs.CreateEditTax.OpenEditTax(tax);
+    },
+    closeModal: function () {
+      let me = this;
+      this.$refs.CreateEditTax.ResetData();
+      me.listTaxes(1);
+    },
+    ActivateTax: function (id) {
+      let me = this;
+      axios.post("api/tax/" + id + "/activate").then(function () {
+        me.listTaxes(1);
+      });
+    },
+    DeactivateTax : function (id) {
+      let me = this;
+      axios.post("api/tax/" + id + "/deactivate").then(function () {
+        me.listTaxes(1);
       });
     },
   },
