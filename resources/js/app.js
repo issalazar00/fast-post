@@ -21,8 +21,8 @@ import CrearEditarImpuesto from './components/CrearEditarImpuesto.vue'
 import Categories from './components/Categories.vue'
 import CreateEditCategory from './components/CreateEditCategory.vue'
 
-import Proveedores from './components/Proveedores.vue'
-import CrearProveedor from './components/CrearProveedor.vue'
+import Suppliers from './components/Suppliers.vue'
+import CreateEditSupplier from './components/CreateEditSupplier.vue'
 
 import Tickets from './components/Tickets'
 import DetailsTicket from './components/DetailsTicket'
@@ -60,8 +60,8 @@ const routes = [
   { path: '/crear-editar-producto', component: CrearEditarProducto },
   { path: '/impuestos', component: Impuestos },
   { path: '/crear-editar-impuesto', component: CrearEditarImpuesto },
-  { path: '/proveedores', component: Proveedores },
-  { path: '/crear-proveedor', component: CrearProveedor },
+  { path: '/proveedores', component: Suppliers },
+  { path: '/crear-proveedor', component: CreateEditSupplier },
   { path: '/categories', component: Categories },
   { path: '/create-edit-category', component: CreateEditCategory },
   { path: '/tickets', component: Tickets },

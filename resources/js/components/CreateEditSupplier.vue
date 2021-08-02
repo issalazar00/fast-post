@@ -4,7 +4,7 @@
       <form>
         <div class="form-row">
           <div class="form-group col-6">
-            <label for="exampleFormControlInput1">Codigo</label>
+            <label for="exampleFormControlInput1">Cédula</label>
             <input
               type="number"
               class="form-control"
@@ -63,38 +63,24 @@
             </div>
             <div class="form-row">
               <span class="col-12">Contacto</span>
+              <div class="form-group col-md-6 col-sm-6">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="Nombres"
+                />
+              </div>
+              
               <div class="form-group col-md-3 col-sm-6">
                 <input
                   type="text"
                   class="form-control"
                   id="exampleFormControlInput1"
-                  placeholder="1er Nombre"
+                  placeholder="Apellidos"
                 />
               </div>
-              <div class="form-group col-md-3 col-sm-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="2do Nombre"
-                />
-              </div>
-              <div class="form-group col-md-3 col-sm-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="1er Apellido"
-                />
-              </div>
-              <div class="form-group col-md-3 col-sm-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="2do Apelido"
-                />
-              </div>
+              
             </div>
             <div class="form-group">
               <label for="exampleFormControlInput1">Correo electronico</label>
@@ -138,15 +124,6 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="exampleFormControlInput1">Imagen</label>
-              <input
-                type="file"
-                class="form-control"
-                id="exampleFormControlInput1"
-                placeholder=""
-              />
-            </div>
           </div>
           <div class="col-md-5">
             <div class="form-group">
@@ -173,25 +150,7 @@
               <label for="inputEmail4">Código Postal</label>
               <input type="number" class="form-control" id="inputEmail4" />
             </div>
-            <div class="form-group">
-              <label for="inputEmail4">Pais</label>
-              <input
-                type="text"
-                class="form-control"
-                id="inputEmail4"
-                autocomplete="country"
-              />
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlSelect1">Municipio</label>
-              <select class="form-control" id="exampleFormControlSelect1">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
-            </div>
+            
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <button
@@ -232,7 +191,7 @@
               id="defaultCheck1"
             />
             <label class="form-check-label" for="defaultCheck1">
-              ¿cliente está activo?
+              Proveedor está activo?
             </label>
           </div>
            <div class="form-check">
