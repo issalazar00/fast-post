@@ -3,20 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Tax;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Illuminate\Validation\Rule;
 
-class TaxController extends Controller
+class RoleController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('can:tax.index')->only('index');
-        $this->middleware('can:tax.store')->only('store');
-        $this->middleware('can:tax.update')->only('update');
-        $this->middleware('can:tax.delete')->only('destroy');
-        $this->middleware('can:tax.active')->only('active');
-        $this->middleware('can:tax.deactivate')->only('deactivate');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +20,7 @@ class TaxController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'taxes' => Tax::paginate(10)
+            'roles' => Role::all(),
         ]);
     }
 
@@ -38,7 +31,7 @@ class TaxController extends Controller
      */
     public function create()
     {
-        abort(404);
+        return  abort(404);
     }
 
     /**
@@ -50,7 +43,8 @@ class TaxController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'percentage' => 'required|numeric'
+            'name' => 'required|string|unique:roles|min:3|max:50',
+            'permissions' => 'nullable|array|exists:permissions,id'
         ]);
 
         if ($validate->fails()) {
@@ -62,15 +56,15 @@ class TaxController extends Controller
             ], 400);
         }
 
-        $tax = Tax::create([
-            'percentage' => $request->input('percentage')
-        ]);
+        $role = Role::create(['guard_name' => 'api', 'name' => $request->input('name')]);
+
+        $role->syncPermissions($request->input('permissions'));
 
         return response()->json([
             'status' => 'success',
             'code' => 200,
             'message' => 'Registro exitoso',
-            'tax' => $tax
+            'role' => $role
         ], 200);
     }
 
@@ -82,13 +76,19 @@ class TaxController extends Controller
      */
     public function show($id)
     {
-        $tax = Tax::find($id);
+        $role = Role::find($id);
 
-        if ($tax) {
+        if ($role) {
+
+            $permissions = collect($role->permissions)->groupBy('component');
+            unset($role->permissions);
+
+            $role->permissions = $permissions;
+
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'tax' => $tax
+                'role' => $role,
             ];
         } else {
             $data = [
@@ -109,7 +109,7 @@ class TaxController extends Controller
      */
     public function edit($id)
     {
-        abort(404);
+        return abort(404);
     }
 
     /**
@@ -122,9 +122,12 @@ class TaxController extends Controller
     public function update(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
-            'percentage' => 'required|numeric'
+            'name' => [
+                'required', 'string', 'min:3', 'max:50',  Rule::unique('roles')->ignore($id)
+            ],
+            'permissions' => 'nullable|array|exists:permissions,id'
         ]);
-
+        
         if ($validate->fails()) {
             return response()->json([
                 'status' => 'error',
@@ -134,17 +137,22 @@ class TaxController extends Controller
             ], 400);
         }
 
-        $tax = Tax::find($id);
+        $role = Role::find($id);
 
-        if ($tax) {
-            $tax->percentage = $request->input('percentage');
-            $tax->save();
+        if ($role) {
+
+            $role->name = $request->input('name');
+            $role->save();
+
+            $role->syncPermissions($request->input('permissions'));
+   
             $data = [
                 'status' => 'success',
                 'code' =>  200,
                 'message' => 'Actualización exitosa',
-                'tax' =>  $tax
+                'role' =>  $role
             ];
+
         } else {
             $data = [
                 'status' => 'error',
@@ -159,18 +167,19 @@ class TaxController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
+     * 
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $tax = Tax::find($id);
+        $role = Role::find($id);
 
-        if ($tax) {
-            $tax->delete();
+        if ($role) {
+            $role->delete();
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'tax' => $tax
+                'role' => $role
             ];
         } else {
             $data = [
@@ -183,30 +192,16 @@ class TaxController extends Controller
         return response()->json($data, $data['code']);
     }
 
-     /**
-     * Activate the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function activate($id)
+    public function getPermission()
     {
-        //
-        $tax = Tax::find($id);
-        $tax->state = '1';
-        $tax->save();
+        $permissions = collect(Permission::all());
+        $permissions = $permissions->groupBy('component');
+
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'permissions' => $permissions,
+        ]);
     }
 
-    /**
-     * Deactivate the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function deactivate($id)
-    {
-        $tax = Tax::find($id);
-        $tax->state = '0';
-        $tax->save();
-    }
 }

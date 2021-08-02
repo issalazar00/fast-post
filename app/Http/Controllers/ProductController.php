@@ -6,6 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:product.index')->only('index');
+        $this->middleware('can:product.store')->only('store');
+        $this->middleware('can:product.update')->only('update');
+        $this->middleware('can:product.delete')->only('destroy');
+        $this->middleware('can:product.active')->only('active');
+        $this->middleware('can:product.deactivate')->only('deactivate');
+    }
     /**
      * Display a listing of the resource.
      *
