@@ -4,61 +4,73 @@
       <form>
         <div class="form-row">
           <div class="form-group col-6">
-            <label for="exampleFormControlInput1">Cédula</label>
+            <label for="code">Cédula</label>
             <input
               type="number"
               class="form-control"
-              id="exampleFormControlInput1"
+              id="code"
               placeholder=""
+              name="code"
+              v-model="formSupplier.code"
             />
           </div>
           <div class="form-group col-6">
-            <label for="exampleFormControlInput1">Nombre Proveedor</label>
+            <label for="name">Nombre Proveedor</label>
             <input
               type="text"
               class="form-control"
-              id="exampleFormControlInput1"
+              id="name"
               placeholder=""
+              name="name"
+              v-model="formSupplier.name"
             />
           </div>
         </div>
         <div class="form-row">
           <div class="col-md-7 border-right border-gray">
             <div class="form-group">
-              <label for="exampleFormControlInput1">Direccion</label>
+              <label for="address">Direccion</label>
               <input
                 type="text"
                 class="form-control"
-                id="exampleFormControlInput1"
+                id="address"
                 placeholder=""
+                name="address"
+                v-model="formSupplier.address"
               />
             </div>
 
             <div class="form-group">
-              <label for="exampleFormControlInput1">Télefono</label>
+              <label for="phone">Télefono</label>
               <input
                 type="text"
                 class="form-control"
-                id="exampleFormControlInput1"
+                id="phone"
                 placeholder=""
+                name="phone"
+                v-model="formSupplier.phone"
               />
             </div>
             <div class="form-group">
-              <label for="exampleFormControlInput1">Télefono móvil</label>
+              <label for="mobile">Télefono móvil</label>
               <input
                 type="text"
                 class="form-control"
-                id="exampleFormControlInput1"
+                id="mobile"
                 placeholder=""
+                name="mobile"
+                v-model="formSupplier.mobile"
               />
             </div>
             <div class="form-group">
-              <label for="exampleFormControlInput1">Fax</label>
+              <label for="fax">Fax</label>
               <input
                 type="text"
                 class="form-control"
-                id="exampleFormControlInput1"
+                id="fax"
                 placeholder=""
+                name="fax"
+                v-model="formSupplier.fax"
               />
             </div>
             <div class="form-row">
@@ -67,44 +79,45 @@
                 <input
                   type="text"
                   class="form-control"
-                  id="exampleFormControlInput1"
+                  id="firstname_contact"
                   placeholder="Nombres"
+                  name="firstname_contact"
+                  v-model="formSupplier.firstname_contact"
                 />
               </div>
-              
+
               <div class="form-group col-md-3 col-sm-6">
                 <input
                   type="text"
                   class="form-control"
-                  id="exampleFormControlInput1"
+                  id="lastname_contact"
                   placeholder="Apellidos"
+                  name="lastname_contact"
+                  v-model="formSupplier.lastname_contact"
                 />
               </div>
-              
             </div>
             <div class="form-group">
-              <label for="exampleFormControlInput1">Correo electronico</label>
+              <label for="email">Correo electronico</label>
               <input
                 type="enail"
                 class="form-control"
-                id="exampleFormControlInput1"
+                id="email"
                 placeholder=""
-              />
-            </div>
-            <div class="form-group">
-              <label for="exampleFormControlInput1">Otro correo</label>
-              <input
-                type="email"
-                class="form-control"
-                id="exampleFormControlInput1"
-                placeholder=""
+                name="email"
+                v-model="formSupplier.email"
               />
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="exampleFormControlSelect1">Giro Neg.</label>
-                <select class="form-control" id="exampleFormControlSelect1">
+                <label for="giro_neg">Giro Neg.</label>
+                <select
+                  class="form-control"
+                  id="giro_neg"
+                  name="giro_neg"
+                  v-model="formSupplier.giro_neg"
+                >
                   <option>Comercial</option>
                   <option>2</option>
                   <option>3</option>
@@ -113,8 +126,13 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="exampleFormControlSelect1">Tipo</label>
-                <select class="form-control" id="exampleFormControlSelect1">
+                <label for="type_person">Tipo</label>
+                <select
+                  class="form-control"
+                  id="type_person"
+                  name="type_person"
+                  v-model="formSupplier.type_person"
+                >
                   <option>1</option>
                   <option>2</option>
                   <option>3</option>
@@ -123,12 +141,16 @@
                 </select>
               </div>
             </div>
-
           </div>
           <div class="col-md-5">
             <div class="form-group">
-              <label for="exampleFormControlSelect1">Departamento</label>
-              <select class="form-control" id="exampleFormControlSelect1">
+              <label for="departament">Departamento</label>
+              <select
+                class="form-control"
+                id="departament"
+                name="departament"
+                v-model="formSupplier.departament"
+              >
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -137,8 +159,13 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="exampleFormControlSelect1">Municipio</label>
-              <select class="form-control" id="exampleFormControlSelect1">
+              <label for="city">Municipio</label>
+              <select
+                class="form-control"
+                id="city"
+                name="city"
+                v-model="formSupplier.city"
+              >
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -147,25 +174,24 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="inputEmail4">Código Postal</label>
-              <input type="number" class="form-control" id="inputEmail4" />
+              <label for="zipcode">Código Postal</label>
+              <input
+                type="number"
+                class="form-control"
+                id="zipcode"
+                name="zipcode"
+                v-model="formSupplier.zipcode"
+              />
             </div>
-            
+
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <button
-                  class="btn btn-outline-secondary dropdown-toggle"
-                  type="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Documento
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Cédula</a>
-                  <a class="dropdown-item" href="#">Pasaporte</a>                 
-                </div>
+                <select class="custom-select" id="inputGroupSelect01">
+                  <option selected disabled value="">Documento...</option>
+                  <option value="1">Cédula de ciudadania</option>
+                  <option value="2">Cédula de extranjería</option>
+                  <option value="3">Pasaporte</option>
+                </select>
               </div>
               <input
                 type="text"
@@ -182,30 +208,30 @@
                 autocomplete="country"
               />
             </div>
-             <div class="form-group">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="defaultCheck1"
-            />
-            <label class="form-check-label" for="defaultCheck1">
-              Proveedor está activo?
-            </label>
-          </div>
-           <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="impuesto_incluido"
-            />
-            <label class="form-check-label" for="impuesto_incluido">
-             Impuesto Incluido
-            </label>
-          </div>
-        </div>
+            <div class="form-group">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="defaultCheck1"
+                />
+                <label class="form-check-label" for="defaultCheck1">
+                  Proveedor está activo?
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="impuesto_incluido"
+                />
+                <label class="form-check-label" for="impuesto_incluido">
+                  Impuesto Incluido
+                </label>
+              </div>
+            </div>
           </div>
         </div>
       </form>
@@ -215,6 +241,31 @@
 
 <script>
 export default {
+  data() {
+    return {
+      formSupplier: {
+        code: "",
+        name: "",
+        address: "",
+        phone: "",
+        mobile: "",
+        fax: "",
+        fisrtname_contact: "",
+        lastname_contact: "",
+        email: "",
+        giro_neg: "",
+        type_person: "",
+        departament: "",
+        city: "",
+        zipcode: "",
+        type_document: "",
+        document: "",
+        business_registration: "",
+        state: "",
+        tax: "",
+      },
+    };
+  },
   mounted() {
     console.log("Component mounted.");
   },

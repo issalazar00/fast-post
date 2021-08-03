@@ -26,8 +26,8 @@ class CreateSuppliersTable extends Migration
             $table->string('email')->nullable();
             $table->string('giro_neg')->nullable();
             $table->string('type_person')->nullable();
-            $table->tinyInteger('departament')->nullable();
-            $table->tinyInteger('city')->nullable();
+            $table->integer('departament')->nullable();
+            $table->integer('city')->nullable();
             $table->string('zipcode')->nullable();
             $table->tinyInteger('type_document');
             $table->integer('document');

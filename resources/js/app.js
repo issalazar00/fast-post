@@ -61,7 +61,7 @@ const routes = [
   { path: '/impuestos', component: Impuestos },
   { path: '/crear-editar-impuesto', component: CrearEditarImpuesto },
   { path: '/proveedores', component: Suppliers },
-  { path: '/crear-proveedor', component: CreateEditSupplier },
+  { path: '/create-edit-supplier', component: CreateEditSupplier },
   { path: '/categories', component: Categories },
   { path: '/create-edit-category', component: CreateEditCategory },
   { path: '/tickets', component: Tickets },

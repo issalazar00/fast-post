@@ -73,8 +73,8 @@
           @pagination-change-page="listarProductos"
         >
           <span slot="prev-nav">&lt; Previous</span>
-          <span slot="next-nav">Next &gt;</span></pagination
-        >
+          <span slot="next-nav">Next &gt;</span>
+        </pagination>
       </div>
     </div>
     <!-- Modal para creacion y edicion de products -->
