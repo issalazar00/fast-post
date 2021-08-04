@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
@@ -41,6 +42,8 @@ Route::post('/register', [UserController::class,'register']);
     Route::post('/products/{product}/deactivate',  [ProductController::class, 'deactivate']);
 
     Route::resource('/suppliers',  SupplierController::class);
+
+    Route::resource('/clients',  ClientController::class);
 
     Route::resource('/role', RoleController::class);
     Route::get('/permission', [RoleController::class, 'getPermission']);

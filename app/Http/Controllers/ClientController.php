@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -13,7 +14,15 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $clients = new Client;
+        $clients = $clients
+        ->paginate(15);
+        
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'clients' => $clients
+        ]);
     }
 
     /**

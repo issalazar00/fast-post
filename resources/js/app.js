@@ -11,8 +11,8 @@ window.Vue = require('vue').default;
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Clientes from './components/Clientes.vue'
-import CrearCliente from './components/CrearCliente.vue'
+import Clients from './components/Clients.vue'
+import CreateEditClient from './components/CreateEditClient.vue'
 import Productos from './components/Productos.vue'
 import CrearEditarProducto from './components/CrearEditarProducto.vue'
 import Impuestos from './components/Impuestos.vue'
@@ -54,13 +54,13 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const routes = [
   
   { path: '', component: DetailsTicket },
-  { path: '/clientes', component: Clientes },
-  { path: '/crear-cliente', component: CrearCliente },
+  { path: '/clients', component: Clients },
+  { path: '/create-edit-client', component: CreateEditClient },
   { path: '/productos', component: Productos },
   { path: '/crear-editar-producto', component: CrearEditarProducto },
   { path: '/impuestos', component: Impuestos },
   { path: '/crear-editar-impuesto', component: CrearEditarImpuesto },
-  { path: '/proveedores', component: Suppliers },
+  { path: '/suppliers', component: Suppliers },
   { path: '/create-edit-supplier', component: CreateEditSupplier },
   { path: '/categories', component: Categories },
   { path: '/create-edit-category', component: CreateEditCategory },

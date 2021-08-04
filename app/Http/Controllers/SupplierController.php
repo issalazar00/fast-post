@@ -14,6 +14,15 @@ class SupplierController extends Controller
      */
     public function index()
     {
+        $suppliers = new Supplier;
+        $suppliers = $suppliers
+        ->paginate(15);
+        
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'suppliers' => $suppliers
+        ]);
     }
 
     /**

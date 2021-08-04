@@ -24,10 +24,10 @@
                     <router-link class="nav-link" to="/impuestos">Impuestos</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/clientes">Clientes</router-link>
+                    <router-link class="nav-link" to="/clients">Clientes</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/proveedores">Proveedores</router-link>
+                    <router-link class="nav-link" to="/suppliers">Proveedores</router-link>
                 </li>
 
             </ul>
