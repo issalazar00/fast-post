@@ -24,7 +24,7 @@ class OrderFactory extends Factory
         return [
             'client_id' => $this->faker->numberBetween(1,10),
             'user_id' => $this->faker->numberBetween(1,10),
-            'no_invoice' => $this->faker->randomKey(),
+            'no_invoice' => $this->faker->randomLetter(),
             'total_paid' => $this->faker->randomFloat(2,1, 10000),
             'total_iva_inc' => $this->faker->randomFloat(2,1, 10000),
             'total_iva_exc' => $this->faker->randomFloat(2,1, 10000),

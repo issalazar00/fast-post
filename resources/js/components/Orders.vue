@@ -17,6 +17,17 @@
     </div>
     <section>
       <div class="card-body">
+        <div class="form-row">
+          <h6 class="w-100">Buscar...</h6>
+          <div class="form-group">
+            <label for="nro_factura">Nro Factura</label>
+            <input type="text" name="nro_factura" id="nro_factura" class="form-control" placeholder="Nro Factura">
+          </div>
+          <div class="form-group">
+            <label for="name_client">Cliente</label>
+            <input type="text" name="name_client" id="name_client" class="form-control" placeholder="Cliente">
+          </div>
+        </div>
         <table class="table table-sm table-bordered table-responsive-sm">
           <thead>
             <tr>
@@ -39,7 +50,7 @@
               <td>$5000</td>
               <td>Usuario 1</td>
               <td>
-                <router-link class="btn" to="/details-ticket">   
+                <router-link class="btn" to="/details-order">   
                   <i class="bi bi-eye"></i>
                 </router-link>
               </td>

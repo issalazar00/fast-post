@@ -24,8 +24,9 @@ import CreateEditCategory from './components/CreateEditCategory.vue'
 import Suppliers from './components/Suppliers.vue'
 import CreateEditSupplier from './components/CreateEditSupplier.vue'
 
-import Tickets from './components/Tickets'
-import DetailsTicket from './components/DetailsTicket'
+import Orders from './components/Orders'
+import DetailsOrder from './components/DetailsOrder'
+import CreateEditOrder from './components/CreateEditOrder'
 
 Vue.use(VueRouter)
 
@@ -53,7 +54,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 // { path: '', component: require('./components/ExampleComponent.vue').default },
 const routes = [
   
-  { path: '', component: DetailsTicket },
+  { path: '', component: CreateEditOrder },
   { path: '/clients', component: Clients },
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/productos', component: Productos },
@@ -64,8 +65,9 @@ const routes = [
   { path: '/create-edit-supplier', component: CreateEditSupplier },
   { path: '/categories', component: Categories },
   { path: '/create-edit-category', component: CreateEditCategory },
-  { path: '/tickets', component: Tickets },
-  { path: '/details-ticket', component: DetailsTicket },
+  { path: '/orders', component: Orders },
+  { path: '/details-order', component: DetailsOrder },
+  { path: '/create-edit-order', component: CreateEditOrder },
 
 ]
 
