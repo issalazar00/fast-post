@@ -3,10 +3,22 @@
     <div class="row justify-content-center">
       <form>
         <div class="form-row">
-          <div class="form-group col-6">
-            <label for="code">Cédula</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <select class="custom-select" id="inputGroupSelect01">
+                <option selected disabled value="">Documento...</option>
+                <option value="1">Cédula de ciudadania</option>
+                <option value="2">Cédula de extranjería</option>
+                <option value="3">NIT</option>
+              </select>
+            </div>
             <input
-              type="number"
+              type="text"
+              class="form-control"
+              aria-label="Text input with dropdown button"
+            />
+            <input
+              type="hidden"
               class="form-control"
               id="code"
               placeholder=""
@@ -14,8 +26,9 @@
               v-model="formClient.code"
             />
           </div>
+
           <div class="form-group col-6">
-            <label for="name">Nombre Cliente</label>
+            <label for="name">Nombre / Razon social</label>
             <input
               type="text"
               class="form-control"
@@ -41,18 +54,7 @@
             </div>
 
             <div class="form-group">
-              <label for="phone">Télefono</label>
-              <input
-                type="text"
-                class="form-control"
-                id="phone"
-                placeholder=""
-                name="phone"
-                v-model="formClient.phone"
-              />
-            </div>
-            <div class="form-group">
-              <label for="mobile">Télefono móvil</label>
+              <label for="mobile">Celular</label>
               <input
                 type="text"
                 class="form-control"
@@ -62,38 +64,16 @@
                 v-model="formClient.mobile"
               />
             </div>
-            <div class="form-group">
-              <label for="fax">Fax</label>
-              <input
-                type="text"
-                class="form-control"
-                id="fax"
-                placeholder=""
-                name="fax"
-                v-model="formClient.fax"
-              />
-            </div>
             <div class="form-row">
               <span class="col-12">Contacto</span>
-              <div class="form-group col-md-6 col-sm-6">
+              <div class="form-group">
                 <input
                   type="text"
                   class="form-control"
-                  id="firstname_contact"
+                  id="contact"
                   placeholder="Nombres"
-                  name="firstname_contact"
-                  v-model="formClient.firstname_contact"
-                />
-              </div>
-
-              <div class="form-group col-md-3 col-sm-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="lastname_contact"
-                  placeholder="Apellidos"
-                  name="lastname_contact"
-                  v-model="formClient.lastname_contact"
+                  name="contact"
+                  v-model="formClient.contact"
                 />
               </div>
             </div>
@@ -111,21 +91,6 @@
 
             <div class="form-row">
               <div class="form-group">
-                <label for="giro_neg">Giro Neg.</label>
-                <select
-                  class="form-control"
-                  id="giro_neg"
-                  name="giro_neg"
-                  v-model="formClient.giro_neg"
-                >
-                  <option>Comercial</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
-              </div>
-              <div class="form-group">
                 <label for="type_person">Tipo</label>
                 <select
                   class="form-control"
@@ -133,11 +98,8 @@
                   name="type_person"
                   v-model="formClient.type_person"
                 >
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
+                  <option>Juridica</option>
+                  <option>Natural</option>
                 </select>
               </div>
             </div>
@@ -173,41 +135,7 @@
                 <option>5</option>
               </select>
             </div>
-            <div class="form-group">
-              <label for="zipcode">Código Postal</label>
-              <input
-                type="number"
-                class="form-control"
-                id="zipcode"
-                name="zipcode"
-                v-model="formClient.zipcode"
-              />
-            </div>
 
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <select class="custom-select" id="inputGroupSelect01">
-                  <option selected disabled value="">Documento...</option>
-                  <option value="1">Cédula de ciudadania</option>
-                  <option value="2">Cédula de extranjería</option>
-                  <option value="3">Pasaporte</option>
-                </select>
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                aria-label="Text input with dropdown button"
-              />
-            </div>
-            <div class="form-group">
-              <label for="inputEmail4">Reg. Empresarial</label>
-              <input
-                type="text"
-                class="form-control"
-                id="inputEmail4"
-                autocomplete="country"
-              />
-            </div>
             <div class="form-group">
               <div class="form-check">
                 <input
@@ -217,7 +145,7 @@
                   id="defaultCheck1"
                 />
                 <label class="form-check-label" for="defaultCheck1">
-                  Proveedor está activo?
+                  Cliente está activo?
                 </label>
               </div>
               <div class="form-check">
@@ -247,21 +175,16 @@ export default {
         code: "",
         name: "",
         address: "",
-        phone: "",
         mobile: "",
         fax: "",
-        fisrtname_contact: "",
-        lastname_contact: "",
+        contact: "",
         email: "",
-        giro_neg: "",
         type_person: "",
         departament: "",
         city: "",
-        zipcode: "",
         type_document: "",
         document: "",
-        business_registration: "",
-        state: "",
+        active: "",
         tax: "",
       },
     };

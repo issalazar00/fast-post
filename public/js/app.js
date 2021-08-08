@@ -2763,55 +2763,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -41915,8 +41866,16 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("form", [
         _c("div", { staticClass: "form-row" }, [
-          _c("div", { staticClass: "form-group col-6" }, [
-            _c("label", { attrs: { for: "code" } }, [_vm._v("Cédula")]),
+          _c("div", { staticClass: "input-group mb-3" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                "aria-label": "Text input with dropdown button"
+              }
+            }),
             _vm._v(" "),
             _c("input", {
               directives: [
@@ -41929,7 +41888,7 @@ var render = function() {
               ],
               staticClass: "form-control",
               attrs: {
-                type: "number",
+                type: "hidden",
                 id: "code",
                 placeholder: "",
                 name: "code"
@@ -41947,7 +41906,9 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group col-6" }, [
-            _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre Cliente")]),
+            _c("label", { attrs: { for: "name" } }, [
+              _vm._v("Nombre / Razon social")
+            ]),
             _vm._v(" "),
             _c("input", {
               directives: [
@@ -42037,39 +41998,6 @@ var render = function() {
                       return
                     }
                     _vm.$set(_vm.formClient, "phone", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "mobile" } }, [
-                _vm._v("Télefono móvil")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.formClient.mobile,
-                    expression: "formClient.mobile"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  id: "mobile",
-                  placeholder: "",
-                  name: "mobile"
-                },
-                domProps: { value: _vm.formClient.mobile },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.formClient, "mobile", $event.target.value)
                   }
                 }
               })
@@ -42211,58 +42139,6 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "form-row" }, [
               _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "giro_neg" } }, [
-                  _vm._v("Giro Neg.")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.formClient.giro_neg,
-                        expression: "formClient.giro_neg"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: { id: "giro_neg", name: "giro_neg" },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.formClient,
-                          "giro_neg",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _c("option", [_vm._v("Comercial")]),
-                    _vm._v(" "),
-                    _c("option", [_vm._v("2")]),
-                    _vm._v(" "),
-                    _c("option", [_vm._v("3")]),
-                    _vm._v(" "),
-                    _c("option", [_vm._v("4")]),
-                    _vm._v(" "),
-                    _c("option", [_vm._v("5")])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
                 _c("label", { attrs: { for: "type_person" } }, [
                   _vm._v("Tipo")
                 ]),
@@ -42301,15 +42177,9 @@ var render = function() {
                     }
                   },
                   [
-                    _c("option", [_vm._v("1")]),
+                    _c("option", [_vm._v("Juridica")]),
                     _vm._v(" "),
-                    _c("option", [_vm._v("2")]),
-                    _vm._v(" "),
-                    _c("option", [_vm._v("3")]),
-                    _vm._v(" "),
-                    _c("option", [_vm._v("4")]),
-                    _vm._v(" "),
-                    _c("option", [_vm._v("5")])
+                    _c("option", [_vm._v("Natural")])
                   ]
                 )
               ])
@@ -42419,39 +42289,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "zipcode" } }, [
-                _vm._v("Código Postal")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.formClient.zipcode,
-                    expression: "formClient.zipcode"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: { type: "number", id: "zipcode", name: "zipcode" },
-                domProps: { value: _vm.formClient.zipcode },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.formClient, "zipcode", $event.target.value)
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _vm._m(0),
-            _vm._v(" "),
-            _vm._m(1),
-            _vm._v(" "),
-            _vm._m(2)
+            _vm._m(1)
           ])
         ])
       ])
@@ -42463,48 +42301,26 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group mb-3" }, [
-      _c("div", { staticClass: "input-group-prepend" }, [
-        _c(
-          "select",
-          { staticClass: "custom-select", attrs: { id: "inputGroupSelect01" } },
-          [
-            _c("option", { attrs: { selected: "", disabled: "", value: "" } }, [
-              _vm._v("Documento...")
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "1" } }, [
-              _vm._v("Cédula de ciudadania")
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "2" } }, [
-              _vm._v("Cédula de extranjería")
-            ]),
-            _vm._v(" "),
-            _c("option", { attrs: { value: "3" } }, [_vm._v("Pasaporte")])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", "aria-label": "Text input with dropdown button" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "inputEmail4" } }, [
-        _vm._v("Reg. Empresarial")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", id: "inputEmail4", autocomplete: "country" }
-      })
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "select",
+        { staticClass: "custom-select", attrs: { id: "inputGroupSelect01" } },
+        [
+          _c("option", { attrs: { selected: "", disabled: "", value: "" } }, [
+            _vm._v("Documento...")
+          ]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "1" } }, [
+            _vm._v("Cédula de ciudadania")
+          ]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "2" } }, [
+            _vm._v("Cédula de extranjería")
+          ]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "3" } }, [_vm._v("NIT")])
+        ]
+      )
     ])
   },
   function() {
@@ -42521,7 +42337,7 @@ var staticRenderFns = [
         _c(
           "label",
           { staticClass: "form-check-label", attrs: { for: "defaultCheck1" } },
-          [_vm._v("\n                Proveedor está activo?\n              ")]
+          [_vm._v("\n                Cliente está activo?\n              ")]
         )
       ]),
       _vm._v(" "),
