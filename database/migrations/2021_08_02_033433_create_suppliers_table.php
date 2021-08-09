@@ -15,7 +15,7 @@ class CreateSuppliersTable extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->string('code')->autoIncrement();
             $table->string('name');
             $table->string('address');
             $table->string('mobile')->nullable();

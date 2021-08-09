@@ -5,7 +5,7 @@
         <div class="form-row">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <select class="custom-select" id="inputGroupSelect01">
+              <select class="custom-select" id="type_documento" v-model="formClient.type_document">
                 <option selected disabled value="">Documento...</option>
                 <option value="1">Cédula de ciudadania</option>
                 <option value="2">Cédula de extranjería</option>
@@ -16,6 +16,7 @@
               type="text"
               class="form-control"
               aria-label="Text input with dropdown button"
+              v-model="formClient.type_document"
             />
             <input
               type="hidden"
@@ -141,10 +142,11 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  value=""
-                  id="defaultCheck1"
+                  value="1"
+                  id="active"
+                  v-model="formClient.active"
                 />
-                <label class="form-check-label" for="defaultCheck1">
+                <label class="form-check-label" for="active">
                   Cliente está activo?
                 </label>
               </div>
@@ -152,8 +154,9 @@
                 <input
                   class="form-check-input"
                   type="checkbox"
-                  value=""
+                  value="1"
                   id="impuesto_incluido"
+                  v-model="formClient.tax"
                 />
                 <label class="form-check-label" for="impuesto_incluido">
                   Impuesto Incluido
@@ -188,6 +191,34 @@ export default {
         tax: "",
       },
     };
+  },
+   methods: {
+    CreateClient() {
+      let me = this;
+      axios.post("api/clients", this.formClient).then(function () {
+        $("#clientModal").modal("hide");
+        me.formClient = {};
+      });
+    },
+    OpenEditClient(producto) {
+      let me = this;
+      $("#clientModal").modal("show");
+      me.formClient = producto;
+    },
+
+    EditClient() {
+      let me = this;
+      axios.put("api/clients/" + this.formClient.id, this.formClient).then(function () {
+        $("#clientModal").modal("hide");
+        me.formClient = {};
+      });
+    },
+
+    ResetData() {
+      let me = this;
+      $("#clientModal").modal("hide");
+      me.formClient = {};
+    },
   },
   mounted() {
     console.log("Component mounted.");
