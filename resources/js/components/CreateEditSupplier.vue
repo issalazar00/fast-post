@@ -15,7 +15,7 @@
             />
           </div>
           <div class="form-group col-6">
-            <label for="name">Nombre Proveedor</label>
+            <label for="name">Nombre</label>
             <input
               type="text"
               class="form-control"
@@ -39,18 +39,6 @@
                 v-model="formSupplier.address"
               />
             </div>
-
-            <div class="form-group">
-              <label for="phone">Télefono</label>
-              <input
-                type="text"
-                class="form-control"
-                id="phone"
-                placeholder=""
-                name="phone"
-                v-model="formSupplier.phone"
-              />
-            </div>
             <div class="form-group">
               <label for="mobile">Télefono móvil</label>
               <input
@@ -62,38 +50,17 @@
                 v-model="formSupplier.mobile"
               />
             </div>
-            <div class="form-group">
-              <label for="fax">Fax</label>
-              <input
-                type="text"
-                class="form-control"
-                id="fax"
-                placeholder=""
-                name="fax"
-                v-model="formSupplier.fax"
-              />
-            </div>
+
             <div class="form-row">
               <span class="col-12">Contacto</span>
-              <div class="form-group col-md-6 col-sm-6">
+              <div class="form-group">
                 <input
                   type="text"
                   class="form-control"
-                  id="firstname_contact"
+                  id="contact"
                   placeholder="Nombres"
-                  name="firstname_contact"
-                  v-model="formSupplier.firstname_contact"
-                />
-              </div>
-
-              <div class="form-group col-md-3 col-sm-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="lastname_contact"
-                  placeholder="Apellidos"
-                  name="lastname_contact"
-                  v-model="formSupplier.lastname_contact"
+                  name="contact"
+                  v-model="formSupplier.contact"
                 />
               </div>
             </div>
@@ -110,21 +77,6 @@
             </div>
 
             <div class="form-row">
-              <div class="form-group">
-                <label for="giro_neg">Giro Neg.</label>
-                <select
-                  class="form-control"
-                  id="giro_neg"
-                  name="giro_neg"
-                  v-model="formSupplier.giro_neg"
-                >
-                  <option>Comercial</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
-              </div>
               <div class="form-group">
                 <label for="type_person">Tipo</label>
                 <select
@@ -173,16 +125,6 @@
                 <option>5</option>
               </select>
             </div>
-            <div class="form-group">
-              <label for="zipcode">Código Postal</label>
-              <input
-                type="number"
-                class="form-control"
-                id="zipcode"
-                name="zipcode"
-                v-model="formSupplier.zipcode"
-              />
-            </div>
 
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -199,15 +141,7 @@
                 aria-label="Text input with dropdown button"
               />
             </div>
-            <div class="form-group">
-              <label for="inputEmail4">Reg. Empresarial</label>
-              <input
-                type="text"
-                class="form-control"
-                id="inputEmail4"
-                autocomplete="country"
-              />
-            </div>
+
             <div class="form-group">
               <div class="form-check">
                 <input
@@ -247,21 +181,15 @@ export default {
         code: "",
         name: "",
         address: "",
-        phone: "",
         mobile: "",
-        fax: "",
-        fisrtname_contact: "",
-        lastname_contact: "",
+        contact: "",
         email: "",
-        giro_neg: "",
         type_person: "",
         departament: "",
         city: "",
-        zipcode: "",
         type_document: "",
         document: "",
-        business_registration: "",
-        state: "",
+        active: "",
         tax: "",
       },
     };

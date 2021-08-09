@@ -14,22 +14,16 @@ class Supplier extends Model
     protected $fillable = [
         'code',
         'name',
-        'address',
-        'phone',
-        'mobile',
-        'fax',
-        'fisrtname_contact',
-        'lastname_contact',
+        'address',       
+        'mobile',      
+        'contact',       
         'email',
-        'giro_neg',
         'type_person',
         'departament',
         'city',
-        'zipcode',
         'type_document',
         'document',
-        'business_registration',
-        'state',
+        'active',
         'tax'
     ];
 }
