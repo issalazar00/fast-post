@@ -41129,17 +41129,13 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(client.address))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(client.phone))]),
+                _c("td", [_vm._v(_vm._s(client.mobile))]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(client.email))]),
                 _vm._v(" "),
                 _c("td", [
                   _vm._v(
-                    "\n            " +
-                      _vm._s(client.firstname_contact) +
-                      " " +
-                      _vm._s(client.lastname_contact) +
-                      "\n          "
+                    "\n            " + _vm._s(client.contact) + "\n          "
                   )
                 ]),
                 _vm._v(" "),
@@ -44695,17 +44691,13 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(supplier.address))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(supplier.phone))]),
+                _c("td", [_vm._v(_vm._s(supplier.mobile))]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(supplier.email))]),
                 _vm._v(" "),
                 _c("td", [
                   _vm._v(
-                    "\n            " +
-                      _vm._s(supplier.firstname_contact) +
-                      " " +
-                      _vm._s(supplier.lastname_contact) +
-                      "\n          "
+                    "\n            " + _vm._s(supplier.contact) + "\n          "
                   )
                 ]),
                 _vm._v(" "),

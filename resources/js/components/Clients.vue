@@ -35,10 +35,10 @@
             <td>{{ client.name }}</td>
             <td>{{ client.document }}</td>
             <td>{{ client.address }}</td>
-            <td>{{ client.phone }}</td>
+            <td>{{ client.mobile }}</td>
             <td>{{ client.email }}</td>
             <td>
-              {{ client.firstname_contact }} {{ client.lastname_contact }}
+              {{ client.contact }}
             </td>
             <td>
               <span class="badge badge-success">Activo</span>

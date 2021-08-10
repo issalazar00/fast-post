@@ -35,10 +35,10 @@
             <td>{{ supplier.name }}</td>
             <td>{{ supplier.document }}</td>
             <td>{{ supplier.address }}</td>
-            <td>{{ supplier.phone }}</td>
+            <td>{{ supplier.mobile }}</td>
             <td>{{ supplier.email }}</td>
             <td>
-              {{ supplier.firstname_contact }} {{ supplier.lastname_contact }}
+              {{ supplier.contact }}
             </td>
             <td>
               <span class="badge badge-success">Activo</span>
