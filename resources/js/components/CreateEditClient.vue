@@ -16,7 +16,7 @@
               type="text"
               class="form-control"
               aria-label="Text input with dropdown button"
-              v-model="formClient.type_document"
+              v-model="formClient.document"
             />
             <input
               type="hidden"
@@ -179,7 +179,6 @@ export default {
         name: "",
         address: "",
         mobile: "",
-        fax: "",
         contact: "",
         email: "",
         type_person: "",

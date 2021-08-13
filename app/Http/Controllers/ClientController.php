@@ -44,6 +44,9 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         //
+
+        $client = $request->all();
+        Client::create($client);
     }
 
     /**
