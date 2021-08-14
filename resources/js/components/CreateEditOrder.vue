@@ -124,6 +124,9 @@
             </tbody>
           </table>
           <div class="text-right">
+            <button type="button" class="btn btn-outline-secondary btn-block">
+              <i class="bi bi-receipt"></i> Cancelar
+            </button>
             <button type="button" class="btn btn-outline-primary btn-block">
               <i class="bi bi-receipt"></i> Crear Orden
             </button>
@@ -289,7 +292,7 @@
                     <span class="badge badge-success">Activo</span>
                   </td>
                   <td>
-                    <button class="btn" @click="addClient(client.id)">
+                    <button class="btn btn-outline-secondary" @click="addClient(client.id)">
                       <i class="bi bi-plus-circle"></i>
                     </button>
                   </td>

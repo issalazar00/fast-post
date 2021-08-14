@@ -3208,6 +3208,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -43339,7 +43342,7 @@ var render = function() {
                         _c(
                           "button",
                           {
-                            staticClass: "btn",
+                            staticClass: "btn btn-outline-secondary",
                             on: {
                               click: function($event) {
                                 return _vm.addClient(client.id)
@@ -43480,6 +43483,18 @@ var staticRenderFns = [
         ),
         _vm._v(" "),
         _c("div", { staticClass: "text-right" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-outline-secondary btn-block",
+              attrs: { type: "button" }
+            },
+            [
+              _c("i", { staticClass: "bi bi-receipt" }),
+              _vm._v(" Cancelar\n          ")
+            ]
+          ),
+          _vm._v(" "),
           _c(
             "button",
             {
