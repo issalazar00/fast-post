@@ -8777,6 +8777,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -8784,6 +8795,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      isLoading: false,
       categoryListing: {},
       edit: false
     };
@@ -8793,10 +8805,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     listCategories: function listCategories() {
+      var _this = this;
+
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      this.isLoading = true;
       var me = this;
       axios.get("api/category?page=" + page).then(function (response) {
         me.categoryListing = response.data.categories;
+      })["finally"](function () {
+        return _this.isLoading = false;
       });
     },
     SaveCategory: function SaveCategory() {
@@ -48130,123 +48147,141 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "col-12" }, [
-    _c("h3", { staticClass: "page-header" }, [_vm._v("Categorias")]),
+    _c(
+      "div",
+      { staticClass: "w-100 text-center" },
+      [
+        _c("h3", { staticClass: "page-header" }, [_vm._v("Categorias")]),
+        _vm._v(" "),
+        _c("ring-loader", {
+          staticClass: "m-auto",
+          attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
+        })
+      ],
+      1
+    ),
     _vm._v(" "),
-    _c("div", { staticClass: "row justify-content-end mx-4" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          attrs: {
-            type: "button",
-            "data-toggle": "modal",
-            "data-target": "#categoryModal"
-          },
-          on: {
-            click: function($event) {
-              _vm.edit = false
-            }
-          }
-        },
-        [_vm._v("\n      Crear Categoria\n    ")]
-      )
-    ]),
-    _vm._v(" "),
-    _c("section", [
-      _c(
-        "div",
-        { staticClass: "card-body" },
-        [
-          _c(
-            "table",
-            {
-              staticClass: "table table-sm table-bordered table-responsive-sm"
-            },
+    _c("div", { staticClass: "card-body" }, [
+      !_vm.isLoading
+        ? _c(
+            "section",
             [
-              _vm._m(0),
+              _c("div", { staticClass: "row justify-content-end my-4" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: {
+                      type: "button",
+                      "data-toggle": "modal",
+                      "data-target": "#categoryModal"
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.edit = false
+                      }
+                    }
+                  },
+                  [_vm._v("\n          Crear Categoria\n        ")]
+                )
+              ]),
               _vm._v(" "),
               _c(
-                "tbody",
-                _vm._l(_vm.categoryListing.data, function(category, index) {
-                  return _c("tr", { key: category.id }, [
-                    _c("th", { attrs: { scope: "row" } }, [
-                      _vm._v(_vm._s(index + 1))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(category.name))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      category.state == 1
-                        ? _c(
+                "table",
+                {
+                  staticClass:
+                    "table table-sm table-bordered table-responsive-sm"
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.categoryListing.data, function(category, index) {
+                      return _c("tr", { key: category.id }, [
+                        _c("th", { attrs: { scope: "row" } }, [
+                          _vm._v(_vm._s(index + 1))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(category.name))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          category.state == 1
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.DeactivateCategory(category.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "bi bi-check-circle-fill"
+                                  })
+                                ]
+                              )
+                            : _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.ActivateCategory(category.id)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "bi bi-x-circle" })]
+                              )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _c(
                             "button",
                             {
                               staticClass: "btn btn-success",
                               on: {
                                 click: function($event) {
-                                  return _vm.DeactivateCategory(category.id)
+                                  _vm.ShowData(category), (_vm.edit = true)
                                 }
                               }
                             },
-                            [
-                              _c("i", {
-                                staticClass: "bi bi-check-circle-fill"
-                              })
-                            ]
+                            [_vm._v("\n                Editar\n              ")]
                           )
-                        : _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-danger",
-                              on: {
-                                click: function($event) {
-                                  return _vm.ActivateCategory(category.id)
-                                }
-                              }
-                            },
-                            [_c("i", { staticClass: "bi bi-x-circle" })]
-                          )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-success",
-                          on: {
-                            click: function($event) {
-                              _vm.ShowData(category), (_vm.edit = true)
-                            }
-                          }
-                        },
-                        [_vm._v("\n                Editar\n              ")]
-                      )
-                    ])
-                  ])
-                }),
-                0
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "pagination",
-            {
-              attrs: { align: "center", data: _vm.categoryListing },
-              on: { "pagination-change-page": _vm.listCategories }
-            },
-            [
-              _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
-                _vm._v("< Previous")
-              ]),
+                        ])
+                      ])
+                    }),
+                    0
+                  )
+                ]
+              ),
               _vm._v(" "),
-              _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
-                _vm._v("Next >")
-              ])
-            ]
+              _c(
+                "pagination",
+                {
+                  attrs: { align: "center", data: _vm.categoryListing },
+                  on: { "pagination-change-page": _vm.listCategories }
+                },
+                [
+                  _c(
+                    "span",
+                    { attrs: { slot: "prev-nav" }, slot: "prev-nav" },
+                    [_vm._v("< Previous")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { attrs: { slot: "next-nav" }, slot: "next-nav" },
+                    [_vm._v("Next >")]
+                  )
+                ]
+              )
+            ],
+            1
           )
-        ],
-        1
-      )
+        : _vm._e()
     ]),
     _vm._v(" "),
     _c(
