@@ -9066,10 +9066,10 @@ __webpack_require__.r(__webpack_exports__);
         me.formCategory = {};
       });
     },
-    OpenEditCategory: function OpenEditCategory(producto) {
+    OpenEditCategory: function OpenEditCategory(product) {
       var me = this;
       $("#categoryModal").modal("show");
-      me.formCategory = producto;
+      me.formCategory = product;
     },
     EditCategory: function EditCategory() {
       var me = this;
@@ -9302,10 +9302,10 @@ __webpack_require__.r(__webpack_exports__);
         me.formClient = {};
       });
     },
-    OpenEditClient: function OpenEditClient(producto) {
+    OpenEditClient: function OpenEditClient(client) {
       var me = this;
       $("#clientModal").modal("show");
-      me.formClient = producto;
+      me.formClient = client;
     },
     EditClient: function EditClient() {
       var me = this;
@@ -9955,10 +9955,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      //Variables de producto
+      //Variables de product
       formProduct: {
         barcode: "",
-        producto: "",
+        product: "",
         type: 0,
         tax_id: 0,
         cost_price: 0.0,
@@ -10003,10 +10003,10 @@ __webpack_require__.r(__webpack_exports__);
         me.formProduct = {};
       });
     },
-    OpenEditProduct: function OpenEditProduct(producto) {
+    OpenEditProduct: function OpenEditProduct(product) {
       var me = this;
       $("#productModal").modal("show");
-      me.formProduct = producto;
+      me.formProduct = product;
     },
     EditProduct: function EditProduct() {
       var me = this;
@@ -10242,10 +10242,10 @@ __webpack_require__.r(__webpack_exports__);
         me.formSupplier = {};
       });
     },
-    OpenEditSupplier: function OpenEditSupplier(producto) {
+    OpenEditSupplier: function OpenEditSupplier(supplier) {
       var me = this;
       $("#supplierModal").modal("show");
-      me.formSupplier = producto;
+      me.formSupplier = supplier;
     },
     EditSupplier: function EditSupplier() {
       var me = this;
@@ -10329,10 +10329,10 @@ __webpack_require__.r(__webpack_exports__);
         me.formTax = {};
       });
     },
-    OpenEditTax: function OpenEditTax(producto) {
+    OpenEditTax: function OpenEditTax(tax) {
       var me = this;
       $("#taxModal").modal("show");
-      me.formTax = producto;
+      me.formTax = tax;
     },
     EditTax: function EditTax() {
       var me = this;
@@ -49231,7 +49231,7 @@ var render = function() {
             staticClass: "form-control",
             attrs: {
               type: "text",
-              placeholder: "Código de barras | Nombre de producto",
+              placeholder: "Código de barras | Nombre de product",
               "aria-label": " with two button addons",
               "aria-describedby": "button-addon4"
             }
@@ -49356,7 +49356,7 @@ var render = function() {
                   staticClass: "form-control",
                   attrs: {
                     type: "text",
-                    placeholder: "Código de barras | Nombre de producto",
+                    placeholder: "Código de barras | Nombre de product",
                     "aria-label": " with two button addons",
                     "aria-describedby": "button-addon4"
                   },
@@ -49451,7 +49451,7 @@ var render = function() {
                   staticClass: "form-control",
                   attrs: {
                     type: "text",
-                    placeholder: "Código de barras | Nombre de producto",
+                    placeholder: "Código de barras | Nombre de product",
                     "aria-label": " with two button addons",
                     "aria-describedby": "button-addon4"
                   }
@@ -49923,7 +49923,7 @@ var render = function() {
               attrs: {
                 type: "text",
                 id: "product",
-                placeholder: "Nombre o descripción de producto"
+                placeholder: "Nombre o descripción de product"
               },
               domProps: { value: _vm.formProduct.product },
               on: {

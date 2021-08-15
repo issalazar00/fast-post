@@ -200,10 +200,10 @@ export default {
         me.formSupplier = {};
       });
     },
-    OpenEditSupplier(producto) {
+    OpenEditSupplier(supplier) {
       let me = this;
       $("#supplierModal").modal("show");
-      me.formSupplier = producto;
+      me.formSupplier = supplier;
     },
 
     EditSupplier() {

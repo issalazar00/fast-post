@@ -199,10 +199,10 @@ export default {
         me.formClient = {};
       });
     },
-    OpenEditClient(producto) {
+    OpenEditClient(client) {
       let me = this;
       $("#clientModal").modal("show");
-      me.formClient = producto;
+      me.formClient = client;
     },
 
     EditClient() {

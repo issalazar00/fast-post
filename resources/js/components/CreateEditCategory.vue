@@ -35,10 +35,10 @@ export default {
         me.formCategory = {};
       });
     },
-    OpenEditCategory(producto) {
+    OpenEditCategory(product) {
       let me = this;
       $("#categoryModal").modal("show");
-      me.formCategory = producto;
+      me.formCategory = product;
     },
 
     EditCategory() {

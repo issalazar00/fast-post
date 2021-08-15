@@ -11,7 +11,7 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Código de barras | Nombre de producto"
+            placeholder="Código de barras | Nombre de product"
             aria-label=" with two button addons"
             aria-describedby="button-addon4"
           />
@@ -160,7 +160,7 @@
               <input
                 type="text"
                 class="form-control"
-                placeholder="Código de barras | Nombre de producto"
+                placeholder="Código de barras | Nombre de product"
                 aria-label=" with two button addons"
                 aria-describedby="button-addon4"
                 v-model="filterProducts"
@@ -244,7 +244,7 @@
               <input
                 type="text"
                 class="form-control"
-                placeholder="Código de barras | Nombre de producto"
+                placeholder="Código de barras | Nombre de product"
                 aria-label=" with two button addons"
                 aria-describedby="button-addon4"
               />

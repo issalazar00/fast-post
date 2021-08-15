@@ -21,7 +21,7 @@
               class="form-control"
               id="product"
               v-model="formProduct.product"
-              placeholder="Nombre o descripción de producto"
+              placeholder="Nombre o descripción de product"
             />
           </div>
         </div>
@@ -232,10 +232,10 @@
 export default {
   data() {
     return {
-      //Variables de producto
+      //Variables de product
       formProduct: {
         barcode: "",
-        producto: "",
+        product: "",
         type: 0,
         tax_id: 0,
         cost_price: 0.0,
@@ -281,10 +281,10 @@ export default {
         me.formProduct = {};
       });
     },
-    OpenEditProduct(producto) {
+    OpenEditProduct(product) {
       let me = this;
       $("#productModal").modal("show");
-      me.formProduct = producto;
+      me.formProduct = product;
     },
 
     EditProduct() {
