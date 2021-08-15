@@ -93,36 +93,58 @@
             />
           </div>
           <div class="form-group col-6">
+            <label for="sale_price_tax_exc">Precio venta sin iva</label>
+            <input
+              type="number"
+              step="any"
+              class="form-control"
+              id="sale_price_tax_exc"
+              v-model="formProduct.sale_price_tax_exc"
+              placeholder=""
+            />
+          </div>
+          <div class="form-group col-6">
             <label for="gain">Ganancia</label>
             <input
               type="number"
               step="any"
               class="form-control"
               id="gain"
-              v-model="formProduct.gain"
+              :value="gain"
               placeholder=""
+              readonly="readonly"
             />
           </div>
           <div class="form-group col-6">
-            <label for="sale_price">Precio Venta</label>
+            <label for="sale_price_tax_inc">Precio venta con iva</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="sale_price"
-              v-model="formProduct.sale_price"
+              id="sale_price_tax_inc"
+              :value="sale_price_tax_inc"
               placeholder=""
             />
           </div>
-
           <div class="form-group col-6">
-            <label for="wholesale_price">Precio Mayoreo</label>
+            <label for="wholesale_price_tax_exc">Precio Mayoreo sin iva</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="wholesale_price"
-              v-model="formProduct.wholesale_price"
+              id="wholesale_price_tax_exc"
+              v-model="formProduct.wholesale_price_tax_exc"
+              placeholder=""
+            />
+          </div>
+          <div class="form-group col-6">
+            <label for="wholesale_price_tax_inc">Precio Mayoreo con iva</label>
+            <input
+              type="number"
+              step="any"
+              class="form-control"
+              id="wholesale_price_tax_inc"
+              v-model="formProduct.wholesale_price_tax_inc"
               placeholder=""
             />
           </div>
@@ -136,7 +158,11 @@
             v-model="formProduct.category_id"
           >
             <option value="0">--Select--</option>
-            <option v-for="category in categoriesListing" :key="category.id" value="category.id">
+            <option
+              v-for="category in categoriesListing"
+              :key="category.id"
+              value="category.id"
+            >
               {{ category.name }}
             </option>
           </select>
@@ -214,8 +240,10 @@ export default {
         tax_id: 0,
         cost_price: 0.0,
         gain: 0.0,
-        sale_price: 0.0,
-        wholesale_price: 0.0,
+        sale_price_tax_exc: 0.0,
+        sale_price_tax_inc: 0.0,
+        wholesale_price_tax_exc: 0.0,
+        wholesale_price_tax_inc: 0.0,
         category_id: 0,
         stock: 0,
         minimum: 0.0,
@@ -225,6 +253,12 @@ export default {
       taxListing: {},
       categoriesListing: {},
     };
+  },
+  computed: {
+    gain: function () {
+      return (this.formProduct.gain =
+        this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
+    },
   },
   methods: {
     listTaxes() {
@@ -268,9 +302,11 @@ export default {
       me.formProduct = {};
     },
   },
-  mounted() {
+  created() {
     this.listTaxes();
     this.listCategories();
   },
+
+  mounted() {},
 };
 </script>

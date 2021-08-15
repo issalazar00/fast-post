@@ -99,7 +99,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <crear-editar-producto ref="CrearEditarProducto" />
+            <create-edit-product ref="CreateEditProduct" />
           </div>
           <div class="modal-footer">
             <button
@@ -124,9 +124,9 @@
 </template>
 
 <script>
-import CrearEditarProducto from "./CrearEditarProducto.vue";
+import CreateEditProduct from "./CreateEditProduct.vue";
 export default {
-  components: { CrearEditarProducto },
+  components: { CreateEditProduct },
   data() {
     return {
       listadoProductos: {},
@@ -147,19 +147,19 @@ export default {
     GuardarProducto: function () {
       let me = this;
       if (this.edit == false) {
-        this.$refs.CrearEditarProducto.CrearProducto();
+        this.$refs.CreateEditProduct.CrearProducto();
       } else {
-        this.$refs.CrearEditarProducto.EditarProducto();
+        this.$refs.CreateEditProduct.EditarProducto();
       }
       this.listarProductos(1);
     },
 
     MostrarDatos: function (product) {
-      this.$refs.CrearEditarProducto.AbrirEdicionProducto(product);
+      this.$refs.CreateEditProduct.AbrirEdicionProducto(product);
     },
     CerrarModal: function () {
       let me = this;
-      this.$refs.CrearEditarProducto.ResetarDatos();
+      this.$refs.CreateEditProduct.ResetarDatos();
       this.listarProductos(1);
     },
     ActivarProducto: function (id) {

@@ -14,7 +14,7 @@ import VueRouter from 'vue-router'
 import Clients from './components/Clients.vue'
 import CreateEditClient from './components/CreateEditClient.vue'
 import Productos from './components/Productos.vue'
-import CrearEditarProducto from './components/CrearEditarProducto.vue'
+import CreateEditProduct from './components/CreateEditProduct.vue'
 import Impuestos from './components/Impuestos.vue'
 import CrearEditarImpuesto from './components/CrearEditarImpuesto.vue'
 
@@ -58,7 +58,7 @@ const routes = [
   { path: '/clients', component: Clients },
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/productos', component: Productos },
-  { path: '/crear-editar-producto', component: CrearEditarProducto },
+  { path: '/create-edit-product', component: CreateEditProduct },
   { path: '/impuestos', component: Impuestos },
   { path: '/crear-editar-impuesto', component: CrearEditarImpuesto },
   { path: '/suppliers', component: Suppliers },

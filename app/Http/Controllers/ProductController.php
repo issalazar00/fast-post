@@ -100,8 +100,10 @@ class ProductController extends Controller
         $product->type = $request['type'];
         $product->cost_price = $request['cost_price'];
         $product->gain = $request['gain'];
-        $product->sale_price = $request['sale_price'];
-        $product->wholesale_price = $request['wholesale_price'];
+        $product->sale_price_tax_exc = $request['sale_price_tax_exc'];
+        $product->sale_price_tax_inc = $request['sale_price_tax_inc'];
+        $product->wholesale_price_tax_exc = $request['wholesale_price_tax_exc'];
+        $product->wholesale_price_tax_inc = $request['wholesale_price_tax_inc'];
         $product->stock = $request['stock'];
         $product->quantity = $request['quantity'];
         $product->minimum = $request['minimum'];
