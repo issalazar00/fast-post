@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="col-12">
+    <moon-loader :loading="isLoading" :color="'#032F6C'" :size="100" />
+    <div class="col-12" v-if="!isLoading">
       <h3 class="page-header">Productos</h3>
       <div class="row justify-content-end mx-4">
         <button
@@ -37,7 +38,7 @@
               <td>{{ product.barcode }}</td>
               <td>{{ product.product }}</td>
               <td>{{ product.category }}</td>
-              <td class="text-right">$ {{ product.sale_price }}</td>
+              <td class="text-right">$ {{ product.sale_price_tax_exc }}</td>
               <td>{{ product.quantity }}</td>
               <td>
                 <button
@@ -56,7 +57,6 @@
                 </button>
               </td>
               <td>
-
                 <button
                   class="btn btn-success"
                   @click="MostrarDatos(product), (edit = true)"
@@ -129,19 +129,30 @@ export default {
   components: { CreateEditProduct },
   data() {
     return {
+      isLoading: false,
       listadoProductos: {},
       edit: false,
     };
   },
   created() {
+    //
     this.listarProductos(1);
+    // axios
+    //   .get("api/products?page=1")
+    //   .then(function (response) {
+    //     this.listadoProductos = response.data.products;
+    //   })
   },
   methods: {
     listarProductos(page = 1) {
+      this.isLoading = true;
       let me = this;
-      axios.get("api/products?page=" + page).then(function (response) {
-        me.listadoProductos = response.data.products;
-      });
+      axios
+        .get("api/products?page=" + page)
+        .then(function (response) {
+          me.listadoProductos = response.data.products;
+        })
+        .finally(() => (this.isLoading = false));
     },
 
     GuardarProducto: function () {
@@ -168,7 +179,7 @@ export default {
         me.listarProductos(1);
       });
     },
-    DesactivarProducto : function (id) {
+    DesactivarProducto: function (id) {
       let me = this;
       axios.post("api/products/" + id + "/deactivate").then(function () {
         me.listarProductos(1);
@@ -177,6 +188,7 @@ export default {
   },
 
   mounted() {
+    // this.listarProductos(1);
   },
 };
 </script>

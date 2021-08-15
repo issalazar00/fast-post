@@ -7,10 +7,9 @@
 require('./bootstrap');
 Vue.component('pagination', require('laravel-vue-pagination'));
 
-window.Vue = require('vue').default;
-
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { VueSpinners } from '@saeris/vue-spinners'
 import Clients from './components/Clients.vue'
 import CreateEditClient from './components/CreateEditClient.vue'
 import Productos from './components/Productos.vue'
@@ -29,7 +28,7 @@ import DetailsOrder from './components/DetailsOrder'
 import CreateEditOrder from './components/CreateEditOrder'
 
 Vue.use(VueRouter)
-
+Vue.use(VueSpinners)
 
 /**
  * The following block of code may be used to automatically register your

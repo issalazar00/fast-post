@@ -259,6 +259,7 @@ export default {
       return (this.formProduct.gain =
         this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
     },
+    sale_price_tax_inc: function () {},
   },
   methods: {
     listTaxes() {
