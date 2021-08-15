@@ -15,7 +15,7 @@
             />
           </div>
           <div class="form-group col-7">
-            <label for="product">Descripcion Producto</label>
+            <label for="product">Descripción Producto</label>
             <input
               type="text"
               class="form-control"

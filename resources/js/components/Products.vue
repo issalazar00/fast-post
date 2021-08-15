@@ -46,14 +46,14 @@
                   <button
                     class="btn btn-success"
                     v-if="product.state == 1"
-                    @click="DesactivarProducto(product.id)"
+                    @click="DeactivateProduct(product.id)"
                   >
                     <i class="bi bi-check-circle-fill"></i>
                   </button>
                   <button
                     class="btn btn-danger"
                     v-else
-                    @click="ActivarProducto(product.id)"
+                    @click="ActivateProduct(product.id)"
                   >
                     <i class="bi bi-x-circle"></i>
                   </button>
@@ -61,7 +61,7 @@
                 <td>
                   <button
                     class="btn btn-success"
-                    @click="MostrarDatos(product), (edit = true)"
+                    @click="ShowData(product), (edit = true)"
                   >
                     Editar
                   </button>
@@ -108,14 +108,14 @@
             <button
               type="button"
               class="btn btn-secondary"
-              @click="CerrarModal()"
+              @click="CloseModal()"
             >
               Close
             </button>
             <button
               type="button"
               class="btn btn-primary"
-              @click="GuardarProducto()"
+              @click="SaveProduct()"
             >
               Guardar
             </button>
@@ -138,13 +138,7 @@ export default {
     };
   },
   created() {
-    //
-    this.listProducts(1);
-    // axios
-    //   .get("api/products?page=1")
-    //   .then(function (response) {
-    //     this.listingProducts = response.data.products;
-    //   })
+    this.listProducts(1);  
   },
   methods: {
     listProducts(page = 1) {
@@ -158,7 +152,7 @@ export default {
         .finally(() => (this.isLoading = false));
     },
 
-    GuardarProducto: function () {
+    SaveProduct: function () {
       let me = this;
       if (this.edit == false) {
         this.$refs.CreateEditProduct.CreateProduct();
@@ -168,21 +162,21 @@ export default {
       this.listProducts(1);
     },
 
-    MostrarDatos: function (product) {
+    ShowData: function (product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);
     },
-    CerrarModal: function () {
+    CloseModal: function () {
       let me = this;
       this.$refs.CreateEditProduct.ResetData();
       this.listProducts(1);
     },
-    ActivarProducto: function (id) {
+    ActivateProduct: function (id) {
       let me = this;
       axios.post("api/products/" + id + "/activate").then(function () {
         me.listProducts(1);
       });
     },
-    DesactivarProducto: function (id) {
+    DeactivateProduct: function (id) {
       let me = this;
       axios.post("api/products/" + id + "/deactivate").then(function () {
         me.listProducts(1);

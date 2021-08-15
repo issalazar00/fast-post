@@ -10566,12 +10566,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    //
-    this.listProducts(1); // axios
-    //   .get("api/products?page=1")
-    //   .then(function (response) {
-    //     this.listingProducts = response.data.products;
-    //   })
+    this.listProducts(1);
   },
   methods: {
     listProducts: function listProducts() {
@@ -10586,7 +10581,7 @@ __webpack_require__.r(__webpack_exports__);
         return _this.isLoading = false;
       });
     },
-    GuardarProducto: function GuardarProducto() {
+    SaveProduct: function SaveProduct() {
       var me = this;
 
       if (this.edit == false) {
@@ -10597,21 +10592,21 @@ __webpack_require__.r(__webpack_exports__);
 
       this.listProducts(1);
     },
-    MostrarDatos: function MostrarDatos(product) {
+    ShowData: function ShowData(product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);
     },
-    CerrarModal: function CerrarModal() {
+    CloseModal: function CloseModal() {
       var me = this;
       this.$refs.CreateEditProduct.ResetData();
       this.listProducts(1);
     },
-    ActivarProducto: function ActivarProducto(id) {
+    ActivateProduct: function ActivateProduct(id) {
       var me = this;
       axios.post("api/products/" + id + "/activate").then(function () {
         me.listProducts(1);
       });
     },
-    DesactivarProducto: function DesactivarProducto(id) {
+    DeactivateProduct: function DeactivateProduct(id) {
       var me = this;
       axios.post("api/products/" + id + "/deactivate").then(function () {
         me.listProducts(1);
@@ -49931,7 +49926,7 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "form-group col-7" }, [
             _c("label", { attrs: { for: "product" } }, [
-              _vm._v("Descripcion Producto")
+              _vm._v("Descripción Producto")
             ]),
             _vm._v(" "),
             _c("input", {
@@ -51946,7 +51941,7 @@ var render = function() {
                                       staticClass: "btn btn-success",
                                       on: {
                                         click: function($event) {
-                                          return _vm.DesactivarProducto(
+                                          return _vm.DeactivateProduct(
                                             product.id
                                           )
                                         }
@@ -51964,7 +51959,7 @@ var render = function() {
                                       staticClass: "btn btn-danger",
                                       on: {
                                         click: function($event) {
-                                          return _vm.ActivarProducto(product.id)
+                                          return _vm.ActivateProduct(product.id)
                                         }
                                       }
                                     },
@@ -51979,8 +51974,7 @@ var render = function() {
                                   staticClass: "btn btn-success",
                                   on: {
                                     click: function($event) {
-                                      _vm.MostrarDatos(product),
-                                        (_vm.edit = true)
+                                      _vm.ShowData(product), (_vm.edit = true)
                                     }
                                   }
                                 },
@@ -52058,7 +52052,7 @@ var render = function() {
                   attrs: { type: "button" },
                   on: {
                     click: function($event) {
-                      return _vm.CerrarModal()
+                      return _vm.CloseModal()
                     }
                   }
                 },
@@ -52072,7 +52066,7 @@ var render = function() {
                   attrs: { type: "button" },
                   on: {
                     click: function($event) {
-                      return _vm.GuardarProducto()
+                      return _vm.SaveProduct()
                     }
                   }
                 },
