@@ -1,6 +1,6 @@
 <template>
   <div class="col-12">
-    <h3 class="page-header">Impuestos</h3>
+    <h3 class="page-header">Taxes</h3>
     <div class="row justify-content-end mx-4">
       <button
         type="button"
@@ -100,7 +100,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <crear-editar-impuesto ref="CreateEditTax" />
+            <create-edit-tax ref="CreateEditTax" />
           </div>
           <div class="modal-footer">
             <button
@@ -121,9 +121,9 @@
 </template>
 
 <script>
-import CrearEditarImpuesto from "./CrearEditarImpuesto.vue";
+import CreateEditTax from "./CreateEditTax.vue";
 export default {
-  components: { CrearEditarImpuesto },
+  components: { CreateEditTax },
   data() {
     return {
       taxListing: {},

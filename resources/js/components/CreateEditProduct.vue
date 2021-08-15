@@ -274,20 +274,20 @@ export default {
         me.categoriesListing = response.data.categories.data;
       });
     },
-    CrearProducto() {
+    CreateProduct() {
       let me = this;
       axios.post("api/products", this.formProduct).then(function () {
         $("#productModal").modal("hide");
         me.formProduct = {};
       });
     },
-    AbrirEdicionProducto(producto) {
+    OpenEditProduct(producto) {
       let me = this;
       $("#productModal").modal("show");
       me.formProduct = producto;
     },
 
-    EditarProducto() {
+    EditProduct() {
       let me = this;
       axios
         .put("api/products/" + this.formProduct.id, this.formProduct)
@@ -297,7 +297,7 @@ export default {
         });
     },
 
-    ResetarDatos() {
+    ResetData() {
       let me = this;
       $("#productModal").modal("hide");
       me.formProduct = {};

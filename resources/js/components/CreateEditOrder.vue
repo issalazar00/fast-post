@@ -163,13 +163,11 @@
                 placeholder="Código de barras | Nombre de producto"
                 aria-label=" with two button addons"
                 aria-describedby="button-addon4"
+                v-model="filterProducts"
               />
               <div class="input-group-append" id="button-addon4">
-                <button
-                  class="btn btn-outline-secondary"
-                  type="button"
-                  @click="searchClient()"
-                >
+                <button class="btn btn-outline-secondary" type="button">
+                  <!-- @click="searchClient()" -->
                   Buscar Cliente
                 </button>
               </div>
@@ -188,10 +186,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  v-for="product in listingProducts.data"
-                  v-bind:key="product.id"
-                >
+                <tr v-for="product in filteredProducts" v-bind:key="product.id">
                   <td>{{ product.id }}</td>
                   <td>{{ product.barcode }}</td>
                   <td>{{ product.product }}</td>
@@ -278,7 +273,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="client in listingClient.data" v-bind:key="client.id">
+                <tr v-for="client in listingClient" v-bind:key="client.id">
                   <th scope="row">{{ client.code }}</th>
                   <td>{{ client.name }}</td>
                   <td>{{ client.document }}</td>
@@ -292,7 +287,10 @@
                     <span class="badge badge-success">Activo</span>
                   </td>
                   <td>
-                    <button class="btn btn-outline-secondary" @click="addClient(client.id)">
+                    <button
+                      class="btn btn-outline-secondary"
+                      @click="addClient(client.id)"
+                    >
                       <i class="bi bi-plus-circle"></i>
                     </button>
                   </td>
@@ -319,7 +317,11 @@
 export default {
   data() {
     return {
-      listingProducts: {},
+      filterProducts: "",
+      listingProducts: {
+        type: Array,
+        default: () => [],
+      },
       listingClient: {},
       order: {
         id_client: 0,
@@ -333,13 +335,29 @@ export default {
       },
     };
   },
+  computed: {
+    filteredProducts: function () {
+      if (!this.filterProducts) {
+        return this.listingProducts;
+      }
+      return this.listingProducts.filter(
+        (product) =>
+          product.product
+            .toLowerCase()
+            .includes(this.filterProducts.toLowerCase()) ||
+          product.barcode
+            .toLowerCase()
+            .includes(this.filterProducts.toLowerCase())
+      );
+    },
+  },
   methods: {
     addProduct() {},
     addClient() {},
     listProducts() {
       let me = this;
       axios.get("api/products").then(function (response) {
-        me.listingProducts = response.data.products;
+        me.listingProducts = response.data.products.data;
       });
     },
     searchProduct() {},

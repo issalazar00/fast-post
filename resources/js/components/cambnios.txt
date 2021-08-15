@@ -1,4 +1,0 @@
-Se elimino telefono
-zipcode
-fax
-code
