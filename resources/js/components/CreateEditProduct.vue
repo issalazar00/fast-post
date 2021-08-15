@@ -70,11 +70,12 @@
           <select
             class="form-control"
             id="tax_id"
-            v-model="formProduct.tax_id"
+            v-model="tax"
             required
+            @click="uploadTax(tax)"
           >
             <option value="0">--Select--</option>
-            <option v-for="tax in taxListing" :key="tax.id" value="tax.id">
+            <option v-for="tax in taxListing" :key="tax.id" :value="tax">
               {{ tax.percentage }}
             </option>
           </select>
@@ -124,6 +125,7 @@
               id="sale_price_tax_inc"
               :value="sale_price_tax_inc"
               placeholder=""
+              readonly
             />
           </div>
           <div class="form-group col-6">
@@ -144,8 +146,8 @@
               step="any"
               class="form-control"
               id="wholesale_price_tax_inc"
-              v-model="formProduct.wholesale_price_tax_inc"
-              placeholder=""
+              :value="wholesale_price_tax_inc"
+              readonly
             />
           </div>
         </div>
@@ -233,11 +235,12 @@ export default {
   data() {
     return {
       //Variables de product
+      tax: {},
       formProduct: {
         barcode: "",
         product: "",
         type: 0,
-        tax_id: 0,
+        tax_id: 1,
         cost_price: 0.0,
         gain: 0.0,
         sale_price_tax_exc: 0.0,
@@ -256,10 +259,32 @@ export default {
   },
   computed: {
     gain: function () {
-      return (this.formProduct.gain =
-        this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
+      return parseFloat(
+        (this.formProduct.gain =
+          this.formProduct.sale_price_tax_exc - this.formProduct.cost_price)
+      );
     },
-    sale_price_tax_inc: function () {},
+    sale_price_tax_inc: function () {
+      let percentage = this.tax.percentage / 100;
+
+      if (!this.tax.percentage) {
+        return this.formProduct.sale_price_tax_exc;
+      }
+      return (this.formProduct.sale_price_tax_inc = Math.round(
+        parseFloat(this.formProduct.sale_price_tax_exc) +
+          this.formProduct.sale_price_tax_exc * percentage
+      ));
+    },
+    wholesale_price_tax_inc() {
+      let percentage = this.tax.percentage / 100;
+      if (!this.tax.percentage) {
+        return this.formProduct.wholesale_price_tax_exc;
+      }
+      return (this.formProduct.wholesale_price_tax_inc = Math.round(
+        parseFloat(this.formProduct.wholesale_price_tax_exc) +
+          this.formProduct.wholesale_price_tax_exc * percentage
+      ));
+    },
   },
   methods: {
     listTaxes() {
@@ -301,6 +326,10 @@ export default {
       let me = this;
       $("#productModal").modal("hide");
       me.formProduct = {};
+    },
+    uploadTax(tax) {
+      // console.log(tax);
+      this.formProduct.tax_id = tax.id;
     },
   },
   created() {

@@ -9952,15 +9952,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       //Variables de product
+      tax: {},
       formProduct: {
         barcode: "",
         product: "",
         type: 0,
-        tax_id: 0,
+        tax_id: 1,
         cost_price: 0.0,
         gain: 0.0,
         sale_price_tax_exc: 0.0,
@@ -9979,9 +9982,26 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     gain: function gain() {
-      return this.formProduct.gain = this.formProduct.sale_price_tax_exc - this.formProduct.cost_price;
+      return parseFloat(this.formProduct.gain = this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
     },
-    sale_price_tax_inc: function sale_price_tax_inc() {}
+    sale_price_tax_inc: function sale_price_tax_inc() {
+      var percentage = this.tax.percentage / 100;
+
+      if (!this.tax.percentage) {
+        return this.formProduct.sale_price_tax_exc;
+      }
+
+      return this.formProduct.sale_price_tax_inc = Math.round(parseFloat(this.formProduct.sale_price_tax_exc) + this.formProduct.sale_price_tax_exc * percentage);
+    },
+    wholesale_price_tax_inc: function wholesale_price_tax_inc() {
+      var percentage = this.tax.percentage / 100;
+
+      if (!this.tax.percentage) {
+        return this.formProduct.wholesale_price_tax_exc;
+      }
+
+      return this.formProduct.wholesale_price_tax_inc = Math.round(parseFloat(this.formProduct.wholesale_price_tax_exc) + this.formProduct.wholesale_price_tax_exc * percentage);
+    }
   },
   methods: {
     listTaxes: function listTaxes() {
@@ -10019,6 +10039,10 @@ __webpack_require__.r(__webpack_exports__);
       var me = this;
       $("#productModal").modal("hide");
       me.formProduct = {};
+    },
+    uploadTax: function uploadTax(tax) {
+      // console.log(tax);
+      this.formProduct.tax_id = tax.id;
     }
   },
   created: function created() {
@@ -50037,13 +50061,16 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.formProduct.tax_id,
-                  expression: "formProduct.tax_id"
+                  value: _vm.tax,
+                  expression: "tax"
                 }
               ],
               staticClass: "form-control",
               attrs: { id: "tax_id", required: "" },
               on: {
+                click: function($event) {
+                  return _vm.uploadTax(_vm.tax)
+                },
                 change: function($event) {
                   var $$selectedVal = Array.prototype.filter
                     .call($event.target.options, function(o) {
@@ -50053,11 +50080,9 @@ var render = function() {
                       var val = "_value" in o ? o._value : o.value
                       return val
                     })
-                  _vm.$set(
-                    _vm.formProduct,
-                    "tax_id",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
+                  _vm.tax = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
                 }
               }
             },
@@ -50065,15 +50090,11 @@ var render = function() {
               _c("option", { attrs: { value: "0" } }, [_vm._v("--Select--")]),
               _vm._v(" "),
               _vm._l(_vm.taxListing, function(tax) {
-                return _c(
-                  "option",
-                  { key: tax.id, attrs: { value: "tax.id" } },
-                  [
-                    _vm._v(
-                      "\n            " + _vm._s(tax.percentage) + "\n          "
-                    )
-                  ]
-                )
+                return _c("option", { key: tax.id, domProps: { value: tax } }, [
+                  _vm._v(
+                    "\n            " + _vm._s(tax.percentage) + "\n          "
+                  )
+                ])
               })
             ],
             2
@@ -50180,7 +50201,8 @@ var render = function() {
                 type: "number",
                 step: "any",
                 id: "sale_price_tax_inc",
-                placeholder: ""
+                placeholder: "",
+                readonly: ""
               },
               domProps: { value: _vm.sale_price_tax_inc }
             })
@@ -50229,34 +50251,14 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.formProduct.wholesale_price_tax_inc,
-                  expression: "formProduct.wholesale_price_tax_inc"
-                }
-              ],
               staticClass: "form-control",
               attrs: {
                 type: "number",
                 step: "any",
                 id: "wholesale_price_tax_inc",
-                placeholder: ""
+                readonly: ""
               },
-              domProps: { value: _vm.formProduct.wholesale_price_tax_inc },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(
-                    _vm.formProduct,
-                    "wholesale_price_tax_inc",
-                    $event.target.value
-                  )
-                }
-              }
+              domProps: { value: _vm.wholesale_price_tax_inc }
             })
           ])
         ]),
