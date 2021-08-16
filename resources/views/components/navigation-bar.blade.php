@@ -14,14 +14,14 @@
                     <router-link class="nav-link " to="/orders">Tickets</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link " to="/productos">Productos</router-link>
+                    <router-link class="nav-link " to="/products">Productos</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link " to="/categories">Categorias</router-link>
                 </li>
                 
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/impuestos">Impuestos</router-link>
+                    <router-link class="nav-link" to="/impuestos">Taxes</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" to="/clients">Clientes</router-link>

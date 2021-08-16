@@ -1,20 +1,29 @@
 <template>
   <div class="col-12">
-    <h3 class="page-header">Categorias</h3>
-    <div class="row justify-content-end mx-4">
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-toggle="modal"
-        data-target="#categoryModal"
-        @click="edit = false"
-      >
-        Crear Categoria
-      </button>
+    <div class="w-100 text-center">
+      <h3 class="page-header">Categorias</h3>
+
+      <ring-loader
+        class="m-auto"
+        :loading="isLoading"
+        :color="'#032F6C'"
+        :size="100"
+      />
     </div>
 
-    <section>
-      <div class="card-body">
+    <div class="card-body">
+      <section v-if="!isLoading">
+        <div class="row justify-content-end my-4">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-toggle="modal"
+            data-target="#categoryModal"
+            @click="edit = false"
+          >
+            Crear Categoria
+          </button>
+        </div>
         <table class="table table-sm table-bordered table-responsive-sm">
           <thead class="thead-primary">
             <tr>
@@ -58,6 +67,7 @@
             </tr>
           </tbody>
         </table>
+
         <pagination
           :align="'center'"
           :data="categoryListing"
@@ -66,8 +76,9 @@
           <span slot="prev-nav">&lt; Previous</span>
           <span slot="next-nav">Next &gt;</span></pagination
         >
-      </div>
-    </section>
+      </section>
+    </div>
+
     <!-- Modal para creacion y edicion de categorys -->
     <div
       class="modal fade"
@@ -120,6 +131,7 @@ export default {
   components: { CreateEditCategory },
   data() {
     return {
+      isLoading: false,
       categoryListing: {},
       edit: false,
     };
@@ -129,10 +141,14 @@ export default {
   },
   methods: {
     listCategories(page = 1) {
+      this.isLoading = true;
       let me = this;
-      axios.get("api/category?page=" + page).then(function (response) {
-        me.categoryListing = response.data.categories;
-      });
+      axios
+        .get("api/category?page=" + page)
+        .then(function (response) {
+          me.categoryListing = response.data.categories;
+        })
+        .finally(() => (this.isLoading = false));
     },
     SaveCategory: function () {
       let me = this;

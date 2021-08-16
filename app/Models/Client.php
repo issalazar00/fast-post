@@ -21,7 +21,7 @@ class Client extends Model
         'departament',
         'city',
         'type_document',
-        'documet',
+        'document',
         'active',
         'tax'
     ];
