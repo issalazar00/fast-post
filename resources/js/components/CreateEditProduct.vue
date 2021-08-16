@@ -100,7 +100,8 @@
               step="any"
               class="form-control"
               id="sale_price_tax_exc"
-              v-model="formProduct.sale_price_tax_exc"
+              readonly
+              :value="sale_price_tax_exc"
               placeholder=""
             />
           </div>
@@ -123,9 +124,8 @@
               step="any"
               class="form-control"
               id="sale_price_tax_inc"
-              :value="sale_price_tax_inc"
+              v-model="formProduct.sale_price_tax_inc"
               placeholder=""
-              readonly
             />
           </div>
           <div class="form-group col-6">
@@ -135,8 +135,9 @@
               step="any"
               class="form-control"
               id="wholesale_price_tax_exc"
-              v-model="formProduct.wholesale_price_tax_exc"
+              :value="wholesale_price_tax_exc"
               placeholder=""
+              readonly
             />
           </div>
           <div class="form-group col-6">
@@ -146,8 +147,8 @@
               step="any"
               class="form-control"
               id="wholesale_price_tax_inc"
-              :value="wholesale_price_tax_inc"
-              readonly
+              v-model="formProduct.wholesale_price_tax_inc"
+              
             />
           </div>
         </div>
@@ -259,30 +260,22 @@ export default {
   },
   computed: {
     gain: function () {
-      return parseFloat(
-        (this.formProduct.gain =
-          this.formProduct.sale_price_tax_exc - this.formProduct.cost_price)
-      );
-    },
-    sale_price_tax_inc: function () {
-      let percentage = this.tax.percentage / 100;
-
-      if (!this.tax.percentage) {
-        return this.formProduct.sale_price_tax_exc;
+      if (this.formProduct.sale_price_tax_exc != 0) {
+        return parseFloat(
+          (this.formProduct.gain =
+            this.formProduct.sale_price_tax_exc - this.formProduct.cost_price)
+        );
       }
-      return (this.formProduct.sale_price_tax_inc = Math.round(
-        parseFloat(this.formProduct.sale_price_tax_exc) +
-          this.formProduct.sale_price_tax_exc * percentage
-      ));
     },
-    wholesale_price_tax_inc() {
+    sale_price_tax_exc: function () {
       let percentage = this.tax.percentage / 100;
-      if (!this.tax.percentage) {
-        return this.formProduct.wholesale_price_tax_exc;
-      }
-      return (this.formProduct.wholesale_price_tax_inc = Math.round(
-        parseFloat(this.formProduct.wholesale_price_tax_exc) +
-          this.formProduct.wholesale_price_tax_exc * percentage
+      return (this.formProduct.sale_price_tax_exc =
+        parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage));
+    },
+    wholesale_price_tax_exc() {
+      let percentage = this.tax.percentage / 100;
+      return (this.formProduct.wholesale_price_tax_exc = Math.round(
+        parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)
       ));
     },
   },

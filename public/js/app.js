@@ -9971,6 +9971,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -9999,25 +10000,17 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     gain: function gain() {
-      return parseFloat(this.formProduct.gain = this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
-    },
-    sale_price_tax_inc: function sale_price_tax_inc() {
-      var percentage = this.tax.percentage / 100;
-
-      if (!this.tax.percentage) {
-        return this.formProduct.sale_price_tax_exc;
+      if (this.formProduct.sale_price_tax_exc != 0) {
+        return parseFloat(this.formProduct.gain = this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
       }
-
-      return this.formProduct.sale_price_tax_inc = Math.round(parseFloat(this.formProduct.sale_price_tax_exc) + this.formProduct.sale_price_tax_exc * percentage);
     },
-    wholesale_price_tax_inc: function wholesale_price_tax_inc() {
+    sale_price_tax_exc: function sale_price_tax_exc() {
       var percentage = this.tax.percentage / 100;
-
-      if (!this.tax.percentage) {
-        return this.formProduct.wholesale_price_tax_exc;
-      }
-
-      return this.formProduct.wholesale_price_tax_inc = Math.round(parseFloat(this.formProduct.wholesale_price_tax_exc) + this.formProduct.wholesale_price_tax_exc * percentage);
+      return this.formProduct.sale_price_tax_exc = parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage);
+    },
+    wholesale_price_tax_exc: function wholesale_price_tax_exc() {
+      var percentage = this.tax.percentage / 100;
+      return this.formProduct.wholesale_price_tax_exc = Math.round(parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage));
     }
   },
   methods: {
@@ -50173,34 +50166,15 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.formProduct.sale_price_tax_exc,
-                  expression: "formProduct.sale_price_tax_exc"
-                }
-              ],
               staticClass: "form-control",
               attrs: {
                 type: "number",
                 step: "any",
                 id: "sale_price_tax_exc",
+                readonly: "",
                 placeholder: ""
               },
-              domProps: { value: _vm.formProduct.sale_price_tax_exc },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(
-                    _vm.formProduct,
-                    "sale_price_tax_exc",
-                    $event.target.value
-                  )
-                }
-              }
+              domProps: { value: _vm.sale_price_tax_exc }
             })
           ]),
           _vm._v(" "),
@@ -50226,15 +50200,34 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.formProduct.sale_price_tax_inc,
+                  expression: "formProduct.sale_price_tax_inc"
+                }
+              ],
               staticClass: "form-control",
               attrs: {
                 type: "number",
                 step: "any",
                 id: "sale_price_tax_inc",
-                placeholder: "",
-                readonly: ""
+                placeholder: ""
               },
-              domProps: { value: _vm.sale_price_tax_inc }
+              domProps: { value: _vm.formProduct.sale_price_tax_inc },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.formProduct,
+                    "sale_price_tax_inc",
+                    $event.target.value
+                  )
+                }
+              }
             })
           ]),
           _vm._v(" "),
@@ -50244,34 +50237,15 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.formProduct.wholesale_price_tax_exc,
-                  expression: "formProduct.wholesale_price_tax_exc"
-                }
-              ],
               staticClass: "form-control",
               attrs: {
                 type: "number",
                 step: "any",
                 id: "wholesale_price_tax_exc",
-                placeholder: ""
+                placeholder: "",
+                readonly: ""
               },
-              domProps: { value: _vm.formProduct.wholesale_price_tax_exc },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(
-                    _vm.formProduct,
-                    "wholesale_price_tax_exc",
-                    $event.target.value
-                  )
-                }
-              }
+              domProps: { value: _vm.wholesale_price_tax_exc }
             })
           ]),
           _vm._v(" "),
@@ -50281,14 +50255,33 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.formProduct.wholesale_price_tax_inc,
+                  expression: "formProduct.wholesale_price_tax_inc"
+                }
+              ],
               staticClass: "form-control",
               attrs: {
                 type: "number",
                 step: "any",
-                id: "wholesale_price_tax_inc",
-                readonly: ""
+                id: "wholesale_price_tax_inc"
               },
-              domProps: { value: _vm.wholesale_price_tax_inc }
+              domProps: { value: _vm.formProduct.wholesale_price_tax_inc },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.formProduct,
+                    "wholesale_price_tax_inc",
+                    $event.target.value
+                  )
+                }
+              }
             })
           ])
         ]),
