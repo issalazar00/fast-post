@@ -71,13 +71,18 @@ class UserController extends Controller
                 $user->api_token = hash('sha256', $token);
                 $user->update();
 
+                $permissions = collect($user->getAllPermissions());
+                $permissions = $permissions->groupBy('component');                
+                
                 $data = [
                     'status' => 'success',
                     'code' => 200,
                     'message' => 'Login correcto',
                     'user' => [
                         'sub' => $user->id,
+                        'name' => $user->name,
                         'email' => $user->email,
+                        'permissions' => $permissions,
                         'iat' => time(),
                         'exp' => time() + (7 * 60),
                         'api_token' =>  $token

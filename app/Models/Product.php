@@ -34,6 +34,9 @@ class Product extends Model
         'category_id',
         'tax_id'
     ];
+    protected $with = [
+        'category'
+    ];
 
     public function category()
     {

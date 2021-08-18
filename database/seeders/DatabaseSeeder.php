@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,6 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(SupplierSeeder::class);
         $this->call(ClientSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(ProductTableSeeder::class);
+        // $this->call(ProductTableSeeder::class);
+        $this->call(UserSeeder::class);
+        Product::factory()->create();
     }
 }

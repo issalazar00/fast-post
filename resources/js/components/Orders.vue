@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="header">
-
       <h3 class="h3 w-100">Tickets</h3>
       <div class="row justify-content-end mx-4">
         <button
@@ -192,3 +191,16 @@
     <div class="footer"></div>
   </div>
 </template>
+<script>
+
+export default {
+  components : {
+    
+  },
+  data(){
+    return{
+      data: 'Tickets'
+    }
+  }
+}
+</script>
