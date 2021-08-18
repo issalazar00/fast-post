@@ -7,34 +7,34 @@
 require('./bootstrap');
 Vue.component('pagination', require('laravel-vue-pagination'));
 
-window.Vue = require('vue').default;
-
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { VueSpinners } from '@saeris/vue-spinners'
 
 import Login from './components/Login.vue'
 
-import Clientes from './components/CrearCliente.vue'
-import CrearCliente from './components/CrearCliente.vue'
-import Productos from './components/Productos.vue'
-import CrearEditarProducto from './components/CrearEditarProducto.vue'
-import Impuestos from './components/Impuestos.vue'
-import CrearEditarImpuesto from './components/CrearEditarImpuesto.vue'
+import Clients from './components/Clients.vue'
+import CreateEditClient from './components/CreateEditClient.vue'
+import Products from './components/Products.vue'
+import CreateEditProduct from './components/CreateEditProduct.vue'
+import Taxes from './components/Taxes.vue'
+import CreateEditTax from './components/CreateEditTax.vue'
 
 import Categories from './components/Categories.vue'
 import CreateEditCategory from './components/CreateEditCategory.vue'
 
-import Proveedores from './components/Proveedores.vue'
-import CrearProveedor from './components/CrearProveedor.vue'
+import Suppliers from './components/Suppliers.vue'
+import CreateEditSupplier from './components/CreateEditSupplier.vue'
 
-import Tickets from './components/Tickets'
-import DetailsTicket from './components/DetailsTicket'
+import Orders from './components/Orders'
+import DetailsOrder from './components/DetailsOrder'
+import CreateEditOrder from './components/CreateEditOrder'
 
 //Services
 import global from './services/global.js';
 
 Vue.use(VueRouter)
-
+Vue.use(VueSpinners)
 
 /**
  * The following block of code may be used to automatically register your
@@ -48,7 +48,7 @@ Vue.use(VueRouter)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-// Vue.component('productos', require('./components/Productos.vue').default);
+// Vue.component('productos', require('./components/Products.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -58,22 +58,26 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 // { path: '', component: require('./components/ExampleComponent.vue').default },
 const routes = [
-  
-  { path: '', component: DetailsTicket },
-  { path: '/clientes', component: Clientes },
-  { path: '/crear-cliente', component: CrearCliente },
-  { path: '/productos', component: Productos },
-  { path: '/crear-editar-producto', component: CrearEditarProducto },
-  { path: '/impuestos', component: Impuestos },
-  { path: '/crear-editar-impuesto', component: CrearEditarImpuesto },
-  { path: '/proveedores', component: Proveedores },
-  { path: '/crear-proveedor', component: CrearProveedor },
+
+  { path: '', component: CreateEditOrder },
+  { path: '/clients', component: Clients },
+  { path: '/create-edit-client', component: CreateEditClient },
+  { path: '/products', component: Products },
+  { path: '/create-edit-product', component: CreateEditProduct },
+  { path: '/impuestos', component: Taxes },
+  { path: '/create-edit-tax', component: CreateEditTax },
+  { path: '/suppliers', component: Suppliers },
+  { path: '/create-edit-supplier', component: CreateEditSupplier },
   { path: '/categories', component: Categories },
   { path: '/create-edit-category', component: CreateEditCategory },
-  { path: '/tickets', component: Tickets },//Home
-  { path: '/details-ticket', component: DetailsTicket },
+  { path: '/orders', component: Orders },
+  { path: '/details-order', component: DetailsOrder },
+  { path: '/create-edit-order', component: CreateEditOrder },
   { path: '/login', name:'Login', component: Login },
   { path: '**', component: Login },
+
+
+
 
 ]
 

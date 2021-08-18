@@ -90,13 +90,3 @@
   </div>
 </template>
 
-<script>
-
-export default {
-  data() {
-   return {
-     data: 'Detail ticker '
-   } 
-  },
-}
-</script>
