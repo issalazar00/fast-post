@@ -30,7 +30,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="supplier in supplierListing.data" v-bind:key="supplier.id">
+          <tr v-for="supplier in supplierList.data" v-bind:key="supplier.id">
             <th scope="row">{{ supplier.code }}</th>
             <td>{{ supplier.name }}</td>
             <td>{{ supplier.document }}</td>
@@ -53,7 +53,7 @@
       </table>
       <pagination
         :align="'center'"
-        :data="supplierListing"
+        :data="supplierList"
         @pagination-change-page="listSuppliers"
       >
         <span slot="prev-nav">&lt; Previous</span>
@@ -112,7 +112,7 @@ export default {
   components: { CreateEditSupplier },
   data() {
     return {
-      supplierListing: {},
+      supplierList: {},
       edit: false,
     };
   },
@@ -123,7 +123,7 @@ export default {
     listSuppliers(page = 1) {
       let me = this;
       axios.get("api/suppliers?page=" + page).then(function (response) {
-        me.supplierListing = response.data.suppliers;
+        me.supplierList = response.data.suppliers;
       });
     },
     SaveSupplier: function () {

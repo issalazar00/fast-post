@@ -13,13 +13,18 @@ import { VueSpinners } from '@saeris/vue-spinners'
 
 import Clients from './components/Clients.vue'
 import CreateEditClient from './components/CreateEditClient.vue'
+
 import Products from './components/Products.vue'
 import CreateEditProduct from './components/CreateEditProduct.vue'
+
 import Taxes from './components/Taxes.vue'
 import CreateEditTax from './components/CreateEditTax.vue'
 
 import Categories from './components/Categories.vue'
 import CreateEditCategory from './components/CreateEditCategory.vue'
+
+import Brands from './components/Brands.vue'
+import CreateEditBrand from './components/CreateEditBrand.vue'
 
 import Suppliers from './components/Suppliers.vue'
 import CreateEditSupplier from './components/CreateEditSupplier.vue'
@@ -59,12 +64,14 @@ const routes = [
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/products', component: Products },
   { path: '/create-edit-product', component: CreateEditProduct },
-  { path: '/impuestos', component: Taxes },
+  { path: '/taxes', component: Taxes },
   { path: '/create-edit-tax', component: CreateEditTax },
   { path: '/suppliers', component: Suppliers },
   { path: '/create-edit-supplier', component: CreateEditSupplier },
   { path: '/categories', component: Categories },
   { path: '/create-edit-category', component: CreateEditCategory },
+  { path: '/brands', component: Brands },
+  { path: '/create-edit-brand', component: CreateEditBrand },
   { path: '/orders', component: Orders },
   { path: '/details-order', component: DetailsOrder },
   { path: '/create-edit-order', component: CreateEditOrder },

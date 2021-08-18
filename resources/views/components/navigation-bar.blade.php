@@ -19,9 +19,12 @@
                 <li class="nav-item">
                     <router-link class="nav-link " to="/categories">Categorias</router-link>
                 </li>
+                <li class="nav-item">
+                    <router-link class="nav-link " to="/brands">Marcas</router-link>
+                </li>
                 
                 <li class="nav-item">
-                    <router-link class="nav-link" to="/impuestos">Taxes</router-link>
+                    <router-link class="nav-link" to="/taxes">Taxes</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" to="/clients">Clientes</router-link>

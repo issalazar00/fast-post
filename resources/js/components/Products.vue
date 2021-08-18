@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
     <div class="col-12">
       <h3 class="page-header">Productos</h3>
       <ring-loader :loading="isLoading" :color="'#032F6C'" :size="100" />
@@ -32,10 +32,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="product in listingProducts.data"
-                v-bind:key="product.id"
-              >
+              <tr v-for="product in ProductList.data" v-bind:key="product.id">
                 <td>{{ product.id }}</td>
                 <td>{{ product.barcode }}</td>
                 <td>{{ product.product }}</td>
@@ -61,6 +58,8 @@
                 <td>
                   <button
                     class="btn btn-success"
+                    data-target="#productModal"
+                    data-toggle="modal"
                     @click="ShowData(product), (edit = true)"
                   >
                     Editar
@@ -71,7 +70,7 @@
           </table>
           <pagination
             :align="'center'"
-            :data="listingProducts"
+            :data="ProductList"
             @pagination-change-page="listProducts"
           >
             <span slot="prev-nav">&lt; Previous</span>
@@ -81,48 +80,10 @@
       </div>
     </div>
     <!-- Modal para creacion y edicion de products -->
-    <div
-      class="modal fade"
-      id="productModal"
-      tabindex="-1"
-      aria-labelledby="productModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="productModalLabel">Producto</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <create-edit-product ref="CreateEditProduct" />
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="CloseModal()"
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="SaveProduct()"
-            >
-              Guardar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <create-edit-product
+      ref="CreateEditProduct"
+      @list-products="listProducts(1)"
+    />
   </div>
 </template>
 
@@ -133,12 +94,12 @@ export default {
   data() {
     return {
       isLoading: false,
-      listingProducts: {},
+      ProductList: {},
       edit: false,
     };
   },
   created() {
-    this.listProducts(1);  
+    this.listProducts(1);
   },
   methods: {
     listProducts(page = 1) {
@@ -147,29 +108,15 @@ export default {
       axios
         .get("api/products?page=" + page)
         .then(function (response) {
-          me.listingProducts = response.data.products;
+          me.ProductList = response.data.products;
         })
         .finally(() => (this.isLoading = false));
-    },
-
-    SaveProduct: function () {
-      let me = this;
-      if (this.edit == false) {
-        this.$refs.CreateEditProduct.CreateProduct();
-      } else {
-        this.$refs.CreateEditProduct.EditProduct();
-      }
-      this.listProducts(1);
     },
 
     ShowData: function (product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);
     },
-    CloseModal: function () {
-      let me = this;
-      this.$refs.CreateEditProduct.ResetData();
-      this.listProducts(1);
-    },
+
     ActivateProduct: function (id) {
       let me = this;
       axios.post("api/products/" + id + "/activate").then(function () {

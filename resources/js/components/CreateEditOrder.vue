@@ -318,7 +318,7 @@ export default {
   data() {
     return {
       filterProducts: "",
-      listingProducts: {
+      ProductList: {
         type: Array,
         default: () => [],
       },
@@ -338,9 +338,9 @@ export default {
   computed: {
     filteredProducts: function () {
       if (!this.filterProducts) {
-        return this.listingProducts;
+        return this.ProductList;
       }
-      return this.listingProducts.filter(
+      return this.ProductList.filter(
         (product) =>
           product.product
             .toLowerCase()
@@ -357,7 +357,7 @@ export default {
     listProducts() {
       let me = this;
       axios.get("api/products").then(function (response) {
-        me.listingProducts = response.data.products.data;
+        me.ProductList = response.data.products.data;
       });
     },
     searchProduct() {},
