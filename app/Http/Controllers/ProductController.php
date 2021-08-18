@@ -22,15 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
-        $products = new Product;
-        $products = $products
-            ->select('products.*', 'categories.name as category')
-            ->leftJoin('categories', 'categories.id', 'products.category_id')
-            ->orderBy('barcode', 'asc')
-            ->paginate(15)
-        ;
-
+        $products = Product::select()->orderBy('barcode', 'asc')->paginate(15);
 
         return response()->json([
             'status' => 'success',
@@ -68,9 +60,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        return $product;
     }
 
     /**

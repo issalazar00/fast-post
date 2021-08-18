@@ -11,7 +11,10 @@ window.Vue = require('vue').default;
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Clientes from './components/Clientes.vue'
+
+import Login from './components/Login.vue'
+
+import Clientes from './components/CrearCliente.vue'
 import CrearCliente from './components/CrearCliente.vue'
 import Productos from './components/Productos.vue'
 import CrearEditarProducto from './components/CrearEditarProducto.vue'
@@ -26,6 +29,9 @@ import CrearProveedor from './components/CrearProveedor.vue'
 
 import Tickets from './components/Tickets'
 import DetailsTicket from './components/DetailsTicket'
+
+//Services
+import global from './services/global.js';
 
 Vue.use(VueRouter)
 
@@ -64,8 +70,10 @@ const routes = [
   { path: '/crear-proveedor', component: CrearProveedor },
   { path: '/categories', component: Categories },
   { path: '/create-edit-category', component: CreateEditCategory },
-  { path: '/tickets', component: Tickets },
+  { path: '/tickets', component: Tickets },//Home
   { path: '/details-ticket', component: DetailsTicket },
+  { path: '/login', name:'Login', component: Login },
+  { path: '**', component: Login },
 
 ]
 
@@ -73,10 +81,63 @@ const router = new VueRouter({
   routes // short for `routes: routes`
 })
 
+
+
 export default router;
+
+router.beforeEach(async (to, from, next) => {
+  // redirect to login if not authenticated in and trying to access a restricted route
+  const publicRoutes = ["Login"];
+  const authRequired = !publicRoutes.includes(to.name);
+  let isAuthenticated = false;
+
+  try {
+    isAuthenticated =
+        localStorage.getItem("token") &&
+        localStorage.getItem("user") &&
+        JSON.parse(localStorage.getItem("user"))
+        ? true
+        : false;
+
+        user = null;
+        token = 2323;
+      
+  } catch (e) {
+    isAuthenticated 
+  }
+  if (authRequired && !isAuthenticated) {
+    return next({ name: "Login", query: { redirect: to.fullPath } });
+  }
+  next();
+
+});
+
 
 const app = new Vue({
   el: '#app',
-  router
+  data: {
+    user: {},
+    token: '',
+  },
+  watch: {
+    $route(to, from){
+      this.user = JSON.parse(localStorage.getItem("user")) ;
+      this.token = localStorage.getItem("token");
+    }
+  },
+  router,
+  created(){
+
+  },
+  mounted(){
+    this.user = JSON.parse(localStorage.getItem("user")) ;
+    this.token = localStorage.getItem("token");
+  },
+  methods:{
+    logout(){
+      localStorage.clear();
+      this.$router.push('/login');
+    }
+  }
 });
 

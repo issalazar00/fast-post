@@ -77,6 +77,7 @@ class UserController extends Controller
                     'message' => 'Login correcto',
                     'user' => [
                         'sub' => $user->id,
+                        'name' => $user->name,
                         'email' => $user->email,
                         'iat' => time(),
                         'exp' => time() + (7 * 60),
