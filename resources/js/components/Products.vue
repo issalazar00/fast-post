@@ -1,23 +1,27 @@
 <template>
   <div class="page">
-    <div class="col-12">
-      <h3 class="page-header">Productos</h3>
-      <ring-loader :loading="isLoading" :color="'#032F6C'" :size="100" />
-
-      <div class="card-body" v-if="!isLoading">
-        <div class="row justify-content-end mx-4">
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-toggle="modal"
-            data-target="#productModal"
-            @click="edit = false"
-          >
-            Crear Producto
-          </button>
-        </div>
-
-        <section class="mt-4">
+    <div class="row page-header">
+      <div class="col"><h3>Productos</h3></div>
+      <div class="col text-right">
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          data-toggle="modal"
+          data-target="#productModal"
+        >
+          Crear Producto
+        </button>
+      </div>
+    </div>
+    <div class="page-content">
+      <moon-loader
+        class="m-auto"
+        :loading="isLoading"
+        :color="'#032F6C'"
+        :size="100"
+      />
+      <div v-if="!isLoading">
+        <section class="my-4">
           <table class="table table-sm table-bordered table-responsive-sm">
             <thead class="thead-primary">
               <tr>
@@ -95,7 +99,6 @@ export default {
     return {
       isLoading: false,
       ProductList: {},
-      edit: false,
     };
   },
   created() {

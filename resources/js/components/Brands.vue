@@ -5,7 +5,7 @@
         <div class="col">
           <h3 class="page-title">Marcas</h3>
         </div>
-        <div class="col">
+        <div class="col text-right">
           <button
             type="button"
             class="btn btn-outline-primary"
@@ -18,37 +18,33 @@
       </div>
     </div>
     <div class="page-content">
-      <div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
-              <td>the Bird</td>
-              <td>@twitter</td>
-            </tr>
-          </tbody>
-        </table>
+      <moon-loader
+        class="m-auto"
+        :loading="isLoading"
+        :color="'#032F6C'"
+        :size="100"
+      />
+      <div v-show="!isLoading">
+        <section class="my-4">
+          <table class="table table-sm table-bordered table-responsive-sm">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="brand in BrandList.data" :key="brand.id">
+                <th scope="row">{{ brand.id }}</th>
+                <td>{{ brand.name }}</td>
+                <td>Unactive</td>
+                <td>@mdo</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
       </div>
     </div>
     <create-edit-brand />
@@ -58,12 +54,28 @@
 import CreateEditBrand from "./CreateEditBrand.vue";
 export default {
   data() {
-    return {};
+    return {
+      isLoading: false,
+      BrandList: {},
+    };
   },
   components: {
     CreateEditBrand,
   },
-  created() {},
-  methods: {},
+  created() {
+    this.listBrands(1);
+  },
+  methods: {
+    listBrands(page = 1) {
+      this.isLoading = true;
+      let me = this;
+      axios
+        .get("api/brands?page=" + page)
+        .then(function (response) {
+          me.BrandList = response.data.brands;
+        })
+        .finally(() => (this.isLoading = false));
+    },
+  },
 };
 </script>

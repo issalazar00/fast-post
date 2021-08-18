@@ -27,7 +27,7 @@ class BrandController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'categories' => Brand::paginate(20),
+            'brands' => Brand::paginate(20),
         ]);
     }
 
