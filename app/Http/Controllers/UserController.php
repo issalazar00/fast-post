@@ -47,7 +47,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'email' => 'required|email:rfc,dns|exists:users',
+            'email' => 'required|email|exists:users',
             'password' => 'required'
         ]);
 
@@ -160,8 +160,9 @@ class UserController extends Controller
         if ($id == $request->user()->id ){
             $validate = Validator::make($request->all(), [
                 'name' => 'required|string|min:3|max:255',
+                'role' => 'nullable|integer|exists:roles,id',
                 'email' => 'required|email:rfc,dns|max:255',Rule::unique('users')->ignore($request->user()->id)
-    
+                
             ]);
     
             if ($validate->fails()) {
@@ -178,11 +179,14 @@ class UserController extends Controller
                 'email' => $request->input('email')
             ]);
 
+            $user = User::find($id);
+            $user->syncRoles([$request->input('role')]);
+
             $data = [
                 'status' => 'success',
                 'code' =>  200,
                 'message' => 'Actualización exitosa ',
-                'user' => User::find($id)
+                'user' => $user
             ];
 
         }else{

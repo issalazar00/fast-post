@@ -15,13 +15,13 @@
             />
           </div>
           <div class="form-group col-7">
-            <label for="product">Descripcion Producto</label>
+            <label for="product">Descripción Producto</label>
             <input
               type="text"
               class="form-control"
               id="product"
               v-model="formProduct.product"
-              placeholder="Nombre o descripción de producto"
+              placeholder="Nombre o descripción de product"
             />
           </div>
         </div>
@@ -70,11 +70,12 @@
           <select
             class="form-control"
             id="tax_id"
-            v-model="formProduct.tax_id"
+            v-model="tax"
             required
+            @click="uploadTax(tax)"
           >
             <option value="0">--Select--</option>
-            <option v-for="tax in taxListing" :key="tax.id" value="tax.id">
+            <option v-for="tax in taxListing" :key="tax.id" :value="tax">
               {{ tax.percentage }}
             </option>
           </select>
@@ -93,37 +94,61 @@
             />
           </div>
           <div class="form-group col-6">
+            <label for="sale_price_tax_exc">Precio venta sin iva</label>
+            <input
+              type="number"
+              step="any"
+              class="form-control"
+              id="sale_price_tax_exc"
+              readonly
+              :value="sale_price_tax_exc"
+              placeholder=""
+            />
+          </div>
+          <div class="form-group col-6">
             <label for="gain">Ganancia</label>
             <input
               type="number"
               step="any"
               class="form-control"
               id="gain"
-              v-model="formProduct.gain"
+              :value="gain"
               placeholder=""
+              readonly="readonly"
             />
           </div>
           <div class="form-group col-6">
-            <label for="sale_price">Precio Venta</label>
+            <label for="sale_price_tax_inc">Precio venta con iva</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="sale_price"
-              v-model="formProduct.sale_price"
+              id="sale_price_tax_inc"
+              v-model="formProduct.sale_price_tax_inc"
               placeholder=""
             />
           </div>
-
           <div class="form-group col-6">
-            <label for="wholesale_price">Precio Mayoreo</label>
+            <label for="wholesale_price_tax_exc">Precio Mayoreo sin iva</label>
             <input
               type="number"
               step="any"
               class="form-control"
-              id="wholesale_price"
-              v-model="formProduct.wholesale_price"
+              id="wholesale_price_tax_exc"
+              :value="wholesale_price_tax_exc"
               placeholder=""
+              readonly
+            />
+          </div>
+          <div class="form-group col-6">
+            <label for="wholesale_price_tax_inc">Precio Mayoreo con iva</label>
+            <input
+              type="number"
+              step="any"
+              class="form-control"
+              id="wholesale_price_tax_inc"
+              v-model="formProduct.wholesale_price_tax_inc"
+              
             />
           </div>
         </div>
@@ -136,7 +161,11 @@
             v-model="formProduct.category_id"
           >
             <option value="0">--Select--</option>
-            <option v-for="category in categoriesListing" :key="category.id" value="category.id">
+            <option
+              v-for="category in categoriesListing"
+              :key="category.id"
+              value="category.id"
+            >
               {{ category.name }}
             </option>
           </select>
@@ -206,16 +235,19 @@
 export default {
   data() {
     return {
-      //Variables de producto
+      //Variables de product
+      tax: {},
       formProduct: {
         barcode: "",
-        producto: "",
+        product: "",
         type: 0,
-        tax_id: 0,
+        tax_id: 1,
         cost_price: 0.0,
         gain: 0.0,
-        sale_price: 0.0,
-        wholesale_price: 0.0,
+        sale_price_tax_exc: 0.0,
+        sale_price_tax_inc: 0.0,
+        wholesale_price_tax_exc: 0.0,
+        wholesale_price_tax_inc: 0.0,
         category_id: 0,
         stock: 0,
         minimum: 0.0,
@@ -225,6 +257,27 @@ export default {
       taxListing: {},
       categoriesListing: {},
     };
+  },
+  computed: {
+    gain: function () {
+      if (this.formProduct.sale_price_tax_exc != 0) {
+        return parseFloat(
+          (this.formProduct.gain =
+            this.formProduct.sale_price_tax_exc - this.formProduct.cost_price)
+        );
+      }
+    },
+    sale_price_tax_exc: function () {
+      let percentage = this.tax.percentage / 100;
+      return (this.formProduct.sale_price_tax_exc =
+        parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage));
+    },
+    wholesale_price_tax_exc() {
+      let percentage = this.tax.percentage / 100;
+      return (this.formProduct.wholesale_price_tax_exc = Math.round(
+        parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)
+      ));
+    },
   },
   methods: {
     listTaxes() {
@@ -239,20 +292,20 @@ export default {
         me.categoriesListing = response.data.categories.data;
       });
     },
-    CrearProducto() {
+    CreateProduct() {
       let me = this;
       axios.post("api/products", this.formProduct).then(function () {
         $("#productModal").modal("hide");
         me.formProduct = {};
       });
     },
-    AbrirEdicionProducto(producto) {
+    OpenEditProduct(product) {
       let me = this;
       $("#productModal").modal("show");
-      me.formProduct = producto;
+      me.formProduct = product;
     },
 
-    EditarProducto() {
+    EditProduct() {
       let me = this;
       axios
         .put("api/products/" + this.formProduct.id, this.formProduct)
@@ -262,15 +315,21 @@ export default {
         });
     },
 
-    ResetarDatos() {
+    ResetData() {
       let me = this;
       $("#productModal").modal("hide");
       me.formProduct = {};
     },
+    uploadTax(tax) {
+      // console.log(tax);
+      this.formProduct.tax_id = tax.id;
+    },
   },
-  mounted() {
+  created() {
     this.listTaxes();
     this.listCategories();
   },
+
+  mounted() {},
 };
 </script>

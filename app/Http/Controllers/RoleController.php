@@ -3,22 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\ErrorHandler\Debug;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Illuminate\Validation\Rule;
 
-class CategoryController extends Controller
+class RoleController extends Controller
 {
-    public function __construct()
-    {
-        // $this->middleware('can:category.index')->only('index');
-        $this->middleware('can:category.store')->only('store');
-        $this->middleware('can:category.update')->only('update');
-        $this->middleware('can:category.delete')->only('destroy');
-        $this->middleware('can:category.active')->only('active');
-        $this->middleware('can:category.deactivate')->only('deactivate');
-
-    }
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +20,7 @@ class CategoryController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'categories' => Category::paginate(20),
+            'roles' => Role::all(),
         ]);
     }
 
@@ -40,7 +31,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        abort(404);
+        return  abort(404);
     }
 
     /**
@@ -52,7 +43,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name' => 'required|string|min:3|max:50'
+            'name' => 'required|string|unique:roles|min:3|max:50',
+            'permissions' => 'nullable|array|exists:permissions,id'
         ]);
 
         if ($validate->fails()) {
@@ -64,15 +56,15 @@ class CategoryController extends Controller
             ], 400);
         }
 
-        $category = Category::create([
-            'name' => $request->input('name')
-        ]);
+        $role = Role::create(['guard_name' => 'api', 'name' => $request->input('name')]);
+
+        $role->syncPermissions($request->input('permissions'));
 
         return response()->json([
             'status' => 'success',
             'code' => 200,
             'message' => 'Registro exitoso',
-            'category' => $category
+            'role' => $role
         ], 200);
     }
 
@@ -84,13 +76,19 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::find($id);
+        $role = Role::find($id);
 
-        if ($category) {
+        if ($role) {
+
+            $permissions = collect($role->permissions)->groupBy('component');
+            unset($role->permissions);
+
+            $role->permissions = $permissions;
+
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'category' => $category
+                'role' => $role,
             ];
         } else {
             $data = [
@@ -111,7 +109,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        abort(404);
+        return abort(404);
     }
 
     /**
@@ -124,9 +122,12 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
-            'name' => 'required|string|min:3|max:50'
+            'name' => [
+                'required', 'string', 'min:3', 'max:50',  Rule::unique('roles')->ignore($id)
+            ],
+            'permissions' => 'nullable|array|exists:permissions,id'
         ]);
-
+        
         if ($validate->fails()) {
             return response()->json([
                 'status' => 'error',
@@ -136,17 +137,22 @@ class CategoryController extends Controller
             ], 400);
         }
 
-        $category = Category::find($id);
+        $role = Role::find($id);
 
-        if ($category) {
-            $category->name = $request->input('name');
-            $category->save();
+        if ($role) {
+
+            $role->name = $request->input('name');
+            $role->save();
+
+            $role->syncPermissions($request->input('permissions'));
+   
             $data = [
                 'status' => 'success',
                 'code' =>  200,
                 'message' => 'Actualización exitosa',
-                'category' =>  $category
+                'role' =>  $role
             ];
+
         } else {
             $data = [
                 'status' => 'error',
@@ -161,18 +167,19 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
+     * 
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
+        $role = Role::find($id);
 
-        if ($category) {
-            $category->delete();
+        if ($role) {
+            $role->delete();
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'category' => $category
+                'role' => $role
             ];
         } else {
             $data = [
@@ -185,30 +192,16 @@ class CategoryController extends Controller
         return response()->json($data, $data['code']);
     }
 
-      /**
-     * Activate the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function activate($id)
+    public function getPermission()
     {
-        //
-        $category = Category::find($id);
-        $category->state = '1';
-        $category->save();
+        $permissions = collect(Permission::all());
+        $permissions = $permissions->groupBy('component');
+
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'permissions' => $permissions,
+        ]);
     }
 
-    /**
-     * Deactivate the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function deactivate($id)
-    {
-        $category = Category::find($id);
-        $category->state = '0';
-        $category->save();
-    }
 }

@@ -6,6 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('can:product.index')->only('index');
+        // $this->middleware('can:product.store')->only('store');
+        // $this->middleware('can:product.update')->only('update');
+        // $this->middleware('can:product.delete')->only('destroy');
+        // $this->middleware('can:product.active')->only('active');
+        // $this->middleware('can:product.deactivate')->only('deactivate');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -91,8 +100,10 @@ class ProductController extends Controller
         $product->type = $request['type'];
         $product->cost_price = $request['cost_price'];
         $product->gain = $request['gain'];
-        $product->sale_price = $request['sale_price'];
-        $product->wholesale_price = $request['wholesale_price'];
+        $product->sale_price_tax_exc = $request['sale_price_tax_exc'];
+        $product->sale_price_tax_inc = $request['sale_price_tax_inc'];
+        $product->wholesale_price_tax_exc = $request['wholesale_price_tax_exc'];
+        $product->wholesale_price_tax_inc = $request['wholesale_price_tax_inc'];
         $product->stock = $request['stock'];
         $product->quantity = $request['quantity'];
         $product->minimum = $request['minimum'];

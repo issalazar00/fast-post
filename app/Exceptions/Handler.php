@@ -38,4 +38,12 @@ class Handler extends ExceptionHandler
             //
         });
     }
+    
+    /*public function render($request, Throwable $e)
+    {
+        return response()->json([
+            'responseMessage' => 'You do not have required authorization.',
+            'responseStatus'  => 403,
+        ]);
+    }*/
 }

@@ -50,10 +50,10 @@ export default {
         me.formTax = {};
       });
     },
-    OpenEditTax(producto) {
+    OpenEditTax(tax) {
       let me = this;
       $("#taxModal").modal("show");
-      me.formTax = producto;
+      me.formTax = tax;
     },
 
     EditTax() {

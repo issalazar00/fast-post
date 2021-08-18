@@ -23,8 +23,10 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('state')->default(1);
             $table->decimal('cost_price', 10, 2);
             $table->decimal('gain', 10, 2);
-            $table->decimal('sale_price', 10, 2);
-            $table->decimal('wholesale_price', 10, 2);
+            $table->decimal('sale_price_tax_exc', 10, 2);
+            $table->decimal('sale_price_tax_inc', 10, 2);
+            $table->decimal('wholesale_price_tax_exc', 10, 2);
+            $table->decimal('wholesale_price_tax_inc', 10, 2);
             $table->tinyInteger('stock')->default('0');
             $table->decimal('quantity', 10, 2)->nullable();
             $table->decimal('minimum', 10, 2)->nullable();

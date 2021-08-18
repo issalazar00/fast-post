@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Validator;
 
 class TaxController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('can:tax.index')->only('index');
+        $this->middleware('can:tax.store')->only('store');
+        $this->middleware('can:tax.update')->only('update');
+        $this->middleware('can:tax.delete')->only('destroy');
+        $this->middleware('can:tax.active')->only('active');
+        $this->middleware('can:tax.deactivate')->only('deactivate');
+    }
     /**
      * Display a listing of the resource.
      *

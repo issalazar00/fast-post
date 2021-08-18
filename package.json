@@ -26,6 +26,7 @@
         "webpack-cli": "^4.7.2"
     },
     "dependencies": {
+        "@saeris/vue-spinners": "^1.0.8",
         "laravel-vue-pagination": "^2.3.1",
         "vue-router": "^3.5.2"
     }
