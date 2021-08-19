@@ -11784,11 +11784,11 @@ var routes = [{
   component: _components_CreateEditOrder__WEBPACK_IMPORTED_MODULE_18__.default
 }, {
   path: '/tickets',
-  component: Tickets
+  component: _components_Orders__WEBPACK_IMPORTED_MODULE_16__.default
 }, //Home
 {
   path: '/details-ticket',
-  component: DetailsTicket
+  component: _components_DetailsOrder__WEBPACK_IMPORTED_MODULE_17__.default
 }, {
   path: '/login',
   name: 'Login',
