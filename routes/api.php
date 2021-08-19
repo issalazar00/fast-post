@@ -26,7 +26,7 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
 
 
-// Route::middleware('auth:api')->group(function(){
+// Route::middleware('auth:api')->group(function () {
 Route::resource('/user', UserController::class);
 
 
@@ -43,6 +43,7 @@ Route::resource('/brands', BrandController::class);
 Route::resource('/products',  ProductController::class);
 Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
 Route::post('/products/{product}/deactivate',  [ProductController::class, 'deactivate']);
+Route::post('/products/searchProduct',  [ProductController::class, 'searchProduct']);
 
 Route::resource('/suppliers',  SupplierController::class);
 

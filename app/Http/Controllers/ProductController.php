@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+
 class ProductController extends Controller
 {
     public function __construct()
@@ -141,5 +142,16 @@ class ProductController extends Controller
         $product = Product::find($id);
         $product->state = '0';
         $product->save();
+    }
+
+    public function searchProduct(Request $request)
+    {
+
+        $products = Product::select()
+            ->where('barcode', 'LIKE', $request->barcode)
+            ->first();
+            // ->get();
+
+        return ['products' => $products];
     }
 }

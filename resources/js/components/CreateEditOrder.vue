@@ -13,9 +13,11 @@
             class="form-control"
             placeholder="Código de barras | Nombre de product"
             aria-label=" with two button addons"
-            aria-describedby="button-addon4"
+            aria-describedby="button-add-product"
+            v-model="filters.product"
+            @keypress.enter="searchProduct()"
           />
-          <div class="input-group-append" id="button-addon4">
+          <div class="input-group-append" id="button-add-product">
             <button class="btn btn-outline-secondary" type="button">
               Añadir Producto
             </button>
@@ -74,11 +76,11 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>444222</td>
-                <td>Producto 1</td>
+            <tbody v-if="productsOrderList.length > 0">
+              <tr v-for="p in productsOrderList" :key="p.id">
+                <th scope="row">{{ p.product_id }}</th>
+                <td>{{ p.barcode }}</td>
+                <td>{{ p.product }}</td>
                 <td>
                   <input
                     type="number"
@@ -86,9 +88,20 @@
                     id="quantity"
                     step="any"
                     placeholder="Cantidad"
+                    v-model="p.qty"
                   />
                 </td>
-                <td>$2000</td>
+                <td>
+                   <input
+                    type="number"
+                    name="price"
+                    id="price"
+                    step="any"
+                    placeholder="Cantidad"
+                    v-model="p.price"
+                    readonly
+                  />
+                </td>
                 <td>
                   <input
                     type="number"
@@ -96,9 +109,10 @@
                     id="discount"
                     step="any"
                     placeholder="Descuento"
+                    v-model="p.discount"
                   />
                 </td>
-                <td>$4000</td>
+                <td>{{((p.qty * p.price)-(p.qty * p.price)* (p.discount / 100)).toFixed(2) }}</td>
                 <td>
                   <button class="btn"><i class="bi bi-trash"></i></button>
                 </td>
@@ -120,6 +134,11 @@
               <tr>
                 <th colspan="6">Total:</th>
                 <th>$4000</th>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr>
+                <td>No se han añadido productos</td>
               </tr>
             </tbody>
           </table>
@@ -167,8 +186,7 @@
               />
               <div class="input-group-append" id="button-addon4">
                 <button class="btn btn-outline-secondary" type="button">
-                  <!-- @click="searchClient()" -->
-                  Buscar Cliente
+                  Buscar Producto
                 </button>
               </div>
             </div>
@@ -181,8 +199,7 @@
                   <th>Categoria</th>
                   <th scope="col">Precio Venta</th>
                   <th scope="col">Cantidad</th>
-                  <th>Estado</th>
-                  <th>Opciones</th>
+                  <th>Añadir</th>
                 </tr>
               </thead>
               <tbody>
@@ -190,8 +207,10 @@
                   <td>{{ product.id }}</td>
                   <td>{{ product.barcode }}</td>
                   <td>{{ product.product }}</td>
-                  <td>{{ product.category }}</td>
-                  <td class="text-right">$ {{ product.sale_price }}</td>
+                  <td>
+                    {{ product.category.name ? product.category.name : "" }}
+                  </td>
+                  <td class="text-right">$ {{ product.sale_price_tax_inc }}</td>
                   <td>{{ product.quantity }}</td>
 
                   <td>
@@ -273,7 +292,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="client in listingClient" v-bind:key="client.id">
+                <tr v-for="client in listingClient.data" v-bind:key="client.id">
                   <th scope="row">{{ client.code }}</th>
                   <td>{{ client.name }}</td>
                   <td>{{ client.document }}</td>
@@ -317,21 +336,20 @@
 export default {
   data() {
     return {
+      // Filter modal
       filterProducts: "",
-      ProductList: {
-        type: Array,
-        default: () => [],
+
+      // add product or client keyup
+      filters: {
+        product: "",
+        client: "",
       },
+      productsOrderList: [],
+      ProductList: {},
       listingClient: {},
       order: {
         id_client: 0,
-        productsOrder: {
-          id_produc: 0,
-          name: "",
-          price: 0.0,
-          quantity: 0.0,
-          discount: 0,
-        },
+        productsOrder: [],
       },
     };
   },
@@ -352,15 +370,34 @@ export default {
     },
   },
   methods: {
-    addProduct() {},
-    addClient() {},
     listProducts() {
       let me = this;
       axios.get("api/products").then(function (response) {
         me.ProductList = response.data.products.data;
       });
     },
-    searchProduct() {},
+
+    searchProduct() {
+      let me = this;
+      var url = "api/products/searchProduct?barcode=" + me.filters.product;
+      axios
+        .post(url)
+        .then(function (response) {
+          var new_product = response.data.products;
+          console.log(new_product);
+          me.productsOrderList.push({
+            product_id: new_product.id,
+            barcode: new_product.barcode,
+            discount: 0,
+            qty: 1,
+            price: new_product.sale_price_tax_inc,
+            product: new_product.product,
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     listClients() {
       let me = this;
       axios.get("api/clients").then(function (response) {

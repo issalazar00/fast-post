@@ -40,7 +40,7 @@
                 <td>{{ product.id }}</td>
                 <td>{{ product.barcode }}</td>
                 <td>{{ product.product }}</td>
-                <td>{{ product.category }}</td>
+                <td>{{ product.category.name }}</td>
                 <td class="text-right">$ {{ product.sale_price_tax_exc }}</td>
                 <td>{{ product.quantity }}</td>
                 <td>

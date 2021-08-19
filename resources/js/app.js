@@ -34,8 +34,9 @@ import CreateEditSupplier from './components/CreateEditSupplier.vue'
 import Orders from './components/Orders'
 import DetailsOrder from './components/DetailsOrder'
 import CreateEditOrder from './components/CreateEditOrder'
+
 //Services
-import global from './services/global.js';
+import './services/global.js';
 
 Vue.use(VueRouter)
 Vue.use(VueSpinners)
