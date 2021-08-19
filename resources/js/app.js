@@ -34,6 +34,9 @@ import CreateEditSupplier from './components/CreateEditSupplier.vue'
 import Orders from './components/Orders'
 import DetailsOrder from './components/DetailsOrder'
 import CreateEditOrder from './components/CreateEditOrder'
+import AddClient from './components/AddClient'
+import AddProduct from './components/AddProduct'
+
 
 //Services
 import './services/global.js';

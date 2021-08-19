@@ -35,7 +35,8 @@ class Product extends Model
         'tax_id'
     ];
     protected $with = [
-        'category'
+        'category',
+        'tax'
     ];
 
     public function category()
@@ -45,6 +46,6 @@ class Product extends Model
 
     public function tax()
     {
-        return $this->belongsTo(Tax::class);
+        return $this->belongsTo(Tax::class, 'tax_id');
     }
 }

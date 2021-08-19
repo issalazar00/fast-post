@@ -5,7 +5,29 @@
         <h3>Crear Ticket</h3>
       </div>
       <hr class="hr" />
-
+      <div class="position-fixed top-0 right-0 p-3" style="z-index: 5">
+        <div
+          class="toast fade hide border border-danger"
+          role="alert"
+          id="no-products"
+          aria-live="assertive"
+          aria-atomic="true"
+          data-delay="3000"
+        >
+          <div class="toast-header">
+            <strong class="mr-auto h5">Advertencia</strong>
+            <button
+              type="button"
+              class="ml-2 mb-1 close"
+              data-dismiss="toast"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body">No se ha encontrado coincidencias</div>
+        </div>
+      </div>
       <div class="row">
         <div class="input-group">
           <input
@@ -26,7 +48,6 @@
               type="button"
               data-toggle="modal"
               data-target="#addProductModal"
-              @click="listProducts()"
             >
               <i class="bi bi-card-checklist"></i>
             </button>
@@ -49,7 +70,6 @@
               type="button"
               data-toggle="modal"
               data-target="#addClientModal"
-              @click="listClients()"
             >
               <i class="bi bi-person-lines-fill"></i>
             </button>
@@ -92,7 +112,7 @@
                   />
                 </td>
                 <td>
-                   <input
+                  <input
                     type="number"
                     name="price"
                     id="price"
@@ -112,7 +132,14 @@
                     v-model="p.discount"
                   />
                 </td>
-                <td>{{((p.qty * p.price)-(p.qty * p.price)* (p.discount / 100)).toFixed(2) }}</td>
+                <td>
+                  {{
+                    (
+                      p.qty * p.price -
+                      p.qty * p.price * (p.discount / 100)
+                    ).toFixed(2)
+                  }}
+                </td>
                 <td>
                   <button class="btn"><i class="bi bi-trash"></i></button>
                 </td>
@@ -153,230 +180,33 @@
         </div>
       </section>
     </div>
-
-    <div
-      class="modal fade"
-      id="addProductModal"
-      tabindex="-1"
-      aria-labelledby="addProductModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addProductModalLabel">Client</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Cerrar"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Código de barras | Nombre de product"
-                aria-label=" with two button addons"
-                aria-describedby="button-addon4"
-                v-model="filterProducts"
-              />
-              <div class="input-group-append" id="button-addon4">
-                <button class="btn btn-outline-secondary" type="button">
-                  Buscar Producto
-                </button>
-              </div>
-            </div>
-            <table class="table table-sm table-bordered table-responsive-sm">
-              <thead class="thead-primary">
-                <tr>
-                  <th scope="col">#</th>
-                  <th>Código de barras</th>
-                  <th scope="col">Producto</th>
-                  <th>Categoria</th>
-                  <th scope="col">Precio Venta</th>
-                  <th scope="col">Cantidad</th>
-                  <th>Añadir</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="product in filteredProducts" v-bind:key="product.id">
-                  <td>{{ product.id }}</td>
-                  <td>{{ product.barcode }}</td>
-                  <td>{{ product.product }}</td>
-                  <td>
-                    {{ product.category.name ? product.category.name : "" }}
-                  </td>
-                  <td class="text-right">$ {{ product.sale_price_tax_inc }}</td>
-                  <td>{{ product.quantity }}</td>
-
-                  <td>
-                    <button
-                      class="btn btn-success"
-                      @click="addProduct(product.id)"
-                    >
-                      <i class="bi bi-plus-circle"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="modal fade"
-      id="addClientModal"
-      tabindex="-1"
-      aria-labelledby="addClientModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addClientModalLabel">Client</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Cerrar"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Código de barras | Nombre de product"
-                aria-label=" with two button addons"
-                aria-describedby="button-addon4"
-              />
-              <div class="input-group-append" id="button-addon4">
-                <button
-                  class="btn btn-outline-secondary"
-                  type="button"
-                  @click="searchClient()"
-                >
-                  Buscar Cliente
-                </button>
-              </div>
-            </div>
-            <table class="table table-bordered table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Nombres</th>
-                  <th>Documento</th>
-                  <th scope="col">Direccion</th>
-                  <th>Telefono</th>
-                  <th>Correo</th>
-                  <th>Contacto</th>
-                  <th>Estado</th>
-                  <th>Opciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="client in listingClient.data" v-bind:key="client.id">
-                  <th scope="row">{{ client.code }}</th>
-                  <td>{{ client.name }}</td>
-                  <td>{{ client.document }}</td>
-                  <td>{{ client.address }}</td>
-                  <td>{{ client.mobile }}</td>
-                  <td>{{ client.email }}</td>
-                  <td>
-                    {{ client.contact }}
-                  </td>
-                  <td>
-                    <span class="badge badge-success">Activo</span>
-                  </td>
-                  <td>
-                    <button
-                      class="btn btn-outline-secondary"
-                      @click="addClient(client.id)"
-                    >
-                      <i class="bi bi-plus-circle"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <add-product />
+    <add-client />
   </div>
 </template>
 
 <script>
+import AddProduct from "./AddProduct.vue";
+import AddClient from "./AddClient.vue";
 export default {
+  components: { AddProduct, AddClient },
   data() {
     return {
-      // Filter modal
-      filterProducts: "",
-
       // add product or client keyup
       filters: {
         product: "",
         client: "",
       },
       productsOrderList: [],
-      ProductList: {},
-      listingClient: {},
+
       order: {
         id_client: 0,
         productsOrder: [],
       },
     };
   },
-  computed: {
-    filteredProducts: function () {
-      if (!this.filterProducts) {
-        return this.ProductList;
-      }
-      return this.ProductList.filter(
-        (product) =>
-          product.product
-            .toLowerCase()
-            .includes(this.filterProducts.toLowerCase()) ||
-          product.barcode
-            .toLowerCase()
-            .includes(this.filterProducts.toLowerCase())
-      );
-    },
-  },
-  methods: {
-    listProducts() {
-      let me = this;
-      axios.get("api/products").then(function (response) {
-        me.ProductList = response.data.products.data;
-      });
-    },
 
+  methods: {
     searchProduct() {
       let me = this;
       var url = "api/products/searchProduct?barcode=" + me.filters.product;
@@ -385,26 +215,31 @@ export default {
         .then(function (response) {
           var new_product = response.data.products;
           console.log(new_product);
-          me.productsOrderList.push({
-            product_id: new_product.id,
-            barcode: new_product.barcode,
-            discount: 0,
-            qty: 1,
-            price: new_product.sale_price_tax_inc,
-            product: new_product.product,
-          });
+          if (!new_product) {
+            $("#no-products").toast("show");
+          } else {
+            me.addProduct(new_product);
+          }
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    listClients() {
+    addProduct(new_product) {
       let me = this;
-      axios.get("api/clients").then(function (response) {
-        me.listingClient = response.data.clients;
+      me.productsOrderList.push({
+        product_id: new_product.id,
+        barcode: new_product.barcode,
+        discount: 0,
+        qty: 1,
+        price: new_product.sale_price_tax_inc,
+        product: new_product.product,
       });
     },
     searchClient() {},
+  },
+  mounted() {
+    $("#no-products").toast("hide");
   },
 };
 </script>
