@@ -79,8 +79,8 @@ const routes = [
   { path: '/orders', component: Orders },
   { path: '/details-order', component: DetailsOrder },
   { path: '/create-edit-order', component: CreateEditOrder },
-  { path: '/tickets', component: Orders },//Home
-  { path: '/details-ticket', component: DetailsOrder},
+  { path: '/orders', component: Orders },//Home
+  { path: '/details-order', component: DetailsOrder},
   { path: '/login', name:'Login', component: Login },
   { path: '**', component: Login },
 
