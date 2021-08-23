@@ -19,7 +19,8 @@
             class="btn btn-primary"
             data-toggle="modal"
             data-target="#categoryModal"
-            @click="edit = false"
+            @click="($refs.CreateEditCategory.ResetData()),(edit = false)"
+            v-if="validatePermission('category.store')"
           >
             Crear Categoria
           </button>
@@ -29,8 +30,8 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Categoria</th>
-              <th>Estado</th>
-              <th>Opciones</th>
+              <th v-if="validatePermission('category.active')">Estado</th>
+              <th v-if="validatePermission('category.update')">Opciones</th>
             </tr>
           </thead>
           <tbody>
@@ -40,7 +41,7 @@
             >
               <th scope="row">{{ index + 1 }}</th>
               <td>{{ category.name }}</td>
-              <td>
+              <td v-if="validatePermission('category.active')">
                 <button
                   class="btn btn-success"
                   v-if="category.state == 1"
@@ -56,7 +57,7 @@
                   <i class="bi bi-x-circle"></i>
                 </button>
               </td>
-              <td>
+              <td v-if="validatePermission('category.update')">
                 <button
                   class="btn btn-success"
                   @click="ShowData(category), (edit = true)"
@@ -67,7 +68,6 @@
             </tr>
           </tbody>
         </table>
-
         <pagination
           :align="'center'"
           :data="categoryList"
@@ -90,7 +90,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="categoryModalLabel">Category</h5>
+            <h5 class="modal-title" id="categoryModalLabel">Categoria</h5>
             <button
               type="button"
               class="close"
@@ -127,6 +127,8 @@
 
 <script>
 import CreateEditCategory from "./CreateEditCategory.vue";
+import global from "./../services/global.js";
+
 export default {
   components: { CreateEditCategory },
   data() {
@@ -141,13 +143,16 @@ export default {
   },
   methods: {
     listCategories(page = 1) {
+
       this.isLoading = true;
       let me = this;
+
       axios
-        .get("api/category?page=" + page)
+        .get("api/categories?page=" + page, this.$root.config)
         .then(function (response) {
           me.categoryList = response.data.categories;
         })
+
         .finally(() => (this.isLoading = false));
     },
     SaveCategory: function () {
@@ -170,16 +175,20 @@ export default {
     },
     ActivateCategory: function (id) {
       let me = this;
-      axios.post("api/category/" + id + "/activate").then(function () {
+      axios.post("api/categories/" + id + "/activate", null, me.$root.config).then(function () {
         me.listCategories(1);
       });
     },
     DeactivateCategory: function (id) {
       let me = this;
-      axios.post("api/category/" + id + "/deactivate").then(function () {
+      axios.post("api/categories/" + id + "/deactivate", null, me.$root.config).then(function (res) {
+        console.log(res);
         me.listCategories(1);
       });
     },
+    validatePermission(permission) {
+      return global.validatePermission(this.$root.permissions, permission);
+    }
   },
   mounted() {
     console.log("Component mounted.");

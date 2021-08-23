@@ -26,29 +26,32 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
 
 
-// Route::middleware('auth:api')->group(function () {
-Route::resource('/user', UserController::class);
+Route::middleware('auth:api')->group(function () {
+    Route::resource('/user', UserController::class);
 
+    Route::resource('/categories', CategoryController::class);
+    Route::post('/categories/{category}/activate',  [CategoryController::class, 'activate']);
+    Route::post('/categories/{category}/deactivate',  [CategoryController::class, 'deactivate']);
 
-Route::resource('/category', CategoryController::class);
-Route::post('/category/{category}/activate',  [CategoryController::class, 'activate']);
-Route::post('/category/{category}/deactivate',  [CategoryController::class, 'deactivate']);
+    Route::resource('/category', CategoryController::class);
+    Route::post('/category/{category}/activate',  [CategoryController::class, 'activate']);
+    Route::post('/category/{category}/deactivate',  [CategoryController::class, 'deactivate']);
 
-Route::resource('/tax', TaxController::class);
-Route::post('/tax/{tax}/activate',  [TaxController::class, 'activate']);
-Route::post('/tax/{tax}/deactivate',  [TaxController::class, 'deactivate']);
+    Route::resource('/tax', TaxController::class);
+    Route::post('/tax/{tax}/activate',  [TaxController::class, 'activate']);
+    Route::post('/tax/{tax}/deactivate',  [TaxController::class, 'deactivate']);
 
-Route::resource('/brands', BrandController::class);
+    Route::resource('/brands', BrandController::class);
 
-Route::resource('/products',  ProductController::class);
-Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
-Route::post('/products/{product}/deactivate',  [ProductController::class, 'deactivate']);
-Route::post('/products/searchProduct',  [ProductController::class, 'searchProduct']);
+    Route::resource('/products',  ProductController::class);
+    Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
+    Route::post('/products/{product}/deactivate',  [ProductController::class, 'deactivate']);
+    Route::post('/products/searchProduct',  [ProductController::class, 'searchProduct']);
 
-Route::resource('/suppliers',  SupplierController::class);
+    Route::resource('/suppliers',  SupplierController::class);
 
-Route::resource('/clients',  ClientController::class);
+    Route::resource('/clients',  ClientController::class);
 
-Route::resource('/role', RoleController::class);
-Route::get('/permission', [RoleController::class, 'getPermission']);
-// });
+    Route::resource('/role', RoleController::class);
+    Route::get('/permission', [RoleController::class, 'getPermission']);
+});

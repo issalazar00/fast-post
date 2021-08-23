@@ -325,13 +325,13 @@ export default {
   methods: {
     listTaxes() {
       let me = this;
-      axios.get("api/tax").then(function (response) {
+      axios.get("api/tax", this.$root.config).then(function (response) {
         me.taxListing = response.data.taxes.data;
       });
     },
     listCategories() {
       let me = this;
-      axios.get("api/category").then(function (response) {
+      axios.get("api/category", this.$root.config).then(function (response) {
         me.categoriesListing = response.data.categories.data;
       });
     },
