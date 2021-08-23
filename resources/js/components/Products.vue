@@ -29,7 +29,7 @@
                 <th>Código de barras</th>
                 <th scope="col">Producto</th>
                 <th>Categoria</th>
-                <th scope="col">Precio Venta</th>
+                <th scope="col">Precio Venta con IVA</th>
                 <th scope="col">Cantidad</th>
                 <th>Estado</th>
                 <th>Opciones</th>
@@ -41,7 +41,7 @@
                 <td>{{ product.barcode }}</td>
                 <td>{{ product.product }}</td>
                 <td>{{ product.category.name }}</td>
-                <td class="text-right">$ {{ product.sale_price_tax_exc }}</td>
+                <td class="text-right">$ {{ product.sale_price_tax_inc }}</td>
                 <td>{{ product.quantity }}</td>
                 <td>
                   <button

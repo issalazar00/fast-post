@@ -90,13 +90,17 @@
                 <select
                   class="form-control"
                   id="tax_id"
-                  v-model="tax"
+                  v-model="formProduct.tax_id"
                   required
-                  @click="uploadTax(tax)"
                 >
                   <option value="0">--Select--</option>
-                  <option v-for="tax in taxListing" :key="tax.id" :value="tax">
-                    {{ tax.percentage }}
+                  <option
+                    v-for="t in taxListing"
+                    :key="t.id"
+                    :value="t.id"
+                    @click="tax.percentage = t.percentage"
+                  >
+                    {{ t.percentage }}
                   </option>
                 </select>
               </div>
@@ -121,7 +125,7 @@
                     class="form-control"
                     id="sale_price_tax_exc"
                     readonly
-                    :value="sale_price_tax_exc"
+                    :value="formProduct.sale_price_tax_exc"
                     placeholder=""
                   />
                 </div>
@@ -132,9 +136,9 @@
                     step="any"
                     class="form-control"
                     id="gain"
-                    :value="gain"
                     placeholder=""
                     readonly="readonly"
+                    v-model="formProduct.gain"
                   />
                 </div>
                 <div class="form-group col-6">
@@ -157,7 +161,7 @@
                     step="any"
                     class="form-control"
                     id="wholesale_price_tax_exc"
-                    :value="wholesale_price_tax_exc"
+                    v-model="formProduct.wholesale_price_tax_exc"
                     placeholder=""
                     readonly
                   />
@@ -278,7 +282,10 @@ export default {
   data() {
     return {
       //Variables de product
-      tax: {},
+      edit: false,
+      tax: {
+        percentage: 19,
+      },
       formProduct: {
         barcode: "",
         product: "",
@@ -303,12 +310,10 @@ export default {
   components: {},
   computed: {
     gain: function () {
-      if (this.formProduct.sale_price_tax_exc != 0) {
-        return parseFloat(
-          (this.formProduct.gain =
-            this.formProduct.sale_price_tax_exc - this.formProduct.cost_price)
-        );
-      }
+      return parseFloat(
+        (this.formProduct.gain =
+          this.formProduct.sale_price_tax_exc - this.formProduct.cost_price)
+      );
     },
     sale_price_tax_exc: function () {
       let percentage = this.tax.percentage / 100;
@@ -336,6 +341,7 @@ export default {
       });
     },
     OpenEditProduct(product) {
+      this.edit = true;
       let me = this;
       $("#productModal").modal("show");
       me.formProduct = product;
@@ -355,6 +361,7 @@ export default {
           $("#productModal").modal("hide");
           me.formProduct = {};
         });
+      this.edit = false;
     },
     ResetData() {
       let me = this;
@@ -365,9 +372,12 @@ export default {
     },
 
     uploadTax(tax) {
-      this.formProduct.tax_id = tax.id;
+      console.log(tax);
+      let me = this;
+      // me.formProduct.tax_id = tax.id;
     },
     CloseModal: function () {
+      this.edit = false;
       this.ResetData();
       this.$emit("list-products");
     },

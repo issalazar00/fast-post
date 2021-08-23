@@ -33,7 +33,7 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Código de barras | Nombre de product"
+            placeholder="Código de barras"
             aria-label=" with two button addons"
             aria-describedby="button-add-product"
             v-model="filters.product"
@@ -89,9 +89,10 @@
                 <th>#</th>
                 <th>Código</th>
                 <th>Producto</th>
-                <th>Cantidad</th>
                 <th>Precio</th>
+                <th>Cantidad</th>
                 <th>Descuento %</th>
+                <th>Descuento $</th>
                 <th>Total</th>
                 <th></th>
               </tr>
@@ -101,6 +102,18 @@
                 <th scope="row">{{ p.product_id }}</th>
                 <td>{{ p.barcode }}</td>
                 <td>{{ p.product }}</td>
+
+                <td>
+                  <input
+                    type="number"
+                    name="price"
+                    id="price"
+                    step="any"
+                    placeholder="Cantidad"
+                    v-model="p.price_tax_inc"
+                    readonly
+                  />
+                </td>
                 <td>
                   <input
                     type="number"
@@ -114,30 +127,37 @@
                 <td>
                   <input
                     type="number"
-                    name="price"
-                    id="price"
+                    name="discount_percentage"
+                    id="discount_percentage"
                     step="any"
-                    placeholder="Cantidad"
-                    v-model="p.price"
-                    readonly
+                    placeholder="Descuento"
+                    v-model="p.discount_percentage"
                   />
                 </td>
                 <td>
                   <input
                     type="number"
-                    name="discount"
-                    id="discount"
-                    step="any"
+                    name="discount_price"
+                    id="discount_price"
+                    step="2"
                     placeholder="Descuento"
-                    v-model="p.discount"
+                    disabled
+                    :value="
+                      (p.discount_price = (
+                        p.qty *
+                        p.price_tax_inc *
+                        (p.discount_percentage / 100)
+                      ).toFixed(2))
+                    "
+                    readonly
                   />
                 </td>
                 <td>
-                  {{
-                    (
-                      p.qty * p.price -
-                      p.qty * p.price * (p.discount / 100)
-                    ).toFixed(2)
+                 $ {{
+                    (p.price_tax_inc_total = (
+                      p.qty * p.price_tax_inc -
+                      p.qty * p.price_tax_inc * (p.discount_percentage / 100)
+                    ).toFixed(2))
                   }}
                 </td>
                 <td>
@@ -145,22 +165,17 @@
                 </td>
               </tr>
               <tr>
-                <th colspan="6">Subtotal:</th>
-                <th>$4000</th>
+                <th colspan="7">Subtotal:</th>
+                <th>{{ (order.total_tax_exc = total_tax_exc) }}</th>
               </tr>
               <tr>
-                <th colspan="5">Descuento:</th>
-                <th>10%</th>
-                <th>$400</th>
+                <th colspan="7">Descuento:</th>
+                <th>{{ (order.total_discount = total_discount) }}</th>
               </tr>
+
               <tr>
-                <th colspan="5">Misc:</th>
-                <th>10%</th>
-                <th>$400</th>
-              </tr>
-              <tr>
-                <th colspan="6">Total:</th>
-                <th>$4000</th>
+                <th colspan="7">Total:</th>
+                <th>{{ (order.total_tax_inc = total_tax_inc) }}</th>
               </tr>
             </tbody>
             <tbody v-else>
@@ -192,7 +207,7 @@ export default {
   components: { AddProduct, AddClient },
   data() {
     return {
-      // add product or client keyup
+      // add product or client with keyup
       filters: {
         product: "",
         client: "",
@@ -201,14 +216,42 @@ export default {
 
       order: {
         id_client: 0,
+        total_tax_inc: 0.0,
+        total_tax_exc: 0.0,
+        total_discount: 0.0, 
         productsOrder: [],
       },
     };
   },
-
+  computed: {
+    total_tax_inc: function () {
+      var result = 0.0;
+      this.productsOrderList.forEach(
+        (product) => (result += parseFloat(product.price_tax_inc_total))
+      );
+      return result;
+    },
+    total_tax_exc: function () {
+      var result = 0.0;
+      this.productsOrderList.forEach(
+        (product) => (result += parseFloat(product.price_tax_exc * product.qty))
+      );
+      return result;
+    },
+    total_discount: function () {
+      var result = 0.0;
+      this.productsOrderList.forEach(
+        (product) => (result += parseFloat(product.discount_price))
+      );
+      return result;
+    },
+  },
   methods: {
     searchProduct() {
       let me = this;
+      if (me.filters.product == "") {
+        return false;
+      }
       var url = "api/products/searchProduct?barcode=" + me.filters.product;
       axios
         .post(url)
@@ -227,22 +270,26 @@ export default {
     addProduct(new_product) {
       let me = this;
       var result = false;
+      // Verifica si el producto existe en la lista
       me.productsOrderList.filter((product) => {
         if (product.barcode === new_product.barcode) {
           result = true;
         }
         if (result) {
+          // Añade cantidad
           product.qty += 1;
         }
       });
 
       if (!result) {
+        // Sino, lo añade al array
         me.productsOrderList.push({
           product_id: new_product.id,
           barcode: new_product.barcode,
-          discount: 0,
+          discount_percentage: 0,
           qty: 1,
-          price: new_product.sale_price_tax_inc,
+          price_tax_inc: new_product.sale_price_tax_inc,
+          price_tax_exc: new_product.sale_price_tax_exc,
           product: new_product.product,
         });
       }

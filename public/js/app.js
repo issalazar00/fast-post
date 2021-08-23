@@ -9983,6 +9983,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -9992,7 +10007,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      // add product or client keyup
+      // add product or client with keyup
       filters: {
         product: "",
         client: ""
@@ -10000,13 +10015,44 @@ __webpack_require__.r(__webpack_exports__);
       productsOrderList: [],
       order: {
         id_client: 0,
+        total_tax_inc: 0.0,
+        total_tax_exc: 0.0,
+        total_discount: 0.0,
         productsOrder: []
       }
     };
   },
+  computed: {
+    total_tax_inc: function total_tax_inc() {
+      var result = 0.0;
+      this.productsOrderList.forEach(function (product) {
+        return result += parseFloat(product.price_tax_inc_total);
+      });
+      return result;
+    },
+    total_tax_exc: function total_tax_exc() {
+      var result = 0.0;
+      this.productsOrderList.forEach(function (product) {
+        return result += parseFloat(product.price_tax_exc * product.qty);
+      });
+      return result;
+    },
+    total_discount: function total_discount() {
+      var result = 0.0;
+      this.productsOrderList.forEach(function (product) {
+        return result += parseFloat(product.discount_price);
+      });
+      return result;
+    }
+  },
   methods: {
     searchProduct: function searchProduct() {
       var me = this;
+
+      if (me.filters.product == "") {
+        return false;
+      }
+
       var url = "api/products/searchProduct?barcode=" + me.filters.product;
       axios.post(url).then(function (response) {
         var new_product = response.data.products;
@@ -10022,24 +10068,28 @@ __webpack_require__.r(__webpack_exports__);
     },
     addProduct: function addProduct(new_product) {
       var me = this;
-      var result = false;
+      var result = false; // Verifica si el producto existe en la lista
+
       me.productsOrderList.filter(function (product) {
         if (product.barcode === new_product.barcode) {
           result = true;
         }
 
         if (result) {
+          // Añade cantidad
           product.qty += 1;
         }
       });
 
       if (!result) {
+        // Sino, lo añade al array
         me.productsOrderList.push({
           product_id: new_product.id,
           barcode: new_product.barcode,
-          discount: 0,
+          discount_percentage: 0,
           qty: 1,
-          price: new_product.sale_price_tax_inc,
+          price_tax_inc: new_product.sale_price_tax_inc,
+          price_tax_exc: new_product.sale_price_tax_exc,
           product: new_product.product
         });
       }
@@ -10339,11 +10389,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       //Variables de product
-      tax: {},
+      edit: false,
+      tax: {
+        percentage: 19
+      },
       formProduct: {
         barcode: "",
         product: "",
@@ -10368,9 +10425,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {},
   computed: {
     gain: function gain() {
-      if (this.formProduct.sale_price_tax_exc != 0) {
-        return parseFloat(this.formProduct.gain = this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
-      }
+      return parseFloat(this.formProduct.gain = this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
     },
     sale_price_tax_exc: function sale_price_tax_exc() {
       var percentage = this.tax.percentage / 100;
@@ -10395,6 +10450,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     OpenEditProduct: function OpenEditProduct(product) {
+      this.edit = true;
       var me = this;
       $("#productModal").modal("show");
       me.formProduct = product;
@@ -10412,6 +10468,7 @@ __webpack_require__.r(__webpack_exports__);
         $("#productModal").modal("hide");
         me.formProduct = {};
       });
+      this.edit = false;
     },
     ResetData: function ResetData() {
       var me = this;
@@ -10421,9 +10478,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     uploadTax: function uploadTax(tax) {
-      this.formProduct.tax_id = tax.id;
+      console.log(tax);
+      var me = this; // me.formProduct.tax_id = tax.id;
     },
     CloseModal: function CloseModal() {
+      this.edit = false;
       this.ResetData();
       this.$emit("list-products");
     }
@@ -11130,11 +11189,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {},
   data: function data() {
     return {
-      data: 'Tickets'
+      data: "Tickets"
     };
   }
 });
@@ -51926,7 +51991,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 type: "text",
-                placeholder: "Código de barras | Nombre de product",
+                placeholder: "Código de barras",
                 "aria-label": " with two button addons",
                 "aria-describedby": "button-add-product"
               },
@@ -52000,6 +52065,40 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
+                                    value: p.price_tax_inc,
+                                    expression: "p.price_tax_inc"
+                                  }
+                                ],
+                                attrs: {
+                                  type: "number",
+                                  name: "price",
+                                  id: "price",
+                                  step: "any",
+                                  placeholder: "Cantidad",
+                                  readonly: ""
+                                },
+                                domProps: { value: p.price_tax_inc },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      p,
+                                      "price_tax_inc",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
                                     value: p.qty,
                                     expression: "p.qty"
                                   }
@@ -52029,25 +52128,28 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: p.price,
-                                    expression: "p.price"
+                                    value: p.discount_percentage,
+                                    expression: "p.discount_percentage"
                                   }
                                 ],
                                 attrs: {
                                   type: "number",
-                                  name: "price",
-                                  id: "price",
+                                  name: "discount_percentage",
+                                  id: "discount_percentage",
                                   step: "any",
-                                  placeholder: "Cantidad",
-                                  readonly: ""
+                                  placeholder: "Descuento"
                                 },
-                                domProps: { value: p.price },
+                                domProps: { value: p.discount_percentage },
                                 on: {
                                   input: function($event) {
                                     if ($event.target.composing) {
                                       return
                                     }
-                                    _vm.$set(p, "price", $event.target.value)
+                                    _vm.$set(
+                                      p,
+                                      "discount_percentage",
+                                      $event.target.value
+                                    )
                                   }
                                 }
                               })
@@ -52055,41 +52157,35 @@ var render = function() {
                             _vm._v(" "),
                             _c("td", [
                               _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: p.discount,
-                                    expression: "p.discount"
-                                  }
-                                ],
                                 attrs: {
                                   type: "number",
-                                  name: "discount",
-                                  id: "discount",
-                                  step: "any",
-                                  placeholder: "Descuento"
+                                  name: "discount_price",
+                                  id: "discount_price",
+                                  step: "2",
+                                  placeholder: "Descuento",
+                                  disabled: "",
+                                  readonly: ""
                                 },
-                                domProps: { value: p.discount },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(p, "discount", $event.target.value)
-                                  }
+                                domProps: {
+                                  value: (p.discount_price = (
+                                    p.qty *
+                                    p.price_tax_inc *
+                                    (p.discount_percentage / 100)
+                                  ).toFixed(2))
                                 }
                               })
                             ]),
                             _vm._v(" "),
                             _c("td", [
                               _vm._v(
-                                "\n                " +
+                                "\n               $ " +
                                   _vm._s(
-                                    (
-                                      p.qty * p.price -
-                                      p.qty * p.price * (p.discount / 100)
-                                    ).toFixed(2)
+                                    (p.price_tax_inc_total = (
+                                      p.qty * p.price_tax_inc -
+                                      p.qty *
+                                        p.price_tax_inc *
+                                        (p.discount_percentage / 100)
+                                    ).toFixed(2))
                                   ) +
                                   "\n              "
                               )
@@ -52099,21 +52195,55 @@ var render = function() {
                           ])
                         }),
                         _vm._v(" "),
-                        _vm._m(6),
+                        _c("tr", [
+                          _c("th", { attrs: { colspan: "7" } }, [
+                            _vm._v("Subtotal:")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _vm._v(
+                              _vm._s(
+                                (_vm.order.total_tax_exc = _vm.total_tax_exc)
+                              )
+                            )
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _vm._m(7),
+                        _c("tr", [
+                          _c("th", { attrs: { colspan: "7" } }, [
+                            _vm._v("Descuento:")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _vm._v(
+                              _vm._s(
+                                (_vm.order.total_discount = _vm.total_discount)
+                              )
+                            )
+                          ])
+                        ]),
                         _vm._v(" "),
-                        _vm._m(8),
-                        _vm._v(" "),
-                        _vm._m(9)
+                        _c("tr", [
+                          _c("th", { attrs: { colspan: "7" } }, [
+                            _vm._v("Total:")
+                          ]),
+                          _vm._v(" "),
+                          _c("th", [
+                            _vm._v(
+                              _vm._s(
+                                (_vm.order.total_tax_inc = _vm.total_tax_inc)
+                              )
+                            )
+                          ])
+                        ])
                       ],
                       2
                     )
-                  : _c("tbody", [_vm._m(10)])
+                  : _c("tbody", [_vm._m(6)])
               ]
             ),
             _vm._v(" "),
-            _vm._m(11)
+            _vm._m(7)
           ])
         ])
       ]),
@@ -52268,11 +52398,13 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Producto")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Cantidad")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Precio")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Cantidad")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Descuento %")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Descuento $")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total")]),
         _vm._v(" "),
@@ -52288,50 +52420,6 @@ var staticRenderFns = [
       _c("button", { staticClass: "btn" }, [
         _c("i", { staticClass: "bi bi-trash" })
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", { attrs: { colspan: "6" } }, [_vm._v("Subtotal:")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("$4000")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", { attrs: { colspan: "5" } }, [_vm._v("Descuento:")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("10%")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("$400")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", { attrs: { colspan: "5" } }, [_vm._v("Misc:")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("10%")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("$400")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tr", [
-      _c("th", { attrs: { colspan: "6" } }, [_vm._v("Total:")]),
-      _vm._v(" "),
-      _c("th", [_vm._v("$4000")])
     ])
   },
   function() {
@@ -52607,16 +52695,13 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.tax,
-                          expression: "tax"
+                          value: _vm.formProduct.tax_id,
+                          expression: "formProduct.tax_id"
                         }
                       ],
                       staticClass: "form-control",
                       attrs: { id: "tax_id", required: "" },
                       on: {
-                        click: function($event) {
-                          return _vm.uploadTax(_vm.tax)
-                        },
                         change: function($event) {
                           var $$selectedVal = Array.prototype.filter
                             .call($event.target.options, function(o) {
@@ -52626,9 +52711,13 @@ var render = function() {
                               var val = "_value" in o ? o._value : o.value
                               return val
                             })
-                          _vm.tax = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
+                          _vm.$set(
+                            _vm.formProduct,
+                            "tax_id",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
                         }
                       }
                     },
@@ -52637,14 +52726,22 @@ var render = function() {
                         _vm._v("--Select--")
                       ]),
                       _vm._v(" "),
-                      _vm._l(_vm.taxListing, function(tax) {
+                      _vm._l(_vm.taxListing, function(t) {
                         return _c(
                           "option",
-                          { key: tax.id, domProps: { value: tax } },
+                          {
+                            key: t.id,
+                            domProps: { value: t.id },
+                            on: {
+                              click: function($event) {
+                                _vm.tax.percentage = t.percentage
+                              }
+                            }
+                          },
                           [
                             _vm._v(
                               "\n                  " +
-                                _vm._s(tax.percentage) +
+                                _vm._s(t.percentage) +
                                 "\n                "
                             )
                           ]
@@ -52709,7 +52806,7 @@ var render = function() {
                         readonly: "",
                         placeholder: ""
                       },
-                      domProps: { value: _vm.sale_price_tax_exc }
+                      domProps: { value: _vm.formProduct.sale_price_tax_exc }
                     })
                   ]),
                   _vm._v(" "),
@@ -52719,6 +52816,14 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.formProduct.gain,
+                          expression: "formProduct.gain"
+                        }
+                      ],
                       staticClass: "form-control",
                       attrs: {
                         type: "number",
@@ -52727,7 +52832,15 @@ var render = function() {
                         placeholder: "",
                         readonly: "readonly"
                       },
-                      domProps: { value: _vm.gain }
+                      domProps: { value: _vm.formProduct.gain },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.formProduct, "gain", $event.target.value)
+                        }
+                      }
                     })
                   ]),
                   _vm._v(" "),
@@ -52774,6 +52887,14 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.formProduct.wholesale_price_tax_exc,
+                          expression: "formProduct.wholesale_price_tax_exc"
+                        }
+                      ],
                       staticClass: "form-control",
                       attrs: {
                         type: "number",
@@ -52782,7 +52903,21 @@ var render = function() {
                         placeholder: "",
                         readonly: ""
                       },
-                      domProps: { value: _vm.wholesale_price_tax_exc }
+                      domProps: {
+                        value: _vm.formProduct.wholesale_price_tax_exc
+                      },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.formProduct,
+                            "wholesale_price_tax_exc",
+                            $event.target.value
+                          )
+                        }
+                      }
                     })
                   ]),
                   _vm._v(" "),
@@ -54257,21 +54392,21 @@ var render = function() {
     _c("div", { staticClass: "header" }, [
       _c("h3", { staticClass: "h3 w-100" }, [_vm._v("Tickets")]),
       _vm._v(" "),
-      _c("div", { staticClass: "row justify-content-end mx-4" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary",
-            attrs: { type: "button", "data-toggle": "modal" },
-            on: {
-              click: function($event) {
-                _vm.edit = false
-              }
-            }
-          },
-          [_vm._v("\n        Nuevo ticket\n      ")]
-        )
-      ])
+      _c(
+        "div",
+        { staticClass: "row justify-content-end mx-4" },
+        [
+          _c(
+            "router-link",
+            {
+              staticClass: "btn btn-outline-primary",
+              attrs: { to: "create-edit-order" }
+            },
+            [_vm._v("\n        Nueva orden\n      ")]
+          )
+        ],
+        1
+      )
     ]),
     _vm._v(" "),
     _c("section", [
@@ -54748,7 +54883,7 @@ var render = function() {
                               _vm._v(" "),
                               _c("td", { staticClass: "text-right" }, [
                                 _vm._v(
-                                  "$ " + _vm._s(product.sale_price_tax_exc)
+                                  "$ " + _vm._s(product.sale_price_tax_inc)
                                 )
                               ]),
                               _vm._v(" "),
@@ -54902,7 +55037,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Categoria")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Precio Venta")]),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Precio Venta con IVA")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Cantidad")]),
         _vm._v(" "),
