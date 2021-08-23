@@ -214,7 +214,6 @@ export default {
         .post(url)
         .then(function (response) {
           var new_product = response.data.products;
-          console.log(new_product);
           if (!new_product) {
             $("#no-products").toast("show");
           } else {
@@ -227,14 +226,41 @@ export default {
     },
     addProduct(new_product) {
       let me = this;
-      me.productsOrderList.push({
-        product_id: new_product.id,
-        barcode: new_product.barcode,
-        discount: 0,
-        qty: 1,
-        price: new_product.sale_price_tax_inc,
-        product: new_product.product,
-      });
+
+      if (me.productsOrderList.length == 0) {
+        me.productsOrderList.push({
+          product_id: new_product.id,
+          barcode: new_product.barcode,
+          discount: 0,
+          qty: 1,
+          price: new_product.sale_price_tax_inc,
+          product: new_product.product,
+        });
+      } else {
+        var result = false;
+        me.productsOrderList.filter((product) => {
+          if (product.barcode === new_product.barcode) {
+            result = true;
+          }
+          if (result) {
+            product.qty += 1;
+          }
+        });
+
+        if (!result) {
+          console.log(false);
+          me.productsOrderList.push({
+            product_id: new_product.id,
+            barcode: new_product.barcode,
+            discount: 0,
+            qty: 1,
+            price: new_product.sale_price_tax_inc,
+            product: new_product.product,
+          });
+        }
+
+        console.log(result);
+      }
     },
     searchClient() {},
   },

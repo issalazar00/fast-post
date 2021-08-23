@@ -10010,7 +10010,6 @@ __webpack_require__.r(__webpack_exports__);
       var url = "api/products/searchProduct?barcode=" + me.filters.product;
       axios.post(url).then(function (response) {
         var new_product = response.data.products;
-        console.log(new_product);
 
         if (!new_product) {
           $("#no-products").toast("show");
@@ -10023,14 +10022,42 @@ __webpack_require__.r(__webpack_exports__);
     },
     addProduct: function addProduct(new_product) {
       var me = this;
-      me.productsOrderList.push({
-        product_id: new_product.id,
-        barcode: new_product.barcode,
-        discount: 0,
-        qty: 1,
-        price: new_product.sale_price_tax_inc,
-        product: new_product.product
-      });
+
+      if (me.productsOrderList.length == 0) {
+        me.productsOrderList.push({
+          product_id: new_product.id,
+          barcode: new_product.barcode,
+          discount: 0,
+          qty: 1,
+          price: new_product.sale_price_tax_inc,
+          product: new_product.product
+        });
+      } else {
+        var result = false;
+        me.productsOrderList.filter(function (product) {
+          if (product.barcode === new_product.barcode) {
+            result = true;
+          }
+
+          if (result) {
+            product.qty += 1;
+          }
+        });
+
+        if (!result) {
+          console.log(false);
+          me.productsOrderList.push({
+            product_id: new_product.id,
+            barcode: new_product.barcode,
+            discount: 0,
+            qty: 1,
+            price: new_product.sale_price_tax_inc,
+            product: new_product.product
+          });
+        }
+
+        console.log(result);
+      }
     },
     searchClient: function searchClient() {}
   },
@@ -50192,7 +50219,7 @@ var staticRenderFns = [
       _c(
         "h5",
         { staticClass: "modal-title", attrs: { id: "addClientModalLabel" } },
-        [_vm._v("Client")]
+        [_vm._v("Cliente")]
       ),
       _vm._v(" "),
       _c(
