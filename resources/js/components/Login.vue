@@ -73,7 +73,7 @@ export default {
   created() {},
   methods: {
     login() {
-      var config = {
+      let config = {
         headers: {
           "Content-Type": "multipart/form-data",
         },

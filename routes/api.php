@@ -25,13 +25,13 @@ Route::post('/login', [UserController::class,'login']);
 Route::post('/register', [UserController::class,'register']);
 
 
-// Route::middleware('auth:api')->group(function(){
+Route::middleware('auth:api')->group(function(){
     Route::resource('/user', UserController::class);
 
     
-    Route::resource('/category', CategoryController::class);
-    Route::post('/category/{category}/activate',  [CategoryController::class, 'activate']);
-    Route::post('/category/{category}/deactivate',  [CategoryController::class, 'deactivate']);
+    Route::resource('/categories', CategoryController::class);
+    Route::post('/categories/{category}/activate',  [CategoryController::class, 'activate']);
+    Route::post('/categories/{category}/deactivate',  [CategoryController::class, 'deactivate']);
 
     Route::resource('/tax', TaxController::class);
     Route::post('/tax/{tax}/activate',  [TaxController::class, 'activate']);
@@ -47,4 +47,4 @@ Route::post('/register', [UserController::class,'register']);
 
     Route::resource('/role', RoleController::class);
     Route::get('/permission', [RoleController::class, 'getPermission']);
-// });
+});

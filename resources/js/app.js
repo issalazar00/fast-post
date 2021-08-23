@@ -73,7 +73,7 @@ const routes = [
   { path: '/orders', component: Orders },
   { path: '/details-order', component: DetailsOrder },
   { path: '/create-edit-order', component: CreateEditOrder },
-  { path: '/login', name:'Login', component: Login },
+  { path: '/login', name: 'Login', component: Login },
   { path: '**', component: Login },
 
 
@@ -97,17 +97,13 @@ router.beforeEach(async (to, from, next) => {
 
   try {
     isAuthenticated =
-        localStorage.getItem("token") &&
+      localStorage.getItem("token") &&
         localStorage.getItem("user") &&
         JSON.parse(localStorage.getItem("user"))
         ? true
         : false;
-
-        user = null;
-        token = 2323;
-      
   } catch (e) {
-    isAuthenticated 
+    isAuthenticated
   }
   if (authRequired && !isAuthenticated) {
     return next({ name: "Login", query: { redirect: to.fullPath } });
@@ -120,27 +116,47 @@ router.beforeEach(async (to, from, next) => {
 const app = new Vue({
   el: '#app',
   data: {
-    user: {},
-    token: '',
+    user: Object,
+    token: String,
+    permissions: [],
+    config: Object ({
+      headers: {
+        Authorization: "",
+      },
+    })
   },
   watch: {
-    $route(to, from){
-      this.user = JSON.parse(localStorage.getItem("user")) ;
-      this.token = localStorage.getItem("token");
+    $route(to, from) {
+      this.assignDataRequired();
     }
   },
   router,
-  created(){
+  created() {
+    this.assignDataRequired();
+  },
+  methods: {
+    assignDataRequired() {
+      this.user = JSON.parse(localStorage.getItem("user"));
+      this.token = localStorage.getItem("token");
+      
+      if(this.user.permissions == "undefined"){
+        this.permissions = [];
+        
+      }else{
+        this.permissions = this.user.permissions;
+      }
 
-  },
-  mounted(){
-    this.user = JSON.parse(localStorage.getItem("user")) ;
-    this.token = localStorage.getItem("token");
-  },
-  methods:{
-    logout(){
+      this.config.headers.Authorization = "Bearer "+ this.token;
+    },
+    logout() {
+      this.user = {};
+      this.token = "";
+      this.config = {};
       localStorage.clear();
       this.$router.push('/login');
+    },
+    searchPermission(permission) {
+      return global.validatePermission(this.permissions, permission);
     }
   }
 });
