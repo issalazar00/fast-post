@@ -10022,8 +10022,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     addProduct: function addProduct(new_product) {
       var me = this;
+      var result = false;
+      me.productsOrderList.filter(function (product) {
+        if (product.barcode === new_product.barcode) {
+          result = true;
+        }
 
-      if (me.productsOrderList.length == 0) {
+        if (result) {
+          product.qty += 1;
+        }
+      });
+
+      if (!result) {
         me.productsOrderList.push({
           product_id: new_product.id,
           barcode: new_product.barcode,
@@ -10032,31 +10042,6 @@ __webpack_require__.r(__webpack_exports__);
           price: new_product.sale_price_tax_inc,
           product: new_product.product
         });
-      } else {
-        var result = false;
-        me.productsOrderList.filter(function (product) {
-          if (product.barcode === new_product.barcode) {
-            result = true;
-          }
-
-          if (result) {
-            product.qty += 1;
-          }
-        });
-
-        if (!result) {
-          console.log(false);
-          me.productsOrderList.push({
-            product_id: new_product.id,
-            barcode: new_product.barcode,
-            discount: 0,
-            qty: 1,
-            price: new_product.sale_price_tax_inc,
-            product: new_product.product
-          });
-        }
-
-        console.log(result);
       }
     },
     searchClient: function searchClient() {}
