@@ -85,21 +85,64 @@
                   <label class="form-check-label" for="kit">Como paquete</label>
                 </div>
               </div>
-              <div class="form-group">
-                <label for="tax_id">Impuesto</label>
-                <select
-                  class="form-control"
-                  id="tax_id"
-                  v-model="tax"
-                  required
-                  @click="uploadTax(tax)"
-                >
-                  <option value="0">--Select--</option>
-                  <option v-for="tax in taxListing" :key="tax.id" :value="tax">
-                    {{ tax.percentage }}
-                  </option>
-                </select>
+              <div class="form-row">
+               
+                <div class="form-group col-6">
+                  <label for="category_id">Categoria</label>
+                  <select
+                    class="form-control"
+                    id="category_id"
+                    v-model="formProduct.category_id"
+                  >
+                    <option value="0">--Select--</option>
+                    <option
+                      v-for="category in categoryList"
+                      brandList: {}
+                      :key="category.id"
+                      :value="category.id"
+                    >
+                      {{ category.name }}
+                    </option>
+                  </select>
+                </div>
+                 <div class="form-group col-6">
+                  <label for="brand_id">Marca</label>
+                  <select
+                    class="form-control"
+                    id="brand_id"
+                    v-model="formProduct.brand_id"
+                  >
+                    <option value="0">--Select--</option>
+                    <option
+                      v-for="brand in brandList"
+                      brandList: {}
+                      :key="brand.id"
+                      :value="brand.id"
+                    >
+                      {{ brand.name }}
+                    </option>
+                  </select>
+                </div>
               </div>
+               <div class="form-group col-6">
+                  <label for="tax_id">Impuesto</label>
+                  <select
+                    class="form-control"
+                    id="tax_id"
+                    v-model="tax"
+                    required
+                    @click="uploadTax(tax)"
+                  >
+                    <option value="0">--Select--</option>
+                    <option
+                      v-for="tax in taxList"
+                      :key="tax.id"
+                      :value="tax"
+                    >
+                      {{ tax.percentage }}
+                    </option>
+                  </select>
+                </div>
               <hr />
               <div class="form-row">
                 <div class="form-group col-6">
@@ -176,23 +219,6 @@
                 </div>
               </div>
               <hr />
-              <div class="form-group">
-                <label for="category_id">Categoria</label>
-                <select
-                  class="form-control"
-                  id="category_id"
-                  v-model="formProduct.category_id"
-                >
-                  <option value="0">--Select--</option>
-                  <option
-                    v-for="category in categoriesListing"
-                    :key="category.id"
-                    :value="category.id"
-                  >
-                    {{ category.name }}
-                  </option>
-                </select>
-              </div>
 
               <div class="form-group">
                 <div class="form-check">
@@ -274,6 +300,8 @@
 </template>
 
 <script>
+import global from "./../services/global.js";
+
 export default {
   data() {
     return {
@@ -291,14 +319,16 @@ export default {
         wholesale_price_tax_exc: 0.0,
         wholesale_price_tax_inc: 0.0,
         category_id: 0,
+        brand_id: 0,
         stock: 0,
         minimum: 0.0,
         quantity: 0.0,
         maximum: 0.0,
       },
-      taxListing: {},
-      categoriesListing: {},
-    };
+      taxList: {},
+      categoryList: {},
+      brandList: {},
+    }
   },
   components: {},
   computed: {
@@ -326,13 +356,21 @@ export default {
     listTaxes() {
       let me = this;
       axios.get("api/tax", this.$root.config).then(function (response) {
-        me.taxListing = response.data.taxes.data;
+        me.taxList = response.data.taxes.data;
+      });
+    },
+    listBrands() {
+      let me = this;
+      axios.get("api/brands", this.$root.config).then(function (response) {
+        me.brandList = response.data.brands.data;
       });
     },
     listCategories() {
       let me = this;
       axios.get("api/category", this.$root.config).then(function (response) {
-        me.categoriesListing = response.data.categories.data;
+        me.categoryList = response.data.categories.data;
+        brandList: {
+        }
       });
     },
     OpenEditProduct(product) {
@@ -371,10 +409,14 @@ export default {
       this.ResetData();
       this.$emit("list-products");
     },
+    validatePermission(permission) {
+      return global.validatePermission(this.$root.permissions, permission);
+    },
   },
   created() {
     this.listTaxes();
     this.listCategories();
+    this.listBrands();
   },
 
   mounted() {},

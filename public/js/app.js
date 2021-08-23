@@ -10094,6 +10094,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _services_global_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../services/global.js */ "./resources/js/services/global.js");
 //
 //
 //
@@ -10369,6 +10370,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -10386,13 +10414,15 @@ __webpack_require__.r(__webpack_exports__);
         wholesale_price_tax_exc: 0.0,
         wholesale_price_tax_inc: 0.0,
         category_id: 0,
+        brand_id: 0,
         stock: 0,
         minimum: 0.0,
         quantity: 0.0,
         maximum: 0.0
       },
-      taxListing: {},
-      categoriesListing: {}
+      taxList: {},
+      categoryList: {},
+      brandList: {}
     };
   },
   components: {},
@@ -10415,13 +10445,21 @@ __webpack_require__.r(__webpack_exports__);
     listTaxes: function listTaxes() {
       var me = this;
       axios.get("api/tax", this.$root.config).then(function (response) {
-        me.taxListing = response.data.taxes.data;
+        me.taxList = response.data.taxes.data;
+      });
+    },
+    listBrands: function listBrands() {
+      var me = this;
+      axios.get("api/brands", this.$root.config).then(function (response) {
+        me.brandList = response.data.brands.data;
       });
     },
     listCategories: function listCategories() {
       var me = this;
       axios.get("api/category", this.$root.config).then(function (response) {
-        me.categoriesListing = response.data.categories.data;
+        me.categoryList = response.data.categories.data;
+
+        brandList: {}
       });
     },
     OpenEditProduct: function OpenEditProduct(product) {
@@ -10456,11 +10494,15 @@ __webpack_require__.r(__webpack_exports__);
     CloseModal: function CloseModal() {
       this.ResetData();
       this.$emit("list-products");
+    },
+    validatePermission: function validatePermission(permission) {
+      return _services_global_js__WEBPACK_IMPORTED_MODULE_0__.default.validatePermission(this.$root.permissions, permission);
     }
   },
   created: function created() {
     this.listTaxes();
     this.listCategories();
+    this.listBrands();
   },
   mounted: function mounted() {}
 });
@@ -11695,6 +11737,255 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     console.log("Component mounted.");
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/app.js":
+/*!*****************************!*\
+  !*** ./resources/js/app.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @saeris/vue-spinners */ "./node_modules/@saeris/vue-spinners/lib/@saeris/vue-spinners.common.js");
+/* harmony import */ var _saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_Login_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Login.vue */ "./resources/js/components/Login.vue");
+/* harmony import */ var _components_Clients_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Clients.vue */ "./resources/js/components/Clients.vue");
+/* harmony import */ var _components_CreateEditClient_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/CreateEditClient.vue */ "./resources/js/components/CreateEditClient.vue");
+/* harmony import */ var _components_Products_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/Products.vue */ "./resources/js/components/Products.vue");
+/* harmony import */ var _components_CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/CreateEditProduct.vue */ "./resources/js/components/CreateEditProduct.vue");
+/* harmony import */ var _components_Taxes_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/Taxes.vue */ "./resources/js/components/Taxes.vue");
+/* harmony import */ var _components_CreateEditTax_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/CreateEditTax.vue */ "./resources/js/components/CreateEditTax.vue");
+/* harmony import */ var _components_Categories_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Categories.vue */ "./resources/js/components/Categories.vue");
+/* harmony import */ var _components_CreateEditCategory_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/CreateEditCategory.vue */ "./resources/js/components/CreateEditCategory.vue");
+/* harmony import */ var _components_Brands_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/Brands.vue */ "./resources/js/components/Brands.vue");
+/* harmony import */ var _components_CreateEditBrand_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/CreateEditBrand.vue */ "./resources/js/components/CreateEditBrand.vue");
+/* harmony import */ var _components_Suppliers_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/Suppliers.vue */ "./resources/js/components/Suppliers.vue");
+/* harmony import */ var _components_CreateEditSupplier_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/CreateEditSupplier.vue */ "./resources/js/components/CreateEditSupplier.vue");
+/* harmony import */ var _components_Orders__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/Orders */ "./resources/js/components/Orders.vue");
+/* harmony import */ var _components_DetailsOrder__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/DetailsOrder */ "./resources/js/components/DetailsOrder.vue");
+/* harmony import */ var _components_CreateEditOrder__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/CreateEditOrder */ "./resources/js/components/CreateEditOrder.vue");
+/* harmony import */ var _components_AddClient__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/AddClient */ "./resources/js/components/AddClient.vue");
+/* harmony import */ var _components_AddProduct__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/AddProduct */ "./resources/js/components/AddProduct.vue");
+/* harmony import */ var _services_global_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./services/global.js */ "./resources/js/services/global.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
+vue__WEBPACK_IMPORTED_MODULE_1__.default.component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ //Services
+
+
+vue__WEBPACK_IMPORTED_MODULE_1__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_22__.default);
+vue__WEBPACK_IMPORTED_MODULE_1__.default.use(_saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2__.VueSpinners);
+/**
+ * The following block of code may be used to automatically register your
+ * Vue components. It will recursively scan this directory for the Vue
+ * components and automatically register them with their "basename".
+ *
+ * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ */
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
+vue__WEBPACK_IMPORTED_MODULE_1__.default.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default); // Vue.component('productos', require('./components/Products.vue').default);
+
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
+// { path: '', component: require('./components/ExampleComponent.vue').default },
+
+var routes = [{
+  path: '',
+  component: _components_CreateEditOrder__WEBPACK_IMPORTED_MODULE_18__.default
+}, {
+  path: '/clients',
+  component: _components_Clients_vue__WEBPACK_IMPORTED_MODULE_4__.default
+}, {
+  path: '/create-edit-client',
+  component: _components_CreateEditClient_vue__WEBPACK_IMPORTED_MODULE_5__.default
+}, {
+  path: '/products',
+  component: _components_Products_vue__WEBPACK_IMPORTED_MODULE_6__.default
+}, {
+  path: '/create-edit-product',
+  component: _components_CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_7__.default
+}, {
+  path: '/taxes',
+  component: _components_Taxes_vue__WEBPACK_IMPORTED_MODULE_8__.default
+}, {
+  path: '/create-edit-tax',
+  component: _components_CreateEditTax_vue__WEBPACK_IMPORTED_MODULE_9__.default
+}, {
+  path: '/suppliers',
+  component: _components_Suppliers_vue__WEBPACK_IMPORTED_MODULE_14__.default
+}, {
+  path: '/create-edit-supplier',
+  component: _components_CreateEditSupplier_vue__WEBPACK_IMPORTED_MODULE_15__.default
+}, {
+  path: '/categories',
+  component: _components_Categories_vue__WEBPACK_IMPORTED_MODULE_10__.default
+}, {
+  path: '/create-edit-category',
+  component: _components_CreateEditCategory_vue__WEBPACK_IMPORTED_MODULE_11__.default
+}, {
+  path: '/brands',
+  component: _components_Brands_vue__WEBPACK_IMPORTED_MODULE_12__.default
+}, {
+  path: '/create-edit-brand',
+  component: _components_CreateEditBrand_vue__WEBPACK_IMPORTED_MODULE_13__.default
+}, {
+  path: '/orders',
+  component: _components_Orders__WEBPACK_IMPORTED_MODULE_16__.default
+}, {
+  path: '/details-order',
+  component: _components_DetailsOrder__WEBPACK_IMPORTED_MODULE_17__.default
+}, {
+  path: '/create-edit-order',
+  component: _components_CreateEditOrder__WEBPACK_IMPORTED_MODULE_18__.default
+}, {
+  path: '/login',
+  name: 'Login',
+  component: _components_Login_vue__WEBPACK_IMPORTED_MODULE_3__.default
+}, {
+  path: '**',
+  component: _components_Login_vue__WEBPACK_IMPORTED_MODULE_3__.default
+}];
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_22__.default({
+  routes: routes // short for `routes: routes`
+
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
+router.beforeEach( /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(to, from, next) {
+    var publicRoutes, authRequired, isAuthenticated;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            // redirect to login if not authenticated in and trying to access a restricted route
+            publicRoutes = ["Login"];
+            authRequired = !publicRoutes.includes(to.name);
+            isAuthenticated = false;
+
+            try {
+              isAuthenticated = localStorage.getItem("token") && localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")) ? true : false;
+            } catch (e) {
+              isAuthenticated;
+            }
+
+            if (!(authRequired && !isAuthenticated)) {
+              _context.next = 6;
+              break;
+            }
+
+            return _context.abrupt("return", next({
+              name: "Login",
+              query: {
+                redirect: to.fullPath
+              }
+            }));
+
+          case 6:
+            next();
+
+          case 7:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function (_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+}());
+var app = new vue__WEBPACK_IMPORTED_MODULE_1__.default({
+  el: '#app',
+  data: {
+    user: Object,
+    token: String,
+    permissions: [],
+    config: Object({
+      headers: {
+        Authorization: ""
+      }
+    })
+  },
+  watch: {
+    $route: function $route(to, from) {
+      this.assignDataRequired();
+    }
+  },
+  router: router,
+  created: function created() {
+    this.assignDataRequired();
+  },
+  methods: {
+    assignDataRequired: function assignDataRequired() {
+      this.user = JSON.parse(localStorage.getItem("user"));
+      this.token = localStorage.getItem("token");
+
+      if (this.user.permissions == "undefined") {
+        this.permissions = [];
+      } else {
+        this.permissions = this.user.permissions;
+      }
+
+      this.config.headers.Authorization = "Bearer " + this.token;
+    },
+    logout: function logout() {
+      this.user = {};
+      this.token = "";
+      this.config = {};
+      localStorage.clear();
+      this.$router.push('/login');
+    },
+    searchPermission: function searchPermission(permission) {
+      return _services_global_js__WEBPACK_IMPORTED_MODULE_21__.default.validatePermission(this.permissions, permission);
+    }
   }
 });
 
@@ -44921,6 +45212,19 @@ var __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 /***/ }),
 
+/***/ "./resources/sass/app.scss":
+/*!*********************************!*\
+  !*** ./resources/sass/app.scss ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
 /***/ "./node_modules/popper.js/dist/esm/popper.js":
 /*!***************************************************!*\
   !*** ./node_modules/popper.js/dist/esm/popper.js ***!
@@ -52407,7 +52711,139 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
+                _c("div", { staticClass: "form-row" }, [
+                  _c("div", { staticClass: "form-group col-6" }, [
+                    _c("label", { attrs: { for: "category_id" } }, [
+                      _vm._v("Categoria")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formProduct.category_id,
+                            expression: "formProduct.category_id"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { id: "category_id" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.formProduct,
+                              "category_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "0" } }, [
+                          _vm._v("--Select--")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.categoryList, function(category) {
+                          return _c(
+                            "option",
+                            {
+                              key: category.id,
+                              attrs: { "brandList:": "", "{}": "" },
+                              domProps: { value: category.id }
+                            },
+                            [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(category.name) +
+                                  "\n                  "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-6" }, [
+                    _c("label", { attrs: { for: "brand_id" } }, [
+                      _vm._v("Marca")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formProduct.brand_id,
+                            expression: "formProduct.brand_id"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { id: "brand_id" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.formProduct,
+                              "brand_id",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "0" } }, [
+                          _vm._v("--Select--")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.brandList, function(brand) {
+                          return _c(
+                            "option",
+                            {
+                              key: brand.id,
+                              attrs: { "brandList:": "", "{}": "" },
+                              domProps: { value: brand.id }
+                            },
+                            [
+                              _vm._v(
+                                "\n                    " +
+                                  _vm._s(brand.name) +
+                                  "\n                  "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group col-6" }, [
                   _c("label", { attrs: { for: "tax_id" } }, [
                     _vm._v("Impuesto")
                   ]),
@@ -52449,15 +52885,15 @@ var render = function() {
                         _vm._v("--Select--")
                       ]),
                       _vm._v(" "),
-                      _vm._l(_vm.taxListing, function(tax) {
+                      _vm._l(_vm.taxList, function(tax) {
                         return _c(
                           "option",
                           { key: tax.id, domProps: { value: tax } },
                           [
                             _vm._v(
-                              "\n                  " +
+                              "\n                    " +
                                 _vm._s(tax.percentage) +
-                                "\n                "
+                                "\n                  "
                             )
                           ]
                         )
@@ -52638,70 +53074,6 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("hr"),
-                _vm._v(" "),
-                _c("div", { staticClass: "form-group" }, [
-                  _c("label", { attrs: { for: "category_id" } }, [
-                    _vm._v("Categoria")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.formProduct.category_id,
-                          expression: "formProduct.category_id"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { id: "category_id" },
-                      on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.formProduct,
-                            "category_id",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        }
-                      }
-                    },
-                    [
-                      _c("option", { attrs: { value: "0" } }, [
-                        _vm._v("--Select--")
-                      ]),
-                      _vm._v(" "),
-                      _vm._l(_vm.categoriesListing, function(category) {
-                        return _c(
-                          "option",
-                          {
-                            key: category.id,
-                            domProps: { value: category.id }
-                          },
-                          [
-                            _vm._v(
-                              "\n                  " +
-                                _vm._s(category.name) +
-                                "\n                "
-                            )
-                          ]
-                        )
-                      })
-                    ],
-                    2
-                  )
-                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
                   _c("div", { staticClass: "form-check" }, [
@@ -70573,7 +70945,42 @@ Vue.compile = compileToFunctions;
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -70635,254 +71042,68 @@ Vue.compile = compileToFunctions;
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"/js/app": 0,
+/******/ 			"css/app": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-/*!*****************************!*\
-  !*** ./resources/js/app.js ***!
-  \*****************************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @saeris/vue-spinners */ "./node_modules/@saeris/vue-spinners/lib/@saeris/vue-spinners.common.js");
-/* harmony import */ var _saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _components_Login_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Login.vue */ "./resources/js/components/Login.vue");
-/* harmony import */ var _components_Clients_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Clients.vue */ "./resources/js/components/Clients.vue");
-/* harmony import */ var _components_CreateEditClient_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/CreateEditClient.vue */ "./resources/js/components/CreateEditClient.vue");
-/* harmony import */ var _components_Products_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/Products.vue */ "./resources/js/components/Products.vue");
-/* harmony import */ var _components_CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/CreateEditProduct.vue */ "./resources/js/components/CreateEditProduct.vue");
-/* harmony import */ var _components_Taxes_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/Taxes.vue */ "./resources/js/components/Taxes.vue");
-/* harmony import */ var _components_CreateEditTax_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/CreateEditTax.vue */ "./resources/js/components/CreateEditTax.vue");
-/* harmony import */ var _components_Categories_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Categories.vue */ "./resources/js/components/Categories.vue");
-/* harmony import */ var _components_CreateEditCategory_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/CreateEditCategory.vue */ "./resources/js/components/CreateEditCategory.vue");
-/* harmony import */ var _components_Brands_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/Brands.vue */ "./resources/js/components/Brands.vue");
-/* harmony import */ var _components_CreateEditBrand_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/CreateEditBrand.vue */ "./resources/js/components/CreateEditBrand.vue");
-/* harmony import */ var _components_Suppliers_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/Suppliers.vue */ "./resources/js/components/Suppliers.vue");
-/* harmony import */ var _components_CreateEditSupplier_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/CreateEditSupplier.vue */ "./resources/js/components/CreateEditSupplier.vue");
-/* harmony import */ var _components_Orders__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/Orders */ "./resources/js/components/Orders.vue");
-/* harmony import */ var _components_DetailsOrder__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/DetailsOrder */ "./resources/js/components/DetailsOrder.vue");
-/* harmony import */ var _components_CreateEditOrder__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/CreateEditOrder */ "./resources/js/components/CreateEditOrder.vue");
-/* harmony import */ var _components_AddClient__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./components/AddClient */ "./resources/js/components/AddClient.vue");
-/* harmony import */ var _components_AddProduct__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./components/AddProduct */ "./resources/js/components/AddProduct.vue");
-/* harmony import */ var _services_global_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./services/global.js */ "./resources/js/services/global.js");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
-
-vue__WEBPACK_IMPORTED_MODULE_1__.default.component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- //Services
-
-
-vue__WEBPACK_IMPORTED_MODULE_1__.default.use(vue_router__WEBPACK_IMPORTED_MODULE_22__.default);
-vue__WEBPACK_IMPORTED_MODULE_1__.default.use(_saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2__.VueSpinners);
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
-vue__WEBPACK_IMPORTED_MODULE_1__.default.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default); // Vue.component('productos', require('./components/Products.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-// { path: '', component: require('./components/ExampleComponent.vue').default },
-
-var routes = [{
-  path: '',
-  component: _components_CreateEditOrder__WEBPACK_IMPORTED_MODULE_18__.default
-}, {
-  path: '/clients',
-  component: _components_Clients_vue__WEBPACK_IMPORTED_MODULE_4__.default
-}, {
-  path: '/create-edit-client',
-  component: _components_CreateEditClient_vue__WEBPACK_IMPORTED_MODULE_5__.default
-}, {
-  path: '/products',
-  component: _components_Products_vue__WEBPACK_IMPORTED_MODULE_6__.default
-}, {
-  path: '/create-edit-product',
-  component: _components_CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_7__.default
-}, {
-  path: '/taxes',
-  component: _components_Taxes_vue__WEBPACK_IMPORTED_MODULE_8__.default
-}, {
-  path: '/create-edit-tax',
-  component: _components_CreateEditTax_vue__WEBPACK_IMPORTED_MODULE_9__.default
-}, {
-  path: '/suppliers',
-  component: _components_Suppliers_vue__WEBPACK_IMPORTED_MODULE_14__.default
-}, {
-  path: '/create-edit-supplier',
-  component: _components_CreateEditSupplier_vue__WEBPACK_IMPORTED_MODULE_15__.default
-}, {
-  path: '/categories',
-  component: _components_Categories_vue__WEBPACK_IMPORTED_MODULE_10__.default
-}, {
-  path: '/create-edit-category',
-  component: _components_CreateEditCategory_vue__WEBPACK_IMPORTED_MODULE_11__.default
-}, {
-  path: '/brands',
-  component: _components_Brands_vue__WEBPACK_IMPORTED_MODULE_12__.default
-}, {
-  path: '/create-edit-brand',
-  component: _components_CreateEditBrand_vue__WEBPACK_IMPORTED_MODULE_13__.default
-}, {
-  path: '/orders',
-  component: _components_Orders__WEBPACK_IMPORTED_MODULE_16__.default
-}, {
-  path: '/details-order',
-  component: _components_DetailsOrder__WEBPACK_IMPORTED_MODULE_17__.default
-}, {
-  path: '/create-edit-order',
-  component: _components_CreateEditOrder__WEBPACK_IMPORTED_MODULE_18__.default
-}, {
-  path: '/login',
-  name: 'Login',
-  component: _components_Login_vue__WEBPACK_IMPORTED_MODULE_3__.default
-}, {
-  path: '**',
-  component: _components_Login_vue__WEBPACK_IMPORTED_MODULE_3__.default
-}];
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_22__.default({
-  routes: routes // short for `routes: routes`
-
-});
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
-router.beforeEach( /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(to, from, next) {
-    var publicRoutes, authRequired, isAuthenticated;
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            // redirect to login if not authenticated in and trying to access a restricted route
-            publicRoutes = ["Login"];
-            authRequired = !publicRoutes.includes(to.name);
-            isAuthenticated = false;
-
-            try {
-              isAuthenticated = localStorage.getItem("token") && localStorage.getItem("user") && JSON.parse(localStorage.getItem("user")) ? true : false;
-            } catch (e) {
-              isAuthenticated;
-            }
-
-            if (!(authRequired && !isAuthenticated)) {
-              _context.next = 6;
-              break;
-            }
-
-            return _context.abrupt("return", next({
-              name: "Login",
-              query: {
-                redirect: to.fullPath
-              }
-            }));
-
-          case 6:
-            next();
-
-          case 7:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-
-  return function (_x, _x2, _x3) {
-    return _ref.apply(this, arguments);
-  };
-}());
-var app = new vue__WEBPACK_IMPORTED_MODULE_1__.default({
-  el: '#app',
-  data: {
-    user: Object,
-    token: String,
-    permissions: [],
-    config: Object({
-      headers: {
-        Authorization: ""
-      }
-    })
-  },
-  watch: {
-    $route: function $route(to, from) {
-      this.assignDataRequired();
-    }
-  },
-  router: router,
-  created: function created() {
-    this.assignDataRequired();
-  },
-  methods: {
-    assignDataRequired: function assignDataRequired() {
-      this.user = JSON.parse(localStorage.getItem("user"));
-      this.token = localStorage.getItem("token");
-
-      if (this.user.permissions == "undefined") {
-        this.permissions = [];
-      } else {
-        this.permissions = this.user.permissions;
-      }
-
-      this.config.headers.Authorization = "Bearer " + this.token;
-    },
-    logout: function logout() {
-      this.user = {};
-      this.token = "";
-      this.config = {};
-      localStorage.clear();
-      this.$router.push('/login');
-    },
-    searchPermission: function searchPermission(permission) {
-      return __webpack_require__.g.validatePermission(this.permissions, permission);
-    }
-  }
-});
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/app.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/sass/app.scss")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
 /******/ })()
 ;

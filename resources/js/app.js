@@ -39,7 +39,7 @@ import AddProduct from './components/AddProduct'
 
 
 //Services
-import './services/global.js';
+import global from './services/global.js';
 
 Vue.use(VueRouter)
 Vue.use(VueSpinners)
@@ -126,7 +126,7 @@ const app = new Vue({
     user: Object,
     token: String,
     permissions: [],
-    config: Object ({
+    config: Object({
       headers: {
         Authorization: "",
       },
@@ -145,15 +145,15 @@ const app = new Vue({
     assignDataRequired() {
       this.user = JSON.parse(localStorage.getItem("user"));
       this.token = localStorage.getItem("token");
-      
-      if(this.user.permissions == "undefined"){
+
+      if (this.user.permissions == "undefined") {
         this.permissions = [];
-        
-      }else{
+
+      } else {
         this.permissions = this.user.permissions;
       }
 
-      this.config.headers.Authorization = "Bearer "+ this.token;
+      this.config.headers.Authorization = "Bearer " + this.token;
     },
     logout() {
       this.user = {};

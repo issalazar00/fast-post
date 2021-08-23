@@ -9,12 +9,12 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('can:product.index')->only('index');
-        // $this->middleware('can:product.store')->only('store');
-        // $this->middleware('can:product.update')->only('update');
-        // $this->middleware('can:product.delete')->only('destroy');
-        // $this->middleware('can:product.active')->only('active');
-        // $this->middleware('can:product.deactivate')->only('deactivate');
+        $this->middleware('can:product.index')->only('index');
+        $this->middleware('can:product.store')->only('store');
+        $this->middleware('can:product.update')->only('update');
+        $this->middleware('can:product.delete')->only('destroy');
+        $this->middleware('can:product.active')->only('active');
+        $this->middleware('can:product.deactivate')->only('deactivate');
     }
     /**
      * Display a listing of the resource.
@@ -103,6 +103,7 @@ class ProductController extends Controller
         $product->maximum = $request['maximum'];
         $product->category_id = $request['category_id'];
         $product->tax_id = $request['tax_id'];
+        $product->brand_id = $request['brand_id'];
         $product->save();
     }
 
@@ -150,7 +151,6 @@ class ProductController extends Controller
         $products = Product::select()
             ->where('barcode', 'LIKE', $request->barcode)
             ->first();
-            // ->get();
 
         return ['products' => $products];
     }
