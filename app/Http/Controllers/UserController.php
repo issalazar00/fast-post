@@ -77,7 +77,9 @@ class UserController extends Controller
                     'message' => 'Login correcto',
                     'user' => [
                         'sub' => $user->id,
+                        'name' => $user->name,
                         'email' => $user->email,
+                        'permissions' => $user->getAllPermissions(),
                         'iat' => time(),
                         'exp' => time() + (7 * 60),
                         'api_token' =>  $token

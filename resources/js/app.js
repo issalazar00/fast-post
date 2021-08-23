@@ -11,6 +11,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { VueSpinners } from '@saeris/vue-spinners'
 
+import Login from './components/Login.vue'
+
 import Clients from './components/Clients.vue'
 import CreateEditClient from './components/CreateEditClient.vue'
 import Products from './components/Products.vue'
@@ -27,6 +29,9 @@ import CreateEditSupplier from './components/CreateEditSupplier.vue'
 import Orders from './components/Orders'
 import DetailsOrder from './components/DetailsOrder'
 import CreateEditOrder from './components/CreateEditOrder'
+
+//Services
+import global from './services/global.js';
 
 Vue.use(VueRouter)
 Vue.use(VueSpinners)
@@ -68,6 +73,11 @@ const routes = [
   { path: '/orders', component: Orders },
   { path: '/details-order', component: DetailsOrder },
   { path: '/create-edit-order', component: CreateEditOrder },
+  { path: '/login', name: 'Login', component: Login },
+  { path: '**', component: Login },
+
+
+
 
 ]
 
@@ -75,10 +85,79 @@ const router = new VueRouter({
   routes // short for `routes: routes`
 })
 
+
+
 export default router;
+
+router.beforeEach(async (to, from, next) => {
+  // redirect to login if not authenticated in and trying to access a restricted route
+  const publicRoutes = ["Login"];
+  const authRequired = !publicRoutes.includes(to.name);
+  let isAuthenticated = false;
+
+  try {
+    isAuthenticated =
+      localStorage.getItem("token") &&
+        localStorage.getItem("user") &&
+        JSON.parse(localStorage.getItem("user"))
+        ? true
+        : false;
+  } catch (e) {
+    isAuthenticated
+  }
+  if (authRequired && !isAuthenticated) {
+    return next({ name: "Login", query: { redirect: to.fullPath } });
+  }
+  next();
+
+});
+
 
 const app = new Vue({
   el: '#app',
-  router
+  data: {
+    user: Object,
+    token: String,
+    permissions: [],
+    config: Object ({
+      headers: {
+        Authorization: "",
+      },
+    })
+  },
+  watch: {
+    $route(to, from) {
+      this.assignDataRequired();
+    }
+  },
+  router,
+  created() {
+    this.assignDataRequired();
+  },
+  methods: {
+    assignDataRequired() {
+      this.user = JSON.parse(localStorage.getItem("user"));
+      this.token = localStorage.getItem("token");
+      
+      if(this.user.permissions == "undefined"){
+        this.permissions = [];
+        
+      }else{
+        this.permissions = this.user.permissions;
+      }
+
+      this.config.headers.Authorization = "Bearer "+ this.token;
+    },
+    logout() {
+      this.user = {};
+      this.token = "";
+      this.config = {};
+      localStorage.clear();
+      this.$router.push('/login');
+    },
+    searchPermission(permission) {
+      return global.validatePermission(this.permissions, permission);
+    }
+  }
 });
 

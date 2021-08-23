@@ -145,7 +145,7 @@ export default {
       this.isLoading = true;
       let me = this;
       axios
-        .get("api/products?page=" + page)
+        .get("api/products?page=" + page, this.$root.config)
         .then(function (response) {
           me.listingProducts = response.data.products;
         })

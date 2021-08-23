@@ -15,9 +15,7 @@ class CategoryController extends Controller
         $this->middleware('can:category.store')->only('store');
         $this->middleware('can:category.update')->only('update');
         $this->middleware('can:category.delete')->only('destroy');
-        $this->middleware('can:category.active')->only('active');
-        $this->middleware('can:category.deactivate')->only('deactivate');
-
+        $this->middleware('can:category.active')->only('active','deactivate');
     }
     /**
      * Display a listing of the resource.

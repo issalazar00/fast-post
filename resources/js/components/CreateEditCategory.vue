@@ -8,11 +8,13 @@
             type="text"
             class="form-control"
             id="name"
-            placeholder=""
+            placeholder="Ingresar nombre"
             v-model="formCategory.name"
           />
+          <small id="nameHelp" class="form-text text-danger">{{
+            formErrors.name
+          }}</small>
         </div>
-
       </form>
     </div>
   </div>
@@ -20,23 +22,37 @@
 
 <script>
 export default {
-  data (){
+  data() {
     return {
-      formCategory : {
-        name: ''
-      }
-    }
+      formCategory: {
+        name: "",
+      },
+      formErrors: {
+        name: "",
+      },
+    };
   },
   methods: {
     CreateCategory() {
       let me = this;
-      axios.post("api/category", this.formCategory).then(function () {
-        $("#categoryModal").modal("hide");
-        me.formCategory = {};
-      });
+      this.formErrors.name = "";
+
+      axios
+        .post("api/categories", this.formCategory, this.$root.config)
+        .then(function () {
+          $("#categoryModal").modal("hide");
+          me.formCategory = {};
+        })
+        .catch((response) => {
+          var errors = response.response.data.errors;
+          if (errors.name != "undefined") {
+            this.formErrors.name = errors.name[0];
+          }
+        });
     },
     OpenEditCategory(product) {
       let me = this;
+      me.ResetData();
       $("#categoryModal").modal("show");
       me.formCategory = product;
     },
@@ -44,17 +60,27 @@ export default {
     EditCategory() {
       let me = this;
       axios
-        .put("api/category/" + this.formCategory.id, this.formCategory)
+        .put(
+          "api/categories/" + this.formCategory.id,
+          this.formCategory,
+          this.$root.config
+        )
         .then(function () {
           $("#categoryModal").modal("hide");
           me.formCategory = {};
+        })
+        .catch((response) => {
+          var errors = response.response.data.errors;
+          if (errors.name != "undefined") {
+            this.formErrors.name = errors.name[0];
+          }
         });
     },
-
     ResetData() {
       let me = this;
       $("#categoryModal").modal("hide");
       me.formCategory = {};
+      me.formErrors.name = "";
     },
   },
   mounted() {
