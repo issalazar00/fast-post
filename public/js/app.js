@@ -9998,6 +9998,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -52178,7 +52189,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("td", [
                               _vm._v(
-                                "\n               $ " +
+                                "\n                $\n                " +
                                   _vm._s(
                                     (p.price_tax_inc_total = (
                                       p.qty * p.price_tax_inc -
@@ -52243,7 +52254,30 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _vm._m(7)
+            _c(
+              "div",
+              { staticClass: "text-right" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-outline-secondary btn-block",
+                    attrs: { to: "orders", type: "button" }
+                  },
+                  [
+                    _c("i", { staticClass: "bi bi-receipt" }),
+                    _vm._v(" Cancelar\n          ")
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(7),
+                _vm._v(" "),
+                _vm._m(8),
+                _vm._v(" "),
+                _vm._m(9)
+              ],
+              1
+            )
           ])
         ])
       ]),
@@ -52432,31 +52466,49 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-right" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-outline-secondary btn-block",
-          attrs: { type: "button" }
-        },
-        [
-          _c("i", { staticClass: "bi bi-receipt" }),
-          _vm._v(" Cancelar\n          ")
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-outline-primary btn-block",
-          attrs: { type: "button" }
-        },
-        [
-          _c("i", { staticClass: "bi bi-receipt" }),
-          _vm._v(" Crear Orden\n          ")
-        ]
-      )
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-outline-primary btn-block",
+        attrs: { type: "button" }
+      },
+      [
+        _c("i", { staticClass: "bi bi-receipt" }),
+        _vm._v(" Suspender\n          ")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-outline-primary btn-block",
+        attrs: { type: "button" }
+      },
+      [
+        _c("i", { staticClass: "bi bi-receipt" }),
+        _vm._v(" Facturar\n          ")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-outline-primary btn-block",
+        attrs: { type: "button" }
+      },
+      [
+        _c("i", { staticClass: "bi bi-receipt" }),
+        _vm._v(" Cotizar\n          ")
+      ]
+    )
   }
 ]
 render._withStripped = true

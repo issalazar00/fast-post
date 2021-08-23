@@ -153,7 +153,8 @@
                   />
                 </td>
                 <td>
-                 $ {{
+                  $
+                  {{
                     (p.price_tax_inc_total = (
                       p.qty * p.price_tax_inc -
                       p.qty * p.price_tax_inc * (p.discount_percentage / 100)
@@ -185,11 +186,21 @@
             </tbody>
           </table>
           <div class="text-right">
-            <button type="button" class="btn btn-outline-secondary btn-block">
+            <router-link
+              to="orders"
+              type="button"
+              class="btn btn-outline-secondary btn-block"
+            >
               <i class="bi bi-receipt"></i> Cancelar
+            </router-link>
+            <button type="button" class="btn btn-outline-primary btn-block">
+              <i class="bi bi-receipt"></i> Suspender
             </button>
             <button type="button" class="btn btn-outline-primary btn-block">
-              <i class="bi bi-receipt"></i> Crear Orden
+              <i class="bi bi-receipt"></i> Facturar
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-block">
+              <i class="bi bi-receipt"></i> Cotizar
             </button>
           </div>
         </div>
@@ -218,7 +229,7 @@ export default {
         id_client: 0,
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
-        total_discount: 0.0, 
+        total_discount: 0.0,
         productsOrder: [],
       },
     };
