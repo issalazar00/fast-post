@@ -7,7 +7,7 @@
             <label for="barcode">Codigo de barras</label>
             <input
               type="number"
-              step="any"
+              step="2"
               class="form-control"
               id="barcode"
               v-model="formProduct.barcode"
@@ -86,7 +86,7 @@
             <label for="cost_price">Precio Costo</label>
             <input
               type="number"
-              step="any"
+              step="2"
               class="form-control"
               id="cost_price"
               v-model="formProduct.cost_price"
@@ -97,7 +97,7 @@
             <label for="sale_price_tax_exc">Precio venta sin iva</label>
             <input
               type="number"
-              step="any"
+              step="2"
               class="form-control"
               id="sale_price_tax_exc"
               readonly
@@ -109,7 +109,7 @@
             <label for="gain">Ganancia</label>
             <input
               type="number"
-              step="any"
+              step="2"
               class="form-control"
               id="gain"
               :value="gain"
@@ -121,7 +121,7 @@
             <label for="sale_price_tax_inc">Precio venta con iva</label>
             <input
               type="number"
-              step="any"
+              step="2"
               class="form-control"
               id="sale_price_tax_inc"
               v-model="formProduct.sale_price_tax_inc"
@@ -132,7 +132,7 @@
             <label for="wholesale_price_tax_exc">Precio Mayoreo sin iva</label>
             <input
               type="number"
-              step="any"
+              step="2"
               class="form-control"
               id="wholesale_price_tax_exc"
               :value="wholesale_price_tax_exc"
@@ -144,11 +144,10 @@
             <label for="wholesale_price_tax_inc">Precio Mayoreo con iva</label>
             <input
               type="number"
-              step="any"
+              step="2"
               class="form-control"
               id="wholesale_price_tax_inc"
               v-model="formProduct.wholesale_price_tax_inc"
-              
             />
           </div>
         </div>
@@ -190,7 +189,7 @@
             <label for="quantity">Hay</label>
             <input
               type="number"
-              step="any"
+              step="2"
               class="form-control"
               id="quantity"
               v-model="formProduct.quantity"
@@ -207,7 +206,7 @@
             <label for="minimum">Mínimo</label>
             <input
               type="number"
-              step="any"
+              step="2"
               class="form-control"
               id="minimum"
               v-model="formProduct.minimum"
@@ -219,7 +218,7 @@
             <label for="maximum">Máximo</label>
             <input
               type="number"
-              step="any"
+              step="2"
               class="form-control"
               id="maximum"
               v-model="formProduct.maximum"
@@ -235,8 +234,10 @@
 export default {
   data() {
     return {
-      //Variables de product
-      tax: {},
+      //Variables de producto
+      tax: {
+        percentage: 19
+      },
       formProduct: {
         barcode: "",
         product: "",
@@ -269,14 +270,15 @@ export default {
     },
     sale_price_tax_exc: function () {
       let percentage = this.tax.percentage / 100;
-      return (this.formProduct.sale_price_tax_exc =
-        parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage));
+      return (this.formProduct.sale_price_tax_exc = Math.round(
+        parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)
+      ).toFixed(2));
     },
     wholesale_price_tax_exc() {
       let percentage = this.tax.percentage / 100;
       return (this.formProduct.wholesale_price_tax_exc = Math.round(
         parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)
-      ));
+      ).toFixed(2));
     },
   },
   methods: {

@@ -3,7 +3,7 @@
     <div class="w-100 text-center">
       <h3 class="page-header">Categorias</h3>
 
-      <ring-loader
+      <moon-loader
         class="m-auto"
         :loading="isLoading"
         :color="'#032F6C'"

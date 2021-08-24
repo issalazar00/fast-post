@@ -84,7 +84,7 @@
                     type="number"
                     name="quantity"
                     id="quantity"
-                    step="any"
+                    step="2"
                     placeholder="Cantidad"
                   />
                 </td>
@@ -94,7 +94,7 @@
                     type="number"
                     name="discount"
                     id="discount"
-                    step="any"
+                    step="2"
                     placeholder="Descuento"
                   />
                 </td>

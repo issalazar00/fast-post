@@ -10012,12 +10012,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      //Variables de product
-      tax: {},
+      //Variables de producto
+      tax: {
+        percentage: 19
+      },
       formProduct: {
         barcode: "",
         product: "",
@@ -10047,11 +10048,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     sale_price_tax_exc: function sale_price_tax_exc() {
       var percentage = this.tax.percentage / 100;
-      return this.formProduct.sale_price_tax_exc = parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage);
+      return this.formProduct.sale_price_tax_exc = Math.round(parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)).toFixed(2);
     },
     wholesale_price_tax_exc: function wholesale_price_tax_exc() {
       var percentage = this.tax.percentage / 100;
-      return this.formProduct.wholesale_price_tax_exc = Math.round(parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage));
+      return this.formProduct.wholesale_price_tax_exc = Math.round(parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)).toFixed(2);
     }
   },
   methods: {
@@ -50092,7 +50093,7 @@ var render = function() {
       [
         _c("h3", { staticClass: "page-header" }, [_vm._v("Categorias")]),
         _vm._v(" "),
-        _c("ring-loader", {
+        _c("moon-loader", {
           staticClass: "m-auto",
           attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
         })
@@ -51614,7 +51615,7 @@ var staticRenderFns = [
                       type: "number",
                       name: "quantity",
                       id: "quantity",
-                      step: "any",
+                      step: "2",
                       placeholder: "Cantidad"
                     }
                   })
@@ -51628,7 +51629,7 @@ var staticRenderFns = [
                       type: "number",
                       name: "discount",
                       id: "discount",
-                      step: "any",
+                      step: "2",
                       placeholder: "Descuento"
                     }
                   })
@@ -51903,7 +51904,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 type: "number",
-                step: "any",
+                step: "2",
                 id: "barcode",
                 placeholder: "Código de barras"
               },
@@ -52111,7 +52112,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 type: "number",
-                step: "any",
+                step: "2",
                 id: "cost_price",
                 placeholder: "Precio de costo"
               },
@@ -52136,7 +52137,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 type: "number",
-                step: "any",
+                step: "2",
                 id: "sale_price_tax_exc",
                 readonly: "",
                 placeholder: ""
@@ -52152,7 +52153,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 type: "number",
-                step: "any",
+                step: "2",
                 id: "gain",
                 placeholder: "",
                 readonly: "readonly"
@@ -52178,7 +52179,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 type: "number",
-                step: "any",
+                step: "2",
                 id: "sale_price_tax_inc",
                 placeholder: ""
               },
@@ -52207,7 +52208,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 type: "number",
-                step: "any",
+                step: "2",
                 id: "wholesale_price_tax_exc",
                 placeholder: "",
                 readonly: ""
@@ -52233,7 +52234,7 @@ var render = function() {
               staticClass: "form-control",
               attrs: {
                 type: "number",
-                step: "any",
+                step: "2",
                 id: "wholesale_price_tax_inc"
               },
               domProps: { value: _vm.formProduct.wholesale_price_tax_inc },
@@ -52375,7 +52376,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "number", step: "any", id: "quantity" },
+                  attrs: { type: "number", step: "2", id: "quantity" },
                   domProps: { value: _vm.formProduct.quantity },
                   on: {
                     input: function($event) {
@@ -52407,7 +52408,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "number", step: "any", id: "minimum" },
+                  attrs: { type: "number", step: "2", id: "minimum" },
                   domProps: { value: _vm.formProduct.minimum },
                   on: {
                     input: function($event) {
@@ -52437,7 +52438,7 @@ var render = function() {
                     }
                   ],
                   staticClass: "form-control",
-                  attrs: { type: "number", step: "any", id: "maximum" },
+                  attrs: { type: "number", step: "2", id: "maximum" },
                   domProps: { value: _vm.formProduct.maximum },
                   on: {
                     input: function($event) {
@@ -54080,7 +54081,7 @@ var render = function() {
       [
         _c("h3", { staticClass: "page-header" }, [_vm._v("Productos")]),
         _vm._v(" "),
-        _c("ring-loader", {
+        _c("moon-loader", {
           attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
         }),
         _vm._v(" "),
