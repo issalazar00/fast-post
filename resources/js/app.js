@@ -12,7 +12,7 @@ import VueRouter from 'vue-router'
 import { VueSpinners } from '@saeris/vue-spinners'
 
 import Login from './components/Login.vue'
-
+import NoFound from './components/NoFound.vue';
 import Clients from './components/Clients.vue'
 import CreateEditClient from './components/CreateEditClient.vue'
 import Products from './components/Products.vue'
@@ -68,13 +68,13 @@ const routes = [
   { path: '/create-edit-tax', component: CreateEditTax },
   { path: '/suppliers', component: Suppliers },
   { path: '/create-edit-supplier', component: CreateEditSupplier },
-  { path: '/categories', component: Categories },
+  { path: '/categories', component: Categories, alias: "category.index" },
   { path: '/create-edit-category', component: CreateEditCategory },
-  { path: '/orders', component: Orders },
+  { path: '/orders', name: 'Orders', component: Orders },
   { path: '/details-order', component: DetailsOrder },
   { path: '/create-edit-order', component: CreateEditOrder },
   { path: '/login', name: 'Login', component: Login },
-  { path: '**', component: Login },
+  { path: '**', name: 'NoFound', component: NoFound },
 
 
 
@@ -108,6 +108,16 @@ router.beforeEach(async (to, from, next) => {
   if (authRequired && !isAuthenticated) {
     return next({ name: "Login", query: { redirect: to.fullPath } });
   }
+
+  if (isAuthenticated) {
+
+    let alias= to.matched[0].alias;
+    if (alias != "") {
+      if (!global.validatePermission(undefined, alias)) {
+        return next({ name: "NoFound" });
+      }
+    }
+  }
   next();
 
 });
@@ -119,7 +129,7 @@ const app = new Vue({
     user: Object,
     token: String,
     permissions: [],
-    config: Object ({
+    config: Object({
       headers: {
         Authorization: "",
       },
@@ -138,20 +148,18 @@ const app = new Vue({
     assignDataRequired() {
       this.user = JSON.parse(localStorage.getItem("user"));
       this.token = localStorage.getItem("token");
-      
-      if(this.user.permissions == "undefined"){
-        this.permissions = [];
-        
-      }else{
+
+      if (this.user) {
         this.permissions = this.user.permissions;
       }
 
-      this.config.headers.Authorization = "Bearer "+ this.token;
+      this.config.headers.Authorization = "Bearer " + this.token;
     },
     logout() {
       this.user = {};
       this.token = "";
-      this.config = {};
+      this.permissions = [];
+      this.config.headers.Authorization = "";
       localStorage.clear();
       this.$router.push('/login');
     },
