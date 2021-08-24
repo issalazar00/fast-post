@@ -10,12 +10,12 @@ class BrandController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('can:brand.index')->only('index');
+        $this->middleware('can:brand.index')->only('index');
         $this->middleware('can:brand.store')->only('store');
         $this->middleware('can:brand.update')->only('update');
         $this->middleware('can:brand.delete')->only('destroy');
-        $this->middleware('can:brand.active')->only('active');
-        $this->middleware('can:brand.deactivate')->only('deactivate');
+        // $this->middleware('can:brand.active')->only('active');
+        // $this->middleware('can:brand.deactivate')->only('deactivate');
     }
     /**
      * Display a listing of the resource.

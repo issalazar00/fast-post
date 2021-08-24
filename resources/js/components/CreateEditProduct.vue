@@ -129,15 +129,14 @@
                   <select
                     class="form-control"
                     id="tax_id"
-                    v-model="tax"
+                    v-model="formProduct.tax_id"
                     required
-                    @click="uploadTax(tax)"
                   >
                     <option value="0">--Select--</option>
                     <option
                       v-for="tax in taxList"
                       :key="tax.id"
-                      :value="tax"
+                      :value="tax.id"
                     >
                       {{ tax.percentage }}
                     </option>
@@ -305,8 +304,10 @@ import global from "./../services/global.js";
 export default {
   data() {
     return {
-      //Variables de product
-      tax: {},
+      //Variables de producto
+      tax: {
+        percentage: 19,
+      },
       formProduct: {
         barcode: "",
         product: "",
@@ -328,7 +329,7 @@ export default {
       taxList: {},
       categoryList: {},
       brandList: {},
-    }
+    };
   },
   components: {},
   computed: {
@@ -342,14 +343,15 @@ export default {
     },
     sale_price_tax_exc: function () {
       let percentage = this.tax.percentage / 100;
-      return (this.formProduct.sale_price_tax_exc =
-        parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage));
+      return (this.formProduct.sale_price_tax_exc = Math.round(
+        parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)
+      ).toFixed(2));
     },
     wholesale_price_tax_exc() {
       let percentage = this.tax.percentage / 100;
       return (this.formProduct.wholesale_price_tax_exc = Math.round(
         parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)
-      ));
+      ).toFixed(2));
     },
   },
   methods: {
@@ -369,8 +371,6 @@ export default {
       let me = this;
       axios.get("api/category", this.$root.config).then(function (response) {
         me.categoryList = response.data.categories.data;
-        brandList: {
-        }
       });
     },
     OpenEditProduct(product) {
@@ -415,8 +415,8 @@ export default {
   },
   created() {
     this.listTaxes();
-    this.listCategories();
-    this.listBrands();
+    // this.listCategories();
+    // this.listBrands();
   },
 
   mounted() {},

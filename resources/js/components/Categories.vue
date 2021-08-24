@@ -19,7 +19,7 @@
             class="btn btn-primary"
             data-toggle="modal"
             data-target="#categoryModal"
-            @click="($refs.CreateEditCategory.ResetData()),(edit = false)"
+            @click="$refs.CreateEditCategory.ResetData(), (edit = false)"
             v-if="validatePermission('category.store')"
           >
             Crear Categoria
@@ -143,7 +143,6 @@ export default {
   },
   methods: {
     listCategories(page = 1) {
-
       this.isLoading = true;
       let me = this;
 
@@ -175,20 +174,24 @@ export default {
     },
     ActivateCategory: function (id) {
       let me = this;
-      axios.post("api/categories/" + id + "/activate", null, me.$root.config).then(function () {
-        me.listCategories(1);
-      });
+      axios
+        .post("api/categories/" + id + "/activate", null, me.$root.config)
+        .then(function () {
+          me.listCategories(1);
+        });
     },
     DeactivateCategory: function (id) {
       let me = this;
-      axios.post("api/categories/" + id + "/deactivate", null, me.$root.config).then(function (res) {
-        console.log(res);
-        me.listCategories(1);
-      });
+      axios
+        .post("api/categories/" + id + "/deactivate", null, me.$root.config)
+        .then(function (res) {
+          console.log(res);
+          me.listCategories(1);
+        });
     },
     validatePermission(permission) {
       return global.validatePermission(this.$root.permissions, permission);
-    }
+    },
   },
   mounted() {
     console.log("Component mounted.");

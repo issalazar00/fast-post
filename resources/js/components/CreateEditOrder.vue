@@ -106,7 +106,7 @@
                     type="number"
                     name="quantity"
                     id="quantity"
-                    step="any"
+                    step="2"
                     placeholder="Cantidad"
                     v-model="p.qty"
                   />
@@ -127,7 +127,7 @@
                     type="number"
                     name="discount"
                     id="discount"
-                    step="any"
+                    step="2"
                     placeholder="Descuento"
                     v-model="p.discount"
                   />

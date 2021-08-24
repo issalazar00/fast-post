@@ -10395,13 +10395,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      //Variables de product
-      tax: {},
+      //Variables de producto
+      tax: {
+        percentage: 19
+      },
       formProduct: {
         barcode: "",
         product: "",
@@ -10434,11 +10435,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     sale_price_tax_exc: function sale_price_tax_exc() {
       var percentage = this.tax.percentage / 100;
-      return this.formProduct.sale_price_tax_exc = parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage);
+      return this.formProduct.sale_price_tax_exc = Math.round(parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)).toFixed(2);
     },
     wholesale_price_tax_exc: function wholesale_price_tax_exc() {
       var percentage = this.tax.percentage / 100;
-      return this.formProduct.wholesale_price_tax_exc = Math.round(parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage));
+      return this.formProduct.wholesale_price_tax_exc = Math.round(parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)).toFixed(2);
     }
   },
   methods: {
@@ -10458,8 +10459,6 @@ __webpack_require__.r(__webpack_exports__);
       var me = this;
       axios.get("api/category", this.$root.config).then(function (response) {
         me.categoryList = response.data.categories.data;
-
-        brandList: {}
       });
     },
     OpenEditProduct: function OpenEditProduct(product) {
@@ -10500,9 +10499,8 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.listTaxes();
-    this.listCategories();
-    this.listBrands();
+    this.listTaxes(); // this.listCategories();
+    // this.listBrands();
   },
   mounted: function mounted() {}
 });
@@ -11224,10 +11222,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateEditProduct.vue */ "./resources/js/components/CreateEditProduct.vue");
-//
-//
-//
+/* harmony import */ var _services_global_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../services/global.js */ "./resources/js/services/global.js");
+/* harmony import */ var _CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateEditProduct.vue */ "./resources/js/components/CreateEditProduct.vue");
 //
 //
 //
@@ -11319,9 +11315,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    CreateEditProduct: _CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_0__.default
+    CreateEditProduct: _CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_1__.default
   },
   data: function data() {
     return {
@@ -11350,15 +11347,18 @@ __webpack_require__.r(__webpack_exports__);
     },
     ActivateProduct: function ActivateProduct(id) {
       var me = this;
-      axios.post("api/products/" + id + "/activate").then(function () {
+      axios.post("api/products/" + id + "/activate", null, me.$root.config).then(function () {
         me.listProducts(1);
       });
     },
     DeactivateProduct: function DeactivateProduct(id) {
       var me = this;
-      axios.post("api/products/" + id + "/deactivate").then(function () {
+      axios.post("api/products/" + id + "/deactivate", null, me.$root.config).then(function () {
         me.listProducts(1);
       });
+    },
+    validatePermission: function validatePermission(permission) {
+      return _services_global_js__WEBPACK_IMPORTED_MODULE_0__.default.validatePermission(this.$root.permissions, permission);
     }
   },
   mounted: function mounted() {}
@@ -52124,7 +52124,7 @@ var render = function() {
                                   type: "number",
                                   name: "quantity",
                                   id: "quantity",
-                                  step: "any",
+                                  step: "2",
                                   placeholder: "Cantidad"
                                 },
                                 domProps: { value: p.qty },
@@ -52183,7 +52183,7 @@ var render = function() {
                                   type: "number",
                                   name: "discount",
                                   id: "discount",
-                                  step: "any",
+                                  step: "2",
                                   placeholder: "Descuento"
                                 },
                                 domProps: { value: p.discount },
@@ -52855,16 +52855,13 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.tax,
-                          expression: "tax"
+                          value: _vm.formProduct.tax_id,
+                          expression: "formProduct.tax_id"
                         }
                       ],
                       staticClass: "form-control",
                       attrs: { id: "tax_id", required: "" },
                       on: {
-                        click: function($event) {
-                          return _vm.uploadTax(_vm.tax)
-                        },
                         change: function($event) {
                           var $$selectedVal = Array.prototype.filter
                             .call($event.target.options, function(o) {
@@ -52874,9 +52871,13 @@ var render = function() {
                               var val = "_value" in o ? o._value : o.value
                               return val
                             })
-                          _vm.tax = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
+                          _vm.$set(
+                            _vm.formProduct,
+                            "tax_id",
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
                         }
                       }
                     },
@@ -52888,7 +52889,7 @@ var render = function() {
                       _vm._l(_vm.taxList, function(tax) {
                         return _c(
                           "option",
-                          { key: tax.id, domProps: { value: tax } },
+                          { key: tax.id, domProps: { value: tax.id } },
                           [
                             _vm._v(
                               "\n                    " +
@@ -54890,24 +54891,44 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "page" },
     [
-      _vm._m(0),
-      _vm._v(" "),
       _c(
         "div",
-        { staticClass: "page-content" },
+        { staticClass: "col-12" },
         [
+          _c("h3", { staticClass: "page-header" }, [_vm._v("Productos")]),
+          _vm._v(" "),
           _c("moon-loader", {
-            staticClass: "m-auto",
             attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
           }),
           _vm._v(" "),
           !_vm.isLoading
-            ? _c("div", [
+            ? _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "row justify-content-end mx-4" }, [
+                  _vm.validatePermission("product.store")
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            type: "button",
+                            "data-toggle": "modal",
+                            "data-target": "#productModal"
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.edit = false
+                            }
+                          }
+                        },
+                        [_vm._v("\n          Crear Producto\n        ")]
+                      )
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
                 _c(
                   "section",
-                  { staticClass: "my-4" },
+                  { staticClass: "mt-4" },
                   [
                     _c(
                       "table",
@@ -54916,7 +54937,7 @@ var render = function() {
                           "table table-sm table-bordered table-responsive-sm"
                       },
                       [
-                        _vm._m(1),
+                        _vm._m(0),
                         _vm._v(" "),
                         _c(
                           "tbody",
@@ -55049,29 +55070,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row page-header" }, [
-      _c("div", { staticClass: "col" }, [_c("h3", [_vm._v("Productos")])]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col text-right" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-primary",
-            attrs: {
-              type: "button",
-              "data-toggle": "modal",
-              "data-target": "#productModal"
-            }
-          },
-          [_vm._v("\n        Crear Producto\n      ")]
-        )
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
