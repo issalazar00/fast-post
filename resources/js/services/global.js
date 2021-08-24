@@ -9,6 +9,12 @@ export default {
         return JSON.parse(localStorage.getItem('user'));
     },
     validatePermission: function (permissions, permission) {
+        
+        if( permissions === undefined){ 
+            permissions = this.user().permissions; //? this.user().permissions : [];
+            //console.log(permissions);
+        }
+        //return true;
         //console.log(typeof permissions);
         /*if(typeof permissions != 'array'){
             return false;
