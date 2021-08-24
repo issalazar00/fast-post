@@ -96,8 +96,8 @@
                   >
                     <option value="0">--Select--</option>
                     <option
-                      v-for="category in categoryList"
-                      brandList: {}
+                      v-for="category in categoryList.data"
+                      
                       :key="category.id"
                       :value="category.id"
                     >
@@ -115,7 +115,6 @@
                     <option value="0">--Select--</option>
                     <option
                       v-for="brand in brandList"
-                      brandList: {}
                       :key="brand.id"
                       :value="brand.id"
                     >
@@ -366,11 +365,12 @@ export default {
       axios.get("api/brands", this.$root.config).then(function (response) {
         me.brandList = response.data.brands.data;
       });
+      
     },
     listCategories() {
       let me = this;
-      axios.get("api/category", this.$root.config).then(function (response) {
-        me.categoryList = response.data.categories.data;
+      axios.get("api/categories?page=1", this.$root.config).then(function (response) {
+        me.categoryList = response.data.categories;
       });
     },
     OpenEditProduct(product) {
@@ -415,8 +415,8 @@ export default {
   },
   created() {
     this.listTaxes();
-    // this.listCategories();
-    // this.listBrands();
+    this.listCategories();
+    this.listBrands();
   },
 
   mounted() {},
