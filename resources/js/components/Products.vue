@@ -5,15 +5,26 @@
       <moon-loader :loading="isLoading" :color="'#032F6C'" :size="100" />
 
       <div class="card-body" v-if="!isLoading">
-        <div class="row justify-content-end mx-4">
+        <div class="row justify-content-end">
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-outline-primary mr-2"
+            data-toggle="modal"
+            data-target="#productImportModal"
+            v-if="validatePermission('product.store')"
+          >
+            <i class="bi bi-cloud-arrow-up-fill"></i>
+            Importar Productos
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-primary"
             data-toggle="modal"
             data-target="#productModal"
             @click="edit = false"
             v-if="validatePermission('product.store')"
           >
+            <i class="bi bi-plus-circle-dotted"></i>
             Crear Producto
           </button>
         </div>
@@ -42,7 +53,7 @@
                 <td>{{ product.quantity }}</td>
                 <td>
                   <button
-                    class="btn btn-success"
+                    class="btn btn-outline-success"
                     v-if="product.state == 1"
                     @click="DeactivateProduct(product.id)"
                   >
@@ -58,12 +69,10 @@
                 </td>
                 <td>
                   <button
-                    class="btn btn-success"
-                    data-target="#productModal"
-                    data-toggle="modal"
+                    class="btn btn-outline-success"
                     @click="ShowData(product), (edit = true)"
                   >
-                    Editar
+                    <i class="bi bi-pen"></i>
                   </button>
                 </td>
               </tr>
@@ -85,14 +94,16 @@
       ref="CreateEditProduct"
       @list-products="listProducts(1)"
     />
+    <import-products />
   </div>
 </template>
 
 <script>
 import global from "./../services/global.js";
 import CreateEditProduct from "./CreateEditProduct.vue";
+import ImportProducts from "./ImportProducts.vue";
 export default {
-  components: { CreateEditProduct },
+  components: { CreateEditProduct, ImportProducts },
   data() {
     return {
       isLoading: false,

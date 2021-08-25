@@ -36,6 +36,7 @@ import DetailsOrder from './components/DetailsOrder'
 import CreateEditOrder from './components/CreateEditOrder'
 import AddClient from './components/AddClient'
 import AddProduct from './components/AddProduct'
+import ImportProducts from './components/ImportProducts'
 
 
 //Services

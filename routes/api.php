@@ -4,6 +4,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ImportProductController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
@@ -47,6 +48,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
     Route::post('/products/{product}/deactivate',  [ProductController::class, 'deactivate']);
     Route::post('/products/searchProduct',  [ProductController::class, 'searchProduct']);
+
 
     Route::resource('/suppliers',  SupplierController::class);
 
