@@ -24,7 +24,7 @@
           </div>
           <form enctype="multipart/form-data" @submit.prevent="uploadFile()">
             <div class="modal-body">
-              <div>
+              <div class="alert alert-info text-center" role="alert">
                 <span>Descargar plantilla para importación de productos</span>
                 <a
                   href="import/download-example-import"
@@ -47,6 +47,8 @@
                   >Subir archivo de importación</label
                 >
               </div>
+              {{ file != '' ? filename : '' }}
+
             </div>
             <div class="modal-footer">
               <button
@@ -73,21 +75,18 @@ export default {
     return {
       file: "",
       filename: "",
-      success: "",
     };
   },
 
   methods: {
     onFileChange(e) {
-      //console.log(e.target.files[0]);
-      this.filename = "Selected File: " + e.target.files[0].name;
+      this.filename = "Archivo Seleccionado: " + e.target.files[0].name;
       this.file = e.target.files[0];
     },
     uploadFile() {
-      // e.preventDefault();
       console.log("hi");
 
-      let currentObj = this;
+      let me = this;
       const config = {
         headers: {
           "content-type": "multipart/form-data",
@@ -104,11 +103,10 @@ export default {
       axios
         .post("import/upload-file-import", formData, config)
         .then(function (response) {
-          currentObj.success = response.data.success;
-          currentObj.filename = "";
+          me.filename = "";
         })
         .catch(function (error) {
-          currentObj.output = error;
+          me.output = error;
         });
     },
   },

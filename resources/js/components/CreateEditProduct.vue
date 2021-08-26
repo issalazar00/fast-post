@@ -86,7 +86,6 @@
                 </div>
               </div>
               <div class="form-row">
-               
                 <div class="form-group col-6">
                   <label for="category_id">Categoria</label>
                   <select
@@ -97,7 +96,6 @@
                     <option value="0">--Select--</option>
                     <option
                       v-for="category in categoryList.data"
-                      
                       :key="category.id"
                       :value="category.id"
                     >
@@ -105,7 +103,7 @@
                     </option>
                   </select>
                 </div>
-                 <div class="form-group col-6">
+                <div class="form-group col-6">
                   <label for="brand_id">Marca</label>
                   <select
                     class="form-control"
@@ -123,24 +121,20 @@
                   </select>
                 </div>
               </div>
-               <div class="form-group col-6">
-                  <label for="tax_id">Impuesto</label>
-                  <select
-                    class="form-control"
-                    id="tax_id"
-                    v-model="formProduct.tax_id"
-                    required
-                  >
-                    <option value="0">--Select--</option>
-                    <option
-                      v-for="tax in taxList"
-                      :key="tax.id"
-                      :value="tax.id"
-                    >
-                      {{ tax.percentage }}
-                    </option>
-                  </select>
-                </div>
+              <div class="form-group col-6">
+                <label for="tax_id">Impuesto</label>
+                <select
+                  class="form-control"
+                  id="tax_id"
+                  v-model="formProduct.tax_id"
+                  required
+                >
+                  <option value="0">--Select--</option>
+                  <option v-for="tax in taxList" :key="tax.id" :value="tax.id">
+                    {{ tax.percentage }}
+                  </option>
+                </select>
+              </div>
               <hr />
               <div class="form-row">
                 <div class="form-group col-6">
@@ -365,13 +359,14 @@ export default {
       axios.get("api/brands", this.$root.config).then(function (response) {
         me.brandList = response.data.brands.data;
       });
-      
     },
     listCategories() {
       let me = this;
-      axios.get("api/categories?page=1", this.$root.config).then(function (response) {
-        me.categoryList = response.data.categories;
-      });
+      axios
+        .get("api/categories?page=1", this.$root.config)
+        .then(function (response) {
+          me.categoryList = response.data.categories;
+        });
     },
     OpenEditProduct(product) {
       let me = this;

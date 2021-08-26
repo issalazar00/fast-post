@@ -23,7 +23,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::select()->orderBy('barcode', 'asc')->paginate(15);
+        $products = Product::select()->orderBy('product', 'asc')->paginate(30);
 
         return response()->json([
             'status' => 'success',

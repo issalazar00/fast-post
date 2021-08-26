@@ -81,6 +81,7 @@
           <pagination
             :align="'center'"
             :data="ProductList"
+            :limit="8"
             @pagination-change-page="listProducts"
           >
             <span slot="prev-nav">&lt; Previous</span>

@@ -10388,12 +10388,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -10946,24 +10940,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       file: "",
-      filename: "",
-      success: ""
+      filename: ""
     };
   },
   methods: {
     onFileChange: function onFileChange(e) {
-      //console.log(e.target.files[0]);
-      this.filename = "Selected File: " + e.target.files[0].name;
+      this.filename = "Archivo Seleccionado: " + e.target.files[0].name;
       this.file = e.target.files[0];
     },
     uploadFile: function uploadFile() {
-      // e.preventDefault();
       console.log("hi");
-      var currentObj = this;
+      var me = this;
       var config = {
         headers: {
           "content-type": "multipart/form-data",
@@ -10975,10 +10968,9 @@ __webpack_require__.r(__webpack_exports__);
       formData.append("file", this.file); // send upload request
 
       axios.post("import/upload-file-import", formData, config).then(function (response) {
-        currentObj.success = response.data.success;
-        currentObj.filename = "";
+        me.filename = "";
       })["catch"](function (error) {
-        currentObj.output = error;
+        me.output = error;
       });
     }
   }
@@ -11376,6 +11368,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_global_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../services/global.js */ "./resources/js/services/global.js");
 /* harmony import */ var _CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateEditProduct.vue */ "./resources/js/components/CreateEditProduct.vue");
 /* harmony import */ var _ImportProducts_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ImportProducts.vue */ "./resources/js/components/ImportProducts.vue");
+//
 //
 //
 //
@@ -53652,9 +53645,9 @@ var render = function() {
                           { key: tax.id, domProps: { value: tax.id } },
                           [
                             _vm._v(
-                              "\n                    " +
+                              "\n                  " +
                                 _vm._s(tax.percentage) +
-                                "\n                  "
+                                "\n                "
                             )
                           ]
                         )
@@ -55082,7 +55075,12 @@ var render = function() {
                       },
                       [_vm._v("Subir archivo de importación")]
                     )
-                  ])
+                  ]),
+                  _vm._v(
+                    "\n            " +
+                      _vm._s(_vm.file != "" ? _vm.filename : "") +
+                      "\n\n          "
+                  )
                 ]),
                 _vm._v(" "),
                 _vm._m(2)
@@ -55127,25 +55125,31 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("span", [_vm._v("Descargar plantilla para importación de productos")]),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-light border border-primary",
-          attrs: {
-            href: "import/download-example-import",
-            target: "_blank",
-            type: "button"
-          }
-        },
-        [
-          _c("i", { staticClass: "bi bi-cloud-download text-dark" }),
-          _vm._v(" Descargar\n              ")
-        ]
-      )
-    ])
+    return _c(
+      "div",
+      { staticClass: "alert alert-info text-center", attrs: { role: "alert" } },
+      [
+        _c("span", [
+          _vm._v("Descargar plantilla para importación de productos")
+        ]),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-light border border-primary",
+            attrs: {
+              href: "import/download-example-import",
+              target: "_blank",
+              type: "button"
+            }
+          },
+          [
+            _c("i", { staticClass: "bi bi-cloud-download text-dark" }),
+            _vm._v(" Descargar\n              ")
+          ]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -56009,7 +56013,11 @@ var render = function() {
                     _c(
                       "pagination",
                       {
-                        attrs: { align: "center", data: _vm.ProductList },
+                        attrs: {
+                          align: "center",
+                          data: _vm.ProductList,
+                          limit: 8
+                        },
                         on: { "pagination-change-page": _vm.listProducts }
                       },
                       [
