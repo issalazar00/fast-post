@@ -31,7 +31,7 @@
             
             <div class="row justify-content-center">
             
-                @yield('content')
+                <router-view />
             
             </div>
 

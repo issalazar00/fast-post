@@ -12,7 +12,7 @@ import VueRouter from 'vue-router'
 import { VueSpinners } from '@saeris/vue-spinners'
 
 import Login from './components/Login.vue'
-
+import NoFound from './components/NoFound.vue';
 import Clients from './components/Clients.vue'
 import CreateEditClient from './components/CreateEditClient.vue'
 
@@ -36,10 +36,11 @@ import DetailsOrder from './components/DetailsOrder'
 import CreateEditOrder from './components/CreateEditOrder'
 import AddClient from './components/AddClient'
 import AddProduct from './components/AddProduct'
+import ImportProducts from './components/ImportProducts'
 
 
 //Services
-import './services/global.js';
+import global from './services/global.js';
 
 Vue.use(VueRouter)
 Vue.use(VueSpinners)
@@ -76,17 +77,15 @@ const routes = [
   { path: '/create-edit-tax', component: CreateEditTax },
   { path: '/suppliers', component: Suppliers },
   { path: '/create-edit-supplier', component: CreateEditSupplier },
-  { path: '/categories', component: Categories },
+  { path: '/categories', component: Categories, alias: "category.index" },
   { path: '/create-edit-category', component: CreateEditCategory },
   { path: '/brands', component: Brands },
   { path: '/create-edit-brand', component: CreateEditBrand },
   { path: '/orders', component: Orders },
   { path: '/details-order', component: DetailsOrder },
   { path: '/create-edit-order', component: CreateEditOrder },
-  { path: '/orders', component: Orders },//Home
-  { path: '/details-order', component: DetailsOrder},
-  { path: '/login', name:'Login', component: Login },
-  { path: '**', component: Login },
+  { path: '/login', name: 'Login', component: Login },
+  { path: '**', name: 'NoFound', component: NoFound },
 
 ]
 
@@ -106,20 +105,26 @@ router.beforeEach(async (to, from, next) => {
 
   try {
     isAuthenticated =
-        localStorage.getItem("token") &&
+      localStorage.getItem("token") &&
         localStorage.getItem("user") &&
         JSON.parse(localStorage.getItem("user"))
         ? true
         : false;
-
-        user = null;
-        token = 2323;
-      
   } catch (e) {
-    isAuthenticated 
+    isAuthenticated
   }
   if (authRequired && !isAuthenticated) {
     return next({ name: "Login", query: { redirect: to.fullPath } });
+  }
+
+  if (isAuthenticated) {
+
+    let alias = to.matched[0].alias;
+    if (alias != "") {
+      if (!global.validatePermission(undefined, alias)) {
+        return next({ name: "NoFound" });
+      }
+    }
   }
   next();
 
@@ -129,27 +134,45 @@ router.beforeEach(async (to, from, next) => {
 const app = new Vue({
   el: '#app',
   data: {
-    user: {},
-    token: '',
+    user: Object,
+    token: String,
+    permissions: [],
+    config: Object({
+      headers: {
+        Authorization: "",
+      },
+    })
   },
   watch: {
-    $route(to, from){
-      this.user = JSON.parse(localStorage.getItem("user")) ;
-      this.token = localStorage.getItem("token");
+    $route(to, from) {
+      this.assignDataRequired();
     }
   },
   router,
-  created(){
+  created() {
+    this.assignDataRequired();
+  },
+  methods: {
+    assignDataRequired() {
+      this.user = JSON.parse(localStorage.getItem("user"));
+      this.token = localStorage.getItem("token");
 
-  },
-  mounted(){
-    this.user = JSON.parse(localStorage.getItem("user")) ;
-    this.token = localStorage.getItem("token");
-  },
-  methods:{
-    logout(){
+      if (this.user) {
+        this.permissions = this.user.permissions;
+      }
+
+      this.config.headers.Authorization = "Bearer " + this.token;
+    },
+    logout() {
+      this.user = {};
+      this.token = "";
+      this.permissions = [];
+      this.config.headers.Authorization = "";
       localStorage.clear();
       this.$router.push('/login');
+    },
+    searchPermission(permission) {
+      return global.validatePermission(this.permissions, permission);
     }
   }
 });

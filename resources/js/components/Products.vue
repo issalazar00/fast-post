@@ -1,27 +1,35 @@
 <template>
-  <div class="page">
-    <div class="row page-header">
-      <div class="col"><h3>Productos</h3></div>
-      <div class="col text-right">
-        <button
-          type="button"
-          class="btn btn-outline-primary"
-          data-toggle="modal"
-          data-target="#productModal"
-        >
-          Crear Producto
-        </button>
-      </div>
-    </div>
-    <div class="page-content">
-      <moon-loader
-        class="m-auto"
-        :loading="isLoading"
-        :color="'#032F6C'"
-        :size="100"
-      />
-      <div v-if="!isLoading">
-        <section class="my-4">
+  <div>
+    <div class="col-12">
+      <h3 class="page-header">Productos</h3>
+      <moon-loader :loading="isLoading" :color="'#032F6C'" :size="100" />
+
+      <div class="card-body" v-if="!isLoading">
+        <div class="row justify-content-end">
+          <button
+            type="button"
+            class="btn btn-outline-primary mr-2"
+            data-toggle="modal"
+            data-target="#productImportModal"
+            v-if="validatePermission('product.store')"
+          >
+            <i class="bi bi-cloud-arrow-up-fill"></i>
+            Importar Productos
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-primary"
+            data-toggle="modal"
+            data-target="#productModal"
+            @click="edit = false"
+            v-if="validatePermission('product.store')"
+          >
+            <i class="bi bi-plus-circle-dotted"></i>
+            Crear Producto
+          </button>
+        </div>
+
+        <section class="mt-4">
           <table class="table table-sm table-bordered table-responsive-sm">
             <thead class="thead-primary">
               <tr>
@@ -45,7 +53,7 @@
                 <td>{{ product.quantity }}</td>
                 <td>
                   <button
-                    class="btn btn-success"
+                    class="btn btn-outline-success"
                     v-if="product.state == 1"
                     @click="DeactivateProduct(product.id)"
                   >
@@ -61,12 +69,10 @@
                 </td>
                 <td>
                   <button
-                    class="btn btn-success"
-                    data-target="#productModal"
-                    data-toggle="modal"
+                    class="btn btn-outline-success"
                     @click="ShowData(product), (edit = true)"
                   >
-                    Editar
+                    <i class="bi bi-pen"></i>
                   </button>
                 </td>
               </tr>
@@ -75,6 +81,7 @@
           <pagination
             :align="'center'"
             :data="ProductList"
+            :limit="8"
             @pagination-change-page="listProducts"
           >
             <span slot="prev-nav">&lt; Previous</span>
@@ -88,13 +95,16 @@
       ref="CreateEditProduct"
       @list-products="listProducts(1)"
     />
+    <import-products />
   </div>
 </template>
 
 <script>
+import global from "./../services/global.js";
 import CreateEditProduct from "./CreateEditProduct.vue";
+import ImportProducts from "./ImportProducts.vue";
 export default {
-  components: { CreateEditProduct },
+  components: { CreateEditProduct, ImportProducts },
   data() {
     return {
       isLoading: false,
@@ -109,28 +119,33 @@ export default {
       this.isLoading = true;
       let me = this;
       axios
-        .get("api/products?page=" + page)
+        .get("api/products?page=" + page, this.$root.config)
         .then(function (response) {
           me.ProductList = response.data.products;
         })
         .finally(() => (this.isLoading = false));
     },
-
     ShowData: function (product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);
     },
-
     ActivateProduct: function (id) {
       let me = this;
-      axios.post("api/products/" + id + "/activate").then(function () {
-        me.listProducts(1);
-      });
+      axios
+        .post("api/products/" + id + "/activate", null, me.$root.config)
+        .then(function () {
+          me.listProducts(1);
+        });
     },
     DeactivateProduct: function (id) {
       let me = this;
-      axios.post("api/products/" + id + "/deactivate").then(function () {
-        me.listProducts(1);
-      });
+      axios
+        .post("api/products/" + id + "/deactivate", null, me.$root.config)
+        .then(function () {
+          me.listProducts(1);
+        });
+    },
+    validatePermission(permission) {
+      return global.validatePermission(this.$root.permissions, permission);
     },
   },
 

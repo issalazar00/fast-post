@@ -102,7 +102,7 @@ export default {
   methods: {
     listClients() {
       let me = this;
-      axios.get("api/clients").then(function (response) {
+      axios.get("api/clients", this.$root.config).then(function (response) {
         me.ClientList = response.data.clients;
       });
     },

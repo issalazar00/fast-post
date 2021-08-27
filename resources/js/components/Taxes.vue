@@ -136,7 +136,7 @@ export default {
   methods: {
     listTaxes(page = 1) {
       let me = this;
-      axios.get("api/tax?page=" + page).then(function (response) {
+      axios.get("api/tax?page=" + page, this.$root.config).then(function (response) {
         me.taxListing = response.data.taxes;
       });
     },

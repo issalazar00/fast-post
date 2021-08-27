@@ -32,12 +32,19 @@ class Product extends Model
         'maximum',
         'state',
         'category_id',
-        'tax_id'
+        'tax_id',
+        'brand_id'
     ];
     protected $with = [
         'category',
-        'tax'
+        'tax',
+        'brand'
     ];
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
 
     public function category()
     {

@@ -85,20 +85,56 @@
                   <label class="form-check-label" for="kit">Como paquete</label>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="form-row">
+                <div class="form-group col-6">
+                  <label for="category_id">Categoria</label>
+                  <select
+                    class="form-control"
+                    id="category_id"
+                    v-model="formProduct.category_id"
+                  >
+                    <option value="0">--Select--</option>
+                    <option
+                      v-for="category in categoryList.data"
+                      :key="category.id"
+                      :value="category.id"
+                    >
+                      {{ category.name }}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group col-6">
+                  <label for="brand_id">Marca</label>
+                  <select
+                    class="form-control"
+                    id="brand_id"
+                    v-model="formProduct.brand_id"
+                  >
+                    <option value="0">--Select--</option>
+                    <option
+                      v-for="brand in brandList"
+                      :key="brand.id"
+                      :value="brand.id"
+                    >
+                      {{ brand.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group col-6">
                 <label for="tax_id">Impuesto</label>
                 <select
                   class="form-control"
                   id="tax_id"
                   v-model="formProduct.tax_id"
+                  @click="uploadTax(formProduct.tax_id)"
                   required
                 >
                   <option value="0">--Select--</option>
                   <option
-                    v-for="t in taxListing"
-                    :key="t.id"
+                    v-for="t in taxList"
+                    :key="t.percentage"
                     :value="t.id"
-                    @click="tax.percentage = t.percentage"
                   >
                     {{ t.percentage }}
                   </option>
@@ -180,23 +216,6 @@
                 </div>
               </div>
               <hr />
-              <div class="form-group">
-                <label for="category_id">Categoria</label>
-                <select
-                  class="form-control"
-                  id="category_id"
-                  v-model="formProduct.category_id"
-                >
-                  <option value="0">--Select--</option>
-                  <option
-                    v-for="category in categoriesListing"
-                    :key="category.id"
-                    :value="category.id"
-                  >
-                    {{ category.name }}
-                  </option>
-                </select>
-              </div>
 
               <div class="form-group">
                 <div class="form-check">
@@ -278,11 +297,12 @@
 </template>
 
 <script>
+import global from "./../services/global.js";
+
 export default {
   data() {
     return {
-      //Variables de product
-      edit: false,
+      //Variables de producto
       tax: {
         percentage: 19,
       },
@@ -290,7 +310,7 @@ export default {
         barcode: "",
         product: "",
         type: 0,
-        tax_id: 1,
+        tax_id: 0,
         cost_price: 0.0,
         gain: 0.0,
         sale_price_tax_exc: 0.0,
@@ -298,53 +318,75 @@ export default {
         wholesale_price_tax_exc: 0.0,
         wholesale_price_tax_inc: 0.0,
         category_id: 0,
+        brand_id: 0,
         stock: 0,
         minimum: 0.0,
         quantity: 0.0,
         maximum: 0.0,
       },
-      taxListing: {},
-      categoriesListing: {},
+      taxList: [],
+      categoryList: {},
+      brandList: {},
     };
   },
   components: {},
   computed: {
     gain: function () {
-      return parseFloat(
-        (this.formProduct.gain =
-          this.formProduct.sale_price_tax_exc - this.formProduct.cost_price)
-      );
+      if (
+        this.formProduct.sale_price_tax_exc != 0 &&
+        this.formProduct.tax_id != 0
+      ) {
+        return parseFloat(
+          (this.formProduct.gain =
+            this.formProduct.sale_price_tax_exc - this.formProduct.cost_price)
+        );
+      }
     },
     sale_price_tax_exc: function () {
-      let percentage = this.tax.percentage / 100;
-      return (this.formProduct.sale_price_tax_exc =
-        parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage));
+      if (this.formProduct.tax_id != 0) {
+        let percentage = this.tax.percentage / 100;
+        return (this.formProduct.sale_price_tax_exc = Math.round(
+          parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)
+        ).toFixed(2));
+      }
     },
     wholesale_price_tax_exc() {
-      let percentage = this.tax.percentage / 100;
-      return (this.formProduct.wholesale_price_tax_exc = Math.round(
-        parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)
-      ));
+      if (this.formProduct.tax_id != 0) {
+        let percentage = this.tax.percentage / 100;
+        return (this.formProduct.wholesale_price_tax_exc = Math.round(
+          parseFloat(this.formProduct.wholesale_price_tax_inc) /
+            (1 + percentage)
+        ).toFixed(2));
+      }
     },
   },
   methods: {
     listTaxes() {
       let me = this;
-      axios.get("api/tax").then(function (response) {
-        me.taxListing = response.data.taxes.data;
+      axios.get("api/tax", this.$root.config).then(function (response) {
+        me.taxList = response.data.taxes.data;
+      });
+    },
+    listBrands() {
+      let me = this;
+      axios.get("api/brands", this.$root.config).then(function (response) {
+        me.brandList = response.data.brands.data;
       });
     },
     listCategories() {
       let me = this;
-      axios.get("api/category").then(function (response) {
-        me.categoriesListing = response.data.categories.data;
-      });
+      axios
+        .get("api/categories?page=1", this.$root.config)
+        .then(function (response) {
+          me.categoryList = response.data.categories;
+        });
     },
     OpenEditProduct(product) {
       this.edit = true;
       let me = this;
       $("#productModal").modal("show");
       me.formProduct = product;
+      me.uploadTax(product.tax_id);
     },
     CreateProduct() {
       let me = this;
@@ -371,20 +413,24 @@ export default {
       });
     },
 
-    uploadTax(tax) {
-      console.log(tax);
-      let me = this;
-      // me.formProduct.tax_id = tax.id;
+    uploadTax(tax_id) {
+      let result;
+      result = this.taxList.find((tax) => tax.id == tax_id);
+      this.tax.percentage = result.percentage;
     },
     CloseModal: function () {
       this.edit = false;
       this.ResetData();
       this.$emit("list-products");
     },
+    validatePermission(permission) {
+      return global.validatePermission(this.$root.permissions, permission);
+    },
   },
   created() {
     this.listTaxes();
     this.listCategories();
+    this.listBrands();
   },
 
   mounted() {},

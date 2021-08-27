@@ -61,7 +61,7 @@
                 <td>
                   <button
                     class="btn btn-success"
-                    @click="addProduct(product.id)"
+                    @click="$emit('add-client', product)"
                   >
                     <i class="bi bi-plus-circle"></i>
                   </button>
@@ -81,9 +81,8 @@
 </template>
 
 <script>
-
 export default {
-  name : 'add-product',
+  name: "add-product",
   data() {
     return {
       // Filter modal
@@ -108,15 +107,16 @@ export default {
     },
   },
   created() {
-    this.listProducts()
+    this.listProducts();
   },
   methods: {
     listProducts() {
       let me = this;
-      axios.get("api/products").then(function (response) {
+      axios.get("api/products", this.$root.config).then(function (response) {
         me.ProductList = response.data.products.data;
       });
     },
+   
   },
 };
 </script>

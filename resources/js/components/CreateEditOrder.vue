@@ -98,7 +98,7 @@
               </tr>
             </thead>
             <tbody v-if="productsOrderList.length > 0">
-              <tr v-for="p in productsOrderList" :key="p.id">
+              <tr v-for="(p, index) in productsOrderList" :key="p.id">
                 <th scope="row">{{ p.product_id }}</th>
                 <td>{{ p.barcode }}</td>
                 <td>{{ p.product }}</td>
@@ -119,7 +119,7 @@
                     type="number"
                     name="quantity"
                     id="quantity"
-                    step="any"
+                    step="2"
                     placeholder="Cantidad"
                     v-model="p.qty"
                   />
@@ -162,7 +162,7 @@
                   }}
                 </td>
                 <td>
-                  <button class="btn"><i class="bi bi-trash"></i></button>
+                  <button class="btn" @click="removeProduct(index)"><i class="bi bi-trash"></i></button>
                 </td>
               </tr>
               <tr>
@@ -171,7 +171,7 @@
               </tr>
               <tr>
                 <th colspan="7">Descuento:</th>
-                <th>{{ (order.total_discount = total_discount) }}</th>
+                <th>{{ order.total_discount = total_discount }}</th>
               </tr>
 
               <tr>
@@ -206,7 +206,7 @@
         </div>
       </section>
     </div>
-    <add-product />
+    <add-product @add-client="addProduct($event)" />
     <add-client />
   </div>
 </template>
@@ -234,27 +234,29 @@ export default {
       },
     };
   },
+  watch: {},
   computed: {
-    total_tax_inc: function () {
-      var result = 0.0;
-      this.productsOrderList.forEach(
-        (product) => (result += parseFloat(product.price_tax_inc_total))
-      );
-      return result;
-    },
+   
     total_tax_exc: function () {
-      var result = 0.0;
+      var total = 0.0;
       this.productsOrderList.forEach(
-        (product) => (result += parseFloat(product.price_tax_exc * product.qty))
+        (product) => (total += parseFloat(product.price_tax_exc * product.qty))
       );
-      return result;
+      return total;
     },
     total_discount: function () {
-      var result = 0.0;
+      var total = 0.0;
       this.productsOrderList.forEach(
-        (product) => (result += parseFloat(product.discount_price))
+        (product) => {(total += parseFloat(product.discount_price)), product.qty}
       );
-      return result;
+      return total;
+    },
+     total_tax_inc: function () {
+      var total = 0.0;
+      this.productsOrderList.forEach(
+        (product) => {(total += parseFloat(product.price_tax_inc_total)), product.qty}
+      );
+      return total;
     },
   },
   methods: {
@@ -265,7 +267,7 @@ export default {
       }
       var url = "api/products/searchProduct?barcode=" + me.filters.product;
       axios
-        .post(url)
+        .post(url, null, me.$root.config)
         .then(function (response) {
           var new_product = response.data.products;
           if (!new_product) {
@@ -298,12 +300,17 @@ export default {
           product_id: new_product.id,
           barcode: new_product.barcode,
           discount_percentage: 0,
+          discount_price : 0,
           qty: 1,
           price_tax_inc: new_product.sale_price_tax_inc,
           price_tax_exc: new_product.sale_price_tax_exc,
           product: new_product.product,
         });
       }
+
+    },
+    removeProduct(index){
+      this.productsOrderList.splice(index, 1)
     },
     searchClient() {},
   },
