@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use Illuminate\Http\Request;
-use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\ErrorHandler\Debug;
 
-class CategoryController extends Controller
+class BrandController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:category.index')->only('index');
-        $this->middleware('can:category.store')->only('store');
-        $this->middleware('can:category.update')->only('update');
-        $this->middleware('can:category.delete')->only('destroy');
-        $this->middleware('can:category.active')->only('active','deactivate');
+        $this->middleware('can:brand.index')->only('index');
+        $this->middleware('can:brand.store')->only('store');
+        $this->middleware('can:brand.update')->only('update');
+        $this->middleware('can:brand.delete')->only('destroy');
+        // $this->middleware('can:brand.active')->only('active');
+        // $this->middleware('can:brand.deactivate')->only('deactivate');
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class CategoryController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'categories' => Category::paginate(20),
+            'brands' => Brand::paginate(20),
         ]);
     }
 
@@ -62,7 +62,7 @@ class CategoryController extends Controller
             ], 400);
         }
 
-        $category = Category::create([
+        $brand = Brand::create([
             'name' => $request->input('name')
         ]);
 
@@ -70,7 +70,7 @@ class CategoryController extends Controller
             'status' => 'success',
             'code' => 200,
             'message' => 'Registro exitoso',
-            'category' => $category
+            'brand' => $brand
         ], 200);
     }
 
@@ -82,13 +82,13 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::find($id);
+        $brand = Brand::find($id);
 
-        if ($category) {
+        if ($brand) {
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'category' => $category
+                'brand' => $brand
             ];
         } else {
             $data = [
@@ -134,16 +134,16 @@ class CategoryController extends Controller
             ], 400);
         }
 
-        $category = Category::find($id);
+        $brand = Brand::find($id);
 
-        if ($category) {
-            $category->name = $request->input('name');
-            $category->save();
+        if ($brand) {
+            $brand->name = $request->input('name');
+            $brand->save();
             $data = [
                 'status' => 'success',
                 'code' =>  200,
                 'message' => 'Actualización exitosa',
-                'category' =>  $category
+                'brand' =>  $brand
             ];
         } else {
             $data = [
@@ -163,14 +163,14 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
+        $brand = Brand::find($id);
 
-        if ($category) {
-            $category->delete();
+        if ($brand) {
+            $brand->delete();
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'category' => $category
+                'brand' => $brand
             ];
         } else {
             $data = [
@@ -183,7 +183,7 @@ class CategoryController extends Controller
         return response()->json($data, $data['code']);
     }
 
-      /**
+    /**
      * Activate the specified resource from storage.
      *
      * @param  int  $id
@@ -192,9 +192,9 @@ class CategoryController extends Controller
     public function activate($id)
     {
         //
-        $category = Category::find($id);
-        $category->state = '1';
-        $category->save();
+        $brand = Brand::find($id);
+        $brand->state = '1';
+        $brand->save();
     }
 
     /**
@@ -205,8 +205,8 @@ class CategoryController extends Controller
      */
     public function deactivate($id)
     {
-        $category = Category::find($id);
-        $category->state = '0';
-        $category->save();
+        $brand = Brand::find($id);
+        $brand->state = '0';
+        $brand->save();
     }
 }

@@ -3,14 +3,9 @@
     <div class="header">
       <h3 class="h3 w-100">Tickets</h3>
       <div class="row justify-content-end mx-4">
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-toggle="modal"
-          @click="edit = false"
-        >
-          Nuevo ticket
-        </button>
+        <router-link class="btn btn-outline-primary" to="create-edit-order">
+          Nueva orden
+        </router-link>
       </div>
     </div>
     <section>
@@ -19,11 +14,23 @@
           <h6 class="w-100">Buscar...</h6>
           <div class="form-group">
             <label for="nro_factura">Nro Factura</label>
-            <input type="text" name="nro_factura" id="nro_factura" class="form-control" placeholder="Nro Factura">
+            <input
+              type="text"
+              name="nro_factura"
+              id="nro_factura"
+              class="form-control"
+              placeholder="Nro Factura"
+            />
           </div>
           <div class="form-group">
             <label for="name_client">Cliente</label>
-            <input type="text" name="name_client" id="name_client" class="form-control" placeholder="Cliente">
+            <input
+              type="text"
+              name="name_client"
+              id="name_client"
+              class="form-control"
+              placeholder="Cliente"
+            />
           </div>
         </div>
         <table class="table table-sm table-bordered table-responsive-sm">
@@ -41,14 +48,13 @@
             </tr>
           </thead>
           <tbody>
-
             <tr>
               <th scope="row">1</th>
               <td>5</td>
               <td>$5000</td>
               <td>Usuario 1</td>
               <td>
-                <router-link class="btn" to="/details-order">   
+                <router-link class="btn" to="/details-order">
                   <i class="bi bi-eye"></i>
                 </router-link>
               </td>
@@ -63,7 +69,7 @@
                 </button>
               </td>
               <td>
-                <router-link class="btn" to="/details-ticket">   
+                <router-link class="btn" to="/details-ticket">
                   <i class="bi bi-pencil-square"></i>
                 </router-link>
               </td>
@@ -80,7 +86,7 @@
               <td>$5000</td>
               <td>Usuario 1</td>
               <td>
-                <router-link class="btn" to="/details-ticket">   
+                <router-link class="btn" to="/details-ticket">
                   <i class="bi bi-eye"></i>
                 </router-link>
               </td>
@@ -95,7 +101,7 @@
                 </button>
               </td>
               <td>
-                <router-link class="btn" to="/details-ticket">   
+                <router-link class="btn" to="/details-ticket">
                   <i class="bi bi-pencil-square"></i>
                 </router-link>
               </td>
@@ -112,7 +118,7 @@
               <td>$5000</td>
               <td>Usuario 1</td>
               <td>
-                <router-link class="btn" to="/details-ticket">   
+                <router-link class="btn" to="/details-ticket">
                   <i class="bi bi-eye"></i>
                 </router-link>
               </td>
@@ -127,7 +133,7 @@
                 </button>
               </td>
               <td>
-                <router-link class="btn" to="/details-ticket">   
+                <router-link class="btn" to="/details-ticket">
                   <i class="bi bi-pencil-square"></i>
                 </router-link>
               </td>
@@ -144,7 +150,7 @@
               <td>$5000</td>
               <td>Usuario 1</td>
               <td>
-                <router-link class="btn" to="/details-ticket">   
+                <router-link class="btn" to="/details-ticket">
                   <i class="bi bi-eye"></i>
                 </router-link>
               </td>
@@ -159,7 +165,7 @@
                 </button>
               </td>
               <td>
-                <router-link class="btn" to="/details-ticket">   
+                <router-link class="btn" to="/details-ticket">
                   <i class="bi bi-pencil-square"></i>
                 </router-link>
               </td>
@@ -168,7 +174,7 @@
                   <i class="bi bi-file-earmark-x"></i>
                 </button>
               </td>
-            </tr>          
+            </tr>
           </tbody>
         </table>
       </div>
@@ -192,15 +198,12 @@
   </div>
 </template>
 <script>
-
 export default {
-  components : {
-    
+  components: {},
+  data() {
+    return {
+      data: "Tickets",
+    };
   },
-  data(){
-    return{
-      data: 'Tickets'
-    }
-  }
-}
+};
 </script>
