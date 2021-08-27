@@ -49,7 +49,7 @@
                 <td>{{ product.barcode }}</td>
                 <td>{{ product.product }}</td>
                 <td>{{ product.category.name }}</td>
-                <td class="text-right">$ {{ product.sale_price_tax_exc }}</td>
+                <td class="text-right">$ {{ product.sale_price_tax_inc }}</td>
                 <td>{{ product.quantity }}</td>
                 <td>
                   <button

@@ -51,6 +51,7 @@
   </div>
 </template>
 <script>
+import global from "./../services/global.js";
 import CreateEditBrand from "./CreateEditBrand.vue";
 export default {
   data() {
@@ -70,11 +71,14 @@ export default {
       this.isLoading = true;
       let me = this;
       axios
-        .get("api/brands?page=" + page)
+        .get("api/brands?page=" + page, this.$root.config)
         .then(function (response) {
           me.BrandList = response.data.brands;
         })
         .finally(() => (this.isLoading = false));
+    },
+    validatePermission(permission) {
+      return global.validatePermission(this.$root.permissions, permission);
     },
   },
 };

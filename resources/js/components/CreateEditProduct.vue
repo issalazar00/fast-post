@@ -127,11 +127,16 @@
                   class="form-control"
                   id="tax_id"
                   v-model="formProduct.tax_id"
+                  @click="uploadTax(formProduct.tax_id)"
                   required
                 >
                   <option value="0">--Select--</option>
-                  <option v-for="tax in taxList" :key="tax.id" :value="tax.id">
-                    {{ tax.percentage }}
+                  <option
+                    v-for="t in taxList"
+                    :key="t.percentage"
+                    :value="t.id"
+                  >
+                    {{ t.percentage }}
                   </option>
                 </select>
               </div>
@@ -305,7 +310,7 @@ export default {
         barcode: "",
         product: "",
         type: 0,
-        tax_id: 1,
+        tax_id: 0,
         cost_price: 0.0,
         gain: 0.0,
         sale_price_tax_exc: 0.0,
@@ -319,7 +324,7 @@ export default {
         quantity: 0.0,
         maximum: 0.0,
       },
-      taxList: {},
+      taxList: [],
       categoryList: {},
       brandList: {},
     };
@@ -327,7 +332,10 @@ export default {
   components: {},
   computed: {
     gain: function () {
-      if (this.formProduct.sale_price_tax_exc != 0) {
+      if (
+        this.formProduct.sale_price_tax_exc != 0 &&
+        this.formProduct.tax_id != 0
+      ) {
         return parseFloat(
           (this.formProduct.gain =
             this.formProduct.sale_price_tax_exc - this.formProduct.cost_price)
@@ -335,16 +343,21 @@ export default {
       }
     },
     sale_price_tax_exc: function () {
-      let percentage = this.tax.percentage / 100;
-      return (this.formProduct.sale_price_tax_exc = Math.round(
-        parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)
-      ).toFixed(2));
+      if (this.formProduct.tax_id != 0) {
+        let percentage = this.tax.percentage / 100;
+        return (this.formProduct.sale_price_tax_exc = Math.round(
+          parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)
+        ).toFixed(2));
+      }
     },
     wholesale_price_tax_exc() {
-      let percentage = this.tax.percentage / 100;
-      return (this.formProduct.wholesale_price_tax_exc = Math.round(
-        parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)
-      ).toFixed(2));
+      if (this.formProduct.tax_id != 0) {
+        let percentage = this.tax.percentage / 100;
+        return (this.formProduct.wholesale_price_tax_exc = Math.round(
+          parseFloat(this.formProduct.wholesale_price_tax_inc) /
+            (1 + percentage)
+        ).toFixed(2));
+      }
     },
   },
   methods: {
@@ -369,9 +382,11 @@ export default {
         });
     },
     OpenEditProduct(product) {
+      this.edit = true;
       let me = this;
       $("#productModal").modal("show");
       me.formProduct = product;
+      me.uploadTax(product.tax_id);
     },
     CreateProduct() {
       let me = this;
@@ -388,6 +403,7 @@ export default {
           $("#productModal").modal("hide");
           me.formProduct = {};
         });
+      this.edit = false;
     },
     ResetData() {
       let me = this;
@@ -397,8 +413,10 @@ export default {
       });
     },
 
-    uploadTax(tax) {
-      this.formProduct.tax_id = tax.id;
+    uploadTax(tax_id) {
+      let result;
+      result = this.taxList.find((tax) => tax.id == tax_id);
+      this.tax.percentage = result.percentage;
     },
     CloseModal: function () {
       this.ResetData();

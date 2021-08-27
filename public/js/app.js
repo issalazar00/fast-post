@@ -8924,7 +8924,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _CreateEditBrand_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateEditBrand.vue */ "./resources/js/components/CreateEditBrand.vue");
+/* harmony import */ var _services_global_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../services/global.js */ "./resources/js/services/global.js");
+/* harmony import */ var _CreateEditBrand_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateEditBrand.vue */ "./resources/js/components/CreateEditBrand.vue");
 //
 //
 //
@@ -8978,6 +8979,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -8986,7 +8988,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   components: {
-    CreateEditBrand: _CreateEditBrand_vue__WEBPACK_IMPORTED_MODULE_0__.default
+    CreateEditBrand: _CreateEditBrand_vue__WEBPACK_IMPORTED_MODULE_1__.default
   },
   created: function created() {
     this.listBrands(1);
@@ -8998,11 +9000,14 @@ __webpack_require__.r(__webpack_exports__);
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.isLoading = true;
       var me = this;
-      axios.get("api/brands?page=" + page).then(function (response) {
+      axios.get("api/brands?page=" + page, this.$root.config).then(function (response) {
         me.BrandList = response.data.brands;
       })["finally"](function () {
         return _this.isLoading = false;
       });
+    },
+    validatePermission: function validatePermission(permission) {
+      return _services_global_js__WEBPACK_IMPORTED_MODULE_0__.default.validatePermission(this.$root.permissions, permission);
     }
   }
 });
@@ -10388,6 +10393,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -10400,7 +10410,7 @@ __webpack_require__.r(__webpack_exports__);
         barcode: "",
         product: "",
         type: 0,
-        tax_id: 1,
+        tax_id: 0,
         cost_price: 0.0,
         gain: 0.0,
         sale_price_tax_exc: 0.0,
@@ -10414,7 +10424,7 @@ __webpack_require__.r(__webpack_exports__);
         quantity: 0.0,
         maximum: 0.0
       },
-      taxList: {},
+      taxList: [],
       categoryList: {},
       brandList: {}
     };
@@ -10422,17 +10432,21 @@ __webpack_require__.r(__webpack_exports__);
   components: {},
   computed: {
     gain: function gain() {
-      if (this.formProduct.sale_price_tax_exc != 0) {
+      if (this.formProduct.sale_price_tax_exc != 0 && this.formProduct.tax_id != 0) {
         return parseFloat(this.formProduct.gain = this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
       }
     },
     sale_price_tax_exc: function sale_price_tax_exc() {
-      var percentage = this.tax.percentage / 100;
-      return this.formProduct.sale_price_tax_exc = Math.round(parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)).toFixed(2);
+      if (this.formProduct.tax_id != 0) {
+        var percentage = this.tax.percentage / 100;
+        return this.formProduct.sale_price_tax_exc = Math.round(parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)).toFixed(2);
+      }
     },
     wholesale_price_tax_exc: function wholesale_price_tax_exc() {
-      var percentage = this.tax.percentage / 100;
-      return this.formProduct.wholesale_price_tax_exc = Math.round(parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)).toFixed(2);
+      if (this.formProduct.tax_id != 0) {
+        var percentage = this.tax.percentage / 100;
+        return this.formProduct.wholesale_price_tax_exc = Math.round(parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)).toFixed(2);
+      }
     }
   },
   methods: {
@@ -10455,9 +10469,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     OpenEditProduct: function OpenEditProduct(product) {
+      this.edit = true;
       var me = this;
       $("#productModal").modal("show");
       me.formProduct = product;
+      me.uploadTax(product.tax_id);
     },
     CreateProduct: function CreateProduct() {
       var me = this;
@@ -10472,6 +10488,7 @@ __webpack_require__.r(__webpack_exports__);
         $("#productModal").modal("hide");
         me.formProduct = {};
       });
+      this.edit = false;
     },
     ResetData: function ResetData() {
       var me = this;
@@ -10480,8 +10497,12 @@ __webpack_require__.r(__webpack_exports__);
         me.formProduct[key] = "";
       });
     },
-    uploadTax: function uploadTax(tax) {
-      this.formProduct.tax_id = tax.id;
+    uploadTax: function uploadTax(tax_id) {
+      var result;
+      result = this.taxList.find(function (tax) {
+        return tax.id == tax_id;
+      });
+      this.tax.percentage = result.percentage;
     },
     CloseModal: function CloseModal() {
       this.ResetData();
@@ -53615,6 +53636,9 @@ var render = function() {
                       staticClass: "form-control",
                       attrs: { id: "tax_id", required: "" },
                       on: {
+                        click: function($event) {
+                          return _vm.uploadTax(_vm.formProduct.tax_id)
+                        },
                         change: function($event) {
                           var $$selectedVal = Array.prototype.filter
                             .call($event.target.options, function(o) {
@@ -53639,14 +53663,14 @@ var render = function() {
                         _vm._v("--Select--")
                       ]),
                       _vm._v(" "),
-                      _vm._l(_vm.taxList, function(tax) {
+                      _vm._l(_vm.taxList, function(t) {
                         return _c(
                           "option",
-                          { key: tax.id, domProps: { value: tax.id } },
+                          { key: t.percentage, domProps: { value: t.id } },
                           [
                             _vm._v(
                               "\n                  " +
-                                _vm._s(tax.percentage) +
+                                _vm._s(t.percentage) +
                                 "\n                "
                             )
                           ]
@@ -55943,7 +55967,7 @@ var render = function() {
                               _vm._v(" "),
                               _c("td", { staticClass: "text-right" }, [
                                 _vm._v(
-                                  "$ " + _vm._s(product.sale_price_tax_exc)
+                                  "$ " + _vm._s(product.sale_price_tax_inc)
                                 )
                               ]),
                               _vm._v(" "),
