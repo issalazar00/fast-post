@@ -61,15 +61,15 @@ class ImportProductController extends Controller
           $tax_id = 1;
           $tax_percentage = 0;
           $percentage = 0;
-          if (isset($p["K"])) {
+          if (isset($p["K"]) && $p["K"] != '') {
             $tax = Tax::firstOrCreate(['percentage' => $p["K"]]);
             $tax_id = $tax->id;
-            $tax_percentage = $p["K"];
+            $tax_percentage = $tax->percentage;
             if ($tax_percentage > 0) {
               $percentage = ($tax->percentaje / 100) + 1;
             }
           } else {
-            $tax = Tax::firstOrCreate(['percentage' => 0]);
+            $tax = Tax::firstOrCreate(['percentage' => '0']);
             $tax_id = $tax->id;
             $percentage = 0;
           }

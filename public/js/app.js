@@ -51084,56 +51084,60 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _c("table", { staticClass: "table table-bordered table-sm" }, [
-              _vm._m(1),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.ClientList.data, function(client) {
-                  return _c("tr", { key: client.id }, [
-                    _c("th", { attrs: { scope: "row" } }, [
-                      _vm._v(_vm._s(client.code))
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(client.name))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(client.document))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(client.address))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(client.mobile))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(client.email))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(client.contact) +
-                          "\n              "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(2, true),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-outline-secondary",
-                          on: {
-                            click: function($event) {
-                              return _vm.addClient(client.id)
+            _c(
+              "table",
+              { staticClass: "table table-bordered table-sm table-responsive" },
+              [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.ClientList.data, function(client) {
+                    return _c("tr", { key: client.id }, [
+                      _c("th", { attrs: { scope: "row" } }, [
+                        _vm._v(_vm._s(client.code))
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(client.name))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(client.document))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(client.address))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(client.mobile))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(client.email))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(client.contact) +
+                            "\n              "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(2, true),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-outline-secondary",
+                            on: {
+                              click: function($event) {
+                                return _vm.addClient(client.id)
+                              }
                             }
-                          }
-                        },
-                        [_c("i", { staticClass: "bi bi-plus-circle" })]
-                      )
+                          },
+                          [_c("i", { staticClass: "bi bi-plus-circle" })]
+                        )
+                      ])
                     ])
-                  ])
-                }),
-                0
-              )
-            ])
+                  }),
+                  0
+                )
+              ]
+            )
           ]),
           _vm._v(" "),
           _vm._m(3)

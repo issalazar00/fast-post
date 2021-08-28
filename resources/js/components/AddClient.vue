@@ -38,7 +38,7 @@
               </button>
             </div>
           </div>
-          <table class="table table-bordered table-sm">
+          <table class="table table-bordered table-sm table-responsive">
             <thead>
               <tr>
                 <th scope="col">#</th>

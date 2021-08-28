@@ -393,6 +393,7 @@ export default {
       axios.post("api/products", this.formProduct).then(function () {
         $("#productModal").modal("hide");
         me.formProduct = {};
+        this.CloseModal();
       });
     },
     EditProduct() {
@@ -403,6 +404,7 @@ export default {
           $("#productModal").modal("hide");
           me.formProduct = {};
         });
+      this.CloseModal();
       this.edit = false;
     },
     ResetData() {
