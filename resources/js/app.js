@@ -64,7 +64,7 @@ const routes = [
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/products', component: Products },
   { path: '/create-edit-product', component: CreateEditProduct },
-  { path: '/impuestos', component: Taxes },
+  { path: '/impuestos', component: Taxes, alias: "tax.index" },
   { path: '/create-edit-tax', component: CreateEditTax },
   { path: '/suppliers', component: Suppliers },
   { path: '/create-edit-supplier', component: CreateEditSupplier },
@@ -163,7 +163,7 @@ const app = new Vue({
       localStorage.clear();
       this.$router.push('/login');
     },
-    searchPermission(permission) {
+    validatePermission(permission) {
       return global.validatePermission(this.permissions, permission);
     }
   }

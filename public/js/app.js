@@ -8672,7 +8672,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _CreateEditCategory_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateEditCategory.vue */ "./resources/js/components/CreateEditCategory.vue");
-/* harmony import */ var _services_global_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../services/global.js */ "./resources/js/services/global.js");
 //
 //
 //
@@ -8800,7 +8799,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -8817,6 +8815,9 @@ __webpack_require__.r(__webpack_exports__);
     this.listCategories(1);
   },
   methods: {
+    hola: function hola() {
+      console.log("HOLAAA --->>");
+    },
     listCategories: function listCategories() {
       var _this = this;
 
@@ -8860,9 +8861,6 @@ __webpack_require__.r(__webpack_exports__);
         console.log(res);
         me.listCategories(1);
       });
-    },
-    validatePermission: function validatePermission(permission) {
-      return _services_global_js__WEBPACK_IMPORTED_MODULE_1__.default.validatePermission(this.$root.permissions, permission);
     }
   },
   mounted: function mounted() {
@@ -9102,16 +9100,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var me = this;
-      this.formErrors.name = "";
+      this.assignErrors(false);
       axios.post("api/categories", this.formCategory, this.$root.config).then(function () {
         $("#categoryModal").modal("hide");
         me.formCategory = {};
       })["catch"](function (response) {
-        var errors = response.response.data.errors;
-
-        if (errors.name != "undefined") {
-          _this.formErrors.name = errors.name[0];
-        }
+        _this.assignErrors(response);
       });
     },
     OpenEditCategory: function OpenEditCategory(product) {
@@ -9124,15 +9118,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       var me = this;
+      this.assignErrors(false);
       axios.put("api/categories/" + this.formCategory.id, this.formCategory, this.$root.config).then(function () {
         $("#categoryModal").modal("hide");
         me.formCategory = {};
       })["catch"](function (response) {
-        var errors = response.response.data.errors;
-
-        if (errors.name != "undefined") {
-          _this2.formErrors.name = errors.name[0];
-        }
+        _this2.assignErrors(response);
       });
     },
     ResetData: function ResetData() {
@@ -9140,6 +9131,17 @@ __webpack_require__.r(__webpack_exports__);
       $("#categoryModal").modal("hide");
       me.formCategory = {};
       me.formErrors.name = "";
+    },
+    assignErrors: function assignErrors(response) {
+      if (response) {
+        var errors = response.response.data.errors;
+
+        if (errors.name != "undefined") {
+          this.formErrors.name = errors.name[0];
+        }
+      } else {
+        this.formErrors.name = "";
+      }
     }
   },
   mounted: function mounted() {
@@ -10388,21 +10390,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       formTax: {
         percentage: 0,
         "default": 0
+      },
+      formErrors: {
+        percentage: ""
       }
     };
   },
   methods: {
     CreateTax: function CreateTax() {
+      var _this = this;
+
       var me = this;
-      axios.post("api/tax", this.formTax).then(function () {
+      this.assignErrors(false);
+      axios.post("api/tax", this.formTax, this.$root.config).then(function () {
         $("#taxModal").modal("hide");
         me.formTax = {};
+      })["catch"](function (response) {
+        _this.assignErrors(response);
       });
     },
     OpenEditTax: function OpenEditTax(tax) {
@@ -10411,16 +10424,32 @@ __webpack_require__.r(__webpack_exports__);
       me.formTax = tax;
     },
     EditTax: function EditTax() {
+      var _this2 = this;
+
       var me = this;
-      axios.put("api/tax/" + this.formTax.id, this.formTax).then(function () {
+      this.assignErrors(false);
+      axios.put("api/tax/" + this.formTax.id, this.formTax, this.$root.config).then(function () {
         $("#taxModal").modal("hide");
         me.formTax = {};
+      })["catch"](function (response) {
+        _this2.assignErrors(response);
       });
     },
     ResetData: function ResetData() {
       var me = this;
       $("#taxModal").modal("hide");
       me.formTax = {};
+    },
+    assignErrors: function assignErrors(response) {
+      if (response) {
+        var errors = response.response.data.errors;
+
+        if (errors.percentage != "undefined") {
+          this.formErrors.percentage = errors.percentage[0];
+        }
+      } else {
+        this.formErrors.percentage = "";
+      }
     }
   },
   mounted: function mounted() {
@@ -11379,7 +11408,7 @@ __webpack_require__.r(__webpack_exports__);
     listTaxes: function listTaxes() {
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var me = this;
-      axios.get("api/tax?page=" + page, this.$root.config).then(function (response) {
+      axios.get("api/taxes?page=" + page, this.$root.config).then(function (response) {
         me.taxListing = response.data.taxes;
       });
     },
@@ -11404,13 +11433,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     ActivateTax: function ActivateTax(id) {
       var me = this;
-      axios.post("api/tax/" + id + "/activate").then(function () {
+      axios.post("api/taxes/" + id + "/activate", null, this.$root.config).then(function () {
         me.listTaxes(1);
       });
     },
     DeactivateTax: function DeactivateTax(id) {
       var me = this;
-      axios.post("api/tax/" + id + "/deactivate").then(function () {
+      axios.post("api/taxes/" + id + "/deactivate", null, this.$root.config).then(function () {
         me.listTaxes(1);
       });
     }
@@ -11527,7 +11556,8 @@ var routes = [{
   component: _components_CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_8__.default
 }, {
   path: '/impuestos',
-  component: _components_Taxes_vue__WEBPACK_IMPORTED_MODULE_9__.default
+  component: _components_Taxes_vue__WEBPACK_IMPORTED_MODULE_9__.default,
+  alias: "tax.index"
 }, {
   path: '/create-edit-tax',
   component: _components_CreateEditTax_vue__WEBPACK_IMPORTED_MODULE_10__.default
@@ -11675,7 +11705,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1__.default({
       localStorage.clear();
       this.$router.push('/login');
     },
-    searchPermission: function searchPermission(permission) {
+    validatePermission: function validatePermission(permission) {
       return _services_global_js__WEBPACK_IMPORTED_MODULE_18__.default.validatePermission(this.permissions, permission);
     }
   }
@@ -11749,20 +11779,8 @@ var api = 'http://fast-post.com.devel/api';
   },
   validatePermission: function validatePermission(permissions, permission) {
     if (permissions === undefined) {
-      permissions = this.user().permissions; //? this.user().permissions : [];
-      //console.log(permissions);
-    } //return true;
-    //console.log(typeof permissions);
-
-    /*if(typeof permissions != 'array'){
-        return false;
+      permissions = this.user().permissions;
     }
-    //const data = Array();
-      //console.log(typeof data);
-      permissions.forEach(item => {
-        data.push(item);
-    });*/
-
 
     var search = permissions.filter(function (filtro) {
       return filtro.name.match(permission);
@@ -50107,7 +50125,7 @@ var render = function() {
             "section",
             [
               _c("div", { staticClass: "row justify-content-end my-4" }, [
-                _vm.validatePermission("category.store")
+                _vm.$root.validatePermission("category.store")
                   ? _c(
                       "button",
                       {
@@ -50144,11 +50162,11 @@ var render = function() {
                         _vm._v("Categoria")
                       ]),
                       _vm._v(" "),
-                      _vm.validatePermission("category.active")
+                      _vm.$root.validatePermission("category.active")
                         ? _c("th", [_vm._v("Estado")])
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.validatePermission("category.update")
+                      _vm.$root.validatePermission("category.update")
                         ? _c("th", [_vm._v("Opciones")])
                         : _vm._e()
                     ])
@@ -50164,7 +50182,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(category.name))]),
                         _vm._v(" "),
-                        _vm.validatePermission("category.active")
+                        _vm.$root.validatePermission("category.active")
                           ? _c("td", [
                               category.state == 1
                                 ? _c(
@@ -50202,7 +50220,7 @@ var render = function() {
                             ])
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.validatePermission("category.update")
+                        _vm.$root.validatePermission("category.update")
                           ? _c("td", [
                               _c(
                                 "button",
@@ -53099,7 +53117,11 @@ var render = function() {
                 _vm.$set(_vm.formTax, "percentage", $event.target.value)
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _c("small", { staticClass: "form-text text-danger" }, [
+            _vm._v(_vm._s(_vm.formErrors.percentage))
+          ])
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "form-group" }, [
@@ -54595,23 +54617,25 @@ var render = function() {
     _c("h3", { staticClass: "page-header" }, [_vm._v("Taxes")]),
     _vm._v(" "),
     _c("div", { staticClass: "row justify-content-end mx-4" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          attrs: {
-            type: "button",
-            "data-toggle": "modal",
-            "data-target": "#taxModal"
-          },
-          on: {
-            click: function($event) {
-              _vm.edit = false
-            }
-          }
-        },
-        [_vm._v("\n      Crear Impuesto\n    ")]
-      )
+      _vm.$root.validatePermission("tax.store")
+        ? _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              attrs: {
+                type: "button",
+                "data-toggle": "modal",
+                "data-target": "#taxModal"
+              },
+              on: {
+                click: function($event) {
+                  _vm.edit = false
+                }
+              }
+            },
+            [_vm._v("\n      Crear Impuesto\n    ")]
+          )
+        : _vm._e()
     ]),
     _vm._v(" "),
     _c("section", [
@@ -54625,7 +54649,23 @@ var render = function() {
               staticClass: "table table-sm table-bordered table-responsive-sm"
             },
             [
-              _vm._m(0),
+              _c("thead", { staticClass: "thead-primary" }, [
+                _c("tr", [
+                  _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { scope: "col" } }, [_vm._v("Porcentaje")]),
+                  _vm._v(" "),
+                  _c("th", { attrs: { scope: "col" } }, [
+                    _vm._v("Por defecto")
+                  ]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Estado")]),
+                  _vm._v(" "),
+                  _vm.$root.validatePermission("tax.active")
+                    ? _c("th", [_vm._v("Opciones")])
+                    : _vm._e()
+                ])
+              ]),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -54657,52 +54697,56 @@ var render = function() {
                           ])
                     ]),
                     _vm._v(" "),
-                    _c("td", [
-                      tax.state == 1
-                        ? _c(
+                    _vm.$root.validatePermission("tax.active")
+                      ? _c("td", [
+                          tax.state == 1
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.DeactivateTax(tax.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "bi bi-check-circle-fill"
+                                  })
+                                ]
+                              )
+                            : _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.ActivateTax(tax.id)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "bi bi-x-circle" })]
+                              )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.$root.validatePermission("tax.update")
+                      ? _c("td", [
+                          _c(
                             "button",
                             {
                               staticClass: "btn btn-success",
                               on: {
                                 click: function($event) {
-                                  return _vm.DeactivateTax(tax.id)
+                                  _vm.ShowData(tax), (_vm.edit = true)
                                 }
                               }
                             },
-                            [
-                              _c("i", {
-                                staticClass: "bi bi-check-circle-fill"
-                              })
-                            ]
+                            [_vm._v("\n                Editar\n              ")]
                           )
-                        : _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-danger",
-                              on: {
-                                click: function($event) {
-                                  return _vm.ActivateTax(tax.id)
-                                }
-                              }
-                            },
-                            [_c("i", { staticClass: "bi bi-x-circle" })]
-                          )
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-success",
-                          on: {
-                            click: function($event) {
-                              _vm.ShowData(tax), (_vm.edit = true)
-                            }
-                          }
-                        },
-                        [_vm._v("\n                Editar\n              ")]
-                      )
-                    ])
+                        ])
+                      : _vm._e()
                   ])
                 }),
                 0
@@ -54745,7 +54789,7 @@ var render = function() {
       [
         _c("div", { staticClass: "modal-dialog" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(1),
+            _vm._m(0),
             _vm._v(" "),
             _c(
               "div",
@@ -54790,24 +54834,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", { staticClass: "thead-primary" }, [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Porcentaje")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Por defecto")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Estado")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Opciones")])
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

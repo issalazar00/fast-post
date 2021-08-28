@@ -16,11 +16,11 @@
                 <li class="nav-item">
                     <router-link class="nav-link " to="/products">Productos</router-link>
                 </li>
-                <li class="nav-item" v-if= "searchPermission('category.index')">
+                <li class="nav-item" v-if= "validatePermission('category.index')">
                     <router-link class="nav-link " to="/categories">Categorias</router-link>
                 </li>
 
-                <li class="nav-item" v-if= "searchPermission('tax.index')">
+                <li class="nav-item" v-if= "validatePermission('tax.index')">
                     <router-link class="nav-link" to="/impuestos">Taxes</router-link>
                 </li>
                 <li class="nav-item">

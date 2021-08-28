@@ -33,9 +33,9 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/categories/{category}/activate',  [CategoryController::class, 'activate']);
     Route::post('/categories/{category}/deactivate',  [CategoryController::class, 'deactivate']);
 
-    Route::resource('/tax', TaxController::class);
-    Route::post('/tax/{tax}/activate',  [TaxController::class, 'activate']);
-    Route::post('/tax/{tax}/deactivate',  [TaxController::class, 'deactivate']);
+    Route::resource('/taxes', TaxController::class);
+    Route::post('/taxes/{tax}/activate',  [TaxController::class, 'activate']);
+    Route::post('/taxes/{tax}/deactivate',  [TaxController::class, 'deactivate']);
 
     Route::resource('/products',  ProductController::class);
     Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);

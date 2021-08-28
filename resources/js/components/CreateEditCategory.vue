@@ -35,7 +35,7 @@ export default {
   methods: {
     CreateCategory() {
       let me = this;
-      this.formErrors.name = "";
+      this.assignErrors(false);
 
       axios
         .post("api/categories", this.formCategory, this.$root.config)
@@ -44,10 +44,7 @@ export default {
           me.formCategory = {};
         })
         .catch((response) => {
-          var errors = response.response.data.errors;
-          if (errors.name != "undefined") {
-            this.formErrors.name = errors.name[0];
-          }
+          this.assignErrors(response);
         });
     },
     OpenEditCategory(product) {
@@ -59,6 +56,8 @@ export default {
 
     EditCategory() {
       let me = this;
+      this.assignErrors(false);
+      
       axios
         .put(
           "api/categories/" + this.formCategory.id,
@@ -70,10 +69,7 @@ export default {
           me.formCategory = {};
         })
         .catch((response) => {
-          var errors = response.response.data.errors;
-          if (errors.name != "undefined") {
-            this.formErrors.name = errors.name[0];
-          }
+          this.assignErrors(response);
         });
     },
     ResetData() {
@@ -81,6 +77,16 @@ export default {
       $("#categoryModal").modal("hide");
       me.formCategory = {};
       me.formErrors.name = "";
+    },
+    assignErrors(response) {
+      if (response) {
+        var errors = response.response.data.errors;
+        if (errors.name != "undefined") {
+          this.formErrors.name = errors.name[0];
+        }
+      } else {
+        this.formErrors.name = "";
+      }
     },
   },
   mounted() {
