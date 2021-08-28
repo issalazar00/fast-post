@@ -17,7 +17,8 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('tax_id');
-            $table->string('product',100);
+            $table->unsignedBigInteger('brand_id');
+            $table->string('product', 100);
             $table->string('barcode', 20)->unique();
             $table->tinyInteger('type');
             $table->tinyInteger('state')->default(1);
@@ -33,14 +34,19 @@ class CreateProductsTable extends Migration
             $table->decimal('maximum', 10, 2)->nullable();
 
             $table->foreign('category_id')
-            ->references('id')
-            ->on('categories')
-            ->onDelete('cascade');
+                ->references('id')
+                ->on('categories')
+                ->onDelete('cascade');
+
+            $table->foreign('brand_id')
+                ->references('id')
+                ->on('brands')
+                ->onDelete('cascade');
 
             $table->foreign('tax_id')
-            ->references('id')
-            ->on('taxes')
-            ->onDelete('cascade');
+                ->references('id')
+                ->on('taxes')
+                ->onDelete('cascade');
 
             $table->timestamps();
         });

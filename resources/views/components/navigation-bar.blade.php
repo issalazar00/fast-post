@@ -11,7 +11,7 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <router-link class="nav-link " to="/orders">Tickets</router-link>
+                    <router-link class="nav-link " active-class="active" to="/orders">Ordenes</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link " to="/products">Productos</router-link>
@@ -19,9 +19,12 @@
                 <li class="nav-item" v-if= "validatePermission('category.index')">
                     <router-link class="nav-link " to="/categories">Categorias</router-link>
                 </li>
-
+                <li class="nav-item">
+                    <router-link class="nav-link " to="/brands">Marcas</router-link>
+                </li>
+                
                 <li class="nav-item" v-if= "validatePermission('tax.index')">
-                    <router-link class="nav-link" to="/impuestos">Taxes</router-link>
+                    <router-link class="nav-link" to="/taxes">Taxes</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" to="/clients">Clientes</router-link>

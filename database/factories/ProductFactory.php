@@ -40,6 +40,7 @@ class ProductFactory extends Factory
             'state' => '1',
             'category_id' =>  $this->faker->numberBetween(1,10),
             'tax_id' =>  $this->faker->numberBetween(1,3),
+            'brand_id' =>  $this->faker->numberBetween(1,3),
            
         ];
     }

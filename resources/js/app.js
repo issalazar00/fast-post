@@ -15,13 +15,18 @@ import Login from './components/Login.vue'
 import NoFound from './components/NoFound.vue';
 import Clients from './components/Clients.vue'
 import CreateEditClient from './components/CreateEditClient.vue'
+
 import Products from './components/Products.vue'
 import CreateEditProduct from './components/CreateEditProduct.vue'
+
 import Taxes from './components/Taxes.vue'
 import CreateEditTax from './components/CreateEditTax.vue'
 
 import Categories from './components/Categories.vue'
 import CreateEditCategory from './components/CreateEditCategory.vue'
+
+import Brands from './components/Brands.vue'
+import CreateEditBrand from './components/CreateEditBrand.vue'
 
 import Suppliers from './components/Suppliers.vue'
 import CreateEditSupplier from './components/CreateEditSupplier.vue'
@@ -29,6 +34,10 @@ import CreateEditSupplier from './components/CreateEditSupplier.vue'
 import Orders from './components/Orders'
 import DetailsOrder from './components/DetailsOrder'
 import CreateEditOrder from './components/CreateEditOrder'
+import AddClient from './components/AddClient'
+import AddProduct from './components/AddProduct'
+import ImportProducts from './components/ImportProducts'
+
 
 //Services
 import global from './services/global.js';
@@ -64,20 +73,19 @@ const routes = [
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/products', component: Products },
   { path: '/create-edit-product', component: CreateEditProduct },
-  { path: '/impuestos', component: Taxes, alias: "tax.index" },
+  { path: '/taxes', component: Taxes },
   { path: '/create-edit-tax', component: CreateEditTax },
   { path: '/suppliers', component: Suppliers },
   { path: '/create-edit-supplier', component: CreateEditSupplier },
   { path: '/categories', component: Categories, alias: "category.index" },
   { path: '/create-edit-category', component: CreateEditCategory },
-  { path: '/orders', name: 'Orders', component: Orders },
+  { path: '/brands', component: Brands },
+  { path: '/create-edit-brand', component: CreateEditBrand },
+  { path: '/orders', component: Orders },
   { path: '/details-order', component: DetailsOrder },
   { path: '/create-edit-order', component: CreateEditOrder },
   { path: '/login', name: 'Login', component: Login },
   { path: '**', name: 'NoFound', component: NoFound },
-
-
-
 
 ]
 
@@ -111,7 +119,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (isAuthenticated) {
 
-    let alias= to.matched[0].alias;
+    let alias = to.matched[0].alias;
     if (alias != "") {
       if (!global.validatePermission(undefined, alias)) {
         return next({ name: "NoFound" });

@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use Illuminate\Http\Request;
-use App\Models\Tax;
 use Illuminate\Support\Facades\Validator;
 
-class TaxController extends Controller
+class BrandController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:tax.index')->only('index');
-        $this->middleware('can:tax.store')->only('store');
-        $this->middleware('can:tax.update')->only('update');
-        $this->middleware('can:tax.delete')->only('destroy');
-        $this->middleware('can:tax.active')->only('active', 'deactivate');
+        $this->middleware('can:brand.index')->only('index');
+        $this->middleware('can:brand.store')->only('store');
+        $this->middleware('can:brand.update')->only('update');
+        $this->middleware('can:brand.delete')->only('destroy');
+        // $this->middleware('can:brand.active')->only('active');
+        // $this->middleware('can:brand.deactivate')->only('deactivate');
     }
     /**
      * Display a listing of the resource.
@@ -26,7 +27,7 @@ class TaxController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'taxes' => Tax::paginate(10)
+            'brands' => Brand::paginate(20),
         ]);
     }
 
@@ -49,7 +50,7 @@ class TaxController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'percentage' => 'required|numeric'
+            'name' => 'required|string|min:3|max:50'
         ]);
 
         if ($validate->fails()) {
@@ -61,15 +62,15 @@ class TaxController extends Controller
             ], 400);
         }
 
-        $tax = Tax::create([
-            'percentage' => $request->input('percentage')
+        $brand = Brand::create([
+            'name' => $request->input('name')
         ]);
 
         return response()->json([
             'status' => 'success',
             'code' => 200,
             'message' => 'Registro exitoso',
-            'tax' => $tax
+            'brand' => $brand
         ], 200);
     }
 
@@ -81,13 +82,13 @@ class TaxController extends Controller
      */
     public function show($id)
     {
-        $tax = Tax::find($id);
+        $brand = Brand::find($id);
 
-        if ($tax) {
+        if ($brand) {
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'tax' => $tax
+                'brand' => $brand
             ];
         } else {
             $data = [
@@ -121,7 +122,7 @@ class TaxController extends Controller
     public function update(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
-            'percentage' => 'required|numeric'
+            'name' => 'required|string|min:3|max:50'
         ]);
 
         if ($validate->fails()) {
@@ -133,16 +134,16 @@ class TaxController extends Controller
             ], 400);
         }
 
-        $tax = Tax::find($id);
+        $brand = Brand::find($id);
 
-        if ($tax) {
-            $tax->percentage = $request->input('percentage');
-            $tax->save();
+        if ($brand) {
+            $brand->name = $request->input('name');
+            $brand->save();
             $data = [
                 'status' => 'success',
                 'code' =>  200,
                 'message' => 'Actualización exitosa',
-                'tax' =>  $tax
+                'brand' =>  $brand
             ];
         } else {
             $data = [
@@ -162,14 +163,14 @@ class TaxController extends Controller
      */
     public function destroy($id)
     {
-        $tax = Tax::find($id);
+        $brand = Brand::find($id);
 
-        if ($tax) {
-            $tax->delete();
+        if ($brand) {
+            $brand->delete();
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'tax' => $tax
+                'brand' => $brand
             ];
         } else {
             $data = [
@@ -182,7 +183,7 @@ class TaxController extends Controller
         return response()->json($data, $data['code']);
     }
 
-     /**
+    /**
      * Activate the specified resource from storage.
      *
      * @param  int  $id
@@ -191,9 +192,9 @@ class TaxController extends Controller
     public function activate($id)
     {
         //
-        $tax = Tax::find($id);
-        $tax->state = '1';
-        $tax->save();
+        $brand = Brand::find($id);
+        $brand->state = '1';
+        $brand->save();
     }
 
     /**
@@ -204,8 +205,8 @@ class TaxController extends Controller
      */
     public function deactivate($id)
     {
-        $tax = Tax::find($id);
-        $tax->state = '0';
-        $tax->save();
+        $brand = Brand::find($id);
+        $brand->state = '0';
+        $brand->save();
     }
 }

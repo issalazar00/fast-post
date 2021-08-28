@@ -36,7 +36,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="(category, index) in categoryListing.data"
+              v-for="(category, index) in categoryList.data"
               :key="category.id"
             >
               <th scope="row">{{ index + 1 }}</th>
@@ -70,7 +70,7 @@
         </table>
         <pagination
           :align="'center'"
-          :data="categoryListing"
+          :data="categoryList"
           @pagination-change-page="listCategories"
         >
           <span slot="prev-nav">&lt; Previous</span>
@@ -133,7 +133,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      categoryListing: {},
+      categoryList: {},
       edit: false,
     };
   },
@@ -145,14 +145,13 @@ export default {
       console.log("HOLAAA --->>");
     },
     listCategories(page = 1) {
-
       this.isLoading = true;
       let me = this;
 
       axios
         .get("api/categories?page=" + page, this.$root.config)
         .then(function (response) {
-          me.categoryListing = response.data.categories;
+          me.categoryList = response.data.categories;
         })
 
         .finally(() => (this.isLoading = false));
@@ -177,9 +176,11 @@ export default {
     },
     ActivateCategory: function (id) {
       let me = this;
-      axios.post("api/categories/" + id + "/activate", null, me.$root.config).then(function () {
-        me.listCategories(1);
-      });
+      axios
+        .post("api/categories/" + id + "/activate", null, me.$root.config)
+        .then(function () {
+          me.listCategories(1);
+        });
     },
     DeactivateCategory: function (id) {
       let me = this;

@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ImportProductController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
@@ -21,14 +23,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [UserController::class,'login']);
-Route::post('/register', [UserController::class,'register']);
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/register', [UserController::class, 'register']);
 
 
-Route::middleware('auth:api')->group(function(){
+Route::middleware('auth:api')->group(function () {
     Route::resource('/user', UserController::class);
 
-    
     Route::resource('/categories', CategoryController::class);
     Route::post('/categories/{category}/activate',  [CategoryController::class, 'activate']);
     Route::post('/categories/{category}/deactivate',  [CategoryController::class, 'deactivate']);
@@ -37,9 +38,13 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/taxes/{tax}/activate',  [TaxController::class, 'activate']);
     Route::post('/taxes/{tax}/deactivate',  [TaxController::class, 'deactivate']);
 
+    Route::resource('/brands', BrandController::class);
+
     Route::resource('/products',  ProductController::class);
     Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
     Route::post('/products/{product}/deactivate',  [ProductController::class, 'deactivate']);
+    Route::post('/products/searchProduct',  [ProductController::class, 'searchProduct']);
+
 
     Route::resource('/suppliers',  SupplierController::class);
 
