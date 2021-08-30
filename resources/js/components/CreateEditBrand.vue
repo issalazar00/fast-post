@@ -10,7 +10,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="brandModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="brandModalLabel">Marca</h5>
             <button
               type="button"
               class="close"
@@ -28,11 +28,10 @@
                   type="text"
                   class="form-control"
                   id="formGroupExampleInput"
-                  placeholder="Example input placeholder"
+                  placeholder="Marca"
                   v-model="formBrand.name"
                 />
               </div>
-            
             </form>
           </div>
           <div class="modal-footer">
@@ -41,9 +40,15 @@
               class="btn btn-secondary"
               data-dismiss="modal"
             >
-              Close
+              Cerrar
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="formBrand.id ? EditBrand() : CreateBrand()"
+            >
+              Guardar
+            </button>
           </div>
         </div>
       </div>
@@ -58,10 +63,68 @@ export default {
       formBrand: {
         name: "",
       },
+      formErrors: {
+        name: "",
+      },
     };
   },
   created() {},
-  methods: {},
+  methods: {
+    CreateBrand() {
+      let me = this;
+      this.assignErrors(false);
+
+      axios
+        .post("api/brands", this.formBrand, this.$root.config)
+        .then(function () {
+          $("#brandModal").modal("hide");
+          me.formBrand = {};
+        })
+        .catch((response) => {
+          this.assignErrors(response);
+        });
+    },
+    OpenEditBrand(product) {
+      let me = this;
+      me.ResetData();
+      $("#brandModal").modal("show");
+      me.formBrand = product;
+    },
+
+    EditBrand() {
+      let me = this;
+      this.assignErrors(false);
+      axios
+        .put(
+          "api/brands/" + this.formBrand.id,
+          this.formBrand,
+          this.$root.config
+        )
+        .then(function () {
+          $("#brandModal").modal("hide");
+          me.formBrand = {};
+        })
+        .catch((response) => {
+          this.assignErrors(response);
+        });
+    },
+    ResetData() {
+      let me = this;
+      $("#brandModal").modal("hide");
+      me.formBrand = {};
+      me.formErrors.name = "";
+    },
+    assignErrors(response) {
+      if (response) {
+        var errors = response.response.data.errors;
+        if (errors.name != "undefined") {
+          this.formErrors.name = errors.name[0];
+        }
+      } else {
+        this.formErrors.name = "";
+      }
+    },
+  },
   mounted() {},
 };
 </script>

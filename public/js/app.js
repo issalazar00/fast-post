@@ -9002,6 +9002,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -9028,6 +9048,15 @@ __webpack_require__.r(__webpack_exports__);
         me.BrandList = response.data.brands;
       })["finally"](function () {
         return _this.isLoading = false;
+      });
+    },
+    ShowData: function ShowData(brand) {
+      this.$refs.CreateEditBrand.OpenEditBrand(brand);
+    },
+    changeState: function changeState(id) {
+      var me = this;
+      axios.post("api/brands/" + id + "/activate", null, me.$root.config).then(function () {
+        me.listBrands(1);
       });
     },
     validatePermission: function validatePermission(permission) {
@@ -9493,16 +9522,72 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       formBrand: {
         name: ""
+      },
+      formErrors: {
+        name: ""
       }
     };
   },
   created: function created() {},
-  methods: {},
+  methods: {
+    CreateBrand: function CreateBrand() {
+      var _this = this;
+
+      var me = this;
+      this.assignErrors(false);
+      axios.post("api/brands", this.formBrand, this.$root.config).then(function () {
+        $("#brandModal").modal("hide");
+        me.formBrand = {};
+      })["catch"](function (response) {
+        _this.assignErrors(response);
+      });
+    },
+    OpenEditBrand: function OpenEditBrand(product) {
+      var me = this;
+      me.ResetData();
+      $("#brandModal").modal("show");
+      me.formBrand = product;
+    },
+    EditBrand: function EditBrand() {
+      var _this2 = this;
+
+      var me = this;
+      this.assignErrors(false);
+      axios.put("api/brands/" + this.formBrand.id, this.formBrand, this.$root.config).then(function () {
+        $("#brandModal").modal("hide");
+        me.formBrand = {};
+      })["catch"](function (response) {
+        _this2.assignErrors(response);
+      });
+    },
+    ResetData: function ResetData() {
+      var me = this;
+      $("#brandModal").modal("hide");
+      me.formBrand = {};
+      me.formErrors.name = "";
+    },
+    assignErrors: function assignErrors(response) {
+      if (response) {
+        var errors = response.response.data.errors;
+
+        if (errors.name != "undefined") {
+          this.formErrors.name = errors.name[0];
+        }
+      } else {
+        this.formErrors.name = "";
+      }
+    }
+  },
   mounted: function mounted() {}
 });
 
@@ -11658,7 +11743,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -12203,14 +12287,8 @@ var routes = [{
   path: '/create-edit-product',
   component: _components_CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_8__.default
 }, {
-<<<<<<< HEAD
-  path: '/impuestos',
-  component: _components_Taxes_vue__WEBPACK_IMPORTED_MODULE_9__.default,
-  alias: "tax.index"
-=======
   path: '/taxes',
   component: _components_Taxes_vue__WEBPACK_IMPORTED_MODULE_9__.default
->>>>>>> 5b2dba369900cd1cc1bc2916ce9e43e6821c0bc2
 }, {
   path: '/create-edit-tax',
   component: _components_CreateEditTax_vue__WEBPACK_IMPORTED_MODULE_10__.default
@@ -12363,13 +12441,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1__.default({
       localStorage.clear();
       this.$router.push('/login');
     },
-<<<<<<< HEAD
     validatePermission: function validatePermission(permission) {
-      return _services_global_js__WEBPACK_IMPORTED_MODULE_18__.default.validatePermission(this.permissions, permission);
-=======
-    searchPermission: function searchPermission(permission) {
       return _services_global_js__WEBPACK_IMPORTED_MODULE_23__.default.validatePermission(this.permissions, permission);
->>>>>>> 5b2dba369900cd1cc1bc2916ce9e43e6821c0bc2
     }
   }
 });
@@ -51127,150 +51200,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-<<<<<<< HEAD
-  return _c("div", { staticClass: "col-12" }, [
-    _c(
-      "div",
-      { staticClass: "w-100 text-center" },
-      [
-        _c("h3", { staticClass: "page-header" }, [_vm._v("Categorias")]),
-        _vm._v(" "),
-        _c("moon-loader", {
-          staticClass: "m-auto",
-          attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
-        })
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-body" }, [
-      !_vm.isLoading
-        ? _c(
-            "section",
-            [
-              _c("div", { staticClass: "row justify-content-end my-4" }, [
-                _vm.$root.validatePermission("category.store")
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: {
-                          type: "button",
-                          "data-toggle": "modal",
-                          "data-target": "#categoryModal"
-                        },
-                        on: {
-                          click: function($event) {
-                            _vm.$refs.CreateEditCategory.ResetData(),
-                              (_vm.edit = false)
-                          }
-                        }
-                      },
-                      [_vm._v("\n          Crear Categoria\n        ")]
-                    )
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c(
-                "table",
-                {
-                  staticClass:
-                    "table table-sm table-bordered table-responsive-sm"
-                },
-                [
-                  _c("thead", { staticClass: "thead-primary" }, [
-                    _c("tr", [
-                      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-                      _vm._v(" "),
-                      _c("th", { attrs: { scope: "col" } }, [
-                        _vm._v("Categoria")
-                      ]),
-                      _vm._v(" "),
-                      _vm.$root.validatePermission("category.active")
-                        ? _c("th", [_vm._v("Estado")])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.$root.validatePermission("category.update")
-                        ? _c("th", [_vm._v("Opciones")])
-                        : _vm._e()
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.categoryListing.data, function(category, index) {
-                      return _c("tr", { key: category.id }, [
-                        _c("th", { attrs: { scope: "row" } }, [
-                          _vm._v(_vm._s(index + 1))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(category.name))]),
-                        _vm._v(" "),
-                        _vm.$root.validatePermission("category.active")
-                          ? _c("td", [
-                              category.state == 1
-                                ? _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-success",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.DeactivateCategory(
-                                            category.id
-                                          )
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "bi bi-check-circle-fill"
-                                      })
-                                    ]
-                                  )
-                                : _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-danger",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.ActivateCategory(
-                                            category.id
-                                          )
-                                        }
-                                      }
-                                    },
-                                    [_c("i", { staticClass: "bi bi-x-circle" })]
-                                  )
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.$root.validatePermission("category.update")
-                          ? _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-success",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.ShowData(category), (_vm.edit = true)
-                                    }
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                Editar\n              "
-                                  )
-                                ]
-                              )
-                            ])
-                          : _vm._e()
-                      ])
-                    }),
-                    0
-                  )
-                ]
-              ),
-=======
   return _c(
     "div",
     {
@@ -51318,7 +51247,6 @@ var render = function() {
                   }
                 }
               }),
->>>>>>> 5b2dba369900cd1cc1bc2916ce9e43e6821c0bc2
               _vm._v(" "),
               _c(
                 "div",
@@ -51767,9 +51695,49 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(brand.name))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v("Unactive")]),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn",
+                                class:
+                                  brand.active == 1
+                                    ? "btn-outline-danger"
+                                    : "btn-outline-success",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.changeState(brand.id)
+                                  }
+                                }
+                              },
+                              [
+                                brand.active == 1
+                                  ? _c("i", { staticClass: "bi bi-x-circle" })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                brand.active == 0
+                                  ? _c("i", {
+                                      staticClass: "bi bi-check-circle"
+                                    })
+                                  : _vm._e()
+                              ]
+                            )
+                          ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v("@mdo")])
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-outline-success",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.ShowData(brand)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "bi bi-pen" })]
+                            )
+                          ])
                         ])
                       }),
                       0
@@ -51783,7 +51751,7 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("create-edit-brand")
+      _c("create-edit-brand", { ref: "CreateEditBrand" })
     ],
     1
   )
@@ -51828,7 +51796,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Estado")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Opciones")])
+        _c("th", [_vm._v("Opciones")])
       ])
     ])
   }
@@ -51876,7 +51844,7 @@ var render = function() {
             "section",
             [
               _c("div", { staticClass: "row justify-content-end my-4" }, [
-                _vm.validatePermission("category.store")
+                _vm.$root.validatePermission("category.store")
                   ? _c(
                       "button",
                       {
@@ -51913,11 +51881,11 @@ var render = function() {
                         _vm._v("Categoria")
                       ]),
                       _vm._v(" "),
-                      _vm.validatePermission("category.active")
+                      _vm.$root.validatePermission("category.active")
                         ? _c("th", [_vm._v("Estado")])
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.validatePermission("category.update")
+                      _vm.$root.validatePermission("category.update")
                         ? _c("th", [_vm._v("Opciones")])
                         : _vm._e()
                     ])
@@ -51933,7 +51901,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(category.name))]),
                         _vm._v(" "),
-                        _vm.validatePermission("category.active")
+                        _vm.$root.validatePermission("category.active")
                           ? _c("td", [
                               category.state == 1
                                 ? _c(
@@ -51971,7 +51939,7 @@ var render = function() {
                             ])
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.validatePermission("category.update")
+                        _vm.$root.validatePermission("category.update")
                           ? _c("td", [
                               _c(
                                 "button",
@@ -52402,7 +52370,7 @@ var render = function() {
                     attrs: {
                       type: "text",
                       id: "formGroupExampleInput",
-                      placeholder: "Example input placeholder"
+                      placeholder: "Marca"
                     },
                     domProps: { value: _vm.formBrand.name },
                     on: {
@@ -52418,7 +52386,30 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(1)
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button", "data-dismiss": "modal" }
+                },
+                [_vm._v("\n            Cerrar\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      _vm.formBrand.id ? _vm.EditBrand() : _vm.CreateBrand()
+                    }
+                  }
+                },
+                [_vm._v("\n            Guardar\n          ")]
+              )
+            ])
           ])
         ])
       ]
@@ -52434,7 +52425,7 @@ var staticRenderFns = [
       _c(
         "h5",
         { staticClass: "modal-title", attrs: { id: "brandModalLabel" } },
-        [_vm._v("Modal title")]
+        [_vm._v("Marca")]
       ),
       _vm._v(" "),
       _c(
@@ -52448,27 +52439,6 @@ var staticRenderFns = [
           }
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("\n            Close\n          ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [_vm._v("Save changes")]
       )
     ])
   }
@@ -56421,11 +56391,6 @@ var render = function() {
                             type: "button",
                             "data-toggle": "modal",
                             "data-target": "#productModal"
-                          },
-                          on: {
-                            click: function($event) {
-                              _vm.edit = false
-                            }
                           }
                         },
                         [
@@ -56516,7 +56481,7 @@ var render = function() {
                                     staticClass: "btn btn-outline-success",
                                     on: {
                                       click: function($event) {
-                                        _vm.ShowData(product), (_vm.edit = true)
+                                        return _vm.ShowData(product)
                                       }
                                     }
                                   },
