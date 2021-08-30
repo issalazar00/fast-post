@@ -69,7 +69,7 @@
                 </button>
               </td>
               <td>
-                <router-link class="btn" to="/details-ticket">
+                <router-link class="btn" to="/details-order">
                   <i class="bi bi-pencil-square"></i>
                 </router-link>
               </td>
@@ -86,7 +86,7 @@
               <td>$5000</td>
               <td>Usuario 1</td>
               <td>
-                <router-link class="btn" to="/details-ticket">
+                <router-link class="btn" to="/details-order">
                   <i class="bi bi-eye"></i>
                 </router-link>
               </td>
@@ -101,7 +101,7 @@
                 </button>
               </td>
               <td>
-                <router-link class="btn" to="/details-ticket">
+                <router-link class="btn" to="/details-order">
                   <i class="bi bi-pencil-square"></i>
                 </router-link>
               </td>
@@ -118,7 +118,7 @@
               <td>$5000</td>
               <td>Usuario 1</td>
               <td>
-                <router-link class="btn" to="/details-ticket">
+                <router-link class="btn" to="/details-order">
                   <i class="bi bi-eye"></i>
                 </router-link>
               </td>
@@ -133,7 +133,7 @@
                 </button>
               </td>
               <td>
-                <router-link class="btn" to="/details-ticket">
+                <router-link class="btn" to="/details-order">
                   <i class="bi bi-pencil-square"></i>
                 </router-link>
               </td>
@@ -150,7 +150,7 @@
               <td>$5000</td>
               <td>Usuario 1</td>
               <td>
-                <router-link class="btn" to="/details-ticket">
+                <router-link class="btn" to="/details-order">
                   <i class="bi bi-eye"></i>
                 </router-link>
               </td>
@@ -165,7 +165,7 @@
                 </button>
               </td>
               <td>
-                <router-link class="btn" to="/details-ticket">
+                <router-link class="btn" to="/details-order">
                   <i class="bi bi-pencil-square"></i>
                 </router-link>
               </td>

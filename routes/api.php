@@ -53,6 +53,10 @@ Route::middleware('auth:api')->group(function () {
     Route::resource('/suppliers',  SupplierController::class);
 
     Route::resource('/clients',  ClientController::class);
+    Route::post('/clients/searchClient',  [ClientController::class, 'searchClient']);
+    Route::post('/clients/filterClientList',  [ClientController::class, 'filterClientList']);
+
+
 
     Route::resource('/role', RoleController::class);
     Route::get('/permission', [RoleController::class, 'getPermission']);

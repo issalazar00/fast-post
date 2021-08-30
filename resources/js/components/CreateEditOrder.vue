@@ -9,7 +9,7 @@
         <div
           class="toast fade hide border border-danger"
           role="alert"
-          id="no-products"
+          id="no-results"
           aria-live="assertive"
           aria-atomic="true"
           data-delay="3000"
@@ -28,7 +28,7 @@
           <div class="toast-body">No se ha encontrado coincidencias</div>
         </div>
       </div>
-      <div class="row">
+      <div class="row w-100">
         <div class="input-group">
           <input
             type="text"
@@ -40,7 +40,11 @@
             @keypress.enter="searchProduct()"
           />
           <div class="input-group-append" id="button-add-product">
-            <button class="btn btn-outline-secondary" type="button">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="searchProduct()"
+            >
               Añadir Producto
             </button>
             <button
@@ -57,12 +61,18 @@
           <input
             type="text"
             class="form-control"
-            :placeholder="order.id_client != 0 ? 'Isabella' : 'No aplica'"
+            placeholder="Documento cliente"
             aria-label=" with two button addons"
             aria-describedby="button-addon4"
+            v-model="filters.client"
+            @keypress.enter="searchClient()"
           />
           <div class="input-group-append" id="button-addon4">
-            <button class="btn btn-outline-secondary" type="button">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="searchClient()"
+            >
               Añadir Cliente
             </button>
             <button
@@ -77,7 +87,7 @@
         </div>
       </div>
 
-      <section>
+      <section class="w-100">
         <div>
           <table
             class="
@@ -162,7 +172,9 @@
                   }}
                 </td>
                 <td>
-                  <button class="btn" @click="removeProduct(index)"><i class="bi bi-trash"></i></button>
+                  <button class="btn" @click="removeProduct(index)">
+                    <i class="bi bi-trash"></i>
+                  </button>
                 </td>
               </tr>
               <tr>
@@ -171,7 +183,7 @@
               </tr>
               <tr>
                 <th colspan="7">Descuento:</th>
-                <th>{{ order.total_discount = total_discount }}</th>
+                <th>{{ (order.total_discount = total_discount) }}</th>
               </tr>
 
               <tr>
@@ -206,8 +218,8 @@
         </div>
       </section>
     </div>
-    <add-product @add-client="addProduct($event)" />
-    <add-client />
+    <add-product @add-product="addProduct($event)" />
+    <add-client @add-client="addClient($event)" />
   </div>
 </template>
 
@@ -227,6 +239,7 @@ export default {
 
       order: {
         id_client: 0,
+        client: 0,
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
         total_discount: 0.0,
@@ -236,7 +249,6 @@ export default {
   },
   watch: {},
   computed: {
-   
     total_tax_exc: function () {
       var total = 0.0;
       this.productsOrderList.forEach(
@@ -246,16 +258,16 @@ export default {
     },
     total_discount: function () {
       var total = 0.0;
-      this.productsOrderList.forEach(
-        (product) => {(total += parseFloat(product.discount_price)), product.qty}
-      );
+      this.productsOrderList.forEach((product) => {
+        (total += parseFloat(product.discount_price)), product.qty;
+      });
       return total;
     },
-     total_tax_inc: function () {
+    total_tax_inc: function () {
       var total = 0.0;
-      this.productsOrderList.forEach(
-        (product) => {(total += parseFloat(product.price_tax_inc_total)), product.qty}
-      );
+      this.productsOrderList.forEach((product) => {
+        (total += parseFloat(product.price_tax_inc_total)), product.qty;
+      });
       return total;
     },
   },
@@ -265,13 +277,13 @@ export default {
       if (me.filters.product == "") {
         return false;
       }
-      var url = "api/products/searchProduct?barcode=" + me.filters.product;
+      var url = "api/products/searchProduct?product=" + me.filters.product;
       axios
         .post(url, null, me.$root.config)
         .then(function (response) {
           var new_product = response.data.products;
           if (!new_product) {
-            $("#no-products").toast("show");
+            $("#no-results").toast("show");
           } else {
             me.addProduct(new_product);
           }
@@ -300,22 +312,47 @@ export default {
           product_id: new_product.id,
           barcode: new_product.barcode,
           discount_percentage: 0,
-          discount_price : 0,
+          discount_price: 0,
           qty: 1,
           price_tax_inc: new_product.sale_price_tax_inc,
           price_tax_exc: new_product.sale_price_tax_exc,
           product: new_product.product,
         });
       }
+    },
+    removeProduct(index) {
+      this.productsOrderList.splice(index, 1);
+    },
+    searchClient() {
+      let me = this;
+      if (me.filters.client == "") {
+        return false;
+      }
+      var url = "api/clients/searchClient?client=" + me.filters.client;
+      axios
+        .post(url, null, me.$root.config)
+        .then(function (response) {
+          var new_client = response.data;
+          if (!new_client) {
+            $("#no-results").toast("show");
+          } else {
+            me.addClient(new_client);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    addClient(client) {
+      let me = this;
+      me.order.id_client = client.id;
+      me.order.client = client.name;
+      me.filters.client = client.name
 
     },
-    removeProduct(index){
-      this.productsOrderList.splice(index, 1)
-    },
-    searchClient() {},
   },
   mounted() {
-    $("#no-products").toast("hide");
+    $("#no-results").toast("hide");
   },
 };
 </script>

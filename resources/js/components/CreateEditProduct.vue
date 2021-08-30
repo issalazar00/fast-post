@@ -416,9 +416,11 @@ export default {
     },
 
     uploadTax(tax_id) {
-      let result;
-      result = this.taxList.find((tax) => tax.id == tax_id);
-      this.tax.percentage = result.percentage;
+      let result = 0.0;
+      if (tax_id > 0) {
+        result = this.taxList.find((tax) => tax.id == tax_id);
+        this.tax.percentage = result.percentage;
+      }
     },
     CloseModal: function () {
       this.edit = false;

@@ -24,9 +24,11 @@
             <input
               type="text"
               class="form-control"
-              placeholder="Código de barras | Nombre de product"
+              placeholder="Documento | Nombre de cliente"
               aria-label=" with two button addons"
               aria-describedby="button-addon4"
+              v-model="filters.client"
+              @keyup="searchClient()"
             />
             <div class="input-group-append" id="button-addon4">
               <button
@@ -69,7 +71,8 @@
                 <td>
                   <button
                     class="btn btn-outline-secondary"
-                    @click="addClient(client.id)"
+                    @click="$emit('add-client', client)"
+
                   >
                     <i class="bi bi-plus-circle"></i>
                   </button>
@@ -94,6 +97,9 @@ export default {
   data() {
     return {
       ClientList: {},
+      filters: {
+        client: "",
+      },
     };
   },
   created() {
@@ -105,6 +111,25 @@ export default {
       axios.get("api/clients", this.$root.config).then(function (response) {
         me.ClientList = response.data.clients;
       });
+    }, 
+    searchClient() {
+      let me = this;
+      if (me.filters.client == "") {
+        return false;
+      }
+      var url = "api/clients/filterClientList?client=" + me.filters.client;
+      if (me.filters.client.length >= 3) {
+        axios
+          .post(url, null, me.$root.config)
+          .then(function (response) {
+            me.ClientList = response;
+          })
+          .catch(function (error) {
+              $("#no-results").toast("show");
+
+            console.log(error);
+          });
+      }
     },
   },
 };
