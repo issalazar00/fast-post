@@ -8,11 +8,11 @@
         data-toggle="modal"
         data-target="#taxModal"
         @click="edit = false"
+        v-if="$root.validatePermission('tax.store')"
       >
         Crear Impuesto
       </button>
     </div>
-
     <section>
       <div class="card-body">
         <table class="table table-sm table-bordered table-responsive-sm">
@@ -22,7 +22,7 @@
               <th scope="col">Porcentaje</th>
               <th scope="col">Por defecto</th>
               <th>Estado</th>
-              <th>Opciones</th>
+              <th v-if="$root.validatePermission('tax.active')">Opciones</th>
             </tr>
           </thead>
           <tbody>
@@ -41,7 +41,7 @@
                 >
                 <span v-else class="badge badge-danger">Desactivado</span>
               </td>
-              <td>
+              <td v-if="$root.validatePermission('tax.active')">
                 <button
                   class="btn btn-success"
                   v-if="tax.state == 1"
@@ -57,7 +57,7 @@
                   <i class="bi bi-x-circle"></i>
                 </button>
               </td>
-              <td>
+              <td v-if="$root.validatePermission('tax.update')">
                 <button
                   class="btn btn-success"
                   @click="ShowData(tax), (edit = true)"
@@ -136,9 +136,11 @@ export default {
   methods: {
     listTaxes(page = 1) {
       let me = this;
-      axios.get("api/tax?page=" + page, this.$root.config).then(function (response) {
-        me.taxListing = response.data.taxes;
-      });
+      axios
+        .get("api/taxes?page=" + page, this.$root.config)
+        .then(function (response) {
+          me.taxListing = response.data.taxes;
+        });
     },
     SaveTax: function () {
       let me = this;
@@ -160,13 +162,13 @@ export default {
     },
     ActivateTax: function (id) {
       let me = this;
-      axios.post("api/tax/" + id + "/activate").then(function () {
+      axios.post("api/taxes/" + id + "/activate", null, this.$root.config).then(function () {
         me.listTaxes(1);
       });
     },
     DeactivateTax: function (id) {
       let me = this;
-      axios.post("api/tax/" + id + "/deactivate").then(function () {
+      axios.post("api/taxes/" + id + "/deactivate", null, this.$root.config).then(function () {
         me.listTaxes(1);
       });
     },

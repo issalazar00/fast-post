@@ -171,7 +171,7 @@ const app = new Vue({
       localStorage.clear();
       this.$router.push('/login');
     },
-    searchPermission(permission) {
+    validatePermission(permission) {
       return global.validatePermission(this.permissions, permission);
     }
   }
