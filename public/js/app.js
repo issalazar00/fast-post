@@ -10082,6 +10082,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -10147,6 +10148,7 @@ __webpack_require__.r(__webpack_exports__);
           $("#no-results").toast("show");
         } else {
           me.addProduct(new_product);
+          me.filters.product == "";
         }
       })["catch"](function (error) {
         console.log(error);
@@ -12203,14 +12205,8 @@ var routes = [{
   path: '/create-edit-product',
   component: _components_CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_8__.default
 }, {
-<<<<<<< HEAD
-  path: '/impuestos',
-  component: _components_Taxes_vue__WEBPACK_IMPORTED_MODULE_9__.default,
-  alias: "tax.index"
-=======
   path: '/taxes',
   component: _components_Taxes_vue__WEBPACK_IMPORTED_MODULE_9__.default
->>>>>>> 5b2dba369900cd1cc1bc2916ce9e43e6821c0bc2
 }, {
   path: '/create-edit-tax',
   component: _components_CreateEditTax_vue__WEBPACK_IMPORTED_MODULE_10__.default
@@ -12363,13 +12359,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1__.default({
       localStorage.clear();
       this.$router.push('/login');
     },
-<<<<<<< HEAD
     validatePermission: function validatePermission(permission) {
-      return _services_global_js__WEBPACK_IMPORTED_MODULE_18__.default.validatePermission(this.permissions, permission);
-=======
-    searchPermission: function searchPermission(permission) {
       return _services_global_js__WEBPACK_IMPORTED_MODULE_23__.default.validatePermission(this.permissions, permission);
->>>>>>> 5b2dba369900cd1cc1bc2916ce9e43e6821c0bc2
     }
   }
 });
@@ -51127,150 +51118,6 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-<<<<<<< HEAD
-  return _c("div", { staticClass: "col-12" }, [
-    _c(
-      "div",
-      { staticClass: "w-100 text-center" },
-      [
-        _c("h3", { staticClass: "page-header" }, [_vm._v("Categorias")]),
-        _vm._v(" "),
-        _c("moon-loader", {
-          staticClass: "m-auto",
-          attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
-        })
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-body" }, [
-      !_vm.isLoading
-        ? _c(
-            "section",
-            [
-              _c("div", { staticClass: "row justify-content-end my-4" }, [
-                _vm.$root.validatePermission("category.store")
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: {
-                          type: "button",
-                          "data-toggle": "modal",
-                          "data-target": "#categoryModal"
-                        },
-                        on: {
-                          click: function($event) {
-                            _vm.$refs.CreateEditCategory.ResetData(),
-                              (_vm.edit = false)
-                          }
-                        }
-                      },
-                      [_vm._v("\n          Crear Categoria\n        ")]
-                    )
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c(
-                "table",
-                {
-                  staticClass:
-                    "table table-sm table-bordered table-responsive-sm"
-                },
-                [
-                  _c("thead", { staticClass: "thead-primary" }, [
-                    _c("tr", [
-                      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-                      _vm._v(" "),
-                      _c("th", { attrs: { scope: "col" } }, [
-                        _vm._v("Categoria")
-                      ]),
-                      _vm._v(" "),
-                      _vm.$root.validatePermission("category.active")
-                        ? _c("th", [_vm._v("Estado")])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.$root.validatePermission("category.update")
-                        ? _c("th", [_vm._v("Opciones")])
-                        : _vm._e()
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.categoryListing.data, function(category, index) {
-                      return _c("tr", { key: category.id }, [
-                        _c("th", { attrs: { scope: "row" } }, [
-                          _vm._v(_vm._s(index + 1))
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(category.name))]),
-                        _vm._v(" "),
-                        _vm.$root.validatePermission("category.active")
-                          ? _c("td", [
-                              category.state == 1
-                                ? _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-success",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.DeactivateCategory(
-                                            category.id
-                                          )
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass: "bi bi-check-circle-fill"
-                                      })
-                                    ]
-                                  )
-                                : _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-danger",
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.ActivateCategory(
-                                            category.id
-                                          )
-                                        }
-                                      }
-                                    },
-                                    [_c("i", { staticClass: "bi bi-x-circle" })]
-                                  )
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.$root.validatePermission("category.update")
-                          ? _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-success",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.ShowData(category), (_vm.edit = true)
-                                    }
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                Editar\n              "
-                                  )
-                                ]
-                              )
-                            ])
-                          : _vm._e()
-                      ])
-                    }),
-                    0
-                  )
-                ]
-              ),
-=======
   return _c(
     "div",
     {
@@ -51318,7 +51165,6 @@ var render = function() {
                   }
                 }
               }),
->>>>>>> 5b2dba369900cd1cc1bc2916ce9e43e6821c0bc2
               _vm._v(" "),
               _c(
                 "div",
@@ -51876,7 +51722,7 @@ var render = function() {
             "section",
             [
               _c("div", { staticClass: "row justify-content-end my-4" }, [
-                _vm.validatePermission("category.store")
+                _vm.$root.validatePermission("category.store")
                   ? _c(
                       "button",
                       {
@@ -51913,11 +51759,11 @@ var render = function() {
                         _vm._v("Categoria")
                       ]),
                       _vm._v(" "),
-                      _vm.validatePermission("category.active")
+                      _vm.$root.validatePermission("category.active")
                         ? _c("th", [_vm._v("Estado")])
                         : _vm._e(),
                       _vm._v(" "),
-                      _vm.validatePermission("category.update")
+                      _vm.$root.validatePermission("category.update")
                         ? _c("th", [_vm._v("Opciones")])
                         : _vm._e()
                     ])
@@ -51933,7 +51779,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(category.name))]),
                         _vm._v(" "),
-                        _vm.validatePermission("category.active")
+                        _vm.$root.validatePermission("category.active")
                           ? _c("td", [
                               category.state == 1
                                 ? _c(
@@ -51971,7 +51817,7 @@ var render = function() {
                             ])
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.validatePermission("category.update")
+                        _vm.$root.validatePermission("category.update")
                           ? _c("td", [
                               _c(
                                 "button",
@@ -53160,7 +53006,8 @@ var render = function() {
                 type: "text",
                 placeholder: "Código de barras",
                 "aria-label": " with two button addons",
-                "aria-describedby": "button-add-product"
+                "aria-describedby": "button-add-product",
+                autofocus: ""
               },
               domProps: { value: _vm.filters.product },
               on: {

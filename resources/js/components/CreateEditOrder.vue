@@ -37,6 +37,7 @@
             aria-label=" with two button addons"
             aria-describedby="button-add-product"
             v-model="filters.product"
+            autofocus
             @keypress.enter="searchProduct()"
           />
           <div class="input-group-append" id="button-add-product">
@@ -286,6 +287,7 @@ export default {
             $("#no-results").toast("show");
           } else {
             me.addProduct(new_product);
+            me.filters.product == "";
           }
         })
         .catch(function (error) {
@@ -347,8 +349,7 @@ export default {
       let me = this;
       me.order.id_client = client.id;
       me.order.client = client.name;
-      me.filters.client = client.name
-
+      me.filters.client = client.name;
     },
   },
   mounted() {
