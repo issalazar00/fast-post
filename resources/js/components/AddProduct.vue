@@ -61,7 +61,7 @@
                 <td>
                   <button
                     class="btn btn-success"
-                    @click="$emit('add-client', product)"
+                    @click="$emit('add-product', product)"
                   >
                     <i class="bi bi-plus-circle"></i>
                   </button>

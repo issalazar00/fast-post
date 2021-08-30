@@ -8761,11 +8761,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "add-client",
   data: function data() {
     return {
-      ClientList: {}
+      ClientList: {},
+      filters: {
+        client: ""
+      }
     };
   },
   created: function created() {
@@ -8777,6 +8783,24 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("api/clients", this.$root.config).then(function (response) {
         me.ClientList = response.data.clients;
       });
+    },
+    searchClient: function searchClient() {
+      var me = this;
+
+      if (me.filters.client == "") {
+        return false;
+      }
+
+      var url = "api/clients/filterClientList?client=" + me.filters.client;
+
+      if (me.filters.client.length >= 3) {
+        axios.post(url, null, me.$root.config).then(function (response) {
+          me.ClientList = response;
+        })["catch"](function (error) {
+          $("#no-results").toast("show");
+          console.log(error);
+        });
+      }
     }
   }
 });
@@ -10046,6 +10070,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -10063,6 +10099,7 @@ __webpack_require__.r(__webpack_exports__);
       productsOrderList: [],
       order: {
         id_client: 0,
+        client: 0,
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
         total_discount: 0.0,
@@ -10102,12 +10139,12 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      var url = "api/products/searchProduct?barcode=" + me.filters.product;
+      var url = "api/products/searchProduct?product=" + me.filters.product;
       axios.post(url, null, me.$root.config).then(function (response) {
         var new_product = response.data.products;
 
         if (!new_product) {
-          $("#no-products").toast("show");
+          $("#no-results").toast("show");
         } else {
           me.addProduct(new_product);
         }
@@ -10147,10 +10184,35 @@ __webpack_require__.r(__webpack_exports__);
     removeProduct: function removeProduct(index) {
       this.productsOrderList.splice(index, 1);
     },
-    searchClient: function searchClient() {}
+    searchClient: function searchClient() {
+      var me = this;
+
+      if (me.filters.client == "") {
+        return false;
+      }
+
+      var url = "api/clients/searchClient?client=" + me.filters.client;
+      axios.post(url, null, me.$root.config).then(function (response) {
+        var new_client = response.data;
+
+        if (!new_client) {
+          $("#no-results").toast("show");
+        } else {
+          me.addClient(new_client);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    addClient: function addClient(client) {
+      var me = this;
+      me.order.id_client = client.id;
+      me.order.client = client.name;
+      me.filters.client = client.name;
+    }
   },
   mounted: function mounted() {
-    $("#no-products").toast("hide");
+    $("#no-results").toast("hide");
   }
 });
 
@@ -10548,6 +10610,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post("api/products", this.formProduct).then(function () {
         $("#productModal").modal("hide");
         me.formProduct = {};
+        this.CloseModal();
       });
     },
     EditProduct: function EditProduct() {
@@ -10556,6 +10619,7 @@ __webpack_require__.r(__webpack_exports__);
         $("#productModal").modal("hide");
         me.formProduct = {};
       });
+      this.CloseModal();
       this.edit = false;
     },
     ResetData: function ResetData() {
@@ -10566,11 +10630,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     uploadTax: function uploadTax(tax_id) {
-      var result;
-      result = this.taxList.find(function (tax) {
-        return tax.id == tax_id;
-      });
-      this.tax.percentage = result.percentage;
+      var result = 0.0;
+
+      if (tax_id > 0) {
+        result = this.taxList.find(function (tax) {
+          return tax.id == tax_id;
+        });
+        this.tax.percentage = result.percentage;
+      }
     },
     CloseModal: function CloseModal() {
       this.edit = false;
@@ -51223,12 +51290,32 @@ var render = function() {
           _c("div", { staticClass: "modal-body" }, [
             _c("div", { staticClass: "input-group" }, [
               _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filters.client,
+                    expression: "filters.client"
+                  }
+                ],
                 staticClass: "form-control",
                 attrs: {
                   type: "text",
-                  placeholder: "Código de barras | Nombre de product",
+                  placeholder: "Documento | Nombre de cliente",
                   "aria-label": " with two button addons",
                   "aria-describedby": "button-addon4"
+                },
+                domProps: { value: _vm.filters.client },
+                on: {
+                  keyup: function($event) {
+                    return _vm.searchClient()
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.filters, "client", $event.target.value)
+                  }
                 }
               }),
 >>>>>>> 5b2dba369900cd1cc1bc2916ce9e43e6821c0bc2
@@ -51298,7 +51385,7 @@ var render = function() {
                             staticClass: "btn btn-outline-secondary",
                             on: {
                               click: function($event) {
-                                return _vm.addClient(client.id)
+                                return _vm.$emit("add-client", client)
                               }
                             }
                           },
@@ -51506,7 +51593,7 @@ var render = function() {
                             staticClass: "btn btn-success",
                             on: {
                               click: function($event) {
-                                return _vm.$emit("add-client", product)
+                                return _vm.$emit("add-product", product)
                               }
                             }
                           },
@@ -53057,7 +53144,7 @@ var render = function() {
         _vm._v(" "),
         _vm._m(1),
         _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "row w-100" }, [
           _c("div", { staticClass: "input-group" }, [
             _c("input", {
               directives: [
@@ -53095,26 +53182,97 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _vm._m(2)
+            _c(
+              "div",
+              {
+                staticClass: "input-group-append",
+                attrs: { id: "button-add-product" }
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-secondary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.searchProduct()
+                      }
+                    }
+                  },
+                  [_vm._v("\n            Añadir Producto\n          ")]
+                ),
+                _vm._v(" "),
+                _vm._m(2)
+              ]
+            )
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "input-group" }, [
             _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filters.client,
+                  expression: "filters.client"
+                }
+              ],
               staticClass: "form-control",
               attrs: {
                 type: "text",
-                placeholder:
-                  _vm.order.id_client != 0 ? "Isabella" : "No aplica",
+                placeholder: "Documento cliente",
                 "aria-label": " with two button addons",
                 "aria-describedby": "button-addon4"
+              },
+              domProps: { value: _vm.filters.client },
+              on: {
+                keypress: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.searchClient()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.filters, "client", $event.target.value)
+                }
               }
             }),
             _vm._v(" "),
-            _vm._m(3)
+            _c(
+              "div",
+              {
+                staticClass: "input-group-append",
+                attrs: { id: "button-addon4" }
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-secondary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.searchClient()
+                      }
+                    }
+                  },
+                  [_vm._v("\n            Añadir Cliente\n          ")]
+                ),
+                _vm._v(" "),
+                _vm._m(3)
+              ]
+            )
           ])
         ]),
         _vm._v(" "),
-        _c("section", [
+        _c("section", { staticClass: "w-100" }, [
           _c("div", [
             _c(
               "table",
@@ -53366,13 +53524,19 @@ var render = function() {
       _vm._v(" "),
       _c("add-product", {
         on: {
-          "add-client": function($event) {
+          "add-product": function($event) {
             return _vm.addProduct($event)
           }
         }
       }),
       _vm._v(" "),
-      _c("add-client")
+      _c("add-client", {
+        on: {
+          "add-client": function($event) {
+            return _vm.addClient($event)
+          }
+        }
+      })
     ],
     1
   )
@@ -53403,7 +53567,7 @@ var staticRenderFns = [
             staticClass: "toast fade hide border border-danger",
             attrs: {
               role: "alert",
-              id: "no-products",
+              id: "no-results",
               "aria-live": "assertive",
               "aria-atomic": "true",
               "data-delay": "3000"
@@ -53446,34 +53610,16 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "div",
+      "button",
       {
-        staticClass: "input-group-append",
-        attrs: { id: "button-add-product" }
+        staticClass: "btn btn-outline-secondary",
+        attrs: {
+          type: "button",
+          "data-toggle": "modal",
+          "data-target": "#addProductModal"
+        }
       },
-      [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-secondary",
-            attrs: { type: "button" }
-          },
-          [_vm._v("\n            Añadir Producto\n          ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-secondary",
-            attrs: {
-              type: "button",
-              "data-toggle": "modal",
-              "data-target": "#addProductModal"
-            }
-          },
-          [_c("i", { staticClass: "bi bi-card-checklist" })]
-        )
-      ]
+      [_c("i", { staticClass: "bi bi-card-checklist" })]
     )
   },
   function() {
@@ -53481,31 +53627,16 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "div",
-      { staticClass: "input-group-append", attrs: { id: "button-addon4" } },
-      [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-secondary",
-            attrs: { type: "button" }
-          },
-          [_vm._v("\n            Añadir Cliente\n          ")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-outline-secondary",
-            attrs: {
-              type: "button",
-              "data-toggle": "modal",
-              "data-target": "#addClientModal"
-            }
-          },
-          [_c("i", { staticClass: "bi bi-person-lines-fill" })]
-        )
-      ]
+      "button",
+      {
+        staticClass: "btn btn-outline-secondary",
+        attrs: {
+          type: "button",
+          "data-toggle": "modal",
+          "data-target": "#addClientModal"
+        }
+      },
+      [_c("i", { staticClass: "bi bi-person-lines-fill" })]
     )
   },
   function() {
@@ -55858,7 +55989,7 @@ var render = function() {
                   [
                     _c(
                       "router-link",
-                      { staticClass: "btn", attrs: { to: "/details-ticket" } },
+                      { staticClass: "btn", attrs: { to: "/details-order" } },
                       [_c("i", { staticClass: "bi bi-pencil-square" })]
                     )
                   ],
@@ -55882,7 +56013,7 @@ var render = function() {
                   [
                     _c(
                       "router-link",
-                      { staticClass: "btn", attrs: { to: "/details-ticket" } },
+                      { staticClass: "btn", attrs: { to: "/details-order" } },
                       [_c("i", { staticClass: "bi bi-eye" })]
                     )
                   ],
@@ -55898,7 +56029,7 @@ var render = function() {
                   [
                     _c(
                       "router-link",
-                      { staticClass: "btn", attrs: { to: "/details-ticket" } },
+                      { staticClass: "btn", attrs: { to: "/details-order" } },
                       [_c("i", { staticClass: "bi bi-pencil-square" })]
                     )
                   ],
@@ -55922,7 +56053,7 @@ var render = function() {
                   [
                     _c(
                       "router-link",
-                      { staticClass: "btn", attrs: { to: "/details-ticket" } },
+                      { staticClass: "btn", attrs: { to: "/details-order" } },
                       [_c("i", { staticClass: "bi bi-eye" })]
                     )
                   ],
@@ -55938,7 +56069,7 @@ var render = function() {
                   [
                     _c(
                       "router-link",
-                      { staticClass: "btn", attrs: { to: "/details-ticket" } },
+                      { staticClass: "btn", attrs: { to: "/details-order" } },
                       [_c("i", { staticClass: "bi bi-pencil-square" })]
                     )
                   ],
@@ -55962,7 +56093,7 @@ var render = function() {
                   [
                     _c(
                       "router-link",
-                      { staticClass: "btn", attrs: { to: "/details-ticket" } },
+                      { staticClass: "btn", attrs: { to: "/details-order" } },
                       [_c("i", { staticClass: "bi bi-eye" })]
                     )
                   ],
@@ -55978,7 +56109,7 @@ var render = function() {
                   [
                     _c(
                       "router-link",
-                      { staticClass: "btn", attrs: { to: "/details-ticket" } },
+                      { staticClass: "btn", attrs: { to: "/details-order" } },
                       [_c("i", { staticClass: "bi bi-pencil-square" })]
                     )
                   ],
