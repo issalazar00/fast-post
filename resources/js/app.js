@@ -38,6 +38,8 @@ import AddClient from './components/AddClient'
 import AddProduct from './components/AddProduct'
 import ImportProducts from './components/ImportProducts'
 
+import Roles from './components/Roles.vue';
+import Users from './components/Users.vue';
 
 //Services
 import global from './services/global.js';
@@ -73,9 +75,9 @@ const routes = [
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/products', component: Products },
   { path: '/create-edit-product', component: CreateEditProduct },
-  { path: '/taxes', component: Taxes },
+  { path: '/taxes', component: Taxes, alias: "tax.index"},
   { path: '/create-edit-tax', component: CreateEditTax },
-  { path: '/suppliers', component: Suppliers },
+  { path: '/suppliers', component: Suppliers},
   { path: '/create-edit-supplier', component: CreateEditSupplier },
   { path: '/categories', component: Categories, alias: "category.index" },
   { path: '/create-edit-category', component: CreateEditCategory },
@@ -85,6 +87,8 @@ const routes = [
   { path: '/details-order', component: DetailsOrder },
   { path: '/create-edit-order', component: CreateEditOrder },
   { path: '/login', name: 'Login', component: Login },
+  { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index"},
+  { path: '/users', name: 'Users', component: Users, alias: "user.index"},
   { path: '**', name: 'NoFound', component: NoFound },
 
 ]

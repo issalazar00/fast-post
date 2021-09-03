@@ -24,12 +24,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', [UserController::class, 'login']);
-Route::post('/register', [UserController::class, 'register']);
-
 
 Route::middleware('auth:api')->group(function () {
-    Route::resource('/user', UserController::class);
-
+    Route::resource('/users', UserController::class);
+    Route::post('/users/{user}/activate',  [UserController::class, 'activate']);
+    Route::post('/users/{user}/deactivate',  [UserController::class, 'deactivate']);
+    Route::post('/register', [UserController::class, 'register']);
+    
     Route::resource('/categories', CategoryController::class);
     Route::post('/categories/{category}/activate',  [CategoryController::class, 'activate']);
     Route::post('/categories/{category}/deactivate',  [CategoryController::class, 'deactivate']);
@@ -50,6 +51,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::resource('/clients',  ClientController::class);
 
-    Route::resource('/role', RoleController::class);
-    Route::get('/permission', [RoleController::class, 'getPermission']);
+    Route::get('/roles/getAllRoles', [RoleController::class, 'getAllRoles']);
+    Route::resource('/roles', RoleController::class);
+    Route::get('/permissions', [RoleController::class, 'getPermissions']);
 });

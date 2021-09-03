@@ -11,14 +11,22 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:user.index')->only('index');
+        $this->middleware('can:user.store')->only('store','register');
+        $this->middleware('can:user.update')->only('update');
+        $this->middleware('can:user.delete')->only('destroy');
+        $this->middleware('can:user.active')->only('active', 'deactivate');
+    }
 
     public function register(Request $request)
     {
         $validate = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:255',
             'email' => 'required|email:rfc,dns|unique:users|max:255',
-            'password' => 'required|confirmed|min:8'
-
+            'password' => 'required|confirmed|min:8',
+            'rol' => 'required|integer|exists:roles,id'
         ]);
 
         if ($validate->fails()) {
@@ -36,12 +44,14 @@ class UserController extends Controller
             'password' => Hash::make($request->input('password')),
         ]);
 
+        $user->syncRoles($request->input('rol'));
+
         return response()->json([
             'status' => 'success',
             'code' =>  200,
             'message' => 'Usuario registrado correctamente',
             'user' => $user
-        ],200);
+        ], 200);
     }
 
     public function login(Request $request)
@@ -63,9 +73,9 @@ class UserController extends Controller
 
         $user = User::where('email', $request->input('email'))->first();
 
-        if (is_object($user)) {
+        if (is_object($user) && $user->state) {
             $validatePassword = Hash::check($request->input('password'), $user->password);
-            
+
             if ($validatePassword) {
                 $token = Str::random(80);
                 $user->api_token = hash('sha256', $token);
@@ -102,9 +112,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return $request->user();
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'users' => User::paginate(10)
+        ]);
     }
 
     /**
@@ -159,14 +173,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($id == $request->user()->id ){
             $validate = Validator::make($request->all(), [
                 'name' => 'required|string|min:3|max:255',
-                'role' => 'nullable|integer|exists:roles,id',
-                'email' => 'required|email:rfc,dns|max:255',Rule::unique('users')->ignore($request->user()->id)
-                
+                'rol' => 'required|integer|exists:roles,id',
+                'password' => 'nullable|confirmed|min:8',
+                'email' => 'required|email:rfc,dns|max:255', Rule::unique('users')->ignore($request->user()->id)
+
             ]);
-    
+
             if ($validate->fails()) {
                 return response()->json([
                     'status' => 'error',
@@ -182,7 +196,7 @@ class UserController extends Controller
             ]);
 
             $user = User::find($id);
-            $user->syncRoles([$request->input('role')]);
+            $user->syncRoles([$request->input('rol')]);
 
             $data = [
                 'status' => 'success',
@@ -191,17 +205,7 @@ class UserController extends Controller
                 'user' => $user
             ];
 
-        }else{
-            $data = [
-                'status' => 'error',
-                'code' =>  400,
-                'message' => 'Usuario incorrecto',
-            ];
-
-        }
-
-
-        return response()->json($data, $data['code']); 
+        return response()->json($data, $data['code']);
     }
 
     /**
@@ -213,5 +217,32 @@ class UserController extends Controller
     public function destroy($id)
     {
         return abort(404);
+    }
+
+    /**
+     * Activate the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function activate($id)
+    {
+        //
+        $user = User::find($id);
+        $user->state = '1';
+        $user->save();
+    }
+
+    /**
+     * Deactivate the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deactivate($id)
+    {
+        $user = User::find($id);
+        $user->state = '0';
+        $user->save();
     }
 }

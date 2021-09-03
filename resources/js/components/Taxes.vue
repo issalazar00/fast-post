@@ -7,7 +7,7 @@
         class="btn btn-primary"
         data-toggle="modal"
         data-target="#taxModal"
-        @click="edit = false"
+        @click="($refs.CreateEditTax.ResetData()), (edit = false)"
         v-if="$root.validatePermission('tax.store')"
       >
         Crear Impuesto
@@ -100,7 +100,9 @@
             </button>
           </div>
           <div class="modal-body">
-            <create-edit-tax ref="CreateEditTax" />
+            <create-edit-tax ref="CreateEditTax" 
+              @list-taxes="listTaxes(1)"
+            />
           </div>
           <div class="modal-footer">
             <button
@@ -149,7 +151,6 @@ export default {
       } else {
         this.$refs.CreateEditTax.EditTax();
       }
-      me.listTaxes(1);
     },
 
     ShowData: function (tax) {

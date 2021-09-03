@@ -101,7 +101,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <create-edit-category ref="CreateEditCategory" />
+            <create-edit-category ref="CreateEditCategory" @list-categories ="listCategories(1)" />
           </div>
           <div class="modal-footer">
             <button
@@ -141,9 +141,6 @@ export default {
     this.listCategories(1);
   },
   methods: {
-    hola(){
-      console.log("HOLAAA --->>");
-    },
     listCategories(page = 1) {
       this.isLoading = true;
       let me = this;
@@ -185,7 +182,6 @@ export default {
     DeactivateCategory: function (id) {
       let me = this;
       axios.post("api/categories/" + id + "/deactivate", null, me.$root.config).then(function (res) {
-        console.log(res);
         me.listCategories(1);
       });
     }
