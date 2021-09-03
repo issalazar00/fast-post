@@ -37,6 +37,7 @@
             aria-label=" with two button addons"
             aria-describedby="button-add-product"
             v-model="filters.product"
+            autofocus
             @keypress.enter="searchProduct()"
           />
           <div class="input-group-append" id="button-add-product">
@@ -208,7 +209,7 @@
             <button type="button" class="btn btn-outline-primary btn-block">
               <i class="bi bi-receipt"></i> Suspender
             </button>
-            <button type="button" class="btn btn-outline-primary btn-block">
+            <button type="button" class="btn btn-outline-primary btn-block" @click="createOrder()">
               <i class="bi bi-receipt"></i> Facturar
             </button>
             <button type="button" class="btn btn-outline-primary btn-block">
@@ -286,6 +287,7 @@ export default {
             $("#no-results").toast("show");
           } else {
             me.addProduct(new_product);
+            me.filters.product == "";
           }
         })
         .catch(function (error) {
@@ -352,7 +354,9 @@ export default {
 
     createOrder() {
       if (this.productsOrderList.length > 0) {
-        axios.post(`api/order`)
+
+        this.order.productsOrder = this.productsOrderList;
+        axios.post(`api/orders`, this.order);
       }
     },
   },

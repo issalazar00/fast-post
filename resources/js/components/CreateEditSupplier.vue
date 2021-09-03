@@ -16,7 +16,7 @@
               type="text"
               class="form-control"
               aria-label="Text input with dropdown button"
-              v-model="formSupplier.type_document"
+              v-model="formSupplier.document"
             />
             <input
               type="hidden"

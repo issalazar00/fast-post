@@ -52,18 +52,15 @@
                 <td>{{ product.quantity }}</td>
                 <td>
                   <button
-                    class="btn btn-outline-success"
-                    v-if="product.state == 1"
-                    @click="DeactivateProduct(product.id)"
+                    class="btn"
+                    :class="product.state == 1 ? ' btn-success' : ' btn-danger'"
+                    @click="changeState(product.id)"
                   >
-                    <i class="bi bi-check-circle-fill"></i>
-                  </button>
-                  <button
-                    class="btn btn-danger"
-                    v-else
-                    @click="ActivateProduct(product.id)"
-                  >
-                    <i class="bi bi-x-circle"></i>
+                    <i
+                      class="bi bi-check-circle-fill"
+                      v-if="product.state == 1"
+                    ></i>
+                    <i class="bi bi-x-circle" v-else></i>
                   </button>
                 </td>
                 <td>
@@ -127,7 +124,7 @@ export default {
     ShowData: function (product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);
     },
-    ActivateProduct: function (id) {
+    changeState: function (id) {
       let me = this;
       axios
         .post("api/products/" + id + "/activate", null, me.$root.config)
@@ -135,14 +132,7 @@ export default {
           me.listProducts(1);
         });
     },
-    DeactivateProduct: function (id) {
-      let me = this;
-      axios
-        .post("api/products/" + id + "/deactivate", null, me.$root.config)
-        .then(function () {
-          me.listProducts(1);
-        });
-    },
+
     validatePermission(permission) {
       return global.validatePermission(this.$root.permissions, permission);
     },

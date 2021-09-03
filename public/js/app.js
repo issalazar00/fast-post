@@ -10007,7 +10007,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     listTaxes: function listTaxes() {
       var me = this;
-      axios.get("api/tax", this.$root.config).then(function (response) {
+      axios.get("api/taxes", this.$root.config).then(function (response) {
         me.taxList = response.data.taxes.data;
       });
     },
@@ -11258,6 +11258,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -11323,6 +11324,7 @@ __webpack_require__.r(__webpack_exports__);
           $("#no-results").toast("show");
         } else {
           me.addProduct(new_product);
+          me.filters.product == "";
         }
       })["catch"](function (error) {
         console.log(error);
@@ -11388,7 +11390,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     createOrder: function createOrder() {
       if (this.productsOrderList.length > 0) {
-        axios.post("api/order");
+        this.order.productsOrder = this.productsOrderList;
+        axios.post("api/orders", this.order);
       }
     }
   },
@@ -11720,9 +11723,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -11756,15 +11756,9 @@ __webpack_require__.r(__webpack_exports__);
     ShowData: function ShowData(product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);
     },
-    ActivateProduct: function ActivateProduct(id) {
+    changeState: function changeState(id) {
       var me = this;
       axios.post("api/products/" + id + "/activate", null, me.$root.config).then(function () {
-        me.listProducts(1);
-      });
-    },
-    DeactivateProduct: function DeactivateProduct(id) {
-      var me = this;
-      axios.post("api/products/" + id + "/deactivate", null, me.$root.config).then(function () {
         me.listProducts(1);
       });
     },
@@ -53589,8 +53583,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.formSupplier.type_document,
-                  expression: "formSupplier.type_document"
+                  value: _vm.formSupplier.document,
+                  expression: "formSupplier.document"
                 }
               ],
               staticClass: "form-control",
@@ -53598,17 +53592,13 @@ var render = function() {
                 type: "text",
                 "aria-label": "Text input with dropdown button"
               },
-              domProps: { value: _vm.formSupplier.type_document },
+              domProps: { value: _vm.formSupplier.document },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(
-                    _vm.formSupplier,
-                    "type_document",
-                    $event.target.value
-                  )
+                  _vm.$set(_vm.formSupplier, "document", $event.target.value)
                 }
               }
             }),
@@ -55096,7 +55086,8 @@ var render = function() {
                 type: "text",
                 placeholder: "Código de barras",
                 "aria-label": " with two button addons",
-                "aria-describedby": "button-add-product"
+                "aria-describedby": "button-add-product",
+                autofocus: ""
               },
               domProps: { value: _vm.filters.product },
               on: {
@@ -55448,9 +55439,24 @@ var render = function() {
                 _vm._v(" "),
                 _vm._m(6),
                 _vm._v(" "),
-                _vm._m(7),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-primary btn-block",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.createOrder()
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "bi bi-receipt" }),
+                    _vm._v(" Facturar\n          ")
+                  ]
+                ),
                 _vm._v(" "),
-                _vm._m(8)
+                _vm._m(7)
               ],
               1
             )
@@ -55620,22 +55626,6 @@ var staticRenderFns = [
       [
         _c("i", { staticClass: "bi bi-receipt" }),
         _vm._v(" Suspender\n          ")
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-outline-primary btn-block",
-        attrs: { type: "button" }
-      },
-      [
-        _c("i", { staticClass: "bi bi-receipt" }),
-        _vm._v(" Facturar\n          ")
       ]
     )
   },
@@ -56106,43 +56096,30 @@ var render = function() {
                               _c("td", [_vm._v(_vm._s(product.quantity))]),
                               _vm._v(" "),
                               _c("td", [
-                                product.state == 1
-                                  ? _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-outline-success",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.DeactivateProduct(
-                                              product.id
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("i", {
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn",
+                                    class:
+                                      product.state == 1
+                                        ? " btn-success"
+                                        : " btn-danger",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.changeState(product.id)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    product.state == 1
+                                      ? _c("i", {
                                           staticClass: "bi bi-check-circle-fill"
                                         })
-                                      ]
-                                    )
-                                  : _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-danger",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.ActivateProduct(
-                                              product.id
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("i", {
+                                      : _c("i", {
                                           staticClass: "bi bi-x-circle"
                                         })
-                                      ]
-                                    )
+                                  ]
+                                )
                               ]),
                               _vm._v(" "),
                               _c("td", [
