@@ -122,7 +122,7 @@ export default {
   methods: {
     listSuppliers(page = 1) {
       let me = this;
-      axios.get("api/suppliers?page=" + page).then(function (response) {
+      axios.get("api/suppliers?page=" + page, this.$root.config).then(function (response) {
         me.supplierList = response.data.suppliers;
       });
     },

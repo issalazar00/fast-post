@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\DetailOrder;
 use App\Models\Order;
 use Illuminate\Database\Seeder;
 
@@ -15,7 +16,8 @@ class OrderSeeder extends Seeder
     public function run()
     {
         Order::factory()
-        ->count(10)
-        ->create();
+            ->has(DetailOrder::factory()->count(3))
+            ->count(5)
+            ->create();
     }
 }

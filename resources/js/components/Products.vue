@@ -21,7 +21,6 @@
             class="btn btn-outline-primary"
             data-toggle="modal"
             data-target="#productModal"
-            @click="edit = false"
             v-if="validatePermission('product.store')"
           >
             <i class="bi bi-plus-circle-dotted"></i>
@@ -70,7 +69,7 @@
                 <td>
                   <button
                     class="btn btn-outline-success"
-                    @click="ShowData(product), (edit = true)"
+                    @click="ShowData(product)"
                   >
                     <i class="bi bi-pen"></i>
                   </button>

@@ -122,7 +122,7 @@ export default {
   methods: {
     listClients(page = 1) {
       let me = this;
-      axios.get("api/clients?page=" + page).then(function (response) {
+      axios.get("api/clients?page=" + page, this.$root.config).then(function (response) {
         me.clientListing = response.data.clients;
       });
     },

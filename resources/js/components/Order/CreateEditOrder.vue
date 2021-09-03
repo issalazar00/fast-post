@@ -330,7 +330,7 @@ export default {
       if (me.filters.client == "") {
         return false;
       }
-      var url = "api/clients/searchClient?client=" + me.filters.client;
+      var url = "api/clients/search-client?client=" + me.filters.client;
       axios
         .post(url, null, me.$root.config)
         .then(function (response) {
@@ -350,6 +350,12 @@ export default {
       me.order.id_client = client.id;
       me.order.client = client.name;
       me.filters.client = client.name;
+    },
+
+    createOrder() {
+      if (this.productsOrderList.length > 0) {
+        axios.post(`api/order`)
+      }
     },
   },
   mounted() {

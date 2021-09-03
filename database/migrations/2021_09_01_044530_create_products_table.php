@@ -36,17 +36,17 @@ class CreateProductsTable extends Migration
             $table->foreign('category_id')
                 ->references('id')
                 ->on('categories')
-                ->onDelete('cascade');
+                ->onUpdate('cascade');
 
             $table->foreign('brand_id')
                 ->references('id')
                 ->on('brands')
-                ->onDelete('cascade');
+                ->onUpdate('cascade');
 
             $table->foreign('tax_id')
                 ->references('id')
                 ->on('taxes')
-                ->onDelete('cascade');
+                ->onUpdate('cascade');
 
             $table->timestamps();
         });

@@ -2,21 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Models\DetailOrder;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class DetailOrderController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('can:order.index')->only('index');
-        $this->middleware('can:order.store')->only('store');
-        $this->middleware('can:order.update')->only('update');
-        $this->middleware('can:order.delete')->only('destroy');
-        $this->middleware('can:order.active')->only('active');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -24,11 +14,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return response()->json([
-            'status' => 'success',
-            'code' => 200,
-            'orders' => Order::paginate(20),
-        ]);
+        //
     }
 
     /**
@@ -55,23 +41,21 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\DetailOrder  $detailOrder
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show(DetailOrder $detailOrder)
     {
-        // var_dump($order);
-        $details  = Order::find($order->id);
-        return $details->detailOrders()->get();
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\DetailOrder  $detailOrder
      * @return \Illuminate\Http\Response
      */
-    public function edit(Order $order)
+    public function edit(DetailOrder $detailOrder)
     {
         //
     }
@@ -80,10 +64,10 @@ class OrderController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\DetailOrder  $detailOrder
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, DetailOrder $detailOrder)
     {
         //
     }
@@ -91,10 +75,10 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Order  $order
+     * @param  \App\Models\DetailOrder  $detailOrder
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy(DetailOrder $detailOrder)
     {
         //
     }
