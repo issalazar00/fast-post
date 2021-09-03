@@ -19,4 +19,9 @@ class Order extends Model
         'total_discount',
         'state'
     ];
+
+    public function detailOrders()
+    {
+        return $this->hasMany(DetailOrder::class);
+    }
 }

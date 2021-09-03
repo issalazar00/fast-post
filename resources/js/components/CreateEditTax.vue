@@ -3,6 +3,17 @@
     <div class="row justify-content-center">
       <form>
         <div class="form-group">
+          <label for="name">Nombre Impuesto</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder=""
+            v-model="formTax.name"
+          />
+          <small class="form-text text-danger">{{ formErrors.name }}</small>
+        </div>
+        <div class="form-group">
           <label for="percentage">Porcentaje</label>
           <input
             type="number"
@@ -15,21 +26,6 @@
             formErrors.percentage
           }}</small>
         </div>
-
-        <div class="form-group">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="defaultCheck1"
-              v-model="formTax.default"
-            />
-            <label class="form-check-label" for="defaultCheck1">
-              Por defecto
-            </label>
-          </div>
-        </div>
       </form>
     </div>
   </div>
@@ -41,10 +37,10 @@ export default {
     return {
       formTax: {
         percentage: 0,
-        default: 0,
+        name: 0,
       },
       formErrors: {
-        percentage: "",
+        errors: "",
       },
     };
   },
@@ -52,9 +48,9 @@ export default {
     CreateTax() {
       let me = this;
       this.assignErrors(false);
-      
+
       axios
-        .post("api/tax", this.formTax, this.$root.config)
+        .post("api/taxes", this.formTax, this.$root.config)
         .then(function () {
           $("#taxModal").modal("hide");
           me.formTax = {};
@@ -74,7 +70,7 @@ export default {
       this.assignErrors(false);
 
       axios
-        .put("api/tax/" + this.formTax.id, this.formTax, this.$root.config)
+        .put("api/taxes/" + this.formTax.id, this.formTax, this.$root.config)
         .then(function () {
           $("#taxModal").modal("hide");
           me.formTax = {};
@@ -94,7 +90,7 @@ export default {
         if (errors.percentage != "undefined") {
           this.formErrors.percentage = errors.percentage[0];
         }
-      }else{
+      } else {
         this.formErrors.percentage = "";
       }
     },

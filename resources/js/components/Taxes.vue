@@ -4,7 +4,7 @@
     <div class="row justify-content-end mx-4">
       <button
         type="button"
-        class="btn btn-primary"
+        class="btn btn-outline-primary"
         data-toggle="modal"
         data-target="#taxModal"
         @click="edit = false"
@@ -19,8 +19,8 @@
           <thead class="thead-primary">
             <tr>
               <th scope="col">#</th>
+              <th>Impuesto</th>
               <th scope="col">Porcentaje</th>
-              <th scope="col">Por defecto</th>
               <th>Estado</th>
               <th v-if="$root.validatePermission('tax.active')">Opciones</th>
             </tr>
@@ -28,29 +28,19 @@
           <tbody>
             <tr v-for="(tax, index) in taxListing.data" :key="tax.id">
               <th scope="row">{{ index + 1 }}</th>
+              <th>{{ tax.name }}</th>
               <td>{{ tax.percentage }}</td>
-              <td>
-                <span v-if="tax.default == 1" class="badge badge-success"
-                  >Si</span
-                >
-                <span v-else class="badge badge-danger">No</span>
-              </td>
-              <td>
-                <span v-if="tax.state == 1" class="badge badge-success"
-                  >Activo</span
-                >
-                <span v-else class="badge badge-danger">Desactivado</span>
-              </td>
+
               <td v-if="$root.validatePermission('tax.active')">
                 <button
-                  class="btn btn-success"
-                  v-if="tax.state == 1"
+                  class="btn btn-outline-success"
+                  v-if="tax.active == 1"
                   @click="DeactivateTax(tax.id)"
                 >
                   <i class="bi bi-check-circle-fill"></i>
                 </button>
                 <button
-                  class="btn btn-danger"
+                  class="btn btn-outline-danger"
                   v-else
                   @click="ActivateTax(tax.id)"
                 >
@@ -59,10 +49,10 @@
               </td>
               <td v-if="$root.validatePermission('tax.update')">
                 <button
-                  class="btn btn-success"
+                  class="btn btn-outline-success"
                   @click="ShowData(tax), (edit = true)"
                 >
-                  Editar
+                  <i class="bi bi-pen"></i>
                 </button>
               </td>
             </tr>
@@ -78,7 +68,7 @@
         >
       </div>
     </section>
-    <!-- Modal para creacion y edicion de taxs -->
+    <!-- Modal para creacion y edicion de impuestos -->
     <div
       class="modal fade"
       id="taxModal"
@@ -105,12 +95,16 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-outline-secondary"
               @click="closeModal()"
             >
               Cerrar
             </button>
-            <button type="button" class="btn btn-primary" @click="SaveTax()">
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              @click="SaveTax()"
+            >
               Guardar
             </button>
           </div>
@@ -162,15 +156,19 @@ export default {
     },
     ActivateTax: function (id) {
       let me = this;
-      axios.post("api/taxes/" + id + "/activate", null, this.$root.config).then(function () {
-        me.listTaxes(1);
-      });
+      axios
+        .post("api/taxes/" + id + "/activate", null, this.$root.config)
+        .then(function () {
+          me.listTaxes(1);
+        });
     },
     DeactivateTax: function (id) {
       let me = this;
-      axios.post("api/taxes/" + id + "/deactivate", null, this.$root.config).then(function () {
-        me.listTaxes(1);
-      });
+      axios
+        .post("api/taxes/" + id + "/deactivate", null, this.$root.config)
+        .then(function () {
+          me.listTaxes(1);
+        });
     },
   },
   mounted() {
