@@ -4,7 +4,7 @@
 
     <div class="row justify-content-end mx-4">
       <button
-        type="button"
+        type="reset"
         class="btn btn-primary"
         data-toggle="modal"
         data-target="#supplierModal"
@@ -41,11 +41,24 @@
               {{ supplier.contact }}
             </td>
             <td>
-              <span class="badge badge-success">Activo</span>
+              <button
+                class="btn"
+                :class="supplier.active == 1 ? ' btn-success' : 'btn-danger'"
+                @click="changeState(supplier.id)"
+              >
+                <i
+                  class="bi bi-check-circle-fill"
+                  v-if="supplier.active == 1"
+                ></i>
+                <i class="bi bi-x-circle" v-else></i>
+              </button>
             </td>
             <td>
-              <button class="btn btn-success">
-                <i class="bi bi-check-circle-fill"></i>
+              <button
+                class="btn btn-outline-success"
+                @click="ShowData(supplier)"
+              >
+                <i class="bi bi-pen"></i>
               </button>
             </td>
           </tr>
@@ -54,6 +67,7 @@
       <pagination
         :align="'center'"
         :data="supplierList"
+        :limit="10"
         @pagination-change-page="listSuppliers"
       >
         <span slot="prev-nav">&lt; Previous</span>
@@ -61,48 +75,10 @@
       </pagination>
     </section>
 
-    <div
-      class="modal fade"
-      id="supplierModal"
-      tabindex="-1"
-      aria-labelledby="supplierModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="supplierModalLabel">Supplier</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Cerrar"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <create-edit-supplier ref="CreateEditSupplier" />
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="closeModal()"
-            >
-              Cerrar
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="SaveSupplier()"
-            >
-              Guardar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <create-edit-supplier
+      ref="CreateEditSupplier"
+      @list-suppliers="listSuppliers(1)"
+    />
   </div>
 </template>
 
@@ -122,44 +98,25 @@ export default {
   methods: {
     listSuppliers(page = 1) {
       let me = this;
-      axios.get("api/suppliers?page=" + page, this.$root.config).then(function (response) {
-        me.supplierList = response.data.suppliers;
-      });
+      axios
+        .get("api/suppliers?page=" + page, this.$root.config)
+        .then(function (response) {
+          me.supplierList = response.data.suppliers;
+        });
     },
-    SaveSupplier: function () {
-      let me = this;
-      if (this.edit == false) {
-        this.$refs.CreateEditSupplier.CreateSupplier();
-      } else {
-        this.$refs.CreateEditSupplier.EditSupplier();
-      }
-      me.listSuppliers(1);
-    },
-
     ShowData: function (supplier) {
       this.$refs.CreateEditSupplier.OpenEditSupplier(supplier);
     },
-    closeModal: function () {
+    changeState: function (id) {
       let me = this;
-      this.$refs.CreateEditSupplier.ResetData();
-      me.listSuppliers(1);
-    },
-    ActivateSupplier: function (id) {
-      let me = this;
-      axios.post("api/suppliers/" + id + "/activate").then(function () {
-        me.listSuppliers(1);
-      });
-    },
-    DeactivateSupplier: function (id) {
-      let me = this;
-      axios.post("api/suppliers/" + id + "/deactivate").then(function () {
-        me.listSuppliers(1);
-      });
+      axios
+        .post("api/suppliers/" + id + "/activate", null, me.$root.config)
+        .then(function () {
+          me.listSuppliers(1);
+        });
     },
   },
 
-  mounted() {
-    console.log("Component mounted.");
-  },
+  mounted() {},
 };
 </script>
