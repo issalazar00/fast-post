@@ -37,6 +37,15 @@ class User extends Authenticatable implements Authorizable
     ];
 
     /**
+     * The attributes that relation for arrays.
+     *
+     * @var array
+     */
+    protected $with = [
+        'roles',
+    ];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

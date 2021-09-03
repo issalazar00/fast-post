@@ -19,7 +19,7 @@
             type="number"
             class="form-control"
             id="percentage"
-            placeholder=""
+            placeholder="Ingresar porcentaje"
             v-model="formTax.percentage"
           />
           <small class="form-text text-danger">{{
@@ -54,6 +54,7 @@ export default {
         .then(function () {
           $("#taxModal").modal("hide");
           me.formTax = {};
+          me.$emit('list-taxes');
         })
         .catch((response) => {
           this.assignErrors(response);
@@ -74,15 +75,24 @@ export default {
         .then(function () {
           $("#taxModal").modal("hide");
           me.formTax = {};
+
+          me.$emit('list-taxes');
         })
         .catch((response) => {
           this.assignErrors(response);
         });
     },
+
     ResetData() {
       let me = this;
       $("#taxModal").modal("hide");
       me.formTax = {};
+      this.assignErrors(false);
+    },
+    closeModal() {
+      this.edit = false;
+      this.ResetData();
+      this.$emit("list-taxes");
     },
     assignErrors(response) {
       if (response) {

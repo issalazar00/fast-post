@@ -104,7 +104,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <create-edit-category ref="CreateEditCategory" />
+            <create-edit-category ref="CreateEditCategory" @list-categories ="listCategories(1)" />
           </div>
           <div class="modal-footer">
             <button

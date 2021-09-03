@@ -32,6 +32,12 @@
                 <li class="nav-item">
                     <router-link class="nav-link" to="/suppliers">Proveedores</router-link>
                 </li>
+                <li class="nav-item" v-if= "validatePermission('rol.index')">
+                    <router-link class="nav-link" to="/roles" >Roles</router-link>
+                </li>
+                <li class="nav-item" v-if= "validatePermission('user.index')">
+                    <router-link class="nav-link" to="/users">Usuarios</router-link>
+                </li>
             </ul>
 
             <!-- Right Side Of Navbar -->

@@ -42,6 +42,7 @@ export default {
         .then(function () {
           $("#categoryModal").modal("hide");
           me.formCategory = {};
+          me.$emit('list-categories');
         })
         .catch((response) => {
           this.assignErrors(response);
@@ -66,6 +67,7 @@ export default {
         .then(function () {
           $("#categoryModal").modal("hide");
           me.formCategory = {};
+          me.$emit('list-categories');
         })
         .catch((response) => {
           this.assignErrors(response);
@@ -75,12 +77,12 @@ export default {
       let me = this;
       $("#categoryModal").modal("hide");
       me.formCategory = {};
-      me.formErrors.name = "";
+      this.assignErrors(false);
     },
     assignErrors(response) {
       if (response) {
         var errors = response.response.data.errors;
-        if (errors.name != "undefined") {
+        if (errors.name != undefined) {
           this.formErrors.name = errors.name[0];
         }
       } else {
