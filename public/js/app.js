@@ -11390,7 +11390,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     createOrder: function createOrder() {
       if (this.productsOrderList.length > 0) {
-        axios.post("api/order");
+        this.order.productsOrder = this.productsOrderList;
+        axios.post("api/orders", this.order);
       }
     }
   },
@@ -11722,9 +11723,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -11758,15 +11756,9 @@ __webpack_require__.r(__webpack_exports__);
     ShowData: function ShowData(product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);
     },
-    ActivateProduct: function ActivateProduct(id) {
+    changeState: function changeState(id) {
       var me = this;
       axios.post("api/products/" + id + "/activate", null, me.$root.config).then(function () {
-        me.listProducts(1);
-      });
-    },
-    DeactivateProduct: function DeactivateProduct(id) {
-      var me = this;
-      axios.post("api/products/" + id + "/deactivate", null, me.$root.config).then(function () {
         me.listProducts(1);
       });
     },
@@ -53591,8 +53583,8 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.formSupplier.type_document,
-                  expression: "formSupplier.type_document"
+                  value: _vm.formSupplier.document,
+                  expression: "formSupplier.document"
                 }
               ],
               staticClass: "form-control",
@@ -53600,17 +53592,13 @@ var render = function() {
                 type: "text",
                 "aria-label": "Text input with dropdown button"
               },
-              domProps: { value: _vm.formSupplier.type_document },
+              domProps: { value: _vm.formSupplier.document },
               on: {
                 input: function($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(
-                    _vm.formSupplier,
-                    "type_document",
-                    $event.target.value
-                  )
+                  _vm.$set(_vm.formSupplier, "document", $event.target.value)
                 }
               }
             }),
@@ -55451,9 +55439,24 @@ var render = function() {
                 _vm._v(" "),
                 _vm._m(6),
                 _vm._v(" "),
-                _vm._m(7),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-primary btn-block",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.createOrder()
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "bi bi-receipt" }),
+                    _vm._v(" Facturar\n          ")
+                  ]
+                ),
                 _vm._v(" "),
-                _vm._m(8)
+                _vm._m(7)
               ],
               1
             )
@@ -55623,22 +55626,6 @@ var staticRenderFns = [
       [
         _c("i", { staticClass: "bi bi-receipt" }),
         _vm._v(" Suspender\n          ")
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-outline-primary btn-block",
-        attrs: { type: "button" }
-      },
-      [
-        _c("i", { staticClass: "bi bi-receipt" }),
-        _vm._v(" Facturar\n          ")
       ]
     )
   },
@@ -56109,43 +56096,30 @@ var render = function() {
                               _c("td", [_vm._v(_vm._s(product.quantity))]),
                               _vm._v(" "),
                               _c("td", [
-                                product.state == 1
-                                  ? _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-outline-success",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.DeactivateProduct(
-                                              product.id
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("i", {
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn",
+                                    class:
+                                      product.state == 1
+                                        ? " btn-success"
+                                        : " btn-danger",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.changeState(product.id)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    product.state == 1
+                                      ? _c("i", {
                                           staticClass: "bi bi-check-circle-fill"
                                         })
-                                      ]
-                                    )
-                                  : _c(
-                                      "button",
-                                      {
-                                        staticClass: "btn btn-danger",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.ActivateProduct(
-                                              product.id
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [
-                                        _c("i", {
+                                      : _c("i", {
                                           staticClass: "bi bi-x-circle"
                                         })
-                                      ]
-                                    )
+                                  ]
+                                )
                               ]),
                               _vm._v(" "),
                               _c("td", [

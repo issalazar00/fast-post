@@ -209,7 +209,7 @@
             <button type="button" class="btn btn-outline-primary btn-block">
               <i class="bi bi-receipt"></i> Suspender
             </button>
-            <button type="button" class="btn btn-outline-primary btn-block">
+            <button type="button" class="btn btn-outline-primary btn-block" @click="createOrder()">
               <i class="bi bi-receipt"></i> Facturar
             </button>
             <button type="button" class="btn btn-outline-primary btn-block">
@@ -354,7 +354,9 @@ export default {
 
     createOrder() {
       if (this.productsOrderList.length > 0) {
-        axios.post(`api/order`)
+
+        this.order.productsOrder = this.productsOrderList;
+        axios.post(`api/orders`, this.order);
       }
     },
   },
