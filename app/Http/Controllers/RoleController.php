@@ -10,6 +10,13 @@ use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:rol.index')->only('index', 'show');
+        $this->middleware('can:rol.store')->only('store', 'getPermissions');
+        $this->middleware('can:rol.update')->only('update');
+        $this->middleware('can:rol.delete')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +27,7 @@ class RoleController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'roles' => Role::all(),
+            'roles' => Role::paginate(10),
         ]);
     }
 
@@ -44,7 +51,7 @@ class RoleController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'name' => 'required|string|unique:roles|min:3|max:50',
-            'permissions' => 'nullable|array|exists:permissions,id'
+            'permissions_sync' => 'nullable|array|exists:permissions,id'
         ]);
 
         if ($validate->fails()) {
@@ -58,7 +65,7 @@ class RoleController extends Controller
 
         $role = Role::create(['guard_name' => 'api', 'name' => $request->input('name')]);
 
-        $role->syncPermissions($request->input('permissions'));
+        $role->syncPermissions($request->input('permissions_sync'));
 
         return response()->json([
             'status' => 'success',
@@ -125,7 +132,7 @@ class RoleController extends Controller
             'name' => [
                 'required', 'string', 'min:3', 'max:50',  Rule::unique('roles')->ignore($id)
             ],
-            'permissions' => 'nullable|array|exists:permissions,id'
+            'permissions_sync' => 'nullable|array|exists:permissions,id'
         ]);
         
         if ($validate->fails()) {
@@ -144,7 +151,7 @@ class RoleController extends Controller
             $role->name = $request->input('name');
             $role->save();
 
-            $role->syncPermissions($request->input('permissions'));
+            $role->syncPermissions($request->input('permissions_sync'));
    
             $data = [
                 'status' => 'success',
@@ -191,8 +198,15 @@ class RoleController extends Controller
 
         return response()->json($data, $data['code']);
     }
-
-    public function getPermission()
+    public function getAllRoles()
+    {
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'roles' => Role::all()
+        ]);
+    }
+    public function getPermissions()
     {
         $permissions = collect(Permission::all());
         $permissions = $permissions->groupBy('component');

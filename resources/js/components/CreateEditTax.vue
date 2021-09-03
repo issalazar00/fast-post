@@ -8,7 +8,7 @@
             type="number"
             class="form-control"
             id="percentage"
-            placeholder=""
+            placeholder="Ingresar porcentaje"
             v-model="formTax.percentage"
           />
           <small class="form-text text-danger">{{
@@ -52,12 +52,13 @@ export default {
     CreateTax() {
       let me = this;
       this.assignErrors(false);
-      
+
       axios
-        .post("api/tax", this.formTax, this.$root.config)
+        .post("api/taxes", this.formTax, this.$root.config)
         .then(function () {
           $("#taxModal").modal("hide");
           me.formTax = {};
+          me.$emit('list-taxes');
         })
         .catch((response) => {
           this.assignErrors(response);
@@ -74,19 +75,28 @@ export default {
       this.assignErrors(false);
 
       axios
-        .put("api/tax/" + this.formTax.id, this.formTax, this.$root.config)
+        .put("api/taxes/" + this.formTax.id, this.formTax, this.$root.config)
         .then(function () {
           $("#taxModal").modal("hide");
           me.formTax = {};
+
+          me.$emit('list-taxes');
         })
         .catch((response) => {
           this.assignErrors(response);
         });
     },
+
     ResetData() {
       let me = this;
       $("#taxModal").modal("hide");
       me.formTax = {};
+      this.assignErrors(false);
+    },
+    closeModal() {
+      this.edit = false;
+      this.ResetData();
+      this.$emit("list-taxes");
     },
     assignErrors(response) {
       if (response) {
@@ -94,7 +104,7 @@ export default {
         if (errors.percentage != "undefined") {
           this.formErrors.percentage = errors.percentage[0];
         }
-      }else{
+      } else {
         this.formErrors.percentage = "";
       }
     },
