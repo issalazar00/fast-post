@@ -24,7 +24,7 @@
                 </li>
                 
                 <li class="nav-item" v-if= "validatePermission('tax.index')">
-                    <router-link class="nav-link" to="/taxes">Taxes</router-link>
+                    <router-link class="nav-link" to="/taxes">Iva</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link class="nav-link" to="/clients">Clientes</router-link>
