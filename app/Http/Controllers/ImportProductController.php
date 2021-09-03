@@ -56,20 +56,24 @@ class ImportProductController extends Controller
   {
     if (is_array($productsData) && count($productsData) > 0) {
       $product = new Product();
+
       foreach ($productsData as $item) {
+
         foreach ($item as $p) {
           $tax_id = 1;
           $tax_percentage = 0;
           $percentage = 0;
-          if (isset($p["K"]) && $p["K"] != '') {
-            $tax = Tax::firstOrCreate(['percentage' => $p["K"]]);
+
+          if (isset($p["K"]) && (int)$p["K"] != '') {
+            $tax = Tax::firstOrCreate(['percentage' => $p["K"], 'name' => 'Nuevo Impuesto']);
             $tax_id = $tax->id;
             $tax_percentage = $tax->percentage;
+
             if ($tax_percentage > 0) {
               $percentage = ($tax->percentaje / 100) + 1;
             }
           } else {
-            $tax = Tax::firstOrCreate(['percentage' => '0']);
+            $tax = Tax::firstOrCreate(['percentage' => '0', 'name' => 'Nuevo Impuesto']);
             $tax_id = $tax->id;
             $percentage = 0;
           }
@@ -77,9 +81,11 @@ class ImportProductController extends Controller
           $type = 1;
 
           if (isset($p["J"])) {
+
             if ($p["J"] == 'UNIDAD') {
               $type =  1;
             }
+
             if ($p["J"] == 'GRANEL') {
               $type =  2;
             }

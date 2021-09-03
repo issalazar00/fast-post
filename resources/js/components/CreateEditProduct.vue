@@ -363,7 +363,7 @@ export default {
   methods: {
     listTaxes() {
       let me = this;
-      axios.get("api/tax", this.$root.config).then(function (response) {
+      axios.get("api/taxes", this.$root.config).then(function (response) {
         me.taxList = response.data.taxes.data;
       });
     },

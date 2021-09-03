@@ -10007,7 +10007,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     listTaxes: function listTaxes() {
       var me = this;
-      axios.get("api/tax", this.$root.config).then(function (response) {
+      axios.get("api/taxes", this.$root.config).then(function (response) {
         me.taxList = response.data.taxes.data;
       });
     },

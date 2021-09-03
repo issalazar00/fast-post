@@ -15,9 +15,9 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('tax_id');
-            $table->unsignedBigInteger('brand_id');
+            $table->unsignedBigInteger('brand_id')->nullable();
             $table->string('product', 100);
             $table->string('barcode', 20)->unique();
             $table->tinyInteger('type');
@@ -35,13 +35,11 @@ class CreateProductsTable extends Migration
 
             $table->foreign('category_id')
                 ->references('id')
-                ->on('categories')
-                ->onUpdate('cascade');
+                ->on('categories');
 
             $table->foreign('brand_id')
                 ->references('id')
-                ->on('brands')
-                ->onUpdate('cascade');
+                ->on('brands');
 
             $table->foreign('tax_id')
                 ->references('id')
