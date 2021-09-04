@@ -32,12 +32,7 @@ class ImportProductController extends Controller
 
       if ($request->file->move($upload_path, $generated_new_name)) {
         $products = $this->uploadData((public_path('uploads')) . '\\' . $generated_new_name);
-
-
         $this->inserData($products);
-
-
-        // return response()->json(['success' => 'You have successfully uploaded "' . $file_name . '"']); //Descartar
       }
     }
   }
@@ -67,10 +62,10 @@ class ImportProductController extends Controller
           if (isset($p["K"]) && (float)$p["K"] != '') {
             $tax = Tax::firstOrCreate(['percentage' => (float)$p["K"], 'name' => 'Nuevo Impuesto']);
             $tax_id = $tax->id;
-            $tax_percentage = $tax->percentage;
+            $tax_percentage = (float)$tax->percentage;
 
             if ($tax_percentage > 0) {
-              $percentage = ($tax_percentage / 100) + 1;
+              $percentage = (float)($tax_percentage / 100) + 1;
             }
           } else {
             $tax = Tax::firstOrCreate(['percentage' => '0', 'name' => 'Nuevo Impuesto']);
@@ -90,7 +85,6 @@ class ImportProductController extends Controller
               $type =  2;
             }
           }
-
 
           if (isset($p["C"])) {
             $cost_price = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["C"]));
