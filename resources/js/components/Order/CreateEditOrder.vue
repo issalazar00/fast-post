@@ -244,7 +244,7 @@ export default {
 
       order: {
         id_client: 1,
-        client: '',
+        client: 'Sin Cliente',
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
         total_discount: 0.0,

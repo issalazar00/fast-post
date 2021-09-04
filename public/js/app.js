@@ -9585,18 +9585,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       formClient: {
-        code: "",
         name: "",
         address: "",
         mobile: "",
@@ -11761,7 +11753,7 @@ __webpack_require__.r(__webpack_exports__);
       productsOrderList: [],
       order: {
         id_client: 1,
-        client: '',
+        client: 'Sin Cliente',
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
         total_discount: 0.0,
@@ -52693,7 +52685,7 @@ var render = function() {
             _vm._l(_vm.clientListing.data, function(client) {
               return _c("tr", { key: client.id }, [
                 _c("th", { attrs: { scope: "row" } }, [
-                  _vm._v(_vm._s(client.code))
+                  _vm._v(_vm._s(client.id))
                 ]),
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(client.name))]),
@@ -53165,33 +53157,6 @@ var render = function() {
                     return
                   }
                   _vm.$set(_vm.formClient, "document", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.formClient.code,
-                  expression: "formClient.code"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "hidden",
-                id: "code",
-                placeholder: "",
-                name: "code"
-              },
-              domProps: { value: _vm.formClient.code },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.formClient, "code", $event.target.value)
                 }
               }
             })
