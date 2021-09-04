@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -49,7 +51,22 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user_id =  Auth::user()->id;
+        
+        $order = new Order;
+        $order->client_id = $request->id_client;
+        $order->user_id = $user_id;
+        $order->no_invoice = Str::random(10);
+        $order->total_paid = $request->total_tax_inc;
+        $order->total_iva_inc = $request->total_tax_inc;
+        $order->total_iva_exc = $request->total_tax_exc;
+        $order->total_discount = $request->total_discount;
+        $order->state = '1';
+        $order->save();
+
+        $details_order = new DetailOrderController;
+        $details_order = $details_order->store($request, $order->id);
+        
     }
 
     /**

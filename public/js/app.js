@@ -11740,6 +11740,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -11756,8 +11760,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       productsOrderList: [],
       order: {
-        id_client: 0,
-        client: 0,
+        id_client: 1,
+        client: '',
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
         total_discount: 0.0,
@@ -11872,7 +11876,7 @@ __webpack_require__.r(__webpack_exports__);
     createOrder: function createOrder() {
       if (this.productsOrderList.length > 0) {
         this.order.productsOrder = this.productsOrderList;
-        axios.post("api/orders", this.order);
+        axios.post("api/orders", this.order, this.$root.config);
       }
     }
   },
@@ -12064,12 +12068,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {},
   data: function data() {
@@ -12107,6 +12105,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_global_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../services/global.js */ "./resources/js/services/global.js");
 /* harmony import */ var _CreateEditProduct_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateEditProduct.vue */ "./resources/js/components/CreateEditProduct.vue");
 /* harmony import */ var _ImportProducts_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ImportProducts.vue */ "./resources/js/components/ImportProducts.vue");
+//
+//
 //
 //
 //
@@ -13200,7 +13200,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var api = 'http://fast-post.com.devel/api';
+var api = 'http://localhost/fast-post/public/api';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   api: api,
   token: function token() {
@@ -57465,79 +57465,105 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("section", [
-      _c("div", { staticClass: "card-body" }, [
-        _vm._m(0),
+    _c(
+      "section",
+      [
+        _c("div", { staticClass: "card-body" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "table",
+            {
+              staticClass: "table table-sm table-bordered table-responsive-sm"
+            },
+            [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.OrderList.data, function(o) {
+                  return _c("tr", { key: o.id }, [
+                    _c("th", { attrs: { scope: "row" } }, [
+                      _vm._v(_vm._s(o.id))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(o.total_paid))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(o.total_iva_exc))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(o.total_discount))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(o.client_id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(o.state))]),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "btn",
+                            attrs: {
+                              to: {
+                                name: "details-order",
+                                params: { order_id: o.id }
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "bi bi-eye" })]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _vm._m(2, true),
+                    _vm._v(" "),
+                    _vm._m(3, true),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "btn",
+                            attrs: { to: "/details-order" }
+                          },
+                          [_c("i", { staticClass: "bi bi-pencil-square" })]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _vm._m(4, true)
+                  ])
+                }),
+                0
+              )
+            ]
+          )
+        ]),
         _vm._v(" "),
         _c(
-          "table",
-          { staticClass: "table table-sm table-bordered table-responsive-sm" },
+          "pagination",
+          {
+            attrs: { align: "center", data: _vm.OrderList, limit: 8 },
+            on: { "pagination-change-page": _vm.getOrders }
+          },
           [
-            _vm._m(1),
+            _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+              _c("i", { staticClass: "bi bi-chevron-double-left" })
+            ]),
             _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.OrderList.data, function(o) {
-                return _c("tr", { key: o.id }, [
-                  _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(o.id))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(o.total_paid))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(o.total_iva_exc))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(o.total_discount))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(o.client_id))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(o.state))]),
-                  _vm._v(" "),
-                  _c(
-                    "td",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "btn",
-                          attrs: {
-                            to: {
-                              name: "details-order",
-                              params: { order_id: o.id }
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "bi bi-eye" })]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm._m(2, true),
-                  _vm._v(" "),
-                  _vm._m(3, true),
-                  _vm._v(" "),
-                  _c(
-                    "td",
-                    [
-                      _c(
-                        "router-link",
-                        { staticClass: "btn", attrs: { to: "/details-order" } },
-                        [_c("i", { staticClass: "bi bi-pencil-square" })]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _vm._m(4, true)
-                ])
-              }),
-              0
-            )
+            _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+              _c("i", { staticClass: "bi bi-chevron-double-right" })
+            ])
           ]
         )
-      ]),
-      _vm._v(" "),
-      _vm._m(5)
-    ]),
+      ],
+      1
+    ),
     _vm._v(" "),
     _c("div", { staticClass: "footer" })
   ])
@@ -57636,49 +57662,6 @@ var staticRenderFns = [
     return _c("td", [
       _c("button", { staticClass: "btn" }, [
         _c("i", { staticClass: "bi bi-file-earmark-x" })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
-      _c("ul", { staticClass: "pagination justify-content-center" }, [
-        _c("li", { staticClass: "page-item disabled" }, [
-          _c(
-            "a",
-            {
-              staticClass: "page-link",
-              attrs: { href: "#", tabindex: "-1", "aria-disabled": "true" }
-            },
-            [_vm._v("Previous")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "page-item" }, [
-          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-            _vm._v("1")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "page-item" }, [
-          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-            _vm._v("2")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "page-item" }, [
-          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-            _vm._v("3")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("li", { staticClass: "page-item" }, [
-          _c("a", { staticClass: "page-link", attrs: { href: "#" } }, [
-            _vm._v("Next")
-          ])
-        ])
       ])
     ])
   }
@@ -57853,13 +57836,21 @@ var render = function() {
                         _c(
                           "span",
                           { attrs: { slot: "prev-nav" }, slot: "prev-nav" },
-                          [_vm._v("< Previous")]
+                          [
+                            _c("i", {
+                              staticClass: "bi bi-chevron-double-left"
+                            })
+                          ]
                         ),
                         _vm._v(" "),
                         _c(
                           "span",
                           { attrs: { slot: "next-nav" }, slot: "next-nav" },
-                          [_vm._v("Next >")]
+                          [
+                            _c("i", {
+                              staticClass: "bi bi-chevron-double-right"
+                            })
+                          ]
                         )
                       ]
                     )

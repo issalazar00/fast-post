@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
     Schema::create('orders', function (Blueprint $table) {
       $table->id();
       $table->foreignId('user_id');
-      $table->foreignId('client_id');
+      $table->foreignId('client_id')->nullable();
       $table->string('no_invoice')->rand(1, 10);
       $table->decimal('total_paid');
       $table->decimal('total_iva_inc');
