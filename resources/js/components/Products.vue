@@ -80,8 +80,10 @@
             :limit="8"
             @pagination-change-page="listProducts"
           >
-            <span slot="prev-nav">&lt; Previous</span>
-            <span slot="next-nav">Next &gt;</span>
+            <span slot="prev-nav"
+              ><i class="bi bi-chevron-double-left"></i
+            ></span>
+            <span slot="next-nav"><i class="bi bi-chevron-double-right"></i></span>
           </pagination>
         </section>
       </div>

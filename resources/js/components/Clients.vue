@@ -31,7 +31,7 @@
         </thead>
         <tbody>
           <tr v-for="client in clientListing.data" v-bind:key="client.id">
-            <th scope="row">{{ client.code }}</th>
+            <th scope="row">{{ client.id }}</th>
             <td>{{ client.name }}</td>
             <td>{{ client.document }}</td>
             <td>{{ client.address }}</td>
