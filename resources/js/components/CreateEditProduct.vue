@@ -390,7 +390,7 @@ export default {
     },
     CreateProduct() {
       let me = this;
-      axios.post("api/products", this.formProduct).then(function () {
+      axios.post("api/products", this.formProduct, this.$root.config).then(function () {
         $("#productModal").modal("hide");
         me.formProduct = {};
         this.CloseModal();
@@ -399,7 +399,7 @@ export default {
     EditProduct() {
       let me = this;
       axios
-        .put("api/products/" + this.formProduct.id, this.formProduct)
+        .put("api/products/" + this.formProduct.id, this.formProduct, this.$root.config)
         .then(function () {
           $("#productModal").modal("hide");
           me.formProduct = {};

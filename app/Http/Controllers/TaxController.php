@@ -62,7 +62,9 @@ class TaxController extends Controller
         }
 
         $tax = Tax::create([
-            'percentage' => $request->input('percentage')
+            'percentage' => $request->input('percentage'),
+            'name' => $request->input('name')
+
         ]);
 
         return response()->json([
