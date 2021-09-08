@@ -22,7 +22,6 @@ class SupplierFactory extends Factory
     public function definition()
     {
         return [
-            'code' => $this->faker->numberBetween(0, 100000),
             'name' => $this->faker->name(),
             'address' => $this->faker->address(),
             'mobile' => $this->faker->phoneNumber(),

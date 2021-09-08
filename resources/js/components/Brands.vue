@@ -32,22 +32,42 @@
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Estado</th>
-                <th scope="col">Opciones</th>
+                <th>Opciones</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="brand in BrandList.data" :key="brand.id">
                 <th scope="row">{{ brand.id }}</th>
                 <td>{{ brand.name }}</td>
-                <td>Unactive</td>
-                <td>@mdo</td>
+                <td>
+                  <button
+                    class="btn"
+                    :class="
+                      brand.active == 1
+                        ? 'btn-outline-danger'
+                        : 'btn-outline-success'
+                    "
+                    @click="changeState(brand.id)"
+                  >
+                    <i v-if="brand.active == 1" class="bi bi-x-circle"></i>
+                    <i v-if="brand.active == 0" class="bi bi-check-circle"></i>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-outline-success"
+                    @click="ShowData(brand)"
+                  >
+                    <i class="bi bi-pen"></i>
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
         </section>
       </div>
     </div>
-    <create-edit-brand />
+    <create-edit-brand ref="CreateEditBrand" />
   </div>
 </template>
 <script>
@@ -76,6 +96,17 @@ export default {
           me.BrandList = response.data.brands;
         })
         .finally(() => (this.isLoading = false));
+    },
+    ShowData: function (brand) {
+      this.$refs.CreateEditBrand.OpenEditBrand(brand);
+    },
+    changeState: function (id) {
+      let me = this;
+      axios
+        .post("api/brands/" + id + "/activate", null, me.$root.config)
+        .then(function () {
+          me.listBrands(1);
+        });
     },
     validatePermission(permission) {
       return global.validatePermission(this.$root.permissions, permission);

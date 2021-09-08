@@ -31,7 +31,7 @@
         </thead>
         <tbody>
           <tr v-for="client in clientListing.data" v-bind:key="client.id">
-            <th scope="row">{{ client.code }}</th>
+            <th scope="row">{{ client.id }}</th>
             <td>{{ client.name }}</td>
             <td>{{ client.document }}</td>
             <td>{{ client.address }}</td>
@@ -122,7 +122,7 @@ export default {
   methods: {
     listClients(page = 1) {
       let me = this;
-      axios.get("api/clients?page=" + page).then(function (response) {
+      axios.get("api/clients?page=" + page, this.$root.config).then(function (response) {
         me.clientListing = response.data.clients;
       });
     },

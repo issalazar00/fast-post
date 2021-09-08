@@ -37,6 +37,7 @@
             aria-label=" with two button addons"
             aria-describedby="button-add-product"
             v-model="filters.product"
+            autofocus
             @keypress.enter="searchProduct()"
           />
           <div class="input-group-append" id="button-add-product">
@@ -208,7 +209,11 @@
             <button type="button" class="btn btn-outline-primary btn-block">
               <i class="bi bi-receipt"></i> Suspender
             </button>
-            <button type="button" class="btn btn-outline-primary btn-block">
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-block"
+              @click="createOrder()"
+            >
               <i class="bi bi-receipt"></i> Facturar
             </button>
             <button type="button" class="btn btn-outline-primary btn-block">
@@ -238,8 +243,8 @@ export default {
       productsOrderList: [],
 
       order: {
-        id_client: 0,
-        client: 0,
+        id_client: 1,
+        client: 'Sin Cliente',
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
         total_discount: 0.0,
@@ -286,6 +291,7 @@ export default {
             $("#no-results").toast("show");
           } else {
             me.addProduct(new_product);
+            me.filters.product == "";
           }
         })
         .catch(function (error) {
@@ -328,7 +334,7 @@ export default {
       if (me.filters.client == "") {
         return false;
       }
-      var url = "api/clients/searchClient?client=" + me.filters.client;
+      var url = "api/clients/search-client?client=" + me.filters.client;
       axios
         .post(url, null, me.$root.config)
         .then(function (response) {
@@ -347,8 +353,14 @@ export default {
       let me = this;
       me.order.id_client = client.id;
       me.order.client = client.name;
-      me.filters.client = client.name
+      me.filters.client = client.name;
+    },
 
+    createOrder() {
+      if (this.productsOrderList.length > 0) {
+        this.order.productsOrder = this.productsOrderList;
+        axios.post(`api/orders`, this.order, this.$root.config);
+      }
     },
   },
   mounted() {

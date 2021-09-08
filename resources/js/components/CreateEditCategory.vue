@@ -57,8 +57,7 @@ export default {
 
     EditCategory() {
       let me = this;
-      this.assignErrors(false);
-      
+      this.assignErrors(false);      
       axios
         .put(
           "api/categories/" + this.formCategory.id,

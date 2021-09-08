@@ -32,12 +32,7 @@ class ImportProductController extends Controller
 
       if ($request->file->move($upload_path, $generated_new_name)) {
         $products = $this->uploadData((public_path('uploads')) . '\\' . $generated_new_name);
-
-
         $this->inserData($products);
-
-
-        // return response()->json(['success' => 'You have successfully uploaded "' . $file_name . '"']); //Descartar
       }
     }
   }
@@ -56,20 +51,24 @@ class ImportProductController extends Controller
   {
     if (is_array($productsData) && count($productsData) > 0) {
       $product = new Product();
+
       foreach ($productsData as $item) {
+
         foreach ($item as $p) {
           $tax_id = 1;
           $tax_percentage = 0;
           $percentage = 0;
-          if (isset($p["K"]) && $p["K"] != '') {
-            $tax = Tax::firstOrCreate(['percentage' => $p["K"]]);
+
+          if (isset($p["K"]) && (float)$p["K"] != '') {
+            $tax = Tax::firstOrCreate(['percentage' => (float)$p["K"], 'name' => 'Nuevo Impuesto']);
             $tax_id = $tax->id;
-            $tax_percentage = $tax->percentage;
+            $tax_percentage = (float)$tax->percentage;
+
             if ($tax_percentage > 0) {
-              $percentage = ($tax->percentaje / 100) + 1;
+              $percentage = (float)($tax_percentage / 100) + 1;
             }
           } else {
-            $tax = Tax::firstOrCreate(['percentage' => '0']);
+            $tax = Tax::firstOrCreate(['percentage' => '0', 'name' => 'Nuevo Impuesto']);
             $tax_id = $tax->id;
             $percentage = 0;
           }
@@ -77,14 +76,15 @@ class ImportProductController extends Controller
           $type = 1;
 
           if (isset($p["J"])) {
+
             if ($p["J"] == 'UNIDAD') {
               $type =  1;
             }
+
             if ($p["J"] == 'GRANEL') {
               $type =  2;
             }
           }
-
 
           if (isset($p["C"])) {
             $cost_price = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["C"]));

@@ -14,7 +14,6 @@ class ProductController extends Controller
 		$this->middleware('can:product.update')->only('update');
 		$this->middleware('can:product.delete')->only('destroy');
 		$this->middleware('can:product.active')->only('active');
-		$this->middleware('can:product.deactivate')->only('deactivate');
 	}
 	/**
 	 * Display a listing of the resource.
@@ -23,7 +22,7 @@ class ProductController extends Controller
 	 */
 	public function index()
 	{
-		$products = Product::select()->orderBy('product', 'asc')->paginate(30);
+		$products = Product::select()->orderBy('product', 'asc')->paginate(10);
 
 		return response()->json([
 			'status' => 'success',
@@ -128,20 +127,7 @@ class ProductController extends Controller
 	{
 		//
 		$product = Product::find($id);
-		$product->state = '1';
-		$product->save();
-	}
-
-	/**
-	 * Deactivate the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function deactivate($id)
-	{
-		$product = Product::find($id);
-		$product->state = '0';
+		$product->state = !$product->state;
 		$product->save();
 	}
 
@@ -149,8 +135,8 @@ class ProductController extends Controller
 	{
 
 		$products = Product::select()
-			->where('barcode', 'LIKE', $request->product)
-			->orWhere('product', 'LIKE', $request->product)
+			->where('barcode', 'LIKE', "%$request->product%")
+			->orWhere('product', 'LIKE', "%$request->product%")
 			->where('state', 1)
 			->first();
 

@@ -12,9 +12,9 @@ class Tax extends Model
     protected $table = 'taxes';
 
     protected $fillable = [
+        'name',
         'percentage',
-        'state',
-        'defaullt'
+        'active'
     ];
 
     public function products() {

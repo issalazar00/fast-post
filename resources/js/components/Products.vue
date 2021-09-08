@@ -21,7 +21,6 @@
             class="btn btn-outline-primary"
             data-toggle="modal"
             data-target="#productModal"
-            @click="edit = false"
             v-if="validatePermission('product.store')"
           >
             <i class="bi bi-plus-circle-dotted"></i>
@@ -53,24 +52,21 @@
                 <td>{{ product.quantity }}</td>
                 <td>
                   <button
-                    class="btn btn-outline-success"
-                    v-if="product.state == 1"
-                    @click="DeactivateProduct(product.id)"
+                    class="btn"
+                    :class="product.state == 1 ? ' btn-success' : ' btn-danger'"
+                    @click="changeState(product.id)"
                   >
-                    <i class="bi bi-check-circle-fill"></i>
-                  </button>
-                  <button
-                    class="btn btn-danger"
-                    v-else
-                    @click="ActivateProduct(product.id)"
-                  >
-                    <i class="bi bi-x-circle"></i>
+                    <i
+                      class="bi bi-check-circle-fill"
+                      v-if="product.state == 1"
+                    ></i>
+                    <i class="bi bi-x-circle" v-else></i>
                   </button>
                 </td>
                 <td>
                   <button
                     class="btn btn-outline-success"
-                    @click="ShowData(product), (edit = true)"
+                    @click="ShowData(product)"
                   >
                     <i class="bi bi-pen"></i>
                   </button>
@@ -84,8 +80,10 @@
             :limit="8"
             @pagination-change-page="listProducts"
           >
-            <span slot="prev-nav">&lt; Previous</span>
-            <span slot="next-nav">Next &gt;</span>
+            <span slot="prev-nav"
+              ><i class="bi bi-chevron-double-left"></i
+            ></span>
+            <span slot="next-nav"><i class="bi bi-chevron-double-right"></i></span>
           </pagination>
         </section>
       </div>
@@ -128,7 +126,7 @@ export default {
     ShowData: function (product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);
     },
-    ActivateProduct: function (id) {
+    changeState: function (id) {
       let me = this;
       axios
         .post("api/products/" + id + "/activate", null, me.$root.config)
@@ -136,14 +134,7 @@ export default {
           me.listProducts(1);
         });
     },
-    DeactivateProduct: function (id) {
-      let me = this;
-      axios
-        .post("api/products/" + id + "/deactivate", null, me.$root.config)
-        .then(function () {
-          me.listProducts(1);
-        });
-    },
+
     validatePermission(permission) {
       return global.validatePermission(this.$root.permissions, permission);
     },

@@ -22,10 +22,9 @@ class TaxFactory extends Factory
     public function definition()
     {
         return [
-            //
-            'percentage' =>  $this->faker->numberBetween(0,19),
-            'default' => $this->faker->boolean(),
-            'state' => '1'
+            'name' => 'IVA' . $this->faker->numberBetween(0, 19),
+            'percentage' =>  $this->faker->numberBetween(0, 19),
+            'active' => $this->faker->boolean(),
         ];
     }
 }

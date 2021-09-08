@@ -31,11 +31,11 @@ import CreateEditBrand from './components/CreateEditBrand.vue'
 import Suppliers from './components/Suppliers.vue'
 import CreateEditSupplier from './components/CreateEditSupplier.vue'
 
-import Orders from './components/Orders'
-import DetailsOrder from './components/DetailsOrder'
-import CreateEditOrder from './components/CreateEditOrder'
-import AddClient from './components/AddClient'
-import AddProduct from './components/AddProduct'
+import Orders from './components/Order/Orders.vue'
+import DetailsOrder from './components/Order/DetailsOrder.vue'
+import CreateEditOrder from './components/Order/CreateEditOrder.vue'
+import AddClient from './components/Order/AddClient.vue'
+import AddProduct from './components/Order/AddProduct'
 import ImportProducts from './components/ImportProducts'
 
 import Roles from './components/Roles.vue';
@@ -84,7 +84,7 @@ const routes = [
   { path: '/brands', component: Brands },
   { path: '/create-edit-brand', component: CreateEditBrand },
   { path: '/orders', component: Orders },
-  { path: '/details-order', component: DetailsOrder },
+  { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order' },
   { path: '/create-edit-order', component: CreateEditOrder },
   { path: '/login', name: 'Login', component: Login },
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index"},

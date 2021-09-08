@@ -19,7 +19,7 @@
             class="btn btn-primary"
             data-toggle="modal"
             data-target="#categoryModal"
-            @click="($refs.CreateEditCategory.ResetData()),(edit = false)"
+            @click="$refs.CreateEditCategory.ResetData(), (edit = false)"
             v-if="$root.validatePermission('category.store')"
           >
             Crear Categoria
@@ -31,7 +31,9 @@
               <th scope="col">#</th>
               <th scope="col">Categoria</th>
               <th v-if="$root.validatePermission('category.active')">Estado</th>
-              <th v-if="$root.validatePermission('category.update')">Opciones</th>
+              <th v-if="$root.validatePermission('category.update')">
+                Opciones
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -43,18 +45,19 @@
               <td>{{ category.name }}</td>
               <td v-if="$root.validatePermission('category.active')">
                 <button
-                  class="btn btn-success"
-                  v-if="category.state == 1"
-                  @click="DeactivateCategory(category.id)"
+                  class="btn"
+                  :class="
+                    category.active == '1'
+                      ? ' btn-outline-success'
+                      : ' btn-outline-danger'
+                  "
+                  @click="changeState(category.id)"
                 >
-                  <i class="bi bi-check-circle-fill"></i>
-                </button>
-                <button
-                  class="btn btn-danger"
-                  v-else
-                  @click="ActivateCategory(category.id)"
-                >
-                  <i class="bi bi-x-circle"></i>
+                  <i
+                    class="bi bi-check-circle-fill"
+                    v-if="category.active == 1"
+                  ></i>
+                  <i class="bi bi-x-circle" v-if="category.active == 0"></i>
                 </button>
               </td>
               <td v-if="$root.validatePermission('category.update')">
@@ -171,7 +174,7 @@ export default {
       this.$refs.CreateEditCategory.ResetData();
       me.listCategories(1);
     },
-    ActivateCategory: function (id) {
+    changeState: function (id) {
       let me = this;
       axios
         .post("api/categories/" + id + "/activate", null, me.$root.config)
@@ -179,15 +182,7 @@ export default {
           me.listCategories(1);
         });
     },
-    DeactivateCategory: function (id) {
-      let me = this;
-      axios.post("api/categories/" + id + "/deactivate", null, me.$root.config).then(function (res) {
-        me.listCategories(1);
-      });
-    }
   },
-  mounted() {
-    console.log("Component mounted.");
-  },
+  mounted() {},
 };
 </script>

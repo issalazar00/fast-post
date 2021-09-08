@@ -15,7 +15,7 @@ class CategoryController extends Controller
         $this->middleware('can:category.store')->only('store');
         $this->middleware('can:category.update')->only('update');
         $this->middleware('can:category.delete')->only('destroy');
-        $this->middleware('can:category.active')->only('active','deactivate');
+        $this->middleware('can:category.active')->only('active');
     }
     /**
      * Display a listing of the resource.
@@ -183,7 +183,7 @@ class CategoryController extends Controller
         return response()->json($data, $data['code']);
     }
 
-      /**
+    /**
      * Activate the specified resource from storage.
      *
      * @param  int  $id
@@ -193,20 +193,7 @@ class CategoryController extends Controller
     {
         //
         $category = Category::find($id);
-        $category->state = '1';
-        $category->save();
-    }
-
-    /**
-     * Deactivate the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function deactivate($id)
-    {
-        $category = Category::find($id);
-        $category->state = '0';
+        $category->active = !$category->active;
         $category->save();
     }
 }

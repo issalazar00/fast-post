@@ -18,14 +18,7 @@
               aria-label="Text input with dropdown button"
               v-model="formClient.document"
             />
-            <input
-              type="hidden"
-              class="form-control"
-              id="code"
-              placeholder=""
-              name="code"
-              v-model="formClient.code"
-            />
+           
           </div>
 
           <div class="form-group col-6">
@@ -175,7 +168,6 @@ export default {
   data() {
     return {
       formClient: {
-        code: "",
         name: "",
         address: "",
         mobile: "",
