@@ -14,7 +14,7 @@ class BrandController extends Controller
     $this->middleware('can:brand.store')->only('store');
     $this->middleware('can:brand.update')->only('update');
     $this->middleware('can:brand.delete')->only('destroy');
-    $this->middleware('can:brand.active')->only('active');
+    $this->middleware('can:brand.active')->only('activate');
   }
   /**
    * Display a listing of the resource.

@@ -26,14 +26,14 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::resource('/users', UserController::class);
-    Route::post('/users/{user}/activate',  [UserController::class, 'activate']);
-    Route::post('/users/{user}/deactivate',  [UserController::class, 'deactivate']);
-    Route::post('/register', [UserController::class, 'register']);
-    
-    Route::resource('/categories', CategoryController::class);
-    Route::post('/categories/{category}/activate',  [CategoryController::class, 'activate']);
-    Route::post('/categories/{category}/deactivate',  [CategoryController::class, 'deactivate']);
+	Route::resource('/users', UserController::class);
+	Route::post('/users/{user}/activate',  [UserController::class, 'activate']);
+	Route::post('/users/{user}/deactivate',  [UserController::class, 'deactivate']);
+	Route::post('/register', [UserController::class, 'register']);
+
+	Route::resource('/categories', CategoryController::class);
+	Route::post('/categories/{category}/activate',  [CategoryController::class, 'activate']);
+	Route::post('/categories/{category}/deactivate',  [CategoryController::class, 'deactivate']);
 
 	Route::resource('/taxes', TaxController::class);
 	Route::post('/taxes/{tax}/activate',  [TaxController::class, 'activate']);
@@ -53,11 +53,12 @@ Route::middleware('auth:api')->group(function () {
 
 
 	Route::resource('/clients',  ClientController::class);
+	Route::post('/clients/{client}/activate',  [ClientController::class, 'activate']);
 	Route::post('/clients/search-client',  [ClientController::class, 'searchClient']);
 	Route::post('/clients/filter-client-list',  [ClientController::class, 'filterClientList']);
 
 
-    Route::get('/roles/getAllRoles', [RoleController::class, 'getAllRoles']);
-    Route::resource('/roles', RoleController::class);
-    Route::get('/permissions', [RoleController::class, 'getPermissions']);
+	Route::get('/roles/getAllRoles', [RoleController::class, 'getAllRoles']);
+	Route::resource('/roles', RoleController::class);
+	Route::get('/permissions', [RoleController::class, 'getPermissions']);
 });

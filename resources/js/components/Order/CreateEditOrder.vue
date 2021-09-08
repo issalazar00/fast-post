@@ -244,7 +244,7 @@ export default {
 
       order: {
         id_client: 1,
-        client: 'Sin Cliente',
+        client: "Sin Cliente",
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
         total_discount: 0.0,
@@ -360,6 +360,8 @@ export default {
       if (this.productsOrderList.length > 0) {
         this.order.productsOrder = this.productsOrderList;
         axios.post(`api/orders`, this.order, this.$root.config);
+      } else {
+        alert('No hay productos en la orden')
       }
     },
   },

@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
+	public function __construct()
+	{
+		$this->middleware('can:client.index')->only('index');
+		$this->middleware('can:client.store')->only('store');
+		$this->middleware('can:client.update')->only('update');
+		$this->middleware('can:client.delete')->only('destroy');
+		$this->middleware('can:client.active')->only('activate');
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -80,7 +88,9 @@ class ClientController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		//
+		$client = Client::find($id);
+		$client = $request->input();
+		$client->save();
 	}
 
 	/**
@@ -92,6 +102,20 @@ class ClientController extends Controller
 	public function destroy($id)
 	{
 		//
+	}
+
+	/**
+	 * Activate the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function activate($id)
+	{
+		//
+		$client = Client::find($id);
+		$client->active = !$client->active;
+		$client->save();
 	}
 
 	public function searchClient(Request $request)

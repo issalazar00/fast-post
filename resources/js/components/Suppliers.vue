@@ -1,6 +1,6 @@
 <template>
   <div class="col-12">
-    <h3 class="page-header">Usuarios</h3>
+    <h3 class="page-header">Proveedores</h3>
 
     <div class="row justify-content-end mx-4">
       <button

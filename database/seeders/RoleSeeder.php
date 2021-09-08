@@ -38,11 +38,17 @@ class RoleSeeder extends Seeder
         Permission::create(['guard_name' => 'api', 'name' => 'product.delete', 'description' => 'Eliminar', 'component' => 'Productos'])->syncRoles([$admin]);
         Permission::create(['guard_name' => 'api', 'name' => 'product.active', 'description' => 'Activar', 'component' => 'Productos'])->syncRoles([$admin]);
 
-        Permission::create(['guard_name' => 'api', 'name' => 'supplier.index', 'description' => 'Listar', 'component' => 'Proveedor'])->syncRoles([$admin, $atm]);
-        Permission::create(['guard_name' => 'api', 'name' => 'supplier.store', 'description' => 'Crear', 'component' => 'Proveedor'])->syncRoles([$admin, $atm]);
-        Permission::create(['guard_name' => 'api', 'name' => 'supplier.update', 'description' => 'Editar', 'component' => 'Proveedor'])->syncRoles([$admin]);
-        Permission::create(['guard_name' => 'api', 'name' => 'supplier.delete', 'description' => 'Eliminar', 'component' => 'Proveedor'])->syncRoles([$admin]);
-        Permission::create(['guard_name' => 'api', 'name' => 'supplier.active', 'description' => 'Activar', 'component' => 'Proveedor'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'client.index', 'description' => 'Listar', 'component' => 'Clientes'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'client.store', 'description' => 'Crear', 'component' => 'Clientes'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'client.update', 'description' => 'Editar', 'component' => 'Clientes'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'client.delete', 'description' => 'Eliminar', 'component' => 'Clientes'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'client.active', 'description' => 'Activar', 'component' => 'Clientes'])->syncRoles([$admin]);
+
+        Permission::create(['guard_name' => 'api', 'name' => 'supplier.index', 'description' => 'Listar', 'component' => 'Proveedores'])->syncRoles([$admin, $atm]);
+        Permission::create(['guard_name' => 'api', 'name' => 'supplier.store', 'description' => 'Crear', 'component' => 'Proveedores'])->syncRoles([$admin, $atm]);
+        Permission::create(['guard_name' => 'api', 'name' => 'supplier.update', 'description' => 'Editar', 'component' => 'Proveedores'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'supplier.delete', 'description' => 'Eliminar', 'component' => 'Proveedores'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'supplier.active', 'description' => 'Activar', 'component' => 'Proveedores'])->syncRoles([$admin]);
         
         Permission::create(['guard_name' => 'api', 'name' => 'brand.index', 'description' => 'Listar', 'component' => 'Marcas'])->syncRoles([$admin, $atm]);
         Permission::create(['guard_name' => 'api', 'name' => 'brand.store', 'description' => 'Crear', 'component' => 'Marcas'])->syncRoles([$admin, $atm]);
@@ -68,7 +74,5 @@ class RoleSeeder extends Seeder
         Permission::create(['guard_name' => 'api', 'name' => 'rol.delete', 'description' => 'Eliminar', 'component' => 'Roles'])->syncRoles([$admin]);
         Permission::create(['guard_name' => 'api', 'name' => 'rol.active', 'description' => 'Activar', 'component' => 'Roles'])->syncRoles([$admin]);
 
-
-        
     }
 }
