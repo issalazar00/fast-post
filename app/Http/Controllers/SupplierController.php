@@ -88,7 +88,19 @@ class SupplierController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		//
+		$supplier = Supplier::find($id);
+		$supplier->name = $request->name;
+		$supplier->address = $request->address;
+		$supplier->mobile = $request->mobile;
+		$supplier->contact = $request->contact;
+		$supplier->email = $request->email;
+		$supplier->type_person = $request->type_person;
+		$supplier->departament = $request->departament;
+		$supplier->city = $request->city;
+		$supplier->type_document = $request->type_document;
+		$supplier->document = $request->document;
+		$supplier->tax = $request->tax;
+		$supplier->update();
 	}
 
 	/**

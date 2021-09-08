@@ -145,11 +145,20 @@ class ProductController extends Controller
 
 	public function filterProductList(Request $request)
 	{
-		$products = Product::select()
-			->where('state', 1)
-			->where('barcode', 'LIKE', "%$request->product%")
-			->orWhere('product', 'LIKE', "%$request->product%")
-			->get(20);
+
+		if (!$request->product || $request->product == '') {
+			$products = Product::select()
+				->where('state', 1)
+				->get();
+		} else {
+			$products = Product::select()
+				->where('state', 1)
+				->where('barcode', 'LIKE', "%$request->product%")
+				->orWhere('product', 'LIKE', "%$request->product%")
+				->get(20);
+		}
+
+
 		return $products;
 	}
 	public function ajaxProcessuploadCsv()
