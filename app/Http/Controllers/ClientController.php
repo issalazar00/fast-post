@@ -138,11 +138,18 @@ class ClientController extends Controller
 
 	public function filterClientList(Request $request)
 	{
-		$clients = Client::select()
-			->where('active', 1)
-			->where('document', 'LIKE', "%$request->client%")
-			->orWhere('name', 'LIKE', "%$request->client%")
-			->get(20);
+		if (!$request->client || $request->client == '') {
+			$clients = Client::select()
+				->where('active', 1)
+				->get();
+		} else {
+			$clients = Client::select()
+				->where('active', 1)
+				->where('document', 'LIKE', "%$request->client%")
+				->orWhere('name', 'LIKE', "%$request->client%")
+				->get(20);
+		}
+
 		return $clients;
 	}
 }

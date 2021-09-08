@@ -43,18 +43,21 @@
             <td>
               <button
                 class="btn"
-                :class="
-                  client.active == 1
-                    ? 'btn-outline-danger'
-                    : 'btn-outline-success'
-                "
+                :class="client.active == 1 ? ' btn-outline-success' : 'btn-outline-danger'"
                 @click="changeState(client.id)"
               >
-                <i v-if="client.active == 1" class="bi bi-x-circle"></i>
-                <i v-if="client.active == 0" class="bi bi-check-circle"></i>
+                <i
+                  class="bi bi-check-circle-fill"
+                  v-if="client.active == 1"
+                ></i>
+                <i class="bi bi-x-circle" v-else></i>
               </button>
             </td>
-            <td></td>
+            <td>
+              <button class="btn btn-outline-success" @click="ShowData(client)">
+                <i class="bi bi-pen"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>

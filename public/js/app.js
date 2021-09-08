@@ -9282,6 +9282,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -11515,9 +11518,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "add-client",
   data: function data() {
@@ -11534,8 +11534,8 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     listClients: function listClients() {
       var me = this;
-      axios.get("api/clients", this.$root.config).then(function (response) {
-        me.ClientList = response.data.clients;
+      axios.post("api/clients/filter-client-list", null, this.$root.config).then(function (response) {
+        me.ClientList = response;
       });
     },
     searchClient: function searchClient() {
@@ -11659,22 +11659,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       // Filter modal
-      filterProducts: "",
+      filters: {
+        product: ""
+      },
       ProductList: {}
     };
-  },
-  computed: {
-    filteredProducts: function filteredProducts() {
-      var _this = this;
-
-      if (!this.filterProducts) {
-        return this.ProductList;
-      }
-
-      return this.ProductList.filter(function (product) {
-        return product.product.toLowerCase().includes(_this.filterProducts.toLowerCase()) || product.barcode.toLowerCase().includes(_this.filterProducts.toLowerCase());
-      });
-    }
   },
   created: function created() {
     this.listProducts();
@@ -11682,9 +11671,27 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     listProducts: function listProducts() {
       var me = this;
-      axios.get("api/products", this.$root.config).then(function (response) {
-        me.ProductList = response.data.products.data;
+      axios.post("api/products/filter-product-list", null, this.$root.config).then(function (response) {
+        me.ProductList = response;
       });
+    },
+    searchProduct: function searchProduct() {
+      var me = this;
+
+      if (me.filters.product == "") {
+        return false;
+      }
+
+      var url = "api/products/filter-product-list?product=" + me.filters.product;
+
+      if (me.filters.product.length >= 3) {
+        axios.post(url, null, me.$root.config).then(function (response) {
+          me.ProductList = response;
+        })["catch"](function (error) {
+          $("#no-results").toast("show");
+          console.log(error);
+        });
+      }
     }
   }
 });
@@ -52923,8 +52930,8 @@ var render = function() {
                         staticClass: "btn",
                         class:
                           client.active == 1
-                            ? "btn-outline-danger"
-                            : "btn-outline-success",
+                            ? " btn-outline-success"
+                            : "btn-outline-danger",
                         on: {
                           click: function($event) {
                             return _vm.changeState(client.id)
@@ -52933,17 +52940,26 @@ var render = function() {
                       },
                       [
                         client.active == 1
-                          ? _c("i", { staticClass: "bi bi-x-circle" })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        client.active == 0
-                          ? _c("i", { staticClass: "bi bi-check-circle" })
-                          : _vm._e()
+                          ? _c("i", { staticClass: "bi bi-check-circle-fill" })
+                          : _c("i", { staticClass: "bi bi-x-circle" })
                       ]
                     )
                   ]),
                   _vm._v(" "),
-                  _c("td")
+                  _c("td", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-outline-success",
+                        on: {
+                          click: function($event) {
+                            return _vm.ShowData(client)
+                          }
+                        }
+                      },
+                      [_c("i", { staticClass: "bi bi-pen" })]
+                    )
+                  ])
                 ])
               }),
               0
@@ -56653,8 +56669,6 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _vm._m(2, true),
-                      _vm._v(" "),
                       _c("td", [
                         _c(
                           "button",
@@ -56677,7 +56691,7 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(3)
+          _vm._m(2)
         ])
       ])
     ]
@@ -56692,7 +56706,7 @@ var staticRenderFns = [
       _c(
         "h5",
         { staticClass: "modal-title", attrs: { id: "addClientModalLabel" } },
-        [_vm._v("Cliente")]
+        [_vm._v("Clientes")]
       ),
       _vm._v(" "),
       _c(
@@ -56729,18 +56743,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Contacto")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Estado")]),
-        _vm._v(" "),
         _c("th", [_vm._v("Opciones")])
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("span", { staticClass: "badge badge-success" }, [_vm._v("Activo")])
     ])
   },
   function() {
@@ -56839,7 +56843,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "tbody",
-                  _vm._l(_vm.filteredProducts, function(product) {
+                  _vm._l(_vm.ProductList.data, function(product) {
                     return _c("tr", { key: product.id }, [
                       _c("td", [_vm._v(_vm._s(product.id))]),
                       _vm._v(" "),
@@ -56900,7 +56904,7 @@ var staticRenderFns = [
       _c(
         "h5",
         { staticClass: "modal-title", attrs: { id: "addProductModalLabel" } },
-        [_vm._v("Client")]
+        [_vm._v("Productos")]
       ),
       _vm._v(" "),
       _c(

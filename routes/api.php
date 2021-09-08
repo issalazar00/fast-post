@@ -46,7 +46,9 @@ Route::middleware('auth:api')->group(function () {
 
 	Route::resource('/products',  ProductController::class);
 	Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
-	Route::post('/products/searchProduct',  [ProductController::class, 'searchProduct']);
+	Route::post('/products/search-product',  [ProductController::class, 'searchProduct']);
+	Route::post('/products/filter-product-list',  [ProductController::class, 'filterProductList']);
+
 
 	Route::resource('/suppliers',  SupplierController::class);
 	Route::post('/suppliers/{supplier}/activate',  [SupplierController::class, 'activate']);
