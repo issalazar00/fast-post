@@ -1,19 +1,26 @@
 <template>
   <div class="col-12">
     <h3 class="page-header">Taxes</h3>
-    <div class="row justify-content-end mx-4">
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-toggle="modal"
-        data-target="#taxModal"
-        @click="($refs.CreateEditTax.ResetData()), (edit = false)"
-        v-if="$root.validatePermission('tax.store')"
-      >
-        Crear Impuesto
-      </button>
-    </div>
-    <section>
+    <moon-loader
+      class="m-auto"
+      :loading="isLoading"
+      :color="'#032F6C'"
+      :size="100"
+    />
+
+    <section v-if="!isLoading">
+      <div class="row justify-content-end mx-4">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#taxModal"
+          @click="$refs.CreateEditTax.ResetData(), (edit = false)"
+          v-if="$root.validatePermission('tax.store')"
+        >
+          Crear Impuesto
+        </button>
+      </div>
       <div class="card-body">
         <table class="table table-sm table-bordered table-responsive-sm">
           <thead class="thead-primary">
@@ -100,9 +107,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <create-edit-tax ref="CreateEditTax" 
-              @list-taxes="listTaxes(1)"
-            />
+            <create-edit-tax ref="CreateEditTax" @list-taxes="listTaxes(1)" />
           </div>
           <div class="modal-footer">
             <button
@@ -130,6 +135,7 @@ export default {
     return {
       taxListing: {},
       edit: false,
+      isLoading: false,
     };
   },
   created() {
@@ -138,10 +144,14 @@ export default {
   methods: {
     listTaxes(page = 1) {
       let me = this;
+      me.isLoading = true;
       axios
         .get("api/taxes?page=" + page, this.$root.config)
         .then(function (response) {
           me.taxListing = response.data.taxes;
+        })
+        .finally(() => {
+          me.isLoading = false;
         });
     },
     SaveTax: function () {
@@ -163,15 +173,19 @@ export default {
     },
     ActivateTax: function (id) {
       let me = this;
-      axios.post("api/taxes/" + id + "/activate", null, this.$root.config).then(function () {
-        me.listTaxes(1);
-      });
+      axios
+        .post("api/taxes/" + id + "/activate", null, this.$root.config)
+        .then(function () {
+          me.listTaxes(1);
+        });
     },
     DeactivateTax: function (id) {
       let me = this;
-      axios.post("api/taxes/" + id + "/deactivate", null, this.$root.config).then(function () {
-        me.listTaxes(1);
-      });
+      axios
+        .post("api/taxes/" + id + "/deactivate", null, this.$root.config)
+        .then(function () {
+          me.listTaxes(1);
+        });
     },
   },
   mounted() {
