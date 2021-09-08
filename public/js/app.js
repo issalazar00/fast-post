@@ -11518,6 +11518,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "add-client",
   data: function data() {
@@ -11941,6 +11942,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -11959,6 +11968,7 @@ __webpack_require__.r(__webpack_exports__);
       order: {
         id_client: 1,
         client: "Sin Cliente",
+        state: "",
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
         total_discount: 0.0,
@@ -12070,12 +12080,18 @@ __webpack_require__.r(__webpack_exports__);
       me.order.client = client.name;
       me.filters.client = client.name;
     },
-    createOrder: function createOrder() {
+    createOrder: function createOrder(state_order) {
+      var _this = this;
+
+      this.order.state = state_order;
+
       if (this.productsOrderList.length > 0) {
         this.order.productsOrder = this.productsOrderList;
-        axios.post("api/orders", this.order, this.$root.config);
+        axios.post("api/orders", this.order, this.$root.config).then(function () {
+          return _this.$router.replace("/orders");
+        });
       } else {
-        alert('No hay productos en la orden');
+        alert("No hay productos en la orden");
       }
     }
   },
@@ -56674,6 +56690,7 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-outline-secondary",
+                            attrs: { "data-dismiss": "modal" },
                             on: {
                               click: function($event) {
                                 return _vm.$emit("add-client", client)
@@ -56808,8 +56825,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.filterProducts,
-                    expression: "filterProducts"
+                    value: _vm.filters.product,
+                    expression: "filters.product"
                   }
                 ],
                 staticClass: "form-control",
@@ -56819,13 +56836,13 @@ var render = function() {
                   "aria-label": " with two button addons",
                   "aria-describedby": "button-addon4"
                 },
-                domProps: { value: _vm.filterProducts },
+                domProps: { value: _vm.filters.product },
                 on: {
                   input: function($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.filterProducts = $event.target.value
+                    _vm.$set(_vm.filters, "product", $event.target.value)
                   }
                 }
               }),
@@ -57321,9 +57338,10 @@ var render = function() {
                           _vm._v(" "),
                           _c("th", [
                             _vm._v(
-                              _vm._s(
-                                (_vm.order.total_tax_exc = _vm.total_tax_exc)
-                              )
+                              "$ " +
+                                _vm._s(
+                                  (_vm.order.total_tax_exc = _vm.total_tax_exc)
+                                )
                             )
                           ])
                         ]),
@@ -57335,9 +57353,11 @@ var render = function() {
                           _vm._v(" "),
                           _c("th", [
                             _vm._v(
-                              _vm._s(
-                                (_vm.order.total_discount = _vm.total_discount)
-                              )
+                              "$ " +
+                                _vm._s(
+                                  (_vm.order.total_discount =
+                                    _vm.total_discount)
+                                )
                             )
                           ])
                         ]),
@@ -57349,9 +57369,10 @@ var render = function() {
                           _vm._v(" "),
                           _c("th", [
                             _vm._v(
-                              _vm._s(
-                                (_vm.order.total_tax_inc = _vm.total_tax_inc)
-                              )
+                              "$ " +
+                                _vm._s(
+                                  (_vm.order.total_tax_inc = _vm.total_tax_inc)
+                                )
                             )
                           ])
                         ])
@@ -57378,7 +57399,22 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(6),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-primary btn-block",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.createOrder(1)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "bi bi-receipt" }),
+                    _vm._v(" Suspender\n          ")
+                  ]
+                ),
                 _vm._v(" "),
                 _c(
                   "button",
@@ -57387,7 +57423,7 @@ var render = function() {
                     attrs: { type: "button" },
                     on: {
                       click: function($event) {
-                        return _vm.createOrder()
+                        return _vm.createOrder(2)
                       }
                     }
                   },
@@ -57397,7 +57433,22 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(7)
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-primary btn-block",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.createOrder(4)
+                      }
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "bi bi-receipt" }),
+                    _vm._v(" Cotizar\n          ")
+                  ]
+                )
               ],
               1
             )
@@ -57553,38 +57604,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [_c("td", [_vm._v("No se han añadido productos")])])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-outline-primary btn-block",
-        attrs: { type: "button" }
-      },
-      [
-        _c("i", { staticClass: "bi bi-receipt" }),
-        _vm._v(" Suspender\n          ")
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-outline-primary btn-block",
-        attrs: { type: "button" }
-      },
-      [
-        _c("i", { staticClass: "bi bi-receipt" }),
-        _vm._v(" Cotizar\n          ")
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -57728,9 +57747,14 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.OrderList.data, function(o) {
                   return _c("tr", { key: o.id }, [
-                    _c("th", { attrs: { scope: "row" } }, [
-                      _vm._v(_vm._s(o.id))
-                    ]),
+                    _c(
+                      "th",
+                      {
+                        staticClass: "text-uppercase",
+                        attrs: { scope: "row" }
+                      },
+                      [_vm._v(_vm._s(o.no_invoice))]
+                    ),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(o.total_paid))]),
                     _vm._v(" "),

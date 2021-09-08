@@ -29,7 +29,7 @@ class OrderController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'orders' => Order::paginate(20),
+            'orders' => Order::orderBy('id', 'DESC')->paginate(20),
         ]);
     }
 
@@ -52,7 +52,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $user_id =  Auth::user()->id;
-        
+
         $order = new Order;
         $order->client_id = $request->id_client;
         $order->user_id = $user_id;
@@ -61,12 +61,11 @@ class OrderController extends Controller
         $order->total_iva_inc = $request->total_tax_inc;
         $order->total_iva_exc = $request->total_tax_exc;
         $order->total_discount = $request->total_discount;
-        $order->state = '1';
+        $order->state = $request->state;
         $order->save();
 
         $details_order = new DetailOrderController;
         $details_order = $details_order->store($request, $order->id);
-        
     }
 
     /**

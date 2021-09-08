@@ -69,6 +69,7 @@
                   <button
                     class="btn btn-outline-secondary"
                     @click="$emit('add-client', client)"
+                    data-dismiss="modal"
                   >
                     <i class="bi bi-plus-circle"></i>
                   </button>
