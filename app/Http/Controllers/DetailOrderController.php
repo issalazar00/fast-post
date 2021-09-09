@@ -35,20 +35,17 @@ class DetailOrderController extends Controller
 	 */
 	public function store(Request $request, $order_id)
 	{
-		foreach ($request->productsOrder as $value) {
-			var_dump($value);
 			$detail = new DetailOrder;
 			$detail->order_id = $order_id;
-			$detail->product_id = $value['product_id'];
-			$detail->barcode = $value['barcode'];
-			$detail->discount_percentage = $value['discount_percentage'];
-			$detail->discount_price = $value['discount_price'];
-			$detail->price_tax_exc = $value['price_tax_exc'];
-			$detail->price_tax_inc = $value['price_tax_inc'];
-			$detail->quantity = $value['qty'];
-			$detail->product = $value['product'];
+			$detail->product_id = $request['product_id'];
+			$detail->barcode = $request['barcode'];
+			$detail->discount_percentage = $request['discount_percentage'];
+			$detail->discount_price = $request['discount_price'];
+			$detail->price_tax_exc = $request['price_tax_exc'];
+			$detail->price_tax_inc = $request['price_tax_inc'];
+			$detail->quantity = $request['qty'];
+			$detail->product = $request['product'];
 			$detail->save();
-		}
 	}
 
 	/**
@@ -91,8 +88,9 @@ class DetailOrderController extends Controller
 	 * @param  \App\Models\DetailOrder  $detailOrder
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(DetailOrder $detailOrder)
+	public function destroy($id)
 	{
-		//
+		$detailOrder = DetailOrder::find($id);
+		$detailOrder->delete();
 	}
 }

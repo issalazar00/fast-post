@@ -3,7 +3,13 @@
     <div class="header">
       <h3 class="h3 w-100">Tickets</h3>
       <div class="row justify-content-end mx-4">
-        <router-link class="btn btn-outline-primary" to="create-edit-order">
+        <router-link
+          class="btn btn-outline-primary"
+          :to="{
+            name: 'create-edit-order',
+            params: { order_id: null },
+          }"
+        >
           Nueva orden
         </router-link>
       </div>
@@ -51,12 +57,17 @@
           </thead>
           <tbody>
             <tr v-for="o in OrderList.data" :key="o.id">
-              <th scope="row" class="text-uppercase">{{ o.no_invoice }}</th>
+              <th scope="row">{{ o.no_invoice }}</th>
               <td>{{ o.total_paid }}</td>
               <td>{{ o.total_iva_exc }}</td>
               <td>{{ o.total_discount }}</td>
               <td>{{ o.client_id }}</td>
-              <td>{{ o.state }}</td>
+              <td>
+                <span v-if="o.state == 0">Desechada</span>
+                <span v-if="o.state == 1">Abierta</span>
+                <span v-if="o.state == 2">Registrada</span>
+                <span v-if="o.state == 3">Cotización</span>
+              </td>
               <td>
                 <router-link
                   class="btn"
@@ -66,7 +77,7 @@
                 </router-link>
               </td>
               <td>
-                <button class="btn">
+                <button class="btn" v-if="o.state != 0 && o.state != 2">
                   <i class="bi bi-receipt"></i>
                 </button>
               </td>
@@ -76,13 +87,19 @@
                 </button>
               </td>
               <td>
-                <router-link class="btn" to="/details-order">
+                <router-link
+                  class="btn"
+                  :to="{
+                    name: 'create-edit-order',
+                    params: { order_id: o.id },
+                  }"
+                >
                   <i class="bi bi-pencil-square"></i>
                 </router-link>
               </td>
               <td>
-                <button class="btn">
-                  <i class="bi bi-file-earmark-x"></i>
+                <button class="btn" @click="deleteOrder(o.id)">
+                  <i class="bi bi-trash"></i>
                 </button>
               </td>
             </tr>
@@ -121,6 +138,11 @@ export default {
         .then(function (response) {
           me.OrderList = response.data.orders;
         });
+    },
+    deleteOrder(order_id) {
+      axios
+        .delete(`api/orders/${order_id}`, this.$root.config)
+        .then(() => this.getOrders(1));
     },
   },
 };

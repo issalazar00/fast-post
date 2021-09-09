@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailOrder;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,108 +11,134 @@ use Illuminate\Support\Str;
 class OrderController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('can:order.index')->only('index');
-        $this->middleware('can:order.store')->only('store');
-        $this->middleware('can:order.update')->only('update');
-        $this->middleware('can:order.delete')->only('destroy');
-        $this->middleware('can:order.active')->only('active');
-    }
+	public function __construct()
+	{
+		$this->middleware('can:order.index')->only('index');
+		$this->middleware('can:order.store')->only('store');
+		$this->middleware('can:order.update')->only('update');
+		$this->middleware('can:order.delete')->only('destroy');
+		$this->middleware('can:order.active')->only('active');
+	}
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return response()->json([
-            'status' => 'success',
-            'code' => 200,
-            'orders' => Order::orderBy('id', 'DESC')->paginate(20),
-        ]);
-    }
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
+		return response()->json([
+			'status' => 'success',
+			'code' => 200,
+			'orders' => Order::orderBy('id', 'DESC')->paginate(20),
+		]);
+	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create()
+	{
+		//
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $user_id =  Auth::user()->id;
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(Request $request)
+	{
+		$user_id =  Auth::user()->id;
 
-        $order = new Order;
-        $order->client_id = $request->id_client;
-        $order->user_id = $user_id;
-        $order->no_invoice = Str::random(10);
-        $order->total_paid = $request->total_tax_inc;
-        $order->total_iva_inc = $request->total_tax_inc;
-        $order->total_iva_exc = $request->total_tax_exc;
-        $order->total_discount = $request->total_discount;
-        $order->state = $request->state;
-        $order->save();
+		$order = new Order;
+		$order->client_id = $request->id_client;
+		$order->user_id = $user_id;
+		$order->no_invoice = strtoupper(Str::random(10));
+		$order->total_paid = $request->total_tax_inc;
+		$order->total_iva_inc = $request->total_tax_inc;
+		$order->total_iva_exc = $request->total_tax_exc;
+		$order->total_discount = $request->total_discount;
+		$order->state = $request->state;
+		$order->save();
 
-        $details_order = new DetailOrderController;
-        $details_order = $details_order->store($request, $order->id);
-    }
+		foreach ($request->productsOrder as $details_order) {
+			$new_detail = new DetailOrderController;
+			$new_detail = $new_detail->store($details_order, $order->id);
+		}
+	}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
-    {
-        // var_dump($order);
-        $details  = Order::find($order->id);
-        return $details->detailOrders()->get();
-    }
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  \App\Models\Order  $order
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show(Order $order)
+	{
+		// var_dump($order);
+		$details  = Order::find($order->id);
+		return $details->detailOrders()->get();
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  \App\Models\Order  $order
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit(Order $order)
+	{
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  \App\Models\Order  $order
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, $id)
+	{
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $order)
-    {
-        //
-    }
+		$order = Order::find($id);
+		$order->client_id = $request->id_client;
+		$order->total_paid = $request->total_tax_inc;
+		$order->total_iva_inc = $request->total_tax_inc;
+		$order->total_iva_exc = $request->total_tax_exc;
+		$order->total_discount = $request->total_discount;
+		$order->state = $request->state;
+		$order->update();
+
+		foreach ($request->productsOrder as $details_order) {
+
+			DetailOrder::updateOrCreate(
+				['order_id' => $id, 'product_id' => $details_order['product_id']],
+				[
+					'discount_percentage' => $details_order['discount_percentage'],
+					'discount_price' => $details_order['discount_price'],
+					'price_tax_exc' => $details_order['price_tax_exc'],
+					'price_tax_inc' => $details_order['price_tax_inc'],
+					'quantity' => $details_order['quantity'],
+					'barcode' => $details_order['barcode'],
+					'product' => $details_order['product'],
+				]
+			);
+		}
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  \App\Models\Order  $order
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy(Order  $order)
+	{
+		$order->delete();
+	}
 }
