@@ -11958,6 +11958,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -57450,17 +57451,19 @@ var render = function() {
               "div",
               { staticClass: "text-right" },
               [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "btn btn-outline-secondary btn-block",
-                    attrs: { to: "orders", type: "button" }
-                  },
-                  [
-                    _c("i", { staticClass: "bi bi-receipt" }),
-                    _vm._v(" Cancelar\n          ")
-                  ]
-                ),
+                !_vm.order_id
+                  ? _c(
+                      "router-link",
+                      {
+                        staticClass: "btn btn-outline-secondary btn-block",
+                        attrs: { to: "orders", type: "button" }
+                      },
+                      [
+                        _c("i", { staticClass: "bi bi-receipt" }),
+                        _vm._v(" Cancelar\n          ")
+                      ]
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "button",
@@ -57816,7 +57819,7 @@ var render = function() {
                 _vm._l(_vm.OrderList.data, function(o) {
                   return _c("tr", { key: o.id }, [
                     _c("th", { attrs: { scope: "row" } }, [
-                      _vm._v(_vm._s(o.no_invoice))
+                      _vm._v(" " + _vm._s(o.id) + " - " + _vm._s(o.no_invoice))
                     ]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(o.total_paid))]),

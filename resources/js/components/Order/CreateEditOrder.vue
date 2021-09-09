@@ -211,6 +211,7 @@
               to="orders"
               type="button"
               class="btn btn-outline-secondary btn-block"
+              v-if="!order_id"
             >
               <i class="bi bi-receipt"></i> Cancelar
             </router-link>

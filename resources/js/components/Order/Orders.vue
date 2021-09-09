@@ -57,7 +57,7 @@
           </thead>
           <tbody>
             <tr v-for="o in OrderList.data" :key="o.id">
-              <th scope="row">{{ o.no_invoice }}</th>
+              <th scope="row"> {{o.id}} - {{ o.no_invoice }}</th>
               <td>{{ o.total_paid }}</td>
               <td>{{ o.total_iva_exc }}</td>
               <td>{{ o.total_discount }}</td>
