@@ -26,7 +26,7 @@ class CreateClientsTable extends Migration
             $table->tinyInteger('type_document');
             $table->integer('document');
             $table->tinyInteger('active')->default('1');
-            $table->tinyInteger('tax')->default('1');
+            $table->tinyInteger('tax')->default('1')->nullable();
             $table->timestamps();
         });
     }

@@ -13,8 +13,8 @@ import { VueSpinners } from '@saeris/vue-spinners'
 
 import Login from './components/Login.vue'
 import NoFound from './components/NoFound.vue';
-import Clients from './components/Clients.vue'
-import CreateEditClient from './components/CreateEditClient.vue'
+import Clients from './components/Client/Clients.vue'
+import CreateEditClient from './components/Client/CreateEditClient.vue'
 
 import Products from './components/Products.vue'
 import CreateEditProduct from './components/CreateEditProduct.vue'

@@ -2,17 +2,17 @@
   <div class="container">
     <div
       class="modal fade"
-      id="supplierModal"
+      id="clientModal"
       tabindex="-1"
-      aria-labelledby="supplierModalLabel"
+      aria-labelledby="clientModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="supplierModalLabel">Supplier</h5>
+            <h5 class="modal-title" id="clientModalLabel">Client</h5>
             <button
-              type="reset"
+              type="button"
               class="close"
               data-dismiss="modal"
               aria-label="Cerrar"
@@ -20,15 +20,17 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <form id="formSupplier">
+          <form>
+            <div class="modal-body">
               <div class="form-row">
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <select
                       class="custom-select"
                       id="type_documento"
-                      v-model="formSupplier.type_document"
+                      v-model="formClient.type_document"
+                      required
+                      autocomplete="address"
                     >
                       <option selected disabled value="">Documento...</option>
                       <option value="1">Cédula de ciudadania</option>
@@ -40,7 +42,7 @@
                     type="text"
                     class="form-control"
                     aria-label="Text input with dropdown button"
-                    v-model="formSupplier.document"
+                    v-model="formClient.document"
                   />
                 </div>
 
@@ -52,7 +54,7 @@
                     id="name"
                     placeholder=""
                     name="name"
-                    v-model="formSupplier.name"
+                    v-model="formClient.name"
                   />
                 </div>
               </div>
@@ -66,7 +68,7 @@
                       id="address"
                       placeholder=""
                       name="address"
-                      v-model="formSupplier.address"
+                      v-model="formClient.address"
                     />
                   </div>
 
@@ -78,7 +80,7 @@
                       id="mobile"
                       placeholder=""
                       name="mobile"
-                      v-model="formSupplier.mobile"
+                      v-model="formClient.mobile"
                     />
                   </div>
                   <div class="form-row">
@@ -90,7 +92,7 @@
                         id="contact"
                         placeholder="Nombres"
                         name="contact"
-                        v-model="formSupplier.contact"
+                        v-model="formClient.contact"
                       />
                     </div>
                   </div>
@@ -102,7 +104,7 @@
                       id="email"
                       placeholder=""
                       name="email"
-                      v-model="formSupplier.email"
+                      v-model="formClient.email"
                     />
                   </div>
 
@@ -113,7 +115,7 @@
                         class="form-control"
                         id="type_person"
                         name="type_person"
-                        v-model="formSupplier.type_person"
+                        v-model="formClient.type_person"
                       >
                         <option>Juridica</option>
                         <option>Natural</option>
@@ -128,11 +130,13 @@
                       class="form-control"
                       id="departament"
                       name="departament"
-                      v-model="formSupplier.departament"
-                      @change="getMunicipalities(formSupplier.departament)"
+                      v-model="formClient.departament"
                     >
-                      <option value="" disabled> Selecciona un departamento</option>
-                      <option v-for="department in departments" :value="department.id" :key="department.id"> {{ department.name }} </option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -141,10 +145,13 @@
                       class="form-control"
                       id="city"
                       name="city"
-                      v-model="formSupplier.city"
+                      v-model="formClient.city"
                     >
-                      <option value="" disabled> Selecciona un municipio</option>
-                      <option v-for="municipality in municipalities" :value="municipality.id" :key="municipality.id"> {{ municipality.name }} </option>
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
                     </select>
                   </div>
 
@@ -155,7 +162,7 @@
                         type="checkbox"
                         value="1"
                         id="active"
-                        v-model="formSupplier.active"
+                        v-model="formClient.active"
                       />
                       <label class="form-check-label" for="active">
                         Cliente está activo?
@@ -167,7 +174,7 @@
                         type="checkbox"
                         value="1"
                         id="impuesto_incluido"
-                        v-model="formSupplier.tax"
+                        v-model="formClient.tax"
                       />
                       <label class="form-check-label" for="impuesto_incluido">
                         Impuesto Incluido
@@ -176,24 +183,24 @@
                   </div>
                 </div>
               </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              class="btn btn-secondary"
-              type="reset"
-              @click="closeModal()"
-            >
-              Cerrar
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="formSupplier.id ? EditSupplier() : CreateSupplier()"
-            >
-              Guardar
-            </button>
-          </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click="closeModal()"
+              >
+                Cerrar
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="SaveClient()"
+              >
+                Guardar
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -204,11 +211,10 @@
 export default {
   data() {
     return {
-      formSupplier: {
+      formClient: {
         name: "",
         address: "",
         mobile: "",
-        fax: "",
         contact: "",
         email: "",
         type_person: "",
@@ -219,68 +225,53 @@ export default {
         active: "",
         tax: "",
       },
-      departments: [],
-      municipalities: []
     };
   },
-  created(){
-    this.getDepartments();
-  },
   methods: {
-    CreateSupplier() {
+    CreateClient() {
       let me = this;
       axios
-        .post("api/suppliers", this.formSupplier, this.$root.config)
+        .post("api/clients", this.formClient, this.$root.config)
         .then(function () {
-          $("#supplierModal").modal("hide");
+          $("#clientModal").modal("hide");
           me.ResetData();
         });
     },
-    OpenEditSupplier(supplier) {
+    OpenEditClient(client) {
       let me = this;
-      $("#supplierModal").modal("show");
-      me.formSupplier = supplier;
+      $("#clientModal").modal("show");
+      me.formClient = client;
     },
 
-    EditSupplier() {
+    EditClient() {
       let me = this;
       axios
         .put(
-          "api/suppliers/" + this.formSupplier.id,
-          this.formSupplier,
+          "api/clients/" + this.formClient.id,
+          this.formClient,
           this.$root.config
         )
         .then(function () {
-          $("#supplierModal").modal("hide");
+          $("#clientModal").modal("hide");
           me.ResetData();
         });
     },
     ResetData() {
       let me = this;
-      $("#supplierModal").modal("hide");
-      // $("#formSupplier")[0].reset();
-      Object.keys(this.formSupplier).forEach(function (key, index) {
-        me.formSupplier[key] = "";
+      $("#clientModal").modal("hide");
+      Object.keys(this.formClient).forEach(function (key, index) {
+        me.formClient[key] = "";
       });
-      this.$emit("list-suppliers");
+      this.$emit("list-clients");
     },
 
     closeModal: function () {
       let me = this;
       this.ResetData();
     },
-
-    getDepartments(){
-      axios.get('api/departments', this.$root.config).then((response) =>{
-        this.departments = response.data.departments;
-      });
-    },
-    getMunicipalities(department){
-      axios.get('api/departments/'+department+'/getMunicipalities', this.$root.config).then((response) =>{
-        this.municipalities = response.data.municipalities;
-      });
-    }
   },
-  mounted() {},
+  mounted() {
+    console.log("Component mounted.");
+  },
 };
 </script>

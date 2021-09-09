@@ -180,16 +180,16 @@
               </tr>
               <tr>
                 <th colspan="7">Subtotal:</th>
-                <th>{{ (order.total_tax_exc = total_tax_exc) }}</th>
+                <th>$ {{ (order.total_tax_exc = total_tax_exc) }}</th>
               </tr>
               <tr>
                 <th colspan="7">Descuento:</th>
-                <th>{{ (order.total_discount = total_discount) }}</th>
+                <th>$ {{ (order.total_discount = total_discount) }}</th>
               </tr>
 
               <tr>
                 <th colspan="7">Total:</th>
-                <th>{{ (order.total_tax_inc = total_tax_inc) }}</th>
+                <th>$ {{ (order.total_tax_inc = total_tax_inc) }}</th>
               </tr>
             </tbody>
             <tbody v-else>
@@ -206,17 +206,25 @@
             >
               <i class="bi bi-receipt"></i> Cancelar
             </router-link>
-            <button type="button" class="btn btn-outline-primary btn-block">
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-block"
+              @click="createOrder(1)"
+            >
               <i class="bi bi-receipt"></i> Suspender
             </button>
             <button
               type="button"
               class="btn btn-outline-primary btn-block"
-              @click="createOrder()"
+              @click="createOrder(2)"
             >
               <i class="bi bi-receipt"></i> Facturar
             </button>
-            <button type="button" class="btn btn-outline-primary btn-block">
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-block"
+              @click="createOrder(4)"
+            >
               <i class="bi bi-receipt"></i> Cotizar
             </button>
           </div>
@@ -244,7 +252,8 @@ export default {
 
       order: {
         id_client: 1,
-        client: 'Sin Cliente',
+        client: "Sin Cliente",
+        state: "",
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
         total_discount: 0.0,
@@ -356,10 +365,15 @@ export default {
       me.filters.client = client.name;
     },
 
-    createOrder() {
+    createOrder(state_order) {
+      this.order.state = state_order;
       if (this.productsOrderList.length > 0) {
         this.order.productsOrder = this.productsOrderList;
-        axios.post(`api/orders`, this.order, this.$root.config);
+        axios
+          .post(`api/orders`, this.order, this.$root.config)
+          .then(() => this.$router.replace("/orders"));
+      } else {
+        alert("No hay productos en la orden");
       }
     },
   },

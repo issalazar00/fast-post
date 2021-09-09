@@ -9,7 +9,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addProductModalLabel">Client</h5>
+          <h5 class="modal-title" id="addProductModalLabel">Productos</h5>
           <button
             type="button"
             class="close"
@@ -27,7 +27,7 @@
               placeholder="Código de barras | Nombre de product"
               aria-label=" with two button addons"
               aria-describedby="button-addon4"
-              v-model="filterProducts"
+              v-model="filters.product"
             />
             <div class="input-group-append" id="button-addon4">
               <button class="btn btn-outline-secondary" type="button">
@@ -48,7 +48,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="product in filteredProducts" v-bind:key="product.id">
+              <tr v-for="product in ProductList.data" v-bind:key="product.id">
                 <td>{{ product.id }}</td>
                 <td>{{ product.barcode }}</td>
                 <td>{{ product.product }}</td>
@@ -86,37 +86,44 @@ export default {
   data() {
     return {
       // Filter modal
-      filterProducts: "",
+      filters: {
+        product: "",
+      },
       ProductList: {},
     };
   },
-  computed: {
-    filteredProducts: function () {
-      if (!this.filterProducts) {
-        return this.ProductList;
-      }
-      return this.ProductList.filter(
-        (product) =>
-          product.product
-            .toLowerCase()
-            .includes(this.filterProducts.toLowerCase()) ||
-          product.barcode
-            .toLowerCase()
-            .includes(this.filterProducts.toLowerCase())
-      );
-    },
-  },
+ 
   created() {
     this.listProducts();
   },
   methods: {
-    listProducts() {
+   listProducts() {
       let me = this;
-      axios.get("api/products", this.$root.config).then(function (response) {
-        me.ProductList = response.data.products.data;
-      });
+      axios
+        .post("api/products/filter-product-list", null, this.$root.config)
+        .then(function (response) {
+          me.ProductList = response;
+        });
     },
-   
+    searchProduct() {
+      let me = this;
+      if (me.filters.product == "") {
+        return false;
+      }
+      var url = "api/products/filter-product-list?product=" + me.filters.product;
+      if (me.filters.product.length >= 3) {
+        axios
+          .post(url, null, me.$root.config)
+          .then(function (response) {
+            me.ProductList = response;
+          })
+          .catch(function (error) {
+            $("#no-results").toast("show");
+
+            console.log(error);
+          });
+      }
+    },
   },
 };
 </script>

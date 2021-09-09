@@ -9,7 +9,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addClientModalLabel">Cliente</h5>
+          <h5 class="modal-title" id="addClientModalLabel">Clientes</h5>
           <button
             type="button"
             class="close"
@@ -50,7 +50,6 @@
                 <th>Telefono</th>
                 <th>Correo</th>
                 <th>Contacto</th>
-                <th>Estado</th>
                 <th>Opciones</th>
               </tr>
             </thead>
@@ -65,13 +64,12 @@
                 <td>
                   {{ client.contact }}
                 </td>
-                <td>
-                  <span class="badge badge-success">Activo</span>
-                </td>
+
                 <td>
                   <button
                     class="btn btn-outline-secondary"
                     @click="$emit('add-client', client)"
+                    data-dismiss="modal"
                   >
                     <i class="bi bi-plus-circle"></i>
                   </button>
@@ -107,9 +105,11 @@ export default {
   methods: {
     listClients() {
       let me = this;
-      axios.get("api/clients", this.$root.config).then(function (response) {
-        me.ClientList = response.data.clients;
-      });
+      axios
+        .post("api/clients/filter-client-list", null, this.$root.config)
+        .then(function (response) {
+          me.ClientList = response;
+        });
     },
     searchClient() {
       let me = this;
