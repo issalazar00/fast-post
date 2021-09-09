@@ -18,7 +18,7 @@ class Supplier extends Model
         'contact',       
         'email',
         'type_person',
-        'departament',
+        'municipality_id',
         'city',
         'type_document',
         'document',

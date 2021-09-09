@@ -4,6 +4,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -60,4 +61,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/roles/getAllRoles', [RoleController::class, 'getAllRoles']);
     Route::resource('/roles', RoleController::class);
     Route::get('/permissions', [RoleController::class, 'getPermissions']);
+
+	Route::get('/departments',[DepartmentController::class, 'index']);
+	Route::get('/departments/{id}/getMunicipalities',[DepartmentController::class, 'getMunicipalitiesByDepartment']);
 });

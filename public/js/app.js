@@ -10483,11 +10483,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -10505,8 +10500,13 @@ __webpack_require__.r(__webpack_exports__);
         document: "",
         active: "",
         tax: ""
-      }
+      },
+      departments: [],
+      municipalities: []
     };
+  },
+  created: function created() {
+    this.getDepartments();
   },
   methods: {
     CreateSupplier: function CreateSupplier() {
@@ -10540,6 +10540,20 @@ __webpack_require__.r(__webpack_exports__);
     closeModal: function closeModal() {
       var me = this;
       this.ResetData();
+    },
+    getDepartments: function getDepartments() {
+      var _this = this;
+
+      axios.get('api/departments', this.$root.config).then(function (response) {
+        _this.departments = response.data.departments;
+      });
+    },
+    getMunicipalities: function getMunicipalities(department) {
+      var _this2 = this;
+
+      axios.get('api/departments/' + department + '/getMunicipalities', this.$root.config).then(function (response) {
+        _this2.municipalities = response.data.municipalities;
+      });
     }
   },
   mounted: function mounted() {
@@ -13201,7 +13215,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var api = 'http://localhost/fast-post/public/api';
+var api = 'http://fast-post.com.devel/api';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   api: api,
   token: function token() {
@@ -55102,36 +55116,49 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: { id: "departament", name: "departament" },
                           on: {
-                            change: function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.formSupplier,
-                                "departament",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            }
+                            change: [
+                              function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.$set(
+                                  _vm.formSupplier,
+                                  "departament",
+                                  $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                )
+                              },
+                              function($event) {
+                                return _vm.getMunicipalities(
+                                  _vm.formSupplier.departament
+                                )
+                              }
+                            ]
                           }
                         },
                         [
-                          _c("option", [_vm._v("1")]),
+                          _c("option", { attrs: { value: "", disabled: "" } }, [
+                            _vm._v(" Selecciona un departamento")
+                          ]),
                           _vm._v(" "),
-                          _c("option", [_vm._v("2")]),
-                          _vm._v(" "),
-                          _c("option", [_vm._v("3")]),
-                          _vm._v(" "),
-                          _c("option", [_vm._v("4")]),
-                          _vm._v(" "),
-                          _c("option", [_vm._v("5")])
-                        ]
+                          _vm._l(_vm.departments, function(department) {
+                            return _c(
+                              "option",
+                              {
+                                key: department.id,
+                                domProps: { value: department.id }
+                              },
+                              [_vm._v(" " + _vm._s(department.name) + " ")]
+                            )
+                          })
+                        ],
+                        2
                       )
                     ]),
                     _vm._v(" "),
@@ -55174,16 +55201,22 @@ var render = function() {
                           }
                         },
                         [
-                          _c("option", [_vm._v("1")]),
+                          _c("option", { attrs: { value: "", disabled: "" } }, [
+                            _vm._v(" Selecciona un municipio")
+                          ]),
                           _vm._v(" "),
-                          _c("option", [_vm._v("2")]),
-                          _vm._v(" "),
-                          _c("option", [_vm._v("3")]),
-                          _vm._v(" "),
-                          _c("option", [_vm._v("4")]),
-                          _vm._v(" "),
-                          _c("option", [_vm._v("5")])
-                        ]
+                          _vm._l(_vm.municipalities, function(municipality) {
+                            return _c(
+                              "option",
+                              {
+                                key: municipality.id,
+                                domProps: { value: municipality.id }
+                              },
+                              [_vm._v(" " + _vm._s(municipality.name) + " ")]
+                            )
+                          })
+                        ],
+                        2
                       )
                     ]),
                     _vm._v(" "),

@@ -129,12 +129,10 @@
                       id="departament"
                       name="departament"
                       v-model="formSupplier.departament"
+                      @change="getMunicipalities(formSupplier.departament)"
                     >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                      <option value="" disabled> Selecciona un departamento</option>
+                      <option v-for="department in departments" :value="department.id" :key="department.id"> {{ department.name }} </option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -145,11 +143,8 @@
                       name="city"
                       v-model="formSupplier.city"
                     >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                      <option value="" disabled> Selecciona un municipio</option>
+                      <option v-for="municipality in municipalities" :value="municipality.id" :key="municipality.id"> {{ municipality.name }} </option>
                     </select>
                   </div>
 
@@ -224,7 +219,12 @@ export default {
         active: "",
         tax: "",
       },
+      departments: [],
+      municipalities: []
     };
+  },
+  created(){
+    this.getDepartments();
   },
   methods: {
     CreateSupplier() {
@@ -269,6 +269,17 @@ export default {
       let me = this;
       this.ResetData();
     },
+
+    getDepartments(){
+      axios.get('api/departments', this.$root.config).then((response) =>{
+        this.departments = response.data.departments;
+      });
+    },
+    getMunicipalities(department){
+      axios.get('api/departments/'+department+'/getMunicipalities', this.$root.config).then((response) =>{
+        this.municipalities = response.data.municipalities;
+      });
+    }
   },
   mounted() {
     console.log("Component mounted.");
