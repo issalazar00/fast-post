@@ -11950,6 +11950,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -11957,6 +11966,7 @@ __webpack_require__.r(__webpack_exports__);
     AddProduct: _AddProduct_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     AddClient: _AddClient_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  props: ["order_id"],
   data: function data() {
     return {
       // add product or client with keyup
@@ -11976,31 +11986,37 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
-  watch: {},
   computed: {
     total_tax_exc: function total_tax_exc() {
       var total = 0.0;
       this.productsOrderList.forEach(function (product) {
-        return total += parseFloat(product.price_tax_exc * product.qty);
+        return total += parseFloat(product.price_tax_exc * product.quantity);
       });
       return total;
     },
     total_discount: function total_discount() {
       var total = 0.0;
       this.productsOrderList.forEach(function (product) {
-        total += parseFloat(product.discount_price), product.qty;
+        total += parseFloat(product.discount_price), product.quantity;
       });
       return total;
     },
     total_tax_inc: function total_tax_inc() {
       var total = 0.0;
       this.productsOrderList.forEach(function (product) {
-        total += parseFloat(product.price_tax_inc_total), product.qty;
+        total += parseFloat(product.price_tax_inc_total), product.quantity;
       });
       return total;
     }
   },
+  created: function created() {},
   methods: {
+    listItemsOrder: function listItemsOrder() {
+      var me = this;
+      axios.get("api/orders/".concat(this.order_id), this.$root.config).then(function (response) {
+        me.productsOrderList = response.data;
+      });
+    },
     searchProduct: function searchProduct() {
       var me = this;
 
@@ -12008,8 +12024,8 @@ __webpack_require__.r(__webpack_exports__);
         return false;
       }
 
-      var url = "api/products/searchProduct?product=" + me.filters.product;
-      axios.post(url, null, me.$root.config).then(function (response) {
+      var url = "api/products/search-product?product=" + me.filters.product;
+      axios.post(url, null, this.$root.config).then(function (response) {
         var new_product = response.data.products;
 
         if (!new_product) {
@@ -12026,14 +12042,14 @@ __webpack_require__.r(__webpack_exports__);
       var me = this;
       var result = false; // Verifica si el producto existe en la lista
 
-      me.productsOrderList.filter(function (product) {
-        if (product.barcode === new_product.barcode) {
+      me.productsOrderList.filter(function (prod) {
+        if (new_product.barcode == prod.barcode) {
           result = true;
-        }
 
-        if (result) {
-          // Añade cantidad
-          product.qty += 1;
+          if (result) {
+            // Añade cantidad
+            prod.quantity += 1;
+          }
         }
       });
 
@@ -12044,7 +12060,7 @@ __webpack_require__.r(__webpack_exports__);
           barcode: new_product.barcode,
           discount_percentage: 0,
           discount_price: 0,
-          qty: 1,
+          quantity: 1,
           price_tax_inc: new_product.sale_price_tax_inc,
           price_tax_exc: new_product.sale_price_tax_exc,
           product: new_product.product
@@ -12052,7 +12068,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     removeProduct: function removeProduct(index) {
+      var detail_id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
       this.productsOrderList.splice(index, 1);
+
+      if (detail_id != null) {
+        axios["delete"]("api/order-details/".concat(detail_id), this.$root.config);
+      }
     },
     searchClient: function searchClient() {
       var me = this;
@@ -12080,23 +12101,35 @@ __webpack_require__.r(__webpack_exports__);
       me.order.client = client.name;
       me.filters.client = client.name;
     },
-    createOrder: function createOrder(state_order) {
+    createOrUpdateOrder: function createOrUpdateOrder(state_order) {
       var _this = this;
 
       this.order.state = state_order;
 
       if (this.productsOrderList.length > 0) {
         this.order.productsOrder = this.productsOrderList;
-        axios.post("api/orders", this.order, this.$root.config).then(function () {
-          return _this.$router.replace("/orders");
-        });
+
+        if (this.order_id != 0) {
+          axios.put("api/orders/".concat(this.order_id), this.order, this.$root.config).then(function () {
+            return _this.$router.replace("/orders");
+          });
+        } else {
+          axios.post("api/orders", this.order, this.$root.config).then(function () {
+            return _this.$router.replace("/orders");
+          });
+        }
       } else {
         alert("No hay productos en la orden");
       }
-    }
+    },
+    updateOrder: function updateOrder() {}
   },
   mounted: function mounted() {
     $("#no-results").toast("hide");
+
+    if (this.order_id != null) {
+      this.listItemsOrder();
+    }
   }
 });
 
@@ -12283,6 +12316,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {},
   data: function data() {
@@ -12299,6 +12349,13 @@ __webpack_require__.r(__webpack_exports__);
       var me = this;
       axios.get("api/orders?page=".concat(page), this.$root.config).then(function (response) {
         me.OrderList = response.data.orders;
+      });
+    },
+    deleteOrder: function deleteOrder(order_id) {
+      var _this = this;
+
+      axios["delete"]("api/orders/".concat(order_id), this.$root.config).then(function () {
+        return _this.getOrders(1);
       });
     }
   }
@@ -13228,8 +13285,10 @@ var routes = [{
   props: true,
   name: 'details-order'
 }, {
-  path: '/create-edit-order',
-  component: _components_Order_CreateEditOrder_vue__WEBPACK_IMPORTED_MODULE_19__["default"]
+  path: '/create-edit-order/:order_id',
+  component: _components_Order_CreateEditOrder_vue__WEBPACK_IMPORTED_MODULE_19__["default"],
+  props: true,
+  name: 'create-edit-order'
 }, {
   path: '/login',
   name: 'Login',
@@ -57222,8 +57281,8 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: p.qty,
-                                    expression: "p.qty"
+                                    value: p.quantity,
+                                    expression: "p.quantity"
                                   }
                                 ],
                                 attrs: {
@@ -57233,13 +57292,13 @@ var render = function() {
                                   step: "2",
                                   placeholder: "Cantidad"
                                 },
-                                domProps: { value: p.qty },
+                                domProps: { value: p.quantity },
                                 on: {
                                   input: function($event) {
                                     if ($event.target.composing) {
                                       return
                                     }
-                                    _vm.$set(p, "qty", $event.target.value)
+                                    _vm.$set(p, "quantity", $event.target.value)
                                   }
                                 }
                               })
@@ -57291,7 +57350,7 @@ var render = function() {
                                 },
                                 domProps: {
                                   value: (p.discount_price = (
-                                    p.qty *
+                                    p.quantity *
                                     p.price_tax_inc *
                                     (p.discount_percentage / 100)
                                   ).toFixed(2))
@@ -57304,8 +57363,8 @@ var render = function() {
                                 "\n                $\n                " +
                                   _vm._s(
                                     (p.price_tax_inc_total = (
-                                      p.qty * p.price_tax_inc -
-                                      p.qty *
+                                      p.quantity * p.price_tax_inc -
+                                      p.quantity *
                                         p.price_tax_inc *
                                         (p.discount_percentage / 100)
                                     ).toFixed(2))
@@ -57321,7 +57380,7 @@ var render = function() {
                                   staticClass: "btn",
                                   on: {
                                     click: function($event) {
-                                      return _vm.removeProduct(index)
+                                      return _vm.removeProduct(index, p.id)
                                     }
                                   }
                                 },
@@ -57338,10 +57397,12 @@ var render = function() {
                           _vm._v(" "),
                           _c("th", [
                             _vm._v(
-                              "$ " +
+                              "\n                $ " +
                                 _vm._s(
-                                  (_vm.order.total_tax_exc = _vm.total_tax_exc)
-                                )
+                                  (_vm.order.total_tax_exc =
+                                    _vm.total_tax_exc).toFixed(2)
+                                ) +
+                                "\n              "
                             )
                           ])
                         ]),
@@ -57353,11 +57414,12 @@ var render = function() {
                           _vm._v(" "),
                           _c("th", [
                             _vm._v(
-                              "$ " +
+                              "\n                $ " +
                                 _vm._s(
                                   (_vm.order.total_discount =
-                                    _vm.total_discount)
-                                )
+                                    _vm.total_discount).toFixed(2)
+                                ) +
+                                "\n              "
                             )
                           ])
                         ]),
@@ -57369,10 +57431,12 @@ var render = function() {
                           _vm._v(" "),
                           _c("th", [
                             _vm._v(
-                              "$ " +
+                              "\n                $ " +
                                 _vm._s(
-                                  (_vm.order.total_tax_inc = _vm.total_tax_inc)
-                                )
+                                  (_vm.order.total_tax_inc =
+                                    _vm.total_tax_inc).toFixed(2)
+                                ) +
+                                "\n              "
                             )
                           ])
                         ])
@@ -57387,17 +57451,19 @@ var render = function() {
               "div",
               { staticClass: "text-right" },
               [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "btn btn-outline-secondary btn-block",
-                    attrs: { to: "orders", type: "button" }
-                  },
-                  [
-                    _c("i", { staticClass: "bi bi-receipt" }),
-                    _vm._v(" Cancelar\n          ")
-                  ]
-                ),
+                !_vm.order_id
+                  ? _c(
+                      "router-link",
+                      {
+                        staticClass: "btn btn-outline-secondary btn-block",
+                        attrs: { to: "orders", type: "button" }
+                      },
+                      [
+                        _c("i", { staticClass: "bi bi-receipt" }),
+                        _vm._v(" Cancelar\n          ")
+                      ]
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "button",
@@ -57406,7 +57472,7 @@ var render = function() {
                     attrs: { type: "button" },
                     on: {
                       click: function($event) {
-                        return _vm.createOrder(1)
+                        return _vm.createOrUpdateOrder(1)
                       }
                     }
                   },
@@ -57423,7 +57489,7 @@ var render = function() {
                     attrs: { type: "button" },
                     on: {
                       click: function($event) {
-                        return _vm.createOrder(2)
+                        return _vm.createOrUpdateOrder(2)
                       }
                     }
                   },
@@ -57440,7 +57506,7 @@ var render = function() {
                     attrs: { type: "button" },
                     on: {
                       click: function($event) {
-                        return _vm.createOrder(4)
+                        return _vm.createOrUpdateOrder(3)
                       }
                     }
                   },
@@ -57720,7 +57786,12 @@ var render = function() {
             "router-link",
             {
               staticClass: "btn btn-outline-primary",
-              attrs: { to: "create-edit-order" }
+              attrs: {
+                to: {
+                  name: "create-edit-order",
+                  params: { order_id: null }
+                }
+              }
             },
             [_vm._v("\n        Nueva orden\n      ")]
           )
@@ -57747,14 +57818,9 @@ var render = function() {
                 "tbody",
                 _vm._l(_vm.OrderList.data, function(o) {
                   return _c("tr", { key: o.id }, [
-                    _c(
-                      "th",
-                      {
-                        staticClass: "text-uppercase",
-                        attrs: { scope: "row" }
-                      },
-                      [_vm._v(_vm._s(o.no_invoice))]
-                    ),
+                    _c("th", { attrs: { scope: "row" } }, [
+                      _vm._v(" " + _vm._s(o.id) + " - " + _vm._s(o.no_invoice))
+                    ]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(o.total_paid))]),
                     _vm._v(" "),
@@ -57764,7 +57830,21 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(o.client_id))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(o.state))]),
+                    _c("td", [
+                      o.state == 0
+                        ? _c("span", [_vm._v("Desechada")])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      o.state == 1 ? _c("span", [_vm._v("Abierta")]) : _vm._e(),
+                      _vm._v(" "),
+                      o.state == 2
+                        ? _c("span", [_vm._v("Registrada")])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      o.state == 3
+                        ? _c("span", [_vm._v("Cotización")])
+                        : _vm._e()
+                    ]),
                     _vm._v(" "),
                     _c(
                       "td",
@@ -57786,9 +57866,15 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _vm._m(2, true),
+                    _c("td", [
+                      o.state != 0 && o.state != 2
+                        ? _c("button", { staticClass: "btn" }, [
+                            _c("i", { staticClass: "bi bi-receipt" })
+                          ])
+                        : _vm._e()
+                    ]),
                     _vm._v(" "),
-                    _vm._m(3, true),
+                    _vm._m(2, true),
                     _vm._v(" "),
                     _c(
                       "td",
@@ -57797,7 +57883,12 @@ var render = function() {
                           "router-link",
                           {
                             staticClass: "btn",
-                            attrs: { to: "/details-order" }
+                            attrs: {
+                              to: {
+                                name: "create-edit-order",
+                                params: { order_id: o.id }
+                              }
+                            }
                           },
                           [_c("i", { staticClass: "bi bi-pencil-square" })]
                         )
@@ -57805,7 +57896,20 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _vm._m(4, true)
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteOrder(o.id)
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "bi bi-trash" })]
+                      )
+                    ])
                   ])
                 }),
                 0
@@ -57910,27 +58014,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("td", [
       _c("button", { staticClass: "btn" }, [
-        _c("i", { staticClass: "bi bi-receipt" })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("button", { staticClass: "btn" }, [
         _c("i", { staticClass: "bi bi-printer" })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("button", { staticClass: "btn" }, [
-        _c("i", { staticClass: "bi bi-file-earmark-x" })
       ])
     ])
   }

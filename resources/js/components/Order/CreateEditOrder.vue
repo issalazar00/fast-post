@@ -132,7 +132,7 @@
                     id="quantity"
                     step="2"
                     placeholder="Cantidad"
-                    v-model="p.qty"
+                    v-model="p.quantity"
                   />
                 </td>
                 <td>
@@ -155,7 +155,7 @@
                     disabled
                     :value="
                       (p.discount_price = (
-                        p.qty *
+                        p.quantity *
                         p.price_tax_inc *
                         (p.discount_percentage / 100)
                       ).toFixed(2))
@@ -167,29 +167,37 @@
                   $
                   {{
                     (p.price_tax_inc_total = (
-                      p.qty * p.price_tax_inc -
-                      p.qty * p.price_tax_inc * (p.discount_percentage / 100)
+                      p.quantity * p.price_tax_inc -
+                      p.quantity *
+                        p.price_tax_inc *
+                        (p.discount_percentage / 100)
                     ).toFixed(2))
                   }}
                 </td>
                 <td>
-                  <button class="btn" @click="removeProduct(index)">
+                  <button class="btn" @click="removeProduct(index, p.id)">
                     <i class="bi bi-trash"></i>
                   </button>
                 </td>
               </tr>
               <tr>
                 <th colspan="7">Subtotal:</th>
-                <th>$ {{ (order.total_tax_exc = total_tax_exc) }}</th>
+                <th>
+                  $ {{ (order.total_tax_exc = total_tax_exc).toFixed(2) }}
+                </th>
               </tr>
               <tr>
                 <th colspan="7">Descuento:</th>
-                <th>$ {{ (order.total_discount = total_discount) }}</th>
+                <th>
+                  $ {{ (order.total_discount = total_discount).toFixed(2) }}
+                </th>
               </tr>
 
               <tr>
                 <th colspan="7">Total:</th>
-                <th>$ {{ (order.total_tax_inc = total_tax_inc) }}</th>
+                <th>
+                  $ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}
+                </th>
               </tr>
             </tbody>
             <tbody v-else>
@@ -203,27 +211,28 @@
               to="orders"
               type="button"
               class="btn btn-outline-secondary btn-block"
+              v-if="!order_id"
             >
               <i class="bi bi-receipt"></i> Cancelar
             </router-link>
             <button
               type="button"
               class="btn btn-outline-primary btn-block"
-              @click="createOrder(1)"
+              @click="createOrUpdateOrder(1)"
             >
               <i class="bi bi-receipt"></i> Suspender
             </button>
             <button
               type="button"
               class="btn btn-outline-primary btn-block"
-              @click="createOrder(2)"
+              @click="createOrUpdateOrder(2)"
             >
               <i class="bi bi-receipt"></i> Facturar
             </button>
             <button
               type="button"
               class="btn btn-outline-primary btn-block"
-              @click="createOrder(4)"
+              @click="createOrUpdateOrder(3)"
             >
               <i class="bi bi-receipt"></i> Cotizar
             </button>
@@ -241,6 +250,7 @@ import AddProduct from "./AddProduct.vue";
 import AddClient from "./AddClient.vue";
 export default {
   components: { AddProduct, AddClient },
+  props: ["order_id"],
   data() {
     return {
       // add product or client with keyup
@@ -261,39 +271,48 @@ export default {
       },
     };
   },
-  watch: {},
   computed: {
     total_tax_exc: function () {
       var total = 0.0;
       this.productsOrderList.forEach(
-        (product) => (total += parseFloat(product.price_tax_exc * product.qty))
+        (product) =>
+          (total += parseFloat(product.price_tax_exc * product.quantity))
       );
       return total;
     },
     total_discount: function () {
       var total = 0.0;
       this.productsOrderList.forEach((product) => {
-        (total += parseFloat(product.discount_price)), product.qty;
+        (total += parseFloat(product.discount_price)), product.quantity;
       });
       return total;
     },
     total_tax_inc: function () {
       var total = 0.0;
       this.productsOrderList.forEach((product) => {
-        (total += parseFloat(product.price_tax_inc_total)), product.qty;
+        (total += parseFloat(product.price_tax_inc_total)), product.quantity;
       });
       return total;
     },
   },
+  created() {},
   methods: {
+    listItemsOrder() {
+      let me = this;
+      axios
+        .get(`api/orders/${this.order_id}`, this.$root.config)
+        .then(function (response) {
+          me.productsOrderList = response.data;
+        });
+    },
     searchProduct() {
       let me = this;
       if (me.filters.product == "") {
         return false;
       }
-      var url = "api/products/searchProduct?product=" + me.filters.product;
+      var url = "api/products/search-product?product=" + me.filters.product;
       axios
-        .post(url, null, me.$root.config)
+        .post(url, null, this.$root.config)
         .then(function (response) {
           var new_product = response.data.products;
           if (!new_product) {
@@ -309,15 +328,15 @@ export default {
     },
     addProduct(new_product) {
       let me = this;
-      var result = false;
+      let result = false;
       // Verifica si el producto existe en la lista
-      me.productsOrderList.filter((product) => {
-        if (product.barcode === new_product.barcode) {
+      me.productsOrderList.filter((prod) => {
+        if (new_product.barcode == prod.barcode) {
           result = true;
-        }
-        if (result) {
-          // Añade cantidad
-          product.qty += 1;
+          if (result) {
+            // Añade cantidad
+            prod.quantity += 1;
+          }
         }
       });
 
@@ -328,15 +347,18 @@ export default {
           barcode: new_product.barcode,
           discount_percentage: 0,
           discount_price: 0,
-          qty: 1,
+          quantity: 1,
           price_tax_inc: new_product.sale_price_tax_inc,
           price_tax_exc: new_product.sale_price_tax_exc,
           product: new_product.product,
         });
       }
     },
-    removeProduct(index) {
+    removeProduct(index, detail_id = null) {
       this.productsOrderList.splice(index, 1);
+      if (detail_id != null) {
+        axios.delete(`api/order-details/${detail_id}`, this.$root.config);
+      }
     },
     searchClient() {
       let me = this;
@@ -365,20 +387,30 @@ export default {
       me.filters.client = client.name;
     },
 
-    createOrder(state_order) {
+    createOrUpdateOrder(state_order) {
       this.order.state = state_order;
       if (this.productsOrderList.length > 0) {
         this.order.productsOrder = this.productsOrderList;
-        axios
-          .post(`api/orders`, this.order, this.$root.config)
-          .then(() => this.$router.replace("/orders"));
+        if (this.order_id != 0) {
+          axios
+            .put(`api/orders/${this.order_id}`, this.order, this.$root.config)
+            .then(() => this.$router.replace("/orders"));
+        } else {
+          axios
+            .post(`api/orders`, this.order, this.$root.config)
+            .then(() => this.$router.replace("/orders"));
+        }
       } else {
         alert("No hay productos en la orden");
       }
     },
+    updateOrder() {},
   },
   mounted() {
     $("#no-results").toast("hide");
+    if (this.order_id != null) {
+      this.listItemsOrder();
+    }
   },
 };
 </script>

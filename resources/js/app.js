@@ -85,7 +85,7 @@ const routes = [
   { path: '/create-edit-brand', component: CreateEditBrand },
   { path: '/orders', component: Orders },
   { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order' },
-  { path: '/create-edit-order', component: CreateEditOrder },
+  { path: '/create-edit-order/:order_id', component: CreateEditOrder, props: true, name : 'create-edit-order' },
   { path: '/login', name: 'Login', component: Login },
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index"},
   { path: '/users', name: 'Users', component: Users, alias: "user.index"},
@@ -96,8 +96,6 @@ const routes = [
 const router = new VueRouter({
   routes // short for `routes: routes`
 })
-
-
 
 export default router;
 
