@@ -363,20 +363,20 @@ export default {
   methods: {
     listTaxes() {
       let me = this;
-      axios.get("api/taxes", this.$root.config).then(function (response) {
+      axios.get("api/taxes", me.$root.config).then(function (response) {
         me.taxList = response.data.taxes.data;
       });
     },
     listBrands() {
       let me = this;
-      axios.get("api/brands", this.$root.config).then(function (response) {
+      axios.get("api/brands", me.$root.config).then(function (response) {
         me.brandList = response.data.brands.data;
       });
     },
     listCategories() {
       let me = this;
       axios
-        .get("api/categories?page=1", this.$root.config)
+        .get("api/categories?page=1", me.$root.config)
         .then(function (response) {
           me.categoryList = response.data.categories;
         });
@@ -390,22 +390,28 @@ export default {
     },
     CreateProduct() {
       let me = this;
-      axios.post("api/products", this.formProduct, this.$root.config).then(function () {
-        $("#productModal").modal("hide");
-        me.formProduct = {};
-        this.CloseModal();
-      });
+      axios
+        .post("api/products", me.formProduct, me.$root.config)
+        .then(function () {
+          $("#productModal").modal("hide");
+          me.formProduct = {};
+          me.CloseModal();
+        });
     },
     EditProduct() {
       let me = this;
       axios
-        .put("api/products/" + this.formProduct.id, this.formProduct, this.$root.config)
+        .put(
+          "api/products/" + me.formProduct.id,
+          me.formProduct,
+          me.$root.config
+        )
         .then(function () {
           $("#productModal").modal("hide");
           me.formProduct = {};
         });
-      this.CloseModal();
-      this.edit = false;
+      me.CloseModal();
+      me.edit = false;
     },
     ResetData() {
       let me = this;

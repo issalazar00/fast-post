@@ -10204,19 +10204,19 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     listTaxes: function listTaxes() {
       var me = this;
-      axios.get("api/taxes", this.$root.config).then(function (response) {
+      axios.get("api/taxes", me.$root.config).then(function (response) {
         me.taxList = response.data.taxes.data;
       });
     },
     listBrands: function listBrands() {
       var me = this;
-      axios.get("api/brands", this.$root.config).then(function (response) {
+      axios.get("api/brands", me.$root.config).then(function (response) {
         me.brandList = response.data.brands.data;
       });
     },
     listCategories: function listCategories() {
       var me = this;
-      axios.get("api/categories?page=1", this.$root.config).then(function (response) {
+      axios.get("api/categories?page=1", me.$root.config).then(function (response) {
         me.categoryList = response.data.categories;
       });
     },
@@ -10229,20 +10229,20 @@ __webpack_require__.r(__webpack_exports__);
     },
     CreateProduct: function CreateProduct() {
       var me = this;
-      axios.post("api/products", this.formProduct, this.$root.config).then(function () {
+      axios.post("api/products", me.formProduct, me.$root.config).then(function () {
         $("#productModal").modal("hide");
         me.formProduct = {};
-        this.CloseModal();
+        me.CloseModal();
       });
     },
     EditProduct: function EditProduct() {
       var me = this;
-      axios.put("api/products/" + this.formProduct.id, this.formProduct, this.$root.config).then(function () {
+      axios.put("api/products/" + me.formProduct.id, me.formProduct, me.$root.config).then(function () {
         $("#productModal").modal("hide");
         me.formProduct = {};
       });
-      this.CloseModal();
-      this.edit = false;
+      me.CloseModal();
+      me.edit = false;
     },
     ResetData: function ResetData() {
       var me = this;
