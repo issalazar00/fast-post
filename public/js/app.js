@@ -10150,6 +10150,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -10184,20 +10196,42 @@ __webpack_require__.r(__webpack_exports__);
   components: {},
   computed: {
     gain: function gain() {
-      if (this.formProduct.sale_price_tax_exc != 0 && this.formProduct.tax_id != 0) {
-        return parseFloat(this.formProduct.gain = this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
+      var result = 0.0;
+
+      if (this.formProduct.sale_price_tax_inc != 0 && this.formProduct.tax_id != 0) {
+        result = parseFloat(this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
+        return result;
+      } else {
+        result = parseFloat(this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
+        return result;
       }
     },
     sale_price_tax_exc: function sale_price_tax_exc() {
+      var result = 0.0;
+
       if (this.formProduct.tax_id != 0) {
         var percentage = this.tax.percentage / 100;
-        return this.formProduct.sale_price_tax_exc = Math.round(parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)).toFixed(2);
+        result = Math.round(parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)).toFixed(2);
+        return result;
+      } else {
+        var _percentage = this.tax.percentage / 100;
+
+        result = Math.round(parseFloat(this.formProduct.sale_price_tax_inc) / (1 + _percentage)).toFixed(2);
+        return result;
       }
     },
     wholesale_price_tax_exc: function wholesale_price_tax_exc() {
+      var result = 0.0;
+
       if (this.formProduct.tax_id != 0) {
         var percentage = this.tax.percentage / 100;
-        return this.formProduct.wholesale_price_tax_exc = Math.round(parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)).toFixed(2);
+        result = Math.round(parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + percentage)).toFixed(2);
+        return result;
+      } else {
+        var _percentage2 = this.tax.percentage / 100;
+
+        result = Math.round(parseFloat(this.formProduct.wholesale_price_tax_inc) / (1 + _percentage2)).toFixed(2);
+        return result;
       }
     }
   },
@@ -54442,7 +54476,18 @@ var render = function() {
                         placeholder: ""
                       },
                       domProps: { value: _vm.formProduct.sale_price_tax_exc }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-none" }, [
+                      _vm._v(
+                        "\n                  " +
+                          _vm._s(
+                            (_vm.formProduct.sale_price_tax_exc =
+                              _vm.sale_price_tax_exc)
+                          ) +
+                          "\n                "
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group col-6" }, [
@@ -54476,7 +54521,15 @@ var render = function() {
                           _vm.$set(_vm.formProduct, "gain", $event.target.value)
                         }
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-none" }, [
+                      _vm._v(
+                        "\n                  " +
+                          _vm._s((_vm.formProduct.gain = _vm.gain)) +
+                          "\n                "
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group col-6" }, [
@@ -54553,7 +54606,18 @@ var render = function() {
                           )
                         }
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-none" }, [
+                      _vm._v(
+                        "\n                  " +
+                          _vm._s(
+                            (_vm.formProduct.wholesale_price_tax_exc =
+                              _vm.wholesale_price_tax_exc)
+                          ) +
+                          "\n                "
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group col-6" }, [
