@@ -404,7 +404,6 @@ export default {
         alert("No hay productos en la orden");
       }
     },
-    updateOrder() {},
   },
   mounted() {
     $("#no-results").toast("hide");

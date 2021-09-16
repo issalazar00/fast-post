@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import global from "./../services/global.js";
+import global from "../../services/global.js";
 import CreateEditProduct from "./CreateEditProduct.vue";
 import ImportProducts from "./ImportProducts.vue";
 export default {

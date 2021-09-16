@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KitProduct;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 class ProductController extends Controller
 {
@@ -50,8 +52,40 @@ class ProductController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$product = $request->all();
-		Product::create($product);
+		$new_product = $request->product;
+		$product = new Product();
+		$product->barcode = $new_product['barcode'];
+		$product->product = $new_product['product'];
+		$product->type = $new_product['type'];
+		$product->cost_price = $new_product['cost_price'];
+		$product->gain = $new_product['gain'];
+		$product->sale_price_tax_exc = $new_product['sale_price_tax_exc'];
+		$product->sale_price_tax_inc = $new_product['sale_price_tax_inc'];
+		$product->wholesale_price_tax_exc = $new_product['wholesale_price_tax_exc'];
+		$product->wholesale_price_tax_inc = $new_product['wholesale_price_tax_inc'];
+		$product->stock = $new_product['stock'];
+		$product->quantity = $new_product['quantity'];
+		$product->minimum = $new_product['minimum'];
+		$product->maximum = $new_product['maximum'];
+		$product->category_id = $new_product['category_id'];
+		$product->tax_id = $new_product['tax_id'];
+		$product->brand_id = $new_product['brand_id'];
+		$product->save();
+
+		// Se crea un kit
+		if ($new_product['type'] == 3) {
+			if (count($request->itemListKit) > 0) {
+				foreach ($request->itemListKit as $item) {
+					$kitProduct = new KitProduct();
+					$kitProduct->product_parent_id = $product->id;
+					$kitProduct->product_child_id = $item['product_id'];
+					$kitProduct->quantity = $item['quantity'];
+					$kitProduct->product = $item['product'];
+					$kitProduct->barcode = $item['barcode'];
+					$kitProduct->save();
+				}
+			}
+		}
 	}
 
 	/**
@@ -136,26 +170,27 @@ class ProductController extends Controller
 
 		$products = Product::select()
 			->where('barcode', 'LIKE', "%$request->product%")
-		// 	->orWhere('product', 'LIKE', "%$request->product%")
-		// 	->where('state', 1)
+			->orWhere('product', 'LIKE', "%$request->product%")
+			->where('state', 1)
 			->first();
-		// var_dump($request->product);
 		return ['products' => $products];
 	}
 
 	public function filterProductList(Request $request)
 	{
 
-		if (!$request->product || $request->product == '') {
+		if (!$request->product || $request->product == '' || $request->product == NULL) {
 			$products = Product::select()
 				->where('state', 1)
+				->limit(5)
 				->get();
 		} else {
 			$products = Product::select()
 				->where('state', 1)
 				->where('barcode', 'LIKE', "%$request->product%")
 				->orWhere('product', 'LIKE', "%$request->product%")
-				->get(20);
+				->limit(5)
+				->get();
 		}
 
 

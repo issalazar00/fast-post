@@ -7,7 +7,7 @@
       aria-labelledby="productModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="productModalLabel">Producto</h5>
@@ -82,8 +82,54 @@
                     v-model="formProduct.type"
                     value="3"
                   />
-                  <label class="form-check-label" for="kit">Como paquete</label>
+                  <label
+                    class="form-check-label"
+                    for="kit"
+                    data-toggle="modal"
+                    data-target="#addProductModal"
+                    >Como paquete</label
+                  >
                 </div>
+                <hr />
+                <add-product-kit
+                  v-if="formProduct.type == 3"
+                  @add-product="addProduct($event)"
+                />
+                <table
+                  class="table table-sm table-bordered table-secondary mt-2"
+                  v-if="formProduct.type == 3"
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Código de barras</th>
+                      <th>Producto</th>
+                      <th>Cantidad</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="listItemsKit.length > 0">
+                    <tr v-for="(item, index) in listItemsKit" :key="item.id">
+                      <td>{{ index }}</td>
+                      <td>{{ item.barcode }}</td>
+                      <td>{{ item.product }}</td>
+                      <td>{{ item.quantity }}</td>
+                      <td>
+                        <button
+                          class="btn btn-danger btn-sm"
+                          @click="removeProduct(index, item.id)"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="4">No se han añadido productos</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <div class="form-row">
                 <div class="form-group col-6">
@@ -309,7 +355,8 @@
 </template>
 
 <script>
-import global from "./../services/global.js";
+import global from "../../services/global.js";
+import AddProductKit from "./AddProductKit.vue";
 
 export default {
   data() {
@@ -336,12 +383,15 @@ export default {
         quantity: 0.0,
         maximum: 0.0,
       },
+      listItemsKit: [],
       taxList: [],
       categoryList: {},
       brandList: {},
     };
   },
-  components: {},
+  components: {
+    AddProductKit,
+  },
   computed: {
     gain: function () {
       var result = 0.0;
@@ -393,7 +443,6 @@ export default {
             (1 + percentage)
         ).toFixed(2);
         return result;
-
       }
     },
   },
@@ -427,25 +476,23 @@ export default {
     },
     CreateProduct() {
       let me = this;
-      axios
-        .post("api/products", me.formProduct, me.$root.config)
-        .then(function () {
-          $("#productModal").modal("hide");
-          me.formProduct = {};
-          me.CloseModal();
-        });
+
+      var data = { product: me.formProduct, itemListKit: me.listItemsKit };
+      axios.post("api/products", data, me.$root.config).then(function () {
+        $("#productModal").modal("hide");
+        me.CloseModal();
+      });
     },
     EditProduct() {
       let me = this;
       axios
         .put(
           "api/products/" + me.formProduct.id,
-          me.formProduct,
+          [me.formProduct, me.listItemsKit],
           me.$root.config
         )
         .then(function () {
           $("#productModal").modal("hide");
-          me.formProduct = {};
         });
       me.CloseModal();
       me.edit = false;
@@ -469,6 +516,36 @@ export default {
       this.edit = false;
       this.ResetData();
       this.$emit("list-products");
+    },
+    addProduct(new_product) {
+      let me = this;
+      let result = false;
+      // Verifica si el producto existe en la lista
+      me.listItemsKit.filter((prod) => {
+        if (new_product.barcode == prod.barcode) {
+          result = true;
+          if (result) {
+            // Añade cantidad
+            prod.quantity += 1;
+          }
+        }
+      });
+
+      if (!result) {
+        // Sino, lo añade al array
+        me.listItemsKit.push({
+          product_id: new_product.id,
+          barcode: new_product.barcode,
+          quantity: 1,
+          product: new_product.product,
+        });
+      }
+    },
+    removeProduct(index, detail_id = null) {
+      this.listItemsKit.splice(index, 1);
+      // if (detail_id != null) {
+      //   axios.delete(`api/order-details/${detail_id}`, this.$root.config);
+      // }
     },
     validatePermission(permission) {
       return global.validatePermission(this.$root.permissions, permission);
