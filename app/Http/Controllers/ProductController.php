@@ -72,7 +72,6 @@ class ProductController extends Controller
 		$product->brand_id = $new_product['brand_id'];
 		$product->save();
 
-		// Se crea un kit
 		if ($new_product['type'] == 3) {
 			if (count($request->itemListKit) > 0) {
 				foreach ($request->itemListKit as $item) {
@@ -119,25 +118,42 @@ class ProductController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
+		$p = $request->product;
 		//
 		$product = Product::find($id);
-		$product->barcode = $request['barcode'];
-		$product->product = $request['product'];
-		$product->type = $request['type'];
-		$product->cost_price = $request['cost_price'];
-		$product->gain = $request['gain'];
-		$product->sale_price_tax_exc = $request['sale_price_tax_exc'];
-		$product->sale_price_tax_inc = $request['sale_price_tax_inc'];
-		$product->wholesale_price_tax_exc = $request['wholesale_price_tax_exc'];
-		$product->wholesale_price_tax_inc = $request['wholesale_price_tax_inc'];
-		$product->stock = $request['stock'];
-		$product->quantity = $request['quantity'];
-		$product->minimum = $request['minimum'];
-		$product->maximum = $request['maximum'];
-		$product->category_id = $request['category_id'];
-		$product->tax_id = $request['tax_id'];
-		$product->brand_id = $request['brand_id'];
+		$product->barcode = $p['barcode'];
+		$product->product = $p['product'];
+		$product->type = $p['type'];
+		$product->cost_price = $p['cost_price'];
+		$product->gain = $p['gain'];
+		$product->sale_price_tax_exc = $p['sale_price_tax_exc'];
+		$product->sale_price_tax_inc = $p['sale_price_tax_inc'];
+		$product->wholesale_price_tax_exc = $p['wholesale_price_tax_exc'];
+		$product->wholesale_price_tax_inc = $p['wholesale_price_tax_inc'];
+		$product->stock = $p['stock'];
+		$product->quantity = $p['quantity'];
+		$product->minimum = $p['minimum'];
+		$product->maximum = $p['maximum'];
+		$product->category_id = $p['category_id'];
+		$product->tax_id = $p['tax_id'];
+		$product->brand_id = $p['brand_id'];
 		$product->save();
+
+		if ($p['type'] == 3) {
+			if (count($request->itemListKit) > 0) {
+				foreach ($request->itemListKit as $item) {
+
+					KitProduct::updateOrCreate(
+						['product_parent_id' => $id, 'product_child_id' => $item['product_id']],
+						[
+							'quantity' => $item['quantity'],
+							'product' => $item['product'],
+							'barcode' => $item['barcode']
+						]
+					);
+				}
+			}
+		}
 	}
 
 	/**

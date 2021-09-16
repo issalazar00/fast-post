@@ -6,6 +6,8 @@
       tabindex="-1"
       aria-labelledby="productModalLabel"
       aria-hidden="true"
+      data-backdrop="static"
+      data-keyboard="false"
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -16,6 +18,7 @@
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              @click="CloseModal()"
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -24,7 +27,10 @@
             <form>
               <div class="form-row">
                 <div class="form-group col-5">
-                  <label for="barcode">Codigo de barras</label>
+                  <label for="barcode"
+                    >Codigo de barras
+                    <span class="text-danger">(*)</span></label
+                  >
                   <input
                     type="text"
                     step="any"
@@ -32,16 +38,21 @@
                     id="barcode"
                     v-model="formProduct.barcode"
                     placeholder="Código de barras"
+                    required
                   />
                 </div>
                 <div class="form-group col-7">
-                  <label for="product">Descripción Producto</label>
+                  <label for="product"
+                    >Descripción Producto
+                    <span class="text-danger">(*)</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
                     id="product"
                     v-model="formProduct.product"
                     placeholder="Nombre o descripción de product"
+                    required
                   />
                 </div>
               </div>
@@ -54,7 +65,7 @@
                     id="unidad"
                     v-model="formProduct.type"
                     value="1"
-                    required
+                    checked
                   />
                   <label class="form-check-label" for="unidad"
                     >Por Unidad / Pieza</label
@@ -168,7 +179,9 @@
                 </div>
               </div>
               <div class="form-group col-6">
-                <label for="tax_id">Impuesto</label>
+                <label for="tax_id"
+                  >Impuesto <span class="text-danger">(*)</span></label
+                >
                 <select
                   class="form-control"
                   id="tax_id"
@@ -189,7 +202,9 @@
               <hr />
               <div class="form-row">
                 <div class="form-group col-6">
-                  <label for="cost_price">Precio Costo</label>
+                  <label for="cost_price"
+                    >Precio Costo <span class="text-danger">(*)</span></label
+                  >
                   <input
                     type="number"
                     step="any"
@@ -197,6 +212,7 @@
                     id="cost_price"
                     v-model="formProduct.cost_price"
                     placeholder="Precio de costo"
+                    required
                   />
                 </div>
                 <div class="form-group col-6">
@@ -230,14 +246,18 @@
                   </div>
                 </div>
                 <div class="form-group col-6">
-                  <label for="sale_price_tax_inc">Precio venta con iva</label>
+                  <label for="sale_price_tax_inc"
+                    >Precio venta con iva
+                    <span class="text-danger">(*)</span></label
+                  >
                   <input
                     type="number"
                     step="any"
                     class="form-control"
                     id="sale_price_tax_inc"
                     v-model="formProduct.sale_price_tax_inc"
-                    placeholder=""
+                    placeholder="Impuesto Incluído"
+                    required
                   />
                 </div>
                 <div class="form-group col-6">
@@ -270,6 +290,7 @@
                     class="form-control"
                     id="wholesale_price_tax_inc"
                     v-model="formProduct.wholesale_price_tax_inc"
+                    placeholder="impuesto incluído"
                   />
                 </div>
               </div>
@@ -330,23 +351,25 @@
                   />
                 </div>
               </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  @click="CloseModal()"
+                >
+                  Cerrar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="formProduct.id ? EditProduct() : CreateProduct()"
+                >
+                  Guardar
+                </button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="CloseModal()"
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="formProduct.id ? EditProduct() : CreateProduct()"
-            >
-              Guardar
-            </button>
           </div>
         </div>
       </div>
@@ -473,26 +496,39 @@ export default {
       $("#productModal").modal("show");
       me.formProduct = product;
       me.uploadTax(product.tax_id);
+      if (product.type == 3) {
+        axios
+          .get(`api/kit-products?parent_id=${product.id}`, me.$root.config)
+          .then((response) => (me.listItemsKit = response.data))
+          .catch();
+      }
     },
     CreateProduct() {
       let me = this;
 
-      var data = { product: me.formProduct, itemListKit: me.listItemsKit };
+      var data = {
+        product: me.formProduct,
+        itemListKit: me.listItemsKit,
+      };
+
       axios.post("api/products", data, me.$root.config).then(function () {
         $("#productModal").modal("hide");
         me.CloseModal();
+        me.$emit("list-products");
       });
     },
     EditProduct() {
       let me = this;
+      var data = {
+        product: me.formProduct,
+        itemListKit: me.listItemsKit,
+      };
+
       axios
-        .put(
-          "api/products/" + me.formProduct.id,
-          [me.formProduct, me.listItemsKit],
-          me.$root.config
-        )
+        .put("api/products/" + me.formProduct.id, data, me.$root.config)
         .then(function () {
           $("#productModal").modal("hide");
+          // me.$emit("list-products");
         });
       me.CloseModal();
       me.edit = false;
@@ -503,6 +539,7 @@ export default {
       Object.keys(this.formProduct).forEach(function (key, index) {
         me.formProduct[key] = "";
       });
+      me.listItemsKit = [];
     },
 
     uploadTax(tax_id) {
@@ -543,9 +580,9 @@ export default {
     },
     removeProduct(index, detail_id = null) {
       this.listItemsKit.splice(index, 1);
-      // if (detail_id != null) {
-      //   axios.delete(`api/order-details/${detail_id}`, this.$root.config);
-      // }
+      if (detail_id != null) {
+        axios.delete(`api/kit-products/${detail_id}`, this.$root.config);
+      }
     },
     validatePermission(permission) {
       return global.validatePermission(this.$root.permissions, permission);

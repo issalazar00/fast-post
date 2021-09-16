@@ -12,9 +12,11 @@ class KitProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->parent_id){
+           return KitProduct::select()->where('product_parent_id', $request->parent_id)->get();
+        }
     }
 
     /**
@@ -80,6 +82,6 @@ class KitProductController extends Controller
      */
     public function destroy(KitProduct $kitProduct)
     {
-        //
+        $kitProduct->delete();
     }
 }

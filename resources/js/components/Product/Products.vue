@@ -83,7 +83,9 @@
             <span slot="prev-nav"
               ><i class="bi bi-chevron-double-left"></i
             ></span>
-            <span slot="next-nav"><i class="bi bi-chevron-double-right"></i></span>
+            <span slot="next-nav"
+              ><i class="bi bi-chevron-double-right"></i
+            ></span>
           </pagination>
         </section>
       </div>
@@ -110,18 +112,25 @@ export default {
     };
   },
   created() {
-    this.listProducts(1);
+    this.isLoading = true;
+    let me = this;
+    axios
+      .get("api/products?page=1", this.$root.config)
+      .then(function (response) {
+        me.ProductList = response.data.products;
+      })
+      .finally(() => (this.isLoading = false));
   },
   methods: {
     listProducts(page = 1) {
-      this.isLoading = true;
+      // this.isLoading = true;
       let me = this;
       axios
         .get("api/products?page=" + page, this.$root.config)
         .then(function (response) {
           me.ProductList = response.data.products;
-        })
-        .finally(() => (this.isLoading = false));
+        });
+        // .finally(() => (this.isLoading = false));
     },
     ShowData: function (product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);

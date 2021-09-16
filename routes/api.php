@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DetailOrderController;
+use App\Http\Controllers\KitProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -51,6 +52,8 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
 	Route::post('/products/search-product',  [ProductController::class, 'searchProduct']);
 	Route::post('/products/filter-product-list',  [ProductController::class, 'filterProductList']);
+
+	Route::resource('kit-products', KitProductController::class);
 
 	Route::resource('/suppliers',  SupplierController::class);
 	Route::post('/suppliers/{supplier}/activate',  [SupplierController::class, 'activate']);
