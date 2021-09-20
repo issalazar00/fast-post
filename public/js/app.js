@@ -11409,6 +11409,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -11464,7 +11469,9 @@ __webpack_require__.r(__webpack_exports__);
     listItemsOrder: function listItemsOrder() {
       var me = this;
       axios.get("api/orders/".concat(this.order_id), this.$root.config).then(function (response) {
-        me.productsOrderList = response.data;
+        me.order.id_client = response.data.order_information.client_id;
+        me.order.client = response.data.order_information.client.name;
+        me.productsOrderList = response.data.order_details;
       });
     },
     searchProduct: function searchProduct() {
@@ -56467,132 +56474,136 @@ var render = function() {
         _vm._m(1),
         _vm._v(" "),
         _c("div", { staticClass: "row w-100" }, [
-          _c("div", { staticClass: "input-group" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.filters.product,
-                  expression: "filters.product"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                placeholder: "Código de barras",
-                "aria-label": " with two button addons",
-                "aria-describedby": "button-add-product",
-                autofocus: ""
-              },
-              domProps: { value: _vm.filters.product },
-              on: {
-                keypress: function($event) {
-                  if (
-                    !$event.type.indexOf("key") &&
-                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                  ) {
-                    return null
-                  }
-                  return _vm.searchProduct()
-                },
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.filters, "product", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "input-group-append",
-                attrs: { id: "button-add-product" }
-              },
-              [
-                _c(
-                  "button",
+          _c("div", { staticClass: "col-6" }, [
+            _c("div", { staticClass: "input-group" }, [
+              _c("input", {
+                directives: [
                   {
-                    staticClass: "btn btn-outline-secondary",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        return _vm.searchProduct()
-                      }
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filters.product,
+                    expression: "filters.product"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  placeholder: "Código de barras",
+                  "aria-label": " with two button addons",
+                  "aria-describedby": "button-add-product",
+                  autofocus: ""
+                },
+                domProps: { value: _vm.filters.product },
+                on: {
+                  keypress: function($event) {
+                    if (
+                      !$event.type.indexOf("key") &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                    ) {
+                      return null
                     }
+                    return _vm.searchProduct()
                   },
-                  [_vm._v("\n            Añadir Producto\n          ")]
-                ),
-                _vm._v(" "),
-                _vm._m(2)
-              ]
-            )
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.filters, "product", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "input-group-append",
+                  attrs: { id: "button-add-product" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-secondary",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.searchProduct()
+                        }
+                      }
+                    },
+                    [_vm._v("\n              Añadir Producto\n            ")]
+                  ),
+                  _vm._v(" "),
+                  _vm._m(2)
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filters.client,
+                    expression: "filters.client"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  placeholder: _vm.order.client,
+                  "aria-label": " with two button addons",
+                  "aria-describedby": "button-addon4"
+                },
+                domProps: { value: _vm.filters.client },
+                on: {
+                  keypress: function($event) {
+                    if (
+                      !$event.type.indexOf("key") &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                    ) {
+                      return null
+                    }
+                    return _vm.searchClient()
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.filters, "client", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "input-group-append",
+                  attrs: { id: "button-addon4" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-outline-secondary",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.searchClient()
+                        }
+                      }
+                    },
+                    [_vm._v("\n              Añadir Cliente\n            ")]
+                  ),
+                  _vm._v(" "),
+                  _vm._m(3)
+                ]
+              )
+            ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "input-group" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.filters.client,
-                  expression: "filters.client"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                placeholder: "Documento cliente",
-                "aria-label": " with two button addons",
-                "aria-describedby": "button-addon4"
-              },
-              domProps: { value: _vm.filters.client },
-              on: {
-                keypress: function($event) {
-                  if (
-                    !$event.type.indexOf("key") &&
-                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                  ) {
-                    return null
-                  }
-                  return _vm.searchClient()
-                },
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.filters, "client", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "input-group-append",
-                attrs: { id: "button-addon4" }
-              },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-outline-secondary",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        return _vm.searchClient()
-                      }
-                    }
-                  },
-                  [_vm._v("\n            Añadir Cliente\n          ")]
-                ),
-                _vm._v(" "),
-                _vm._m(3)
-              ]
-            )
-          ])
+          _c("div", { staticClass: "col-6" })
         ]),
         _vm._v(" "),
         _c("section", { staticClass: "w-100" }, [
