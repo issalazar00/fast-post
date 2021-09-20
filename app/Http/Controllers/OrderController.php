@@ -85,6 +85,9 @@ class OrderController extends Controller
 			$new_detail = new DetailOrderController;
 			$new_detail = $new_detail->store($details_order, $order->id);
 		}
+
+		$print = new PrintOrderController();
+		$print = $print->printTicket($order->id);
 	}
 
 	/**
@@ -139,6 +142,7 @@ class OrderController extends Controller
 					'discount_price' => $details_order['discount_price'],
 					'price_tax_exc' => $details_order['price_tax_exc'],
 					'price_tax_inc' => $details_order['price_tax_inc'],
+					'price_tax_inc_total' => $details_order['price_tax_inc_total'],
 					'quantity' => $details_order['quantity'],
 					'barcode' => $details_order['barcode'],
 					'product' => $details_order['product'],

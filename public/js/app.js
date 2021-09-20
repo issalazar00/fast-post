@@ -57199,7 +57199,7 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(i.quantity))]),
               _vm._v(" "),
-              _c("td", [_vm._v("$ " + _vm._s(i.price_tax_inc))]),
+              _c("td", [_vm._v("$ " + _vm._s(i.price_tax_exc))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(i.discount_percentage) + " %")]),
               _vm._v(" "),

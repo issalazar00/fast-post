@@ -43,6 +43,7 @@ class DetailOrderController extends Controller
 			$detail->discount_price = $request['discount_price'];
 			$detail->price_tax_exc = $request['price_tax_exc'];
 			$detail->price_tax_inc = $request['price_tax_inc'];
+			$detail->price_tax_inc_total = $request['price_tax_inc_total'];
 			$detail->quantity = $request['qty'];
 			$detail->product = $request['product'];
 			$detail->save();
