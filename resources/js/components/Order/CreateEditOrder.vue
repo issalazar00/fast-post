@@ -29,62 +29,67 @@
         </div>
       </div>
       <div class="row w-100">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Código de barras"
-            aria-label=" with two button addons"
-            aria-describedby="button-add-product"
-            v-model="filters.product"
-            autofocus
-            @keypress.enter="searchProduct()"
-          />
-          <div class="input-group-append" id="button-add-product">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              @click="searchProduct()"
-            >
-              Añadir Producto
-            </button>
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              data-toggle="modal"
-              data-target="#addProductModal"
-            >
-              <i class="bi bi-card-checklist"></i>
-            </button>
+        <div class="col-6">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Código de barras"
+              aria-label=" with two button addons"
+              aria-describedby="button-add-product"
+              v-model="filters.product"
+              autofocus
+              @keypress.enter="searchProduct()"
+            />
+            <div class="input-group-append" id="button-add-product">
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                @click="searchProduct()"
+              >
+                Añadir Producto
+              </button>
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                data-toggle="modal"
+                data-target="#addProductModal"
+              >
+                <i class="bi bi-card-checklist"></i>
+              </button>
+            </div>
+          </div>
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              :placeholder="order.client"
+              aria-label=" with two button addons"
+              aria-describedby="button-addon4"
+              v-model="filters.client"
+              @keypress.enter="searchClient()"
+            />
+            <div class="input-group-append" id="button-addon4">
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                @click="searchClient()"
+              >
+                Añadir Cliente
+              </button>
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                data-toggle="modal"
+                data-target="#addClientModal"
+              >
+                <i class="bi bi-person-lines-fill"></i>
+              </button>
+            </div>
           </div>
         </div>
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Documento cliente"
-            aria-label=" with two button addons"
-            aria-describedby="button-addon4"
-            v-model="filters.client"
-            @keypress.enter="searchClient()"
-          />
-          <div class="input-group-append" id="button-addon4">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              @click="searchClient()"
-            >
-              Añadir Cliente
-            </button>
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              data-toggle="modal"
-              data-target="#addClientModal"
-            >
-              <i class="bi bi-person-lines-fill"></i>
-            </button>
-          </div>
+        <div class="col-6">
+         
         </div>
       </div>
 
@@ -123,6 +128,7 @@
                     placeholder="Cantidad"
                     v-model="p.price_tax_inc"
                     readonly
+                    class="form-control form-control-sm"
                   />
                 </td>
                 <td>
@@ -132,6 +138,7 @@
                     id="quantity"
                     step="2"
                     placeholder="Cantidad"
+                    class="form-control form-control-sm"
                     v-model="p.quantity"
                   />
                 </td>
@@ -142,12 +149,14 @@
                     id="discount_percentage"
                     step="any"
                     placeholder="Descuento"
+                    class="form-control form-control-sm"
                     v-model="p.discount_percentage"
                   />
                 </td>
                 <td>
                   <input
                     type="number"
+                    class="form-control form-control-sm"
                     name="discount_price"
                     id="discount_price"
                     step="2"
@@ -175,7 +184,10 @@
                   }}
                 </td>
                 <td>
-                  <button class="btn" @click="removeProduct(index, p.id)">
+                  <button
+                    class="btn text-danger"
+                    @click="removeProduct(index, p.id)"
+                  >
                     <i class="bi bi-trash"></i>
                   </button>
                 </td>
@@ -302,7 +314,10 @@ export default {
       axios
         .get(`api/orders/${this.order_id}`, this.$root.config)
         .then(function (response) {
-          me.productsOrderList = response.data;
+          me.order.id_client = response.data.order_information.client_id;
+          me.order.client = response.data.order_information.client.name;
+
+          me.productsOrderList = response.data.order_details;
         });
     },
     searchProduct() {
