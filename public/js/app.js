@@ -12738,6 +12738,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -12748,6 +12761,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      search_product: "",
       isLoading: false,
       ProductList: {}
     };
@@ -12766,11 +12780,10 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     listProducts: function listProducts() {
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      // this.isLoading = true;
       var me = this;
-      axios.get("api/products?page=" + page, this.$root.config).then(function (response) {
+      axios.get("api/products?page=".concat(page, "&product=").concat(me.search_product), this.$root.config).then(function (response) {
         me.ProductList = response.data.products;
-      }); // .finally(() => (this.isLoading = false));
+      });
     },
     ShowData: function ShowData(product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);
@@ -58692,6 +58705,43 @@ var render = function() {
           _vm._v(" "),
           !_vm.isLoading
             ? _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "form-row" }, [
+                  _c("div", { staticClass: "col my-4" }, [
+                    _c("label", { attrs: { for: "search_product" } }, [
+                      _vm._v("Buscar Producto...")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.search_product,
+                          expression: "search_product"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        id: "search_product",
+                        placeholder: "Nombre | Código de barras"
+                      },
+                      domProps: { value: _vm.search_product },
+                      on: {
+                        keydown: function($event) {
+                          return _vm.listProducts(1)
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.search_product = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
                 _c("div", { staticClass: "row justify-content-end" }, [
                   _vm.validatePermission("product.store")
                     ? _c(

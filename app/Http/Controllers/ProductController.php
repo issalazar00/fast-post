@@ -22,9 +22,18 @@ class ProductController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
-		$products = Product::select()->orderBy('product', 'asc')->paginate(10);
+		if ($request->product != '') {
+			$products = Product::select()
+				->where('state', 1)
+				->where('barcode', 'LIKE', "%$request->product%")
+				->orWhere('product', 'LIKE', "%$request->product%")
+				->orderBy('product', 'asc')
+				->paginate(10);
+		} else {
+			$products = Product::select()->orderBy('product', 'asc')->paginate(10);
+		}
 
 		return response()->json([
 			'status' => 'success',
