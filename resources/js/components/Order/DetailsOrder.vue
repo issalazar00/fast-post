@@ -67,7 +67,7 @@
             <td>{{ i.barcode }}</td>
             <td>{{ i.product }}</td>
             <td>{{ i.quantity }}</td>
-            <td>$ {{ i.price_tax_inc }}</td>
+            <td>$ {{ i.price_tax_exc }}</td>
             <td>{{ i.discount_percentage }} %</td>
             <td>$ {{ i.discount_price }}</td>
             <td class="text-right">$ {{ i.price_tax_inc }}</td>
