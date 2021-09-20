@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DetailOrder;
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -25,12 +26,27 @@ class OrderController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
+		if ($request->client != '' || $request->invoice != '') {
+			$orders = Order::whereHas('client', function (Builder $query) use ($request) {
+				if ($request->client != '') {
+					$query->where('name', 'like', "%$request->client%");
+				}
+			});
+			if ($request->no_invoice != '') {
+				$orders = $orders->where('no_invoice', 'like', "%$request->no_invoice");
+			}
+
+			$orders = $orders->paginate(15);
+		} else {
+			$orders = Order::paginate(15);
+		}
+
 		return response()->json([
 			'status' => 'success',
 			'code' => 200,
-			'orders' => Order::orderBy('id', 'DESC')->paginate(20),
+			'orders' => $orders,
 		]);
 	}
 
@@ -81,7 +97,7 @@ class OrderController extends Controller
 	{
 		// var_dump($order);
 		$details  = Order::find($order->id);
-		return $details->detailOrders()->get();
+		return ['order_information' => $details, 'order_details' => $details->detailOrders()->get()];
 	}
 
 	/**

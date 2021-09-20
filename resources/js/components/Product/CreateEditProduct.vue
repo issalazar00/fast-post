@@ -192,7 +192,7 @@
                   <option value="0">--Select--</option>
                   <option
                     v-for="t in taxList"
-                    :key="t.percentage"
+                    :key="t.id"
                     :value="t.id"
                   >
                     {{ t.percentage }}

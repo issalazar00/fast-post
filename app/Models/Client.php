@@ -24,4 +24,9 @@ class Client extends Model
         'active',
         'tax'
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

@@ -123,6 +123,7 @@
                     placeholder="Cantidad"
                     v-model="p.price_tax_inc"
                     readonly
+                    class="form-control form-control-sm"
                   />
                 </td>
                 <td>
@@ -132,6 +133,7 @@
                     id="quantity"
                     step="2"
                     placeholder="Cantidad"
+                    class="form-control form-control-sm"
                     v-model="p.quantity"
                   />
                 </td>
@@ -142,12 +144,14 @@
                     id="discount_percentage"
                     step="any"
                     placeholder="Descuento"
+                    class="form-control form-control-sm"
                     v-model="p.discount_percentage"
                   />
                 </td>
                 <td>
                   <input
                     type="number"
+                    class="form-control form-control-sm"
                     name="discount_price"
                     id="discount_price"
                     step="2"
@@ -175,7 +179,10 @@
                   }}
                 </td>
                 <td>
-                  <button class="btn" @click="removeProduct(index, p.id)">
+                  <button
+                    class="btn text-danger"
+                    @click="removeProduct(index, p.id)"
+                  >
                     <i class="bi bi-trash"></i>
                   </button>
                 </td>

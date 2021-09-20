@@ -11402,6 +11402,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -11621,10 +11628,80 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ["order_id"],
   data: function data() {
     return {
+      orderInformation: {
+        client: ""
+      },
       ItemList: {}
     };
   },
@@ -11635,7 +11712,8 @@ __webpack_require__.r(__webpack_exports__);
     getDetailsOrder: function getDetailsOrder() {
       var me = this;
       axios.get("api/orders/".concat(this.order_id), this.$root.config).then(function (response) {
-        me.ItemList = response.data;
+        me.orderInformation = response.data.order_information;
+        me.ItemList = response.data.order_details;
       });
     }
   }
@@ -11775,11 +11853,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {},
   data: function data() {
     return {
-      OrderList: {}
+      OrderList: {},
+      filter: {
+        client: "",
+        no_invoice: ""
+      }
     };
   },
   created: function created() {
@@ -11789,7 +11875,7 @@ __webpack_require__.r(__webpack_exports__);
     getOrders: function getOrders() {
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var me = this;
-      axios.get("api/orders?page=".concat(page), this.$root.config).then(function (response) {
+      axios.get("api/orders?page=".concat(page, "&client=").concat(me.filter.client, "&no_invoice=").concat(me.filter.no_invoice), this.$root.config).then(function (response) {
         me.OrderList = response.data.orders;
       });
     },
@@ -56544,6 +56630,7 @@ var render = function() {
                                     expression: "p.price_tax_inc"
                                   }
                                 ],
+                                staticClass: "form-control form-control-sm",
                                 attrs: {
                                   type: "number",
                                   name: "price",
@@ -56578,6 +56665,7 @@ var render = function() {
                                     expression: "p.quantity"
                                   }
                                 ],
+                                staticClass: "form-control form-control-sm",
                                 attrs: {
                                   type: "number",
                                   name: "quantity",
@@ -56607,6 +56695,7 @@ var render = function() {
                                     expression: "p.discount_percentage"
                                   }
                                 ],
+                                staticClass: "form-control form-control-sm",
                                 attrs: {
                                   type: "number",
                                   name: "discount_percentage",
@@ -56632,6 +56721,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("td", [
                               _c("input", {
+                                staticClass: "form-control form-control-sm",
                                 attrs: {
                                   type: "number",
                                   name: "discount_price",
@@ -56670,7 +56760,7 @@ var render = function() {
                               _c(
                                 "button",
                                 {
-                                  staticClass: "btn",
+                                  staticClass: "btn text-danger",
                                   on: {
                                     click: function($event) {
                                       return _vm.removeProduct(index, p.id)
@@ -56988,12 +57078,93 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("section", [
+    _c("section", { staticClass: "page-header" }, [
+      _c("h4", { staticClass: "w-100 text-center" }, [
+        _vm._v("Detalles de Orden")
+      ]),
+      _vm._v(" "),
+      _c("table", { staticClass: "table table-bordered w-100 table-sm" }, [
+        _c("tbody", [
+          _c("tr", [
+            _c("td", [_vm._v("No. Factura")]),
+            _vm._v(" "),
+            _c("th", [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.orderInformation.no_invoice) +
+                  "\n          "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Fecha")]),
+            _vm._v(" "),
+            _c("th", [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.orderInformation.updated_at) +
+                  "\n          "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Nombres:")]),
+            _vm._v(" "),
+            _c("th", [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.orderInformation.client.name) +
+                  "\n          "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Documento / Nit:")]),
+            _vm._v(" "),
+            _c("th", [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.orderInformation.client.document) +
+                  "\n          "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Direccion")]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.orderInformation.client.address))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Email")]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.orderInformation.client.email))])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", [_vm._v("Celular / Télefono")]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.orderInformation.client.mobile))])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("section", { staticClass: "mt-5" }, [
+      _c("h5", { staticClass: "text-center" }, [_vm._v("Detalles")]),
+      _vm._v(" "),
       _c("table", { staticClass: "table table-sm table-bordered" }, [
-        _vm._m(0),
+        _vm._m(1),
         _vm._v(" "),
         _c(
           "tbody",
+          {},
           _vm._l(_vm.ItemList, function(i, index) {
             return _c("tr", { key: i.id }, [
               _c("td", [_vm._v(_vm._s(index + 1))]),
@@ -57004,22 +57175,72 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(i.quantity))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(i.price_tax_inc))]),
+              _c("td", [_vm._v("$ " + _vm._s(i.price_tax_inc))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(i.discount_percentage))]),
+              _c("td", [_vm._v(_vm._s(i.discount_percentage) + " %")]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(i.discount_price))]),
+              _c("td", [_vm._v("$ " + _vm._s(i.discount_price))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(i.price_tax_exc))])
+              _c("td", { staticClass: "text-right" }, [
+                _vm._v("$ " + _vm._s(i.price_tax_inc))
+              ])
             ])
           }),
           0
-        )
+        ),
+        _vm._v(" "),
+        _c("tfoot", { staticClass: "table-secondary" }, [
+          _c("tr", [
+            _c("td", { attrs: { colspan: "7" } }, [_vm._v("Subtotal")]),
+            _vm._v(" "),
+            _c("td", { staticClass: "text-right" }, [
+              _vm._v(
+                "\n          $  " +
+                  _vm._s(_vm.orderInformation.total_iva_exc) +
+                  "\n          "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", { attrs: { colspan: "7" } }, [_vm._v("Descuento")]),
+            _vm._v(" "),
+            _c("td", { staticClass: "text-right" }, [
+              _vm._v(
+                "\n          $  " +
+                  _vm._s(_vm.orderInformation.total_discount) +
+                  "\n          "
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("td", { attrs: { colspan: "7" } }, [_vm._v("Total")]),
+            _vm._v(" "),
+            _c("th", { staticClass: "h5 text-right" }, [
+              _vm._v(
+                "\n          $  " +
+                  _vm._s(_vm.orderInformation.total_iva_inc) +
+                  "\n          "
+              )
+            ])
+          ])
+        ])
       ])
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", { staticClass: "text-center", attrs: { colspan: "2" } }, [
+        _vm._v("Cliente")
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -57097,7 +57318,81 @@ var render = function() {
       "section",
       [
         _c("div", { staticClass: "card-body" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "form-row" }, [
+            _c("h6", { staticClass: "w-100" }, [_vm._v("Buscar...")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "nro_factura" } }, [
+                _vm._v("Nro Factura")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filter.no_invoice,
+                    expression: "filter.no_invoice"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  name: "nro_factura",
+                  id: "nro_factura",
+                  placeholder: "Nro Factura"
+                },
+                domProps: { value: _vm.filter.no_invoice },
+                on: {
+                  keypress: function($event) {
+                    return _vm.getOrders(1)
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.filter, "no_invoice", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "name_client" } }, [
+                _vm._v("Cliente")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.filter.client,
+                    expression: "filter.client"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  name: "name_client",
+                  id: "name_client",
+                  placeholder: "Cliente"
+                },
+                domProps: { value: _vm.filter.client },
+                on: {
+                  keypress: function($event) {
+                    return _vm.getOrders(1)
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.filter, "client", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]),
           _vm._v(" "),
           _c(
             "table",
@@ -57105,14 +57400,14 @@ var render = function() {
               staticClass: "table table-sm table-bordered table-responsive-sm"
             },
             [
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
               _c(
                 "tbody",
                 _vm._l(_vm.OrderList.data, function(o) {
                   return _c("tr", { key: o.id }, [
                     _c("th", { attrs: { scope: "row" } }, [
-                      _vm._v(" " + _vm._s(o.id) + " - " + _vm._s(o.no_invoice))
+                      _vm._v(_vm._s(o.id) + " - " + _vm._s(o.no_invoice))
                     ]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(o.total_paid))]),
@@ -57121,7 +57416,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(o.total_discount))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(o.client_id))]),
+                    _c("td", [_vm._v(_vm._s(o.client.name))]),
                     _vm._v(" "),
                     _c("td", [
                       o.state == 0
@@ -57167,7 +57462,7 @@ var render = function() {
                         : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _vm._m(2, true),
+                    _vm._m(1, true),
                     _vm._v(" "),
                     _c(
                       "td",
@@ -57235,42 +57530,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-row" }, [
-      _c("h6", { staticClass: "w-100" }, [_vm._v("Buscar...")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "nro_factura" } }, [_vm._v("Nro Factura")]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            type: "text",
-            name: "nro_factura",
-            id: "nro_factura",
-            placeholder: "Nro Factura"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "name_client" } }, [_vm._v("Cliente")]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            type: "text",
-            name: "name_client",
-            id: "name_client",
-            placeholder: "Cliente"
-          }
-        })
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -57924,7 +58183,7 @@ var render = function() {
                       _vm._l(_vm.taxList, function(t) {
                         return _c(
                           "option",
-                          { key: t.percentage, domProps: { value: t.id } },
+                          { key: t.id, domProps: { value: t.id } },
                           [
                             _vm._v(
                               "\n                  " +
