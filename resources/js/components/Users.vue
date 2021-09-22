@@ -50,26 +50,20 @@
               <td v-else> No definido</td>
               <td v-if="$root.validatePermission('user.active')">
                 <button
-                  class="btn btn-success"
-                  v-if="user.state == 1"
-                  @click="DeactivateUser(user.id)"
+                  class="btn"
+                  :class="user.state ? 'btn-success' : 'btn-danger'"
+                  @click="changeState(user.id)"
                 >
-                  <i class="bi bi-check-circle-fill"></i>
-                </button>
-                <button
-                  class="btn btn-danger"
-                  v-else
-                  @click="ActivateUser(user.id)"
-                >
-                  <i class="bi bi-x-circle"></i>
+                  <i v-if="user.state" class="bi bi-check-circle-fill"></i>
+                  <i v-else class="bi bi-x-circle"></i>
                 </button>
               </td>
               <td v-if="$root.validatePermission('user.update')">
                 <button
-                  class="btn btn-success"
+                  class="btn btn-outline-success"
                   @click="ShowData(user)"
                 >
-                  Editar
+                  <i class="bi bi-pen"></i>
                 </button>
               </td>
             </tr>
@@ -125,18 +119,10 @@ export default {
       this.$refs.CreateEditUser.OpenEditUser(user);
     },
     
-    ActivateUser: function (id) {
+    changeState: function (id) {
       let me = this;
       axios
         .post("api/users/" + id + "/activate", null, me.$root.config)
-        .then(function () {
-          me.listUsers(1);
-        });
-    },
-    DeactivateUser: function (id) {
-      let me = this;
-      axios
-        .post("api/users/" + id + "/deactivate", null, me.$root.config)
         .then(function () {
           me.listUsers(1);
         });

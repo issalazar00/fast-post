@@ -95,8 +95,7 @@ class SupplierController extends Controller
 		$supplier->contact = $request->contact;
 		$supplier->email = $request->email;
 		$supplier->type_person = $request->type_person;
-		$supplier->departament = $request->departament;
-		$supplier->city = $request->city;
+		$supplier->municipality_id = $request->municipality_id;
 		$supplier->type_document = $request->type_document;
 		$supplier->document = $request->document;
 		$supplier->tax = $request->tax;

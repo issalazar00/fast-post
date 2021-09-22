@@ -21,8 +21,7 @@ class CreateClientsTable extends Migration
             $table->string('contact')->nullable();
             $table->string('email')->nullable();
             $table->string('type_person')->nullable();
-            $table->integer('departament')->nullable();
-            $table->integer('city')->nullable();
+            $table->string('municipality_id', 10)->nullable();
             $table->tinyInteger('type_document');
             $table->integer('document');
             $table->tinyInteger('active')->default('1');

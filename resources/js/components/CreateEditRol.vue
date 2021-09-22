@@ -159,6 +159,7 @@ export default {
         });
     },
     closeModal: function () {
+      $("#form_rol")[0].reset();
       this.ResetData();
       this.$emit("list-roles");
     },
@@ -166,7 +167,7 @@ export default {
       let me = this;
       $("#rolModal").modal("hide");
       me.formRol = {};
-      $("#form_rol")[0].reset();
+      //$("#form_rol")[0].reset();
       this.assignErrors(false);
     },
     assignErrors(response) {
