@@ -18,10 +18,10 @@ class CreateOrdersTable extends Migration
       $table->foreignId('user_id');
       $table->foreignId('client_id')->nullable();
       $table->string('no_invoice')->rand(1, 10);
-      $table->decimal('total_paid');
-      $table->decimal('total_iva_inc');
-      $table->decimal('total_iva_exc');
-      $table->decimal('total_discount');
+      $table->float('total_paid', 20, 4);
+      $table->float('total_iva_inc', 20, 4);
+      $table->float('total_iva_exc', 20, 4);
+      $table->float('total_discount', 20, 4);
       $table->tinyInteger('state')->default('1');
 
       $table->foreign('user_id')

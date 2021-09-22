@@ -164,6 +164,9 @@
                     :value="formProduct.sale_price_tax_exc"
                     placeholder=""
                   />
+                  <div class="d-none">
+                    {{ (formProduct.sale_price_tax_exc = sale_price_tax_exc) }}
+                  </div>
                 </div>
                 <div class="form-group col-6">
                   <label for="gain">Ganancia</label>
@@ -176,6 +179,9 @@
                     readonly="readonly"
                     v-model="formProduct.gain"
                   />
+                  <div class="d-none">
+                    {{ (formProduct.gain = gain) }}
+                  </div>
                 </div>
                 <div class="form-group col-6">
                   <label for="sale_price_tax_inc">Precio venta con iva</label>
@@ -201,6 +207,12 @@
                     placeholder=""
                     readonly
                   />
+                  <div class="d-none">
+                    {{
+                      (formProduct.wholesale_price_tax_exc =
+                        wholesale_price_tax_exc)
+                    }}
+                  </div>
                 </div>
                 <div class="form-group col-6">
                   <label for="wholesale_price_tax_inc"
@@ -332,51 +344,76 @@ export default {
   components: {},
   computed: {
     gain: function () {
+      var result = 0.0;
       if (
-        this.formProduct.sale_price_tax_exc != 0 &&
+        this.formProduct.sale_price_tax_inc != 0 &&
         this.formProduct.tax_id != 0
       ) {
-        return parseFloat(
-          (this.formProduct.gain =
-            this.formProduct.sale_price_tax_exc - this.formProduct.cost_price)
+        result = parseFloat(
+          this.formProduct.sale_price_tax_exc - this.formProduct.cost_price
         );
+        return result;
+      } else {
+        result = parseFloat(
+          this.formProduct.sale_price_tax_exc - this.formProduct.cost_price
+        );
+        return result;
       }
     },
     sale_price_tax_exc: function () {
+      var result = 0.0;
       if (this.formProduct.tax_id != 0) {
         let percentage = this.tax.percentage / 100;
-        return (this.formProduct.sale_price_tax_exc = Math.round(
+        result = Math.round(
           parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)
-        ).toFixed(2));
+        ).toFixed(2);
+        return result;
+      } else {
+        let percentage = this.tax.percentage / 100;
+        result = Math.round(
+          parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)
+        ).toFixed(2);
+        return result;
       }
     },
     wholesale_price_tax_exc() {
+      var result = 0.0;
       if (this.formProduct.tax_id != 0) {
         let percentage = this.tax.percentage / 100;
-        return (this.formProduct.wholesale_price_tax_exc = Math.round(
+        result = Math.round(
           parseFloat(this.formProduct.wholesale_price_tax_inc) /
             (1 + percentage)
-        ).toFixed(2));
+        ).toFixed(2);
+
+        return result;
+      } else {
+        let percentage = this.tax.percentage / 100;
+        result = Math.round(
+          parseFloat(this.formProduct.wholesale_price_tax_inc) /
+            (1 + percentage)
+        ).toFixed(2);
+        return result;
+
       }
     },
   },
   methods: {
     listTaxes() {
       let me = this;
-      axios.get("api/taxes", this.$root.config).then(function (response) {
+      axios.get("api/taxes", me.$root.config).then(function (response) {
         me.taxList = response.data.taxes.data;
       });
     },
     listBrands() {
       let me = this;
-      axios.get("api/brands", this.$root.config).then(function (response) {
+      axios.get("api/brands", me.$root.config).then(function (response) {
         me.brandList = response.data.brands.data;
       });
     },
     listCategories() {
       let me = this;
       axios
-        .get("api/categories?page=1", this.$root.config)
+        .get("api/categories?page=1", me.$root.config)
         .then(function (response) {
           me.categoryList = response.data.categories;
         });
@@ -390,22 +427,28 @@ export default {
     },
     CreateProduct() {
       let me = this;
-      axios.post("api/products", this.formProduct, this.$root.config).then(function () {
-        $("#productModal").modal("hide");
-        me.formProduct = {};
-        this.CloseModal();
-      });
+      axios
+        .post("api/products", me.formProduct, me.$root.config)
+        .then(function () {
+          $("#productModal").modal("hide");
+          me.formProduct = {};
+          me.CloseModal();
+        });
     },
     EditProduct() {
       let me = this;
       axios
-        .put("api/products/" + this.formProduct.id, this.formProduct, this.$root.config)
+        .put(
+          "api/products/" + me.formProduct.id,
+          me.formProduct,
+          me.$root.config
+        )
         .then(function () {
           $("#productModal").modal("hide");
           me.formProduct = {};
         });
-      this.CloseModal();
-      this.edit = false;
+      me.CloseModal();
+      me.edit = false;
     },
     ResetData() {
       let me = this;

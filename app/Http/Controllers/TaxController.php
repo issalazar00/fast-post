@@ -139,6 +139,8 @@ class TaxController extends Controller
 
 		if ($tax) {
 			$tax->percentage = $request->input('percentage');
+			$tax->name = $request->input('name');
+
 			$tax->save();
 			$data = [
 				'status' => 'success',

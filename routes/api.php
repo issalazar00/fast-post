@@ -4,6 +4,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DetailOrderController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -44,21 +45,20 @@ Route::middleware('auth:api')->group(function () {
 
 	Route::resource('/orders',  OrderController::class);
 
+	Route::resource('/order-details', DetailOrderController::class);
+
 	Route::resource('/products',  ProductController::class);
 	Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
 	Route::post('/products/search-product',  [ProductController::class, 'searchProduct']);
 	Route::post('/products/filter-product-list',  [ProductController::class, 'filterProductList']);
 
-
 	Route::resource('/suppliers',  SupplierController::class);
 	Route::post('/suppliers/{supplier}/activate',  [SupplierController::class, 'activate']);
-
 
 	Route::resource('/clients',  ClientController::class);
 	Route::post('/clients/{client}/activate',  [ClientController::class, 'activate']);
 	Route::post('/clients/search-client',  [ClientController::class, 'searchClient']);
 	Route::post('/clients/filter-client-list',  [ClientController::class, 'filterClientList']);
-
 
 	Route::get('/roles/getAllRoles', [RoleController::class, 'getAllRoles']);
 	Route::resource('/roles', RoleController::class);
