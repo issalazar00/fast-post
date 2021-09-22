@@ -40,7 +40,7 @@ import ImportProducts from './components/ImportProducts'
 
 import Roles from './components/Roles.vue';
 import Users from './components/Users.vue';
-
+import Configuration from './components/Configuration.vue';
 //Services
 import global from './services/global.js';
 
@@ -89,6 +89,7 @@ const routes = [
   { path: '/login', name: 'Login', component: Login },
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index"},
   { path: '/users', name: 'Users', component: Users, alias: "user.index"},
+  {path: '/configuration', name:'Configuration', component:Configuration},
   { path: '**', name: 'NoFound', component: NoFound },
 
 ]

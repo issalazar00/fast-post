@@ -1,7 +1,7 @@
 <template>
   <div class="col-12">
     <h3 class="page-header">Proveedores</h3>
-
+    <moon-loader :loading="isLoading" :color="'#032F6C'" :size="100" />
     <div class="row justify-content-end mx-4">
       <button
         type="reset"
@@ -14,7 +14,7 @@
       </button>
     </div>
 
-    <section class="card-body">
+    <section class="card-body" v-if="!isLoading">
       <table class="table table-bordered table-sm">
         <thead>
           <tr>
@@ -90,6 +90,7 @@ export default {
     return {
       supplierList: {},
       edit: false,
+      isLoading: false,
     };
   },
   created() {
@@ -98,10 +99,13 @@ export default {
   methods: {
     listSuppliers(page = 1) {
       let me = this;
+      me.isLoading = true;
       axios
         .get("api/suppliers?page=" + page, this.$root.config)
         .then(function (response) {
           me.supplierList = response.data.suppliers;
+        }).finally(()=>{
+          me.isLoading = false;
         });
     },
     ShowData: function (supplier) {

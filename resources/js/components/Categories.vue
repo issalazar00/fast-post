@@ -48,8 +48,8 @@
                   class="btn"
                   :class="
                     category.active == '1'
-                      ? ' btn-outline-success'
-                      : ' btn-outline-danger'
+                      ? ' btn-success'
+                      : ' btn-danger'
                   "
                   @click="changeState(category.id)"
                 >
@@ -62,10 +62,10 @@
               </td>
               <td v-if="$root.validatePermission('category.update')">
                 <button
-                  class="btn btn-success"
+                  class="btn btn-outline-success"
                   @click="ShowData(category), (edit = true)"
                 >
-                  Editar
+                  <i class="bi bi-pen"></i>
                 </button>
               </td>
             </tr>

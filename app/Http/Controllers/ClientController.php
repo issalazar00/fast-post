@@ -89,8 +89,21 @@ class ClientController extends Controller
 	public function update(Request $request, $id)
 	{
 		$client = Client::find($id);
-		$client = $request->input();
-		$client->save();
+
+		if($client){
+			$client->name = $request->name;
+			$client->address = $request->address;
+			$client->mobile = $request->mobile;
+			$client->contact = $request->contact;
+			$client->email = $request->email;
+			$client->type_person = $request->type_person;
+			$client->municipality_id = $request->municipality_id;
+			$client->type_document = $request->type_document;
+			$client->document = $request->document;
+			$client->tax = $request->tax;
+			$client->update();
+		}
+
 	}
 
 	/**

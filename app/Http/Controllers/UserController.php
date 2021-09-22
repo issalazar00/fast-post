@@ -229,20 +229,7 @@ class UserController extends Controller
     {
         //
         $user = User::find($id);
-        $user->state = '1';
-        $user->save();
-    }
-
-    /**
-     * Deactivate the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function deactivate($id)
-    {
-        $user = User::find($id);
-        $user->state = '0';
+        $user->state = !$user->state;
         $user->save();
     }
 }
