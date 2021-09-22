@@ -56,6 +56,7 @@
             <th>Producto</th>
             <th>Cantidad</th>
             <th>Precio sin IVA</th>
+            <th>Precio con IVA</th>
             <th>Descuento %</th>
             <th>Descuento $</th>
             <th>Precio Total</th>
@@ -68,26 +69,27 @@
             <td>{{ i.product }}</td>
             <td>{{ i.quantity }}</td>
             <td>$ {{ i.price_tax_exc }}</td>
+            <td>$ {{ i.price_tax_inc }}</td>
             <td>{{ i.discount_percentage }} %</td>
             <td>$ {{ i.discount_price }}</td>
-            <td class="text-right">$ {{ i.price_tax_inc }}</td>
+            <td class="text-right">$ {{ i.price_tax_inc_total }}</td>
           </tr>
         </tbody>
         <tfoot class="table-secondary">
           <tr>
-            <td colspan="7">Subtotal</td>
+            <td colspan="8">Subtotal</td>
             <td class="text-right">
             $  {{ orderInformation.total_iva_exc }}
             </td>
           </tr>
           <tr>
-            <td colspan="7">Descuento</td>
+            <td colspan="8">Descuento</td>
             <td class="text-right">
             $  {{ orderInformation.total_discount }}
             </td>
           </tr>
           <tr>
-            <td colspan="7">Total</td>
+            <td colspan="8">Total</td>
             <th class="h5 text-right">
             $  {{ orderInformation.total_iva_inc }}
             </th>

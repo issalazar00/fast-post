@@ -11414,6 +11414,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -11602,6 +11611,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
+//
 //
 //
 //
@@ -56487,136 +56498,132 @@ var render = function() {
         _vm._m(1),
         _vm._v(" "),
         _c("div", { staticClass: "row w-100" }, [
-          _c("div", { staticClass: "col-6" }, [
-            _c("div", { staticClass: "input-group" }, [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filters.product,
-                    expression: "filters.product"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  placeholder: "Código de barras",
-                  "aria-label": " with two button addons",
-                  "aria-describedby": "button-add-product",
-                  autofocus: ""
-                },
-                domProps: { value: _vm.filters.product },
-                on: {
-                  keypress: function($event) {
-                    if (
-                      !$event.type.indexOf("key") &&
-                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                    ) {
-                      return null
-                    }
-                    return _vm.searchProduct()
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.filters, "product", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "div",
+          _c("div", { staticClass: "input-group col-6" }, [
+            _c("input", {
+              directives: [
                 {
-                  staticClass: "input-group-append",
-                  attrs: { id: "button-add-product" }
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filters.product,
+                  expression: "filters.product"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                placeholder: "Código de barras",
+                "aria-label": " with two button addons",
+                "aria-describedby": "button-add-product",
+                autofocus: ""
+              },
+              domProps: { value: _vm.filters.product },
+              on: {
+                keypress: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.searchProduct()
                 },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-outline-secondary",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          return _vm.searchProduct()
-                        }
-                      }
-                    },
-                    [_vm._v("\n              Añadir Producto\n            ")]
-                  ),
-                  _vm._v(" "),
-                  _vm._m(2)
-                ]
-              )
-            ]),
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.filters, "product", $event.target.value)
+                }
+              }
+            }),
             _vm._v(" "),
-            _c("div", { staticClass: "input-group" }, [
-              _c("input", {
-                directives: [
+            _c(
+              "div",
+              {
+                staticClass: "input-group-append",
+                attrs: { id: "button-add-product" }
+              },
+              [
+                _c(
+                  "button",
                   {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.filters.client,
-                    expression: "filters.client"
-                  }
-                ],
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  placeholder: _vm.order.client,
-                  "aria-label": " with two button addons",
-                  "aria-describedby": "button-addon4"
-                },
-                domProps: { value: _vm.filters.client },
-                on: {
-                  keypress: function($event) {
-                    if (
-                      !$event.type.indexOf("key") &&
-                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-                    ) {
-                      return null
-                    }
-                    return _vm.searchClient()
-                  },
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.filters, "client", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "input-group-append",
-                  attrs: { id: "button-addon4" }
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-outline-secondary",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          return _vm.searchClient()
-                        }
+                    staticClass: "btn btn-outline-secondary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.searchProduct()
                       }
-                    },
-                    [_vm._v("\n              Añadir Cliente\n            ")]
-                  ),
-                  _vm._v(" "),
-                  _vm._m(3)
-                ]
-              )
-            ])
+                    }
+                  },
+                  [_vm._v("\n            Añadir Producto\n          ")]
+                ),
+                _vm._v(" "),
+                _vm._m(2)
+              ]
+            )
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-6" })
+          _c("div", { staticClass: "input-group col-6" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filters.client,
+                  expression: "filters.client"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                placeholder: _vm.order.client,
+                "aria-label": " with two button addons",
+                "aria-describedby": "button-addon4"
+              },
+              domProps: { value: _vm.filters.client },
+              on: {
+                keypress: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.searchClient()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.filters, "client", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "input-group-append",
+                attrs: { id: "button-addon4" }
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-outline-secondary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.searchClient()
+                      }
+                    }
+                  },
+                  [_vm._v("\n            Añadir Cliente\n          ")]
+                ),
+                _vm._v(" "),
+                _vm._m(3)
+              ]
+            )
+          ])
         ]),
         _vm._v(" "),
         _c("section", { staticClass: "w-100" }, [
@@ -56633,226 +56640,239 @@ var render = function() {
                 _vm.productsOrderList.length > 0
                   ? _c(
                       "tbody",
-                      [
-                        _vm._l(_vm.productsOrderList, function(p, index) {
-                          return _c("tr", { key: p.id }, [
-                            _c("th", { attrs: { scope: "row" } }, [
-                              _vm._v(_vm._s(p.product_id))
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(p.barcode))]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(p.product))]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: p.price_tax_inc,
-                                    expression: "p.price_tax_inc"
-                                  }
-                                ],
-                                staticClass: "form-control form-control-sm",
-                                attrs: {
-                                  type: "number",
-                                  name: "price",
-                                  id: "price",
-                                  step: "any",
-                                  placeholder: "Cantidad",
-                                  readonly: ""
-                                },
-                                domProps: { value: p.price_tax_inc },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      p,
-                                      "price_tax_inc",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: p.quantity,
-                                    expression: "p.quantity"
-                                  }
-                                ],
-                                staticClass: "form-control form-control-sm",
-                                attrs: {
-                                  type: "number",
-                                  name: "quantity",
-                                  id: "quantity",
-                                  step: "2",
-                                  placeholder: "Cantidad"
-                                },
-                                domProps: { value: p.quantity },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(p, "quantity", $event.target.value)
-                                  }
-                                }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: p.discount_percentage,
-                                    expression: "p.discount_percentage"
-                                  }
-                                ],
-                                staticClass: "form-control form-control-sm",
-                                attrs: {
-                                  type: "number",
-                                  name: "discount_percentage",
-                                  id: "discount_percentage",
-                                  step: "any",
-                                  placeholder: "Descuento"
-                                },
-                                domProps: { value: p.discount_percentage },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      p,
-                                      "discount_percentage",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c("input", {
-                                staticClass: "form-control form-control-sm",
-                                attrs: {
-                                  type: "number",
-                                  name: "discount_price",
-                                  id: "discount_price",
-                                  step: "2",
-                                  placeholder: "Descuento",
-                                  disabled: "",
-                                  readonly: ""
-                                },
-                                domProps: {
-                                  value: (p.discount_price = (
-                                    p.quantity *
-                                    p.price_tax_inc *
-                                    (p.discount_percentage / 100)
-                                  ).toFixed(2))
-                                }
-                              })
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _vm._v(
-                                "\n                $\n                " +
-                                  _vm._s(
-                                    (p.price_tax_inc_total = (
-                                      p.quantity * p.price_tax_inc -
-                                      p.quantity *
-                                        p.price_tax_inc *
-                                        (p.discount_percentage / 100)
-                                    ).toFixed(2))
-                                  ) +
-                                  "\n              "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("td", [
-                              _c(
-                                "button",
+                      _vm._l(_vm.productsOrderList, function(p, index) {
+                        return _c("tr", { key: p.id }, [
+                          _c("th", { attrs: { scope: "row" } }, [
+                            _vm._v(_vm._s(p.product_id))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(p.barcode))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(p.product))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("input", {
+                              directives: [
                                 {
-                                  staticClass: "btn text-danger",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.removeProduct(index, p.id)
-                                    }
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: p.price_tax_inc,
+                                  expression: "p.price_tax_inc"
+                                }
+                              ],
+                              staticClass: "form-control form-control-sm",
+                              attrs: {
+                                type: "number",
+                                name: "price",
+                                id: "price",
+                                step: "any",
+                                placeholder: "Cantidad",
+                                readonly: ""
+                              },
+                              domProps: { value: p.price_tax_inc },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
                                   }
-                                },
-                                [_c("i", { staticClass: "bi bi-trash" })]
-                              )
-                            ])
-                          ])
-                        }),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", { attrs: { colspan: "7" } }, [
-                            _vm._v("Subtotal:")
+                                  _vm.$set(
+                                    p,
+                                    "price_tax_inc",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
                           ]),
                           _vm._v(" "),
-                          _c("th", [
+                          _c("td", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: p.quantity,
+                                  expression: "p.quantity"
+                                }
+                              ],
+                              staticClass: "form-control form-control-sm",
+                              attrs: {
+                                type: "number",
+                                name: "quantity",
+                                id: "quantity",
+                                step: "2",
+                                placeholder: "Cantidad"
+                              },
+                              domProps: { value: p.quantity },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(p, "quantity", $event.target.value)
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: p.discount_percentage,
+                                  expression: "p.discount_percentage"
+                                }
+                              ],
+                              staticClass: "form-control form-control-sm",
+                              attrs: {
+                                type: "number",
+                                name: "discount_percentage",
+                                id: "discount_percentage",
+                                step: "any",
+                                placeholder: "Descuento"
+                              },
+                              domProps: { value: p.discount_percentage },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    p,
+                                    "discount_percentage",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("input", {
+                              staticClass: "form-control form-control-sm",
+                              attrs: {
+                                type: "number",
+                                name: "discount_price",
+                                id: "discount_price",
+                                step: "2",
+                                placeholder: "Descuento",
+                                disabled: "",
+                                readonly: ""
+                              },
+                              domProps: {
+                                value: (p.discount_price = (
+                                  p.quantity *
+                                  p.price_tax_inc *
+                                  (p.discount_percentage / 100)
+                                ).toFixed(2))
+                              }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
                             _vm._v(
-                              "\n                $ " +
+                              "\n                $\n                " +
                                 _vm._s(
-                                  (_vm.order.total_tax_exc =
-                                    _vm.total_tax_exc).toFixed(2)
+                                  (p.price_tax_inc_total = (
+                                    p.quantity * p.price_tax_inc -
+                                    p.quantity *
+                                      p.price_tax_inc *
+                                      (p.discount_percentage / 100)
+                                  ).toFixed(2))
                                 ) +
                                 "\n              "
                             )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", { attrs: { colspan: "7" } }, [
-                            _vm._v("Descuento:")
                           ]),
                           _vm._v(" "),
-                          _c("th", [
-                            _vm._v(
-                              "\n                $ " +
-                                _vm._s(
-                                  (_vm.order.total_discount =
-                                    _vm.total_discount).toFixed(2)
-                                ) +
-                                "\n              "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("tr", [
-                          _c("th", { attrs: { colspan: "7" } }, [
-                            _vm._v("Total:")
-                          ]),
-                          _vm._v(" "),
-                          _c("th", [
-                            _vm._v(
-                              "\n                $ " +
-                                _vm._s(
-                                  (_vm.order.total_tax_inc =
-                                    _vm.total_tax_inc).toFixed(2)
-                                ) +
-                                "\n              "
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn text-danger",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.removeProduct(index, p.id)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "bi bi-trash" })]
                             )
                           ])
                         ])
-                      ],
-                      2
+                      }),
+                      0
                     )
                   : _c("tbody", [_vm._m(5)])
               ]
             ),
+            _vm._v(" "),
+            _c("section", { staticClass: "card" }, [
+              _c("div", [
+                _c(
+                  "table",
+                  { staticClass: "table table-sm table-primary text-right" },
+                  [
+                    _c("tr", [
+                      _c("th", { attrs: { colspan: "7" } }, [
+                        _vm._v("Subtotal:")
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _vm._v(
+                          "\n                  $ " +
+                            _vm._s(
+                              (_vm.order.total_tax_exc =
+                                _vm.total_tax_exc).toFixed(2)
+                            ) +
+                            "\n                "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
+                      _c("th", { attrs: { colspan: "7" } }, [
+                        _vm._v("Descuento:")
+                      ]),
+                      _vm._v(" "),
+                      _c("th", [
+                        _vm._v(
+                          "\n                  $ " +
+                            _vm._s(
+                              (_vm.order.total_discount =
+                                _vm.total_discount).toFixed(2)
+                            ) +
+                            "\n                "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(6)
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "bg-primary h1 text-white text-right" },
+                [
+                  _vm._v(
+                    "\n            Total $ " +
+                      _vm._s(
+                        (_vm.order.total_tax_inc = _vm.total_tax_inc).toFixed(2)
+                      ) +
+                      "\n          "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "bg-secondary h2 text-white text-right" },
+                [_vm._v("\n            Cambio $ 5000\n          ")]
+              )
+            ]),
             _vm._v(" "),
             _c(
               "div",
@@ -57077,6 +57097,16 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("tr", [_c("td", [_vm._v("No se han añadido productos")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", { attrs: { colspan: "7" } }, [_vm._v("Efectivo:")]),
+      _vm._v(" "),
+      _c("th", [_c("input", { attrs: { type: "number", value: "0" } })])
+    ])
   }
 ]
 render._withStripped = true
@@ -57201,12 +57231,14 @@ var render = function() {
               _vm._v(" "),
               _c("td", [_vm._v("$ " + _vm._s(i.price_tax_exc))]),
               _vm._v(" "),
+              _c("td", [_vm._v("$ " + _vm._s(i.price_tax_inc))]),
+              _vm._v(" "),
               _c("td", [_vm._v(_vm._s(i.discount_percentage) + " %")]),
               _vm._v(" "),
               _c("td", [_vm._v("$ " + _vm._s(i.discount_price))]),
               _vm._v(" "),
               _c("td", { staticClass: "text-right" }, [
-                _vm._v("$ " + _vm._s(i.price_tax_inc))
+                _vm._v("$ " + _vm._s(i.price_tax_inc_total))
               ])
             ])
           }),
@@ -57215,7 +57247,7 @@ var render = function() {
         _vm._v(" "),
         _c("tfoot", { staticClass: "table-secondary" }, [
           _c("tr", [
-            _c("td", { attrs: { colspan: "7" } }, [_vm._v("Subtotal")]),
+            _c("td", { attrs: { colspan: "8" } }, [_vm._v("Subtotal")]),
             _vm._v(" "),
             _c("td", { staticClass: "text-right" }, [
               _vm._v(
@@ -57227,7 +57259,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", { attrs: { colspan: "7" } }, [_vm._v("Descuento")]),
+            _c("td", { attrs: { colspan: "8" } }, [_vm._v("Descuento")]),
             _vm._v(" "),
             _c("td", { staticClass: "text-right" }, [
               _vm._v(
@@ -57239,7 +57271,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("tr", [
-            _c("td", { attrs: { colspan: "7" } }, [_vm._v("Total")]),
+            _c("td", { attrs: { colspan: "8" } }, [_vm._v("Total")]),
             _vm._v(" "),
             _c("th", { staticClass: "h5 text-right" }, [
               _vm._v(
@@ -57280,6 +57312,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Cantidad")]),
         _vm._v(" "),
         _c("th", [_vm._v("Precio sin IVA")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Precio con IVA")]),
         _vm._v(" "),
         _c("th", [_vm._v("Descuento %")]),
         _vm._v(" "),
@@ -57327,7 +57361,7 @@ var render = function() {
               attrs: {
                 to: {
                   name: "create-edit-order",
-                  params: { order_id: null }
+                  params: { order_id: 0 }
                 }
               }
             },

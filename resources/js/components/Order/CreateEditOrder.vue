@@ -29,67 +29,62 @@
         </div>
       </div>
       <div class="row w-100">
-        <div class="col-6">
-          <div class="input-group">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Código de barras"
-              aria-label=" with two button addons"
-              aria-describedby="button-add-product"
-              v-model="filters.product"
-              autofocus
-              @keypress.enter="searchProduct()"
-            />
-            <div class="input-group-append" id="button-add-product">
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                @click="searchProduct()"
-              >
-                Añadir Producto
-              </button>
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                data-toggle="modal"
-                data-target="#addProductModal"
-              >
-                <i class="bi bi-card-checklist"></i>
-              </button>
-            </div>
-          </div>
-          <div class="input-group">
-            <input
-              type="text"
-              class="form-control"
-              :placeholder="order.client"
-              aria-label=" with two button addons"
-              aria-describedby="button-addon4"
-              v-model="filters.client"
-              @keypress.enter="searchClient()"
-            />
-            <div class="input-group-append" id="button-addon4">
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                @click="searchClient()"
-              >
-                Añadir Cliente
-              </button>
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                data-toggle="modal"
-                data-target="#addClientModal"
-              >
-                <i class="bi bi-person-lines-fill"></i>
-              </button>
-            </div>
+        <div class="input-group col-6">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Código de barras"
+            aria-label=" with two button addons"
+            aria-describedby="button-add-product"
+            v-model="filters.product"
+            autofocus
+            @keypress.enter="searchProduct()"
+          />
+          <div class="input-group-append" id="button-add-product">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="searchProduct()"
+            >
+              Añadir Producto
+            </button>
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              data-toggle="modal"
+              data-target="#addProductModal"
+            >
+              <i class="bi bi-card-checklist"></i>
+            </button>
           </div>
         </div>
-        <div class="col-6">
-         
+        <div class="input-group col-6">
+          <input
+            type="text"
+            class="form-control"
+            :placeholder="order.client"
+            aria-label=" with two button addons"
+            aria-describedby="button-addon4"
+            v-model="filters.client"
+            @keypress.enter="searchClient()"
+          />
+          <div class="input-group-append" id="button-addon4">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              @click="searchClient()"
+            >
+              Añadir Cliente
+            </button>
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              data-toggle="modal"
+              data-target="#addClientModal"
+            >
+              <i class="bi bi-person-lines-fill"></i>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -192,25 +187,7 @@
                   </button>
                 </td>
               </tr>
-              <tr>
-                <th colspan="7">Subtotal:</th>
-                <th>
-                  $ {{ (order.total_tax_exc = total_tax_exc).toFixed(2) }}
-                </th>
-              </tr>
-              <tr>
-                <th colspan="7">Descuento:</th>
-                <th>
-                  $ {{ (order.total_discount = total_discount).toFixed(2) }}
-                </th>
-              </tr>
-
-              <tr>
-                <th colspan="7">Total:</th>
-                <th>
-                  $ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}
-                </th>
-              </tr>
+           
             </tbody>
             <tbody v-else>
               <tr>
@@ -218,6 +195,38 @@
               </tr>
             </tbody>
           </table>
+          <section class="card">
+            <div>
+              <table class="table table-sm table-primary text-right">
+                <tr>
+                  <th colspan="7">Subtotal:</th>
+                  <th>
+                    $ {{ (order.total_tax_exc = total_tax_exc).toFixed(2) }}
+                  </th>
+                </tr>
+                <tr>
+                  <th colspan="7">Descuento:</th>
+                  <th>
+                    $ {{ (order.total_discount = total_discount).toFixed(2) }}
+                  </th>
+                </tr>
+
+                <tr>
+                  <th colspan="7">Efectivo:</th>
+                  <th>
+                    <input type="number" value="0" />
+                  </th>
+                </tr>
+              </table>
+            </div>
+            <div class="bg-primary h1 text-white text-right">
+              Total $ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}
+            </div>
+
+            <div class="bg-secondary h2 text-white text-right">
+              Cambio $ 5000
+            </div>
+          </section>
           <div class="text-right">
             <router-link
               to="orders"
