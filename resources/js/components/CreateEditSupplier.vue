@@ -10,7 +10,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="supplierModalLabel">Supplier</h5>
+            <h5 class="modal-title" id="supplierModalLabel">Proveedor</h5>
             <button
               type="reset"
               class="close"
@@ -41,6 +41,7 @@
                     class="form-control"
                     aria-label="Text input with dropdown button"
                     v-model="formSupplier.document"
+                    placeholder="Ingresar documento de identificación"
                   />
                 </div>
 
@@ -50,7 +51,7 @@
                     type="text"
                     class="form-control"
                     id="name"
-                    placeholder=""
+                    placeholder="Ingresar nombre o razón social"
                     name="name"
                     v-model="formSupplier.name"
                   />
@@ -64,7 +65,7 @@
                       type="text"
                       class="form-control"
                       id="address"
-                      placeholder=""
+                      placeholder="Ingresar dirección"
                       name="address"
                       v-model="formSupplier.address"
                     />
@@ -76,7 +77,7 @@
                       type="text"
                       class="form-control"
                       id="mobile"
-                      placeholder=""
+                      placeholder="Ingresar celular"
                       name="mobile"
                       v-model="formSupplier.mobile"
                     />
@@ -88,7 +89,7 @@
                         type="text"
                         class="form-control"
                         id="contact"
-                        placeholder="Nombres"
+                        placeholder="Ingresar contacto"
                         name="contact"
                         v-model="formSupplier.contact"
                       />
@@ -100,7 +101,7 @@
                       type="enail"
                       class="form-control"
                       id="email"
-                      placeholder=""
+                      placeholder="Ingresar email"
                       name="email"
                       v-model="formSupplier.email"
                     />
@@ -115,6 +116,7 @@
                         name="type_person"
                         v-model="formSupplier.type_person"
                       >
+                        <option value="" disabled>Seleccionar tipo</option>
                         <option>Juridica</option>
                         <option>Natural</option>
                       </select>
@@ -129,12 +131,10 @@
                       id="departament"
                       name="departament"
                       v-model="formSupplier.departament"
+                      @change="getMunicipalities(formSupplier.departament)"
                     >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                      <option value="" disabled> Selecciona un departamento</option>
+                      <option v-for="department in departments" :value="department.id" :key="department.id"> {{ department.name }} </option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -143,13 +143,10 @@
                       class="form-control"
                       id="city"
                       name="city"
-                      v-model="formSupplier.city"
+                      v-model="formSupplier.municipality_id"
                     >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                      <option value="" disabled> Selecciona un municipio</option>
+                      <option v-for="municipality in municipalities" :value="municipality.id" :key="municipality.id"> {{ municipality.name }} </option>
                     </select>
                   </div>
 
@@ -218,13 +215,18 @@ export default {
         email: "",
         type_person: "",
         departament: "",
-        city: "",
+        municipality_id: "",
         type_document: "",
         document: "",
         active: "",
         tax: "",
       },
+      departments: [],
+      municipalities: []
     };
+  },
+  created(){
+    this.getDepartments();
   },
   methods: {
     CreateSupplier() {
@@ -240,6 +242,15 @@ export default {
       let me = this;
       $("#supplierModal").modal("show");
       me.formSupplier = supplier;
+
+      if(supplier.municipality){
+        me.formSupplier.departament = supplier.municipality.department_id;
+        this.getMunicipalities(me.formSupplier.departament);
+      }else{
+        me.formSupplier.departament = "";
+        me.formSupplier.municipality_id = "";
+      }
+      
     },
 
     EditSupplier() {
@@ -258,7 +269,7 @@ export default {
     ResetData() {
       let me = this;
       $("#supplierModal").modal("hide");
-      // $("#formSupplier")[0].reset();
+      //$("#formSupplier")[0].reset();
       Object.keys(this.formSupplier).forEach(function (key, index) {
         me.formSupplier[key] = "";
       });
@@ -269,6 +280,17 @@ export default {
       let me = this;
       this.ResetData();
     },
+
+    getDepartments(){
+      axios.get('api/departments', this.$root.config).then((response) =>{
+        this.departments = response.data.departments;
+      });
+    },
+    getMunicipalities(department){
+      axios.get('api/departments/'+department+'/getMunicipalities', this.$root.config).then((response) =>{
+        this.municipalities = response.data.municipalities;
+      });
+    }
   },
   mounted() {},
 };
