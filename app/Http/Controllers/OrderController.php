@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DetailOrder;
 use App\Models\Order;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -25,12 +26,27 @@ class OrderController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
+		if ($request->client != '' || $request->invoice != '') {
+			$orders = Order::whereHas('client', function (Builder $query) use ($request) {
+				if ($request->client != '') {
+					$query->where('name', 'like', "%$request->client%");
+				}
+			});
+			if ($request->no_invoice != '') {
+				$orders = $orders->where('no_invoice', 'like', "%$request->no_invoice");
+			}
+
+			$orders = $orders->paginate(15);
+		} else {
+			$orders = Order::paginate(15);
+		}
+
 		return response()->json([
 			'status' => 'success',
 			'code' => 200,
-			'orders' => Order::orderBy('id', 'DESC')->paginate(20),
+			'orders' => $orders,
 		]);
 	}
 
@@ -69,6 +85,9 @@ class OrderController extends Controller
 			$new_detail = new DetailOrderController;
 			$new_detail = $new_detail->store($details_order, $order->id);
 		}
+
+		$print = new PrintOrderController();
+		$print = $print->printTicket($order->id);
 	}
 
 	/**
@@ -81,7 +100,7 @@ class OrderController extends Controller
 	{
 		// var_dump($order);
 		$details  = Order::find($order->id);
-		return $details->detailOrders()->get();
+		return ['order_information' => $details, 'order_details' => $details->detailOrders()->get(), 'user' => $details->user()->first()];
 	}
 
 	/**
@@ -123,6 +142,7 @@ class OrderController extends Controller
 					'discount_price' => $details_order['discount_price'],
 					'price_tax_exc' => $details_order['price_tax_exc'],
 					'price_tax_inc' => $details_order['price_tax_inc'],
+					'price_tax_inc_total' => $details_order['price_tax_inc_total'],
 					'quantity' => $details_order['quantity'],
 					'barcode' => $details_order['barcode'],
 					'product' => $details_order['product'],

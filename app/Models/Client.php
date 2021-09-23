@@ -27,8 +27,14 @@ class Client extends Model
     protected $with = [
         'municipality'
     ];
+    
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
-    public function municipality(){
+    public function municipality()
+    {
         return $this->belongsTo(Municipality::class);
     }
 }

@@ -5,6 +5,19 @@
       <moon-loader :loading="isLoading" :color="'#032F6C'" :size="100" />
 
       <div class="card-body" v-if="!isLoading">
+        <div class="form-row">
+          <div class="col my-4">
+            <label for="search_product">Buscar Producto...</label>
+            <input
+              type="text"
+              class="form-control"
+              id="search_product"
+              placeholder="Nombre | Código de barras"
+              v-model="search_product"
+              @keyup="listProducts(1)"
+            />
+          </div>
+        </div>
         <div class="row justify-content-end">
           <button
             type="button"
@@ -83,7 +96,9 @@
             <span slot="prev-nav"
               ><i class="bi bi-chevron-double-left"></i
             ></span>
-            <span slot="next-nav"><i class="bi bi-chevron-double-right"></i></span>
+            <span slot="next-nav"
+              ><i class="bi bi-chevron-double-right"></i
+            ></span>
           </pagination>
         </section>
       </div>
@@ -98,30 +113,39 @@
 </template>
 
 <script>
-import global from "./../services/global.js";
+import global from "../../services/global.js";
 import CreateEditProduct from "./CreateEditProduct.vue";
 import ImportProducts from "./ImportProducts.vue";
 export default {
   components: { CreateEditProduct, ImportProducts },
   data() {
     return {
+      search_product: "",
       isLoading: false,
       ProductList: {},
     };
   },
   created() {
-    this.listProducts(1);
+    this.isLoading = true;
+    let me = this;
+    axios
+      .get(`api/products?page=1`, this.$root.config)
+      .then(function (response) {
+        me.ProductList = response.data.products;
+      })
+      .finally(() => (this.isLoading = false));
   },
   methods: {
     listProducts(page = 1) {
-      this.isLoading = true;
       let me = this;
       axios
-        .get("api/products?page=" + page, this.$root.config)
+        .get(
+          `api/products?page=${page}&product=${me.search_product}`,
+          this.$root.config
+        )
         .then(function (response) {
           me.ProductList = response.data.products;
-        })
-        .finally(() => (this.isLoading = false));
+        });
     },
     ShowData: function (product) {
       this.$refs.CreateEditProduct.OpenEditProduct(product);

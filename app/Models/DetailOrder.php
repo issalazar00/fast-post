@@ -17,6 +17,7 @@ class DetailOrder extends Model
         'discount_price',
         'price_tax_exc',
         'price_tax_inc',
+        'price_tax_inc_total',
         'quantity',
         'product',
     ];

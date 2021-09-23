@@ -6,8 +6,10 @@
       tabindex="-1"
       aria-labelledby="productModalLabel"
       aria-hidden="true"
+      data-backdrop="static"
+      data-keyboard="false"
     >
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="productModalLabel">Producto</h5>
@@ -16,6 +18,7 @@
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              @click="CloseModal()"
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -24,7 +27,10 @@
             <form>
               <div class="form-row">
                 <div class="form-group col-5">
-                  <label for="barcode">Codigo de barras</label>
+                  <label for="barcode"
+                    >Codigo de barras
+                    <span class="text-danger">(*)</span></label
+                  >
                   <input
                     type="text"
                     step="any"
@@ -32,16 +38,21 @@
                     id="barcode"
                     v-model="formProduct.barcode"
                     placeholder="Código de barras"
+                    required
                   />
                 </div>
                 <div class="form-group col-7">
-                  <label for="product">Descripción Producto</label>
+                  <label for="product"
+                    >Descripción Producto
+                    <span class="text-danger">(*)</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
                     id="product"
                     v-model="formProduct.product"
                     placeholder="Nombre o descripción de product"
+                    required
                   />
                 </div>
               </div>
@@ -54,7 +65,7 @@
                     id="unidad"
                     v-model="formProduct.type"
                     value="1"
-                    required
+                    checked
                   />
                   <label class="form-check-label" for="unidad"
                     >Por Unidad / Pieza</label
@@ -82,8 +93,54 @@
                     v-model="formProduct.type"
                     value="3"
                   />
-                  <label class="form-check-label" for="kit">Como paquete</label>
+                  <label
+                    class="form-check-label"
+                    for="kit"
+                    data-toggle="modal"
+                    data-target="#addProductModal"
+                    >Como paquete</label
+                  >
                 </div>
+                <hr />
+                <add-product-kit
+                  v-if="formProduct.type == 3"
+                  @add-product="addProduct($event)"
+                />
+                <table
+                  class="table table-sm table-bordered table-secondary mt-2"
+                  v-if="formProduct.type == 3"
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Código de barras</th>
+                      <th>Producto</th>
+                      <th>Cantidad</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody v-if="listItemsKit.length > 0">
+                    <tr v-for="(item, index) in listItemsKit" :key="item.id">
+                      <td>{{ index }}</td>
+                      <td>{{ item.barcode }}</td>
+                      <td>{{ item.product }}</td>
+                      <td>{{ item.quantity }}</td>
+                      <td>
+                        <button
+                          class="btn btn-danger btn-sm"
+                          @click="removeProduct(index, item.id)"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="4">No se han añadido productos</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               <div class="form-row">
                 <div class="form-group col-6">
@@ -122,7 +179,9 @@
                 </div>
               </div>
               <div class="form-group col-6">
-                <label for="tax_id">Impuesto</label>
+                <label for="tax_id"
+                  >Impuesto <span class="text-danger">(*)</span></label
+                >
                 <select
                   class="form-control"
                   id="tax_id"
@@ -133,7 +192,7 @@
                   <option value="0">--Select--</option>
                   <option
                     v-for="t in taxList"
-                    :key="t.percentage"
+                    :key="t.id"
                     :value="t.id"
                   >
                     {{ t.percentage }}
@@ -143,7 +202,9 @@
               <hr />
               <div class="form-row">
                 <div class="form-group col-6">
-                  <label for="cost_price">Precio Costo</label>
+                  <label for="cost_price"
+                    >Precio Costo <span class="text-danger">(*)</span></label
+                  >
                   <input
                     type="number"
                     step="any"
@@ -151,6 +212,7 @@
                     id="cost_price"
                     v-model="formProduct.cost_price"
                     placeholder="Precio de costo"
+                    required
                   />
                 </div>
                 <div class="form-group col-6">
@@ -184,14 +246,18 @@
                   </div>
                 </div>
                 <div class="form-group col-6">
-                  <label for="sale_price_tax_inc">Precio venta con iva</label>
+                  <label for="sale_price_tax_inc"
+                    >Precio venta con iva
+                    <span class="text-danger">(*)</span></label
+                  >
                   <input
                     type="number"
                     step="any"
                     class="form-control"
                     id="sale_price_tax_inc"
                     v-model="formProduct.sale_price_tax_inc"
-                    placeholder=""
+                    placeholder="Impuesto Incluído"
+                    required
                   />
                 </div>
                 <div class="form-group col-6">
@@ -224,6 +290,7 @@
                     class="form-control"
                     id="wholesale_price_tax_inc"
                     v-model="formProduct.wholesale_price_tax_inc"
+                    placeholder="impuesto incluído"
                   />
                 </div>
               </div>
@@ -284,23 +351,25 @@
                   />
                 </div>
               </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  @click="CloseModal()"
+                >
+                  Cerrar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  @click="formProduct.id ? EditProduct() : CreateProduct()"
+                >
+                  Guardar
+                </button>
+              </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="CloseModal()"
-            >
-              Close
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="formProduct.id ? EditProduct() : CreateProduct()"
-            >
-              Guardar
-            </button>
           </div>
         </div>
       </div>
@@ -309,7 +378,8 @@
 </template>
 
 <script>
-import global from "./../services/global.js";
+import global from "../../services/global.js";
+import AddProductKit from "./AddProductKit.vue";
 
 export default {
   data() {
@@ -336,12 +406,15 @@ export default {
         quantity: 0.0,
         maximum: 0.0,
       },
+      listItemsKit: [],
       taxList: [],
       categoryList: {},
       brandList: {},
     };
   },
-  components: {},
+  components: {
+    AddProductKit,
+  },
   computed: {
     gain: function () {
       var result = 0.0;
@@ -393,7 +466,6 @@ export default {
             (1 + percentage)
         ).toFixed(2);
         return result;
-
       }
     },
   },
@@ -424,28 +496,39 @@ export default {
       $("#productModal").modal("show");
       me.formProduct = product;
       me.uploadTax(product.tax_id);
+      if (product.type == 3) {
+        axios
+          .get(`api/kit-products?parent_id=${product.id}`, me.$root.config)
+          .then((response) => (me.listItemsKit = response.data))
+          .catch();
+      }
     },
     CreateProduct() {
       let me = this;
-      axios
-        .post("api/products", me.formProduct, me.$root.config)
-        .then(function () {
-          $("#productModal").modal("hide");
-          me.formProduct = {};
-          me.CloseModal();
-        });
+
+      var data = {
+        product: me.formProduct,
+        itemListKit: me.listItemsKit,
+      };
+
+      axios.post("api/products", data, me.$root.config).then(function () {
+        $("#productModal").modal("hide");
+        me.CloseModal();
+        me.$emit("list-products");
+      });
     },
     EditProduct() {
       let me = this;
+      var data = {
+        product: me.formProduct,
+        itemListKit: me.listItemsKit,
+      };
+
       axios
-        .put(
-          "api/products/" + me.formProduct.id,
-          me.formProduct,
-          me.$root.config
-        )
+        .put("api/products/" + me.formProduct.id, data, me.$root.config)
         .then(function () {
           $("#productModal").modal("hide");
-          me.formProduct = {};
+          // me.$emit("list-products");
         });
       me.CloseModal();
       me.edit = false;
@@ -456,6 +539,7 @@ export default {
       Object.keys(this.formProduct).forEach(function (key, index) {
         me.formProduct[key] = "";
       });
+      me.listItemsKit = [];
     },
 
     uploadTax(tax_id) {
@@ -469,6 +553,36 @@ export default {
       this.edit = false;
       this.ResetData();
       this.$emit("list-products");
+    },
+    addProduct(new_product) {
+      let me = this;
+      let result = false;
+      // Verifica si el producto existe en la lista
+      me.listItemsKit.filter((prod) => {
+        if (new_product.barcode == prod.barcode) {
+          result = true;
+          if (result) {
+            // Añade cantidad
+            prod.quantity += 1;
+          }
+        }
+      });
+
+      if (!result) {
+        // Sino, lo añade al array
+        me.listItemsKit.push({
+          product_id: new_product.id,
+          barcode: new_product.barcode,
+          quantity: 1,
+          product: new_product.product,
+        });
+      }
+    },
+    removeProduct(index, detail_id = null) {
+      this.listItemsKit.splice(index, 1);
+      if (detail_id != null) {
+        axios.delete(`api/kit-products/${detail_id}`, this.$root.config);
+      }
     },
     validatePermission(permission) {
       return global.validatePermission(this.$root.permissions, permission);

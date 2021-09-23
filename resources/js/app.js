@@ -16,8 +16,9 @@ import NoFound from './components/NoFound.vue';
 import Clients from './components/Client/Clients.vue'
 import CreateEditClient from './components/Client/CreateEditClient.vue'
 
-import Products from './components/Products.vue'
-import CreateEditProduct from './components/CreateEditProduct.vue'
+import Products from './components/Product/Products.vue'
+import CreateEditProduct from './components/Product/CreateEditProduct.vue'
+import ImportProducts from './components/Product/ImportProducts'
 
 import Taxes from './components/Taxes.vue'
 import CreateEditTax from './components/CreateEditTax.vue'
@@ -36,7 +37,6 @@ import DetailsOrder from './components/Order/DetailsOrder.vue'
 import CreateEditOrder from './components/Order/CreateEditOrder.vue'
 import AddClient from './components/Order/AddClient.vue'
 import AddProduct from './components/Order/AddProduct'
-import ImportProducts from './components/ImportProducts'
 
 import Roles from './components/Roles.vue';
 import Users from './components/Users.vue';

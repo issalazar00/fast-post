@@ -1,10 +1,9 @@
 <template>
   <div class="container">
+    <div class="page-header text-center mb-4">
+      <img :src="companyLogo" alt="company-image" style="max-height: 100px" />
+    </div>
     <div class="row justify-content-center">
-      <div class="header col-12">
-        <h3>Crear Ticket</h3>
-      </div>
-      <hr class="hr" />
       <div class="position-fixed top-0 right-0 p-3" style="z-index: 5">
         <div
           class="toast fade hide border border-danger"
@@ -28,8 +27,8 @@
           <div class="toast-body">No se ha encontrado coincidencias</div>
         </div>
       </div>
-      <div class="row w-100">
-        <div class="input-group">
+      <div class="row w-100 position-sticky sticky-top mb-2 bg-light py-1" style="top:0.5rem">
+        <div class="input-group col-6">
           <input
             type="text"
             class="form-control"
@@ -58,11 +57,11 @@
             </button>
           </div>
         </div>
-        <div class="input-group">
+        <div class="input-group col-6">
           <input
             type="text"
             class="form-control"
-            placeholder="Documento cliente"
+            :placeholder="order.client"
             aria-label=" with two button addons"
             aria-describedby="button-addon4"
             v-model="filters.client"
@@ -95,7 +94,7 @@
               table table-sm table-responsive-sm table-bordered table-hover
             "
           >
-            <thead>
+            <thead class="bg-secondary text-white position-sticky sticky-top" style="top:4rem">
               <tr>
                 <th>#</th>
                 <th>Código</th>
@@ -123,6 +122,7 @@
                     placeholder="Cantidad"
                     v-model="p.price_tax_inc"
                     readonly
+                    class="form-control form-control-sm"
                   />
                 </td>
                 <td>
@@ -132,6 +132,7 @@
                     id="quantity"
                     step="2"
                     placeholder="Cantidad"
+                    class="form-control form-control-sm"
                     v-model="p.quantity"
                   />
                 </td>
@@ -142,12 +143,14 @@
                     id="discount_percentage"
                     step="any"
                     placeholder="Descuento"
+                    class="form-control form-control-sm"
                     v-model="p.discount_percentage"
                   />
                 </td>
                 <td>
                   <input
                     type="number"
+                    class="form-control form-control-sm"
                     name="discount_price"
                     id="discount_price"
                     step="2"
@@ -175,70 +178,129 @@
                   }}
                 </td>
                 <td>
-                  <button class="btn" @click="removeProduct(index, p.id)">
+                  <button
+                    class="btn text-danger"
+                    @click="removeProduct(index, p.id)"
+                  >
                     <i class="bi bi-trash"></i>
                   </button>
                 </td>
               </tr>
-              <tr>
-                <th colspan="7">Subtotal:</th>
-                <th>
-                  $ {{ (order.total_tax_exc = total_tax_exc).toFixed(2) }}
-                </th>
-              </tr>
-              <tr>
-                <th colspan="7">Descuento:</th>
-                <th>
-                  $ {{ (order.total_discount = total_discount).toFixed(2) }}
-                </th>
-              </tr>
-
-              <tr>
-                <th colspan="7">Total:</th>
-                <th>
-                  $ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}
-                </th>
-              </tr>
             </tbody>
             <tbody v-else>
               <tr>
-                <td>No se han añadido productos</td>
+                <td colspan="8">No se han añadido productos</td>
               </tr>
             </tbody>
           </table>
-          <div class="text-right">
-            <router-link
-              to="orders"
-              type="button"
-              class="btn btn-outline-secondary btn-block"
-              v-if="!order_id"
-            >
-              <i class="bi bi-receipt"></i> Cancelar
-            </router-link>
-            <button
-              type="button"
-              class="btn btn-outline-primary btn-block"
-              @click="createOrUpdateOrder(1)"
-            >
-              <i class="bi bi-receipt"></i> Suspender
-            </button>
-            <button
-              type="button"
-              class="btn btn-outline-primary btn-block"
-              @click="createOrUpdateOrder(2)"
-            >
-              <i class="bi bi-receipt"></i> Facturar
-            </button>
-            <button
-              type="button"
-              class="btn btn-outline-primary btn-block"
-              @click="createOrUpdateOrder(3)"
-            >
-              <i class="bi bi-receipt"></i> Cotizar
-            </button>
+          <div class="col-6 offset-md-6">
+            <section class="card">
+              <div>
+                <table class="table table-sm table-primary text-right">
+                  <tr>
+                    <th colspan="7">Subtotal:</th>
+                    <th>
+                      $ {{ (order.total_tax_exc = total_tax_exc).toFixed(2) }}
+                    </th>
+                  </tr>
+                  <tr>
+                    <th colspan="7">Descuento:</th>
+                    <th>
+                      $ {{ (order.total_discount = total_discount).toFixed(2) }}
+                    </th>
+                  </tr>
+                  <tr class="bg-primary h5 text-white">
+                    <th colspan="7">Total:</th>
+                    <th>
+                      $ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}
+                    </th>
+                  </tr>
+                  <tr>
+                    <th colspan="7">Efectivo:</th>
+                    <th>
+                      <input
+                        type="number"
+                        value="0"
+                        step="any"
+                        v-model="order.payment"
+                      />
+                    </th>
+                  </tr>
+                  <tr class="bg-secondary text-white">
+                    <th colspan="7">Cambio:</th>
+                    <th>
+                      <input
+                        type="text"
+                        :value="payment_return"
+                        readonly
+                        disabled
+                      />
+                    </th>
+                  </tr>
+                </table>
+              </div>
+            </section>
+            <div class="text-right">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                @click="createOrUpdateOrder(2)"
+              >
+                <i class="bi bi-receipt"></i> Facturar
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                @click="createOrUpdateOrder(1)"
+              >
+                <i class="bi bi-receipt"></i> Suspender
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                @click="createOrUpdateOrder(3)"
+              >
+                <i class="bi bi-receipt"></i> Cotizar
+              </button>
+              <router-link
+                to="/orders"
+                type="button"
+                class="btn btn-outline-secondary btn-block"
+                v-if="order_id != 0"
+              >
+                <i class="bi bi-receipt"></i> Cancelar
+              </router-link>
+            </div>
           </div>
         </div>
       </section>
+    </div>
+    <div class="fixed-bottom fixed-price-right p-2 text-uppercase">
+      <table class="table table-borderless">
+        <tr class="h1 text-white bg-primary">
+          <td class="text-right">Total</td>
+          <td>$ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}</td>
+        </tr>
+        <tr class="table-primary h3">
+          <td>Efectivo</td>
+          <td>
+            <input
+              type="number"
+              class="form-control form-control-lg"
+              :value="order.payment"
+              readonly
+            />
+          </td>
+        </tr>
+        <tr class="table-primary h3">
+          <td>Cambio:</td>
+          <td>
+            {{ payment_return }}
+          </td>
+        </tr>
+      </table>
+    
     </div>
     <add-product @add-product="addProduct($event)" />
     <add-client @add-client="addClient($event)" />
@@ -263,12 +325,14 @@ export default {
       order: {
         id_client: 1,
         client: "Sin Cliente",
-        state: "",
+        state: 1,
         total_tax_inc: 0.0,
         total_tax_exc: 0.0,
         total_discount: 0.0,
         productsOrder: [],
+        payment: 0,
       },
+      companyLogo: "",
     };
   },
   computed: {
@@ -294,15 +358,37 @@ export default {
       });
       return total;
     },
+    payment_return: function () {
+      var value = 0.0;
+      if (this.order.payment > 0) {
+        value = (this.order.payment - this.total_tax_inc).toFixed(2);
+      }
+      return value;
+    },
   },
-  created() {},
+  created() {
+    axios
+      .get(`api/company-logo`, this.$root.config)
+      .then((response) => (this.companyLogo = response.data.logo))
+      .catch(function (error) {
+        console.log(error);
+      });
+  },
   methods: {
     listItemsOrder() {
+      if (this.order_id == 0) {
+        return false;
+      }
+
       let me = this;
+
       axios
-        .get(`api/orders/${this.order_id}`, this.$root.config)
+        .get(`api/orders/${me.order_id}`, this.$root.config)
         .then(function (response) {
-          me.productsOrderList = response.data;
+          me.order.id_client = response.data.order_information.client_id;
+          me.order.client = response.data.order_information.client.name;
+
+          me.productsOrderList = response.data.order_details;
         });
     },
     searchProduct() {
@@ -356,7 +442,7 @@ export default {
     },
     removeProduct(index, detail_id = null) {
       this.productsOrderList.splice(index, 1);
-      if (detail_id != null) {
+      if (detail_id != null || detail_id != 0) {
         axios.delete(`api/order-details/${detail_id}`, this.$root.config);
       }
     },
@@ -404,11 +490,10 @@ export default {
         alert("No hay productos en la orden");
       }
     },
-    updateOrder() {},
   },
   mounted() {
     $("#no-results").toast("hide");
-    if (this.order_id != null) {
+    if (this.order_id != null || this.order_id != 0) {
       this.listItemsOrder();
     }
   },

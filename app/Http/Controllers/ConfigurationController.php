@@ -16,10 +16,10 @@ class ConfigurationController extends Controller
     public function index()
     {
         return response()->json([
-			'status' => 'success',
-			'code' => 200,
-			'configuration' => Configuration::first()
-		]);
+            'status' => 'success',
+            'code' => 200,
+            'configuration' => Configuration::first()
+        ]);
     }
 
     /**
@@ -29,7 +29,6 @@ class ConfigurationController extends Controller
      */
     public function create()
     {
-        
     }
 
     /**
@@ -40,7 +39,7 @@ class ConfigurationController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = Validator::make($request->all(),[
+        $validate = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:100',
             'legal_representative' => 'required|string|min:3|max:150',
             'nit' => 'required|string|min:8|max:15',
@@ -49,17 +48,18 @@ class ConfigurationController extends Controller
             'tax_regime' => 'required|string:min3|max:255',
             'telephone' => 'required|string|min:5|max:13',
             'mobile' => 'required|string|min:5|max:13',
+            'printer' => 'required|string|min:5|max:100',
             'file0' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg'
         ]);
-        
-        if(!$validate->fails()){
-            if($request->hasFile('file0')){
-                $image = uniqid().$request->file('file0')->getClientOriginalName();
+
+        if (!$validate->fails()) {
+            if ($request->hasFile('file0')) {
+                $image = uniqid() . $request->file('file0')->getClientOriginalName();
                 $request->file0->move(public_path('storage/images'), $image);
-                $request['logo'] = 'storage/images/'.$image;
+                $request['logo'] = 'storage/images/' . $image;
             }
 
-            $configuration = Configuration::updateOrCreate(['id' => $request->id],$request->all());
+            $configuration = Configuration::updateOrCreate(['id' => $request->id], $request->all());
 
             $data = [
                 'status' => 'success',
@@ -67,7 +67,7 @@ class ConfigurationController extends Controller
                 'message' => 'Registro exitoso',
                 'configuration' => $configuration
             ];
-        }else{
+        } else {
             $data = [
                 'status' => 'error',
                 'code' => 400,

@@ -2,7 +2,11 @@
   <div class="col-12">
     <h3 class="text-center page-header">Configuración</h3>
     <div class="d-flex justify-content-center">
-      <form id="form_configuration" action="#" @submit.prevent="saveConfiguration">
+      <form
+        id="form_configuration"
+        action="#"
+        @submit.prevent="saveConfiguration"
+      >
         <div class="form-row">
           <div class="form-group col-12 col-md-6">
             <label for="name">Nombre de la empresa</label>
@@ -13,7 +17,6 @@
               name="name"
               placeholder="Ingresar nombre"
               :value="formConfiguration.name"
-              
             />
             <small id="nameHelp" class="form-text text-danger">{{
               formErrors.name
@@ -95,8 +98,8 @@
               formErrors.tax_regime
             }}</small>
           </div>
-        </div>
-        <div class="form-row">
+          <!-- </div>
+        <div class="form-row"> -->
           <div class="form-group col-12 col-md-6">
             <label for="telephone">Teléfono</label>
             <input
@@ -125,6 +128,23 @@
               formErrors.mobile
             }}</small>
           </div>
+          <div class="form-group col-12 col-md-6">
+            <label for="printer">Impresora POS</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="printer"
+              name="printer"
+              placeholder="Ingresar nombre de impresora pos"
+              :value="formConfiguration.printer"
+            />
+            <small id="printerHelp1" class="text-muted">
+              * Esta impresora debe estar previamente configurada en su sistema
+            </small>
+            <small id="printerHelp2" class="form-text text-danger">{{
+              formErrors.printer
+            }}</small>
+          </div>
         </div>
         <div class="form-group">
           <label for="logo">Logo</label>
@@ -137,7 +157,7 @@
                 id="image"
                 class="border"
                 style="height: 230px; width: 200px; object-fit: cover"
-                :src="'/' + formConfiguration.logo"
+                :src="formConfiguration.logo"
                 alt="logo"
               />
             </div>
@@ -155,7 +175,9 @@
               />
             </label>
           </div>
-          <small id="logoHelp" class="form-text text-danger">{{formErrors.file0}}</small>
+          <small id="logoHelp" class="form-text text-danger">{{
+            formErrors.file0
+          }}</small>
         </div>
         <button type="submit" class="btn btn-primary">Guardar</button>
       </form>
@@ -175,7 +197,8 @@ export default {
         tax_regime: "",
         telephone: "",
         mobile: "",
-        logo: ""
+        logo: "",
+        printer : ""
       },
       formErrors: {
         name: "",
@@ -186,7 +209,8 @@ export default {
         tax_regime: "",
         telephone: "",
         mobile: "",
-        file0: ""
+        file0: "",
+        printer : ""
       },
     };
   },
@@ -203,8 +227,8 @@ export default {
     },
     saveConfiguration() {
       this.assignErrors(false);
-      var form =  new FormData($('#form_configuration')[0]);
-      form.append('id',this.formConfiguration.id);
+      var form = new FormData($("#form_configuration")[0]);
+      form.append("id", this.formConfiguration.id);
       axios
         .post("api/configurations", form, this.$root.config)
         .then((response) => {
@@ -224,7 +248,7 @@ export default {
         "tax_regime",
         "telephone",
         "mobile",
-        "file0"
+        "file0",
       ];
 
       if (response) {
@@ -243,7 +267,7 @@ export default {
       }
     },
     readImage(input) {
-      var id = $(input).data('info');
+      var id = $(input).data("info");
       if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
