@@ -23,6 +23,7 @@ class CreateConfigurationsTable extends Migration
             $table->string('tax_regime');
             $table->string('telephone', 15);
             $table->string('mobile', 15);
+            $table->string('printer', 100);
             $table->text('logo')->nullable();
             $table->timestamps();
         });

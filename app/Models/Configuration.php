@@ -19,6 +19,7 @@ class Configuration extends Model
         'tax_regime',
         'telephone',
         'mobile',
-        'logo'
+        'logo',
+        'printer'
     ];
 }

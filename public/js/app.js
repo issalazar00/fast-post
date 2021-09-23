@@ -9832,6 +9832,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -9844,7 +9866,8 @@ __webpack_require__.r(__webpack_exports__);
         tax_regime: "",
         telephone: "",
         mobile: "",
-        logo: ""
+        logo: "",
+        printer: ""
       },
       formErrors: {
         name: "",
@@ -9855,7 +9878,8 @@ __webpack_require__.r(__webpack_exports__);
         tax_regime: "",
         telephone: "",
         mobile: "",
-        file0: ""
+        file0: "",
+        printer: ""
       }
     };
   },
@@ -9876,8 +9900,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.assignErrors(false);
-      var form = new FormData($('#form_configuration')[0]);
-      form.append('id', this.formConfiguration.id);
+      var form = new FormData($("#form_configuration")[0]);
+      form.append("id", this.formConfiguration.id);
       axios.post("api/configurations", form, this.$root.config).then(function (response) {
         _this2.formConfiguration = response.data.configuration;
       })["catch"](function (response) {
@@ -9904,7 +9928,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     readImage: function readImage(input) {
-      var id = $(input).data('info');
+      var id = $(input).data("info");
 
       if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -54947,10 +54971,8 @@ var render = function() {
                 },
                 [_vm._v(_vm._s(_vm.formErrors.tax_regime))]
               )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-row" }, [
+            ]),
+            _vm._v(" "),
             _c("div", { staticClass: "form-group col-12 col-md-6" }, [
               _c("label", { attrs: { for: "telephone" } }, [
                 _vm._v("Teléfono")
@@ -54998,6 +55020,42 @@ var render = function() {
                   attrs: { id: "mobileHelp" }
                 },
                 [_vm._v(_vm._s(_vm.formErrors.mobile))]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group col-12 col-md-6" }, [
+              _c("label", { attrs: { for: "printer" } }, [
+                _vm._v("Impresora POS")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "form-control",
+                attrs: {
+                  type: "tel",
+                  id: "printer",
+                  name: "printer",
+                  placeholder: "Ingresar nombre de impresora pos"
+                },
+                domProps: { value: _vm.formConfiguration.printer }
+              }),
+              _vm._v(" "),
+              _c(
+                "small",
+                { staticClass: "text-muted", attrs: { id: "printerHelp1" } },
+                [
+                  _vm._v(
+                    "\n            * Esta impresora debe estar previamente configurada en su sistema\n          "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "small",
+                {
+                  staticClass: "form-text text-danger",
+                  attrs: { id: "printerHelp2" }
+                },
+                [_vm._v(_vm._s(_vm.formErrors.printer))]
               )
             ])
           ]),
