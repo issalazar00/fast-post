@@ -14,7 +14,7 @@
               id="search_product"
               placeholder="Nombre | Código de barras"
               v-model="search_product"
-              @keydown="listProducts(1)"
+              @keyup="listProducts(1)"
             />
           </div>
         </div>

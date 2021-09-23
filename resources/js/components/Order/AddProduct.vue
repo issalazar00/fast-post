@@ -28,7 +28,7 @@
               aria-label=" with two button addons"
               aria-describedby="button-addon4"
               v-model="filters.product"
-              @keypress="searchProduct()"
+              @keyup="searchProduct()"
             />
             <div class="input-group-append" id="button-addon4">
               <button class="btn btn-outline-secondary" type="button" @click="searchProduct()">

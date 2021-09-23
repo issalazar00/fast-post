@@ -137,7 +137,7 @@
                 id="image"
                 class="border"
                 style="height: 230px; width: 200px; object-fit: cover"
-                :src="'/' + formConfiguration.logo"
+                :src="formConfiguration.logo"
                 alt="logo"
               />
             </div>

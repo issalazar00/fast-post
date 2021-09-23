@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Configuration;
 use App\Models\Order;
 use Exception;
 use Faker\Provider\ar_JO\Company;
@@ -21,18 +22,19 @@ class PrintOrderController extends Controller
 		$system_user = $order->user()->first();
 
 		// Información empresarial
-		$company = new Company;
+		$configuration = new Configuration();
+		$company =  $configuration->select()->first();
 
 		// Config de impresora
 
-		$connector = new WindowsPrintConnector('cocina');
+		$connector = new WindowsPrintConnector('POS-80');
 
 		$printer = new Printer($connector);
 		$printer->initialize();
 		$printer->setJustification(Printer::JUSTIFY_CENTER);
 		try {
 			// Este logo también debe ser dinamico
-			$logo = EscposImage::load('logo.jpg', false);
+			$logo = EscposImage::load($company->logo, false);
 			$printer->bitImage($logo);
 		} catch (Exception $e) {
 			/* Images not supported on your PHP, or image file not found */
@@ -83,7 +85,6 @@ class PrintOrderController extends Controller
 		$printer->text(sprintf('%-25s %+15.15s', 'TOTAL', number_format($total, 2)));
 		$printer->setEmphasis(false);
 		$printer->text("\n=========================================" . "\n\n");
-		// $printer->text("\nTotal: $" . number_format($total, 2) . "\n");
 		$printer->setTextSize(1, 1);
 		
 		$printer->setJustification(Printer::JUSTIFY_CENTER);

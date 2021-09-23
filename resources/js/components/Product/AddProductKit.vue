@@ -11,19 +11,10 @@
             aria-label=" with two button addons"
             aria-describedby="button-addon4"
             v-model="filters.product"
-            @keypress="listProducts()"
-            
+            @keyup="listProducts()"
           />
         </div>
         <table class="table table-sm table-bordered table-responsive-sm">
-          <!-- <thead class="thead-primary">
-            <tr>
-              <th>Código de barras</th>
-              <th scope="col">Producto</th>
-              <th scope="col">Cantidad</th>
-              <th>Añadir</th>
-            </tr>
-          </thead> -->
           <tbody>
             <tr v-for="product in ProductList.data" v-bind:key="product.id">
               <td>{{ product.barcode }}</td>
