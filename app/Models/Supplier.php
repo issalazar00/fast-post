@@ -18,11 +18,16 @@ class Supplier extends Model
         'contact',       
         'email',
         'type_person',
-        'departament',
-        'city',
+        'municipality_id',
         'type_document',
         'document',
         'active',
         'tax'
     ];
+    protected $with = [
+        'municipality'
+    ];
+    public function municipality(){
+        return $this->belongsTo(Municipality::class);
+    }
 }

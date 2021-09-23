@@ -6,11 +6,14 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DetailOrderController;
 use App\Http\Controllers\KitProductController;
+use App\Http\Controllers\ConfigurationController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TaxController;
+use App\Models\Configuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -63,7 +66,18 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/clients/search-client',  [ClientController::class, 'searchClient']);
 	Route::post('/clients/filter-client-list',  [ClientController::class, 'filterClientList']);
 
+
 	Route::get('/roles/getAllRoles', [RoleController::class, 'getAllRoles']);
 	Route::resource('/roles', RoleController::class);
 	Route::get('/permissions', [RoleController::class, 'getPermissions']);
+
+	Route::get('/departments', [DepartmentController::class, 'index']);
+	Route::get('/departments/{id}/getMunicipalities', [DepartmentController::class, 'getMunicipalitiesByDepartment']);
+
+	Route::resource('/configurations', ConfigurationController::class)->except(['create', 'edit', 'destroy', 'show']);
+	Route::get('/company-logo', function(){
+		$configuration = new Configuration();
+		$image = $configuration->select('logo')->first();
+		return $image;
+	});
 });

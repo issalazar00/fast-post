@@ -100,7 +100,7 @@ class OrderController extends Controller
 	{
 		// var_dump($order);
 		$details  = Order::find($order->id);
-		return ['order_information' => $details, 'order_details' => $details->detailOrders()->get()];
+		return ['order_information' => $details, 'order_details' => $details->detailOrders()->get(), 'user' => $details->user()->first()];
 	}
 
 	/**

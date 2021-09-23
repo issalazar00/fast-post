@@ -33,7 +33,7 @@ class DetailOrderController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store(Request $request, $order_id)
+	public function store($request, $order_id)
 	{
 			$detail = new DetailOrder;
 			$detail->order_id = $order_id;
@@ -44,7 +44,7 @@ class DetailOrderController extends Controller
 			$detail->price_tax_exc = $request['price_tax_exc'];
 			$detail->price_tax_inc = $request['price_tax_inc'];
 			$detail->price_tax_inc_total = $request['price_tax_inc_total'];
-			$detail->quantity = $request['qty'];
+			$detail->quantity = $request['quantity'];
 			$detail->product = $request['product'];
 			$detail->save();
 	}

@@ -7,7 +7,7 @@
           class="btn btn-outline-primary"
           :to="{
             name: 'create-edit-order',
-            params: { order_id: null },
+            params: { order_id: 0 },
           }"
         >
           Nueva orden

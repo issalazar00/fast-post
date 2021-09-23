@@ -43,6 +43,7 @@
                     class="form-control"
                     aria-label="Text input with dropdown button"
                     v-model="formClient.document"
+                    placeholder = "Ingresar documento de identificación"
                   />
                 </div>
 
@@ -52,7 +53,7 @@
                     type="text"
                     class="form-control"
                     id="name"
-                    placeholder=""
+                    placeholder="Ingresar nombre o razón social"
                     name="name"
                     v-model="formClient.name"
                   />
@@ -66,7 +67,7 @@
                       type="text"
                       class="form-control"
                       id="address"
-                      placeholder=""
+                      placeholder="Ingrear dirección"
                       name="address"
                       v-model="formClient.address"
                     />
@@ -78,7 +79,7 @@
                       type="text"
                       class="form-control"
                       id="mobile"
-                      placeholder=""
+                      placeholder="Ingresar celular"
                       name="mobile"
                       v-model="formClient.mobile"
                     />
@@ -90,7 +91,7 @@
                         type="text"
                         class="form-control"
                         id="contact"
-                        placeholder="Nombres"
+                        placeholder="Ingresar contacto"
                         name="contact"
                         v-model="formClient.contact"
                       />
@@ -102,7 +103,7 @@
                       type="enail"
                       class="form-control"
                       id="email"
-                      placeholder=""
+                      placeholder="Ingrear email"
                       name="email"
                       v-model="formClient.email"
                     />
@@ -117,6 +118,7 @@
                         name="type_person"
                         v-model="formClient.type_person"
                       >
+                        <option value="" disabled>Seleccionar tipo</option>
                         <option>Juridica</option>
                         <option>Natural</option>
                       </select>
@@ -131,12 +133,18 @@
                       id="departament"
                       name="departament"
                       v-model="formClient.departament"
+                      @change="getMunicipalities(formClient.departament)"
                     >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                      <option value="" disabled>
+                        Selecciona un departamento
+                      </option>
+                      <option
+                        v-for="department in departments"
+                        :value="department.id"
+                        :key="department.id"
+                      >
+                        {{ department.name }}
+                      </option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -145,13 +153,16 @@
                       class="form-control"
                       id="city"
                       name="city"
-                      v-model="formClient.city"
+                      v-model="formClient.municipality_id"
                     >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+                      <option value="" disabled>Selecciona un municipio</option>
+                      <option
+                        v-for="municipality in municipalities"
+                        :value="municipality.id"
+                        :key="municipality.id"
+                      >
+                        {{ municipality.name }}
+                      </option>
                     </select>
                   </div>
 
@@ -195,7 +206,7 @@
               <button
                 type="button"
                 class="btn btn-primary"
-                @click="SaveClient()"
+                @click="formClient.id ? EditClient() : CreateClient()"
               >
                 Guardar
               </button>
@@ -219,13 +230,18 @@ export default {
         email: "",
         type_person: "",
         departament: "",
-        city: "",
+        municipality_id: "",
         type_document: "",
         document: "",
         active: "",
         tax: "",
       },
+      departments: [],
+      municipalities: [],
     };
+  },
+  created() {
+    this.getDepartments();
   },
   methods: {
     CreateClient() {
@@ -241,6 +257,14 @@ export default {
       let me = this;
       $("#clientModal").modal("show");
       me.formClient = client;
+
+      if (client.municipality) {
+        me.formClient.departament = client.municipality.department_id;
+        this.getMunicipalities(me.formClient.departament);
+      } else {
+        me.formSupplier.departament = "";
+        me.formSupplier.municipality_id = "";
+      }
     },
 
     EditClient() {
@@ -268,6 +292,21 @@ export default {
     closeModal: function () {
       let me = this;
       this.ResetData();
+    },
+    getDepartments() {
+      axios.get("api/departments", this.$root.config).then((response) => {
+        this.departments = response.data.departments;
+      });
+    },
+    getMunicipalities(department) {
+      axios
+        .get(
+          "api/departments/" + department + "/getMunicipalities",
+          this.$root.config
+        )
+        .then((response) => {
+          this.municipalities = response.data.municipalities;
+        });
     },
   },
   mounted() {
