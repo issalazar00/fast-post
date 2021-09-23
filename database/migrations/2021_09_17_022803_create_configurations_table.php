@@ -18,12 +18,12 @@ class CreateConfigurationsTable extends Migration
             $table->string('name', 100);
             $table->string('legal_representative', );
             $table->string('nit', 15);
-            $table->string('address', 150);
-            $table->string('email', 150);
-            $table->string('tax_regime');
-            $table->string('telephone', 15);
-            $table->string('mobile', 15);
-            $table->string('printer', 100);
+            $table->string('address', 150)->default('Sin dirección');
+            $table->string('email', 150)->nullable();
+            $table->string('tax_regime')->nullable();
+            $table->string('telephone', 15)->nullable();
+            $table->string('mobile', 15)->nullable();
+            $table->string('printer', 100)->nullable();
             $table->text('logo')->nullable();
             $table->timestamps();
         });
