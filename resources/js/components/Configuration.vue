@@ -198,7 +198,7 @@ export default {
         telephone: "",
         mobile: "",
         logo: "",
-        printer : ""
+        printer : "",
       },
       formErrors: {
         name: "",
@@ -249,6 +249,7 @@ export default {
         "telephone",
         "mobile",
         "file0",
+        "printer"
       ];
 
       if (response) {

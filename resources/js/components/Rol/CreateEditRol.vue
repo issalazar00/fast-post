@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import global from "./../services/global.js";
+import global from "../../services/global.js";
 
 export default {
   name: "CreateEditRol",

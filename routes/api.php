@@ -8,6 +8,7 @@ use App\Http\Controllers\DetailOrderController;
 use App\Http\Controllers\KitProductController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ImportProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -80,4 +81,6 @@ Route::middleware('auth:api')->group(function () {
 		$image = $configuration->select('logo')->first();
 		return $image;
 	});
+Route::post('/import/upload-file-import', [ImportProductController::class, 'uploadFile']);
+
 });

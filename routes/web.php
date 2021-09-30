@@ -21,5 +21,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/import/download-example-import', [ImportProductController::class, 'downloadExample']);
-Route::post('/import/upload-file-import', [ImportProductController::class, 'uploadFile']);
 

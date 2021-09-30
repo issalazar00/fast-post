@@ -14,6 +14,7 @@
               id="search_product"
               placeholder="Nombre | Código de barras"
               v-model="search_product"
+              autofocus
               @keyup="listProducts(1)"
             />
           </div>
