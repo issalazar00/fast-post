@@ -12269,6 +12269,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post("api/import/upload-file-import", formData, this.$root.config).then(function (response) {
         me.filename = "";
+        me.$emit("list-products");
       })["catch"](function (error) {
         me.output = error;
       })["finally"](function () {
@@ -58388,43 +58389,48 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                !_vm.isLoading
-                  ? _c("div", { staticClass: "modal-footer" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-secondary",
-                          attrs: { type: "button", "data-dismiss": "modal" }
-                        },
-                        [_vm._v("\n              Cancelar\n            ")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "submit", value: "upload" }
-                        },
-                        [_vm._v("\n              Importar\n            ")]
-                      )
-                    ])
-                  : _c(
-                      "div",
-                      { staticClass: "modal-footer text-center" },
-                      [
-                        _c("bar-loader", {
-                          staticClass: "m-auto",
-                          attrs: {
-                            loading: !_vm.isLoading,
-                            color: "#032F6C",
-                            height: 6,
-                            width: 80,
-                            widthUnit: "%"
-                          }
-                        })
-                      ],
-                      1
-                    )
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("\n              Cancelar\n            ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit", value: "upload" },
+                      on: {
+                        change: function($event) {
+                          _vm.isLoading = true
+                        }
+                      }
+                    },
+                    [_vm._v("\n              Importar\n            ")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "text-center w-100" },
+                  [
+                    _c("bar-loader", {
+                      staticClass: "m-auto",
+                      attrs: {
+                        loading: _vm.isLoading,
+                        color: "#032F6C",
+                        height: 6,
+                        width: 80,
+                        widthUnit: "%"
+                      }
+                    })
+                  ],
+                  1
+                )
               ]
             )
           ])
@@ -58737,7 +58743,13 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("import-products")
+      _c("import-products", {
+        on: {
+          "list-products": function($event) {
+            return _vm.listProducts(1)
+          }
+        }
+      })
     ],
     1
   )

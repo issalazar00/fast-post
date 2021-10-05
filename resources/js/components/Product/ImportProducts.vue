@@ -49,7 +49,7 @@
               </div>
               {{ file != "" ? filename : "" }}
             </div>
-            <div class="modal-footer" v-if="!isLoading">
+            <div class="modal-footer">
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -57,14 +57,14 @@
               >
                 Cancelar
               </button>
-              <button type="submit" class="btn btn-primary" value="upload">
+              <button type="submit" class="btn btn-primary" value="upload" @change="isLoading = true">
                 Importar
               </button>
             </div>
-            <div v-else class="modal-footer text-center">
+            <div class="text-center w-100">
               <bar-loader
                 class="m-auto"
-                :loading="!isLoading"
+                :loading="isLoading"
                 :color="'#032F6C'"
                 :height="6"
                 :width="80"
@@ -97,6 +97,7 @@ export default {
       this.isLoading = true;
 
       let me = this;
+
       const config = {
         headers: {
           "content-type": "multipart/form-data",
@@ -113,14 +114,13 @@ export default {
         .post("api/import/upload-file-import", formData, this.$root.config)
         .then(function (response) {
           me.filename = "";
+          me.$emit("list-products");
         })
         .catch(function (error) {
           me.output = error;
         })
         .finally(
-          () => (
-            (this.isLoading = false), $("#productImportModal").modal("hide")
-          )
+          () => ((this.isLoading = false), $("#productImportModal").modal("hide"))
         );
     },
   },

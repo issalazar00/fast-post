@@ -109,7 +109,7 @@
       ref="CreateEditProduct"
       @list-products="listProducts(1)"
     />
-    <import-products />
+    <import-products @list-products="listProducts(1)"/>
   </div>
 </template>
 

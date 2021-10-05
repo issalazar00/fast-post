@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tax;
 use Illuminate\Http\Request;
@@ -17,7 +19,7 @@ class ImportProductController extends Controller
   {
     $this->middleware('can:product.store');
   }
-  
+
   public function downloadExample()
   {
     $path = public_path('files/productos.xls');
@@ -64,8 +66,8 @@ class ImportProductController extends Controller
           $tax_percentage = 0;
           $percentage = 0;
 
-          if (isset($p["K"]) && (float)$p["K"] != '') {
-            $tax = Tax::firstOrCreate(['percentage' => (float)$p["K"], 'name' => 'Nuevo Impuesto']);
+          if (isset($p["J"]) && (float)$p["J"] != '') {
+            $tax = Tax::firstOrCreate(['percentage' => (float)$p["J"], 'name' => "Impuesto al {$p['J']} %"]);
             $tax_id = $tax->id;
             $tax_percentage = (float)$tax->percentage;
 
@@ -73,40 +75,57 @@ class ImportProductController extends Controller
               $percentage = (float)($tax_percentage / 100) + 1;
             }
           } else {
-            $tax = Tax::firstOrCreate(['percentage' => '0', 'name' => 'Nuevo Impuesto']);
+            $tax = Tax::firstOrCreate(['percentage' => '0', 'name' => "Impuesto al 0 %"]);
             $tax_id = $tax->id;
             $percentage = 0;
           }
 
+
           $type = 1;
 
-          if (isset($p["J"])) {
-
-            if ($p["J"] == 'UNIDAD') {
+          if (isset($p["I"])) {
+            if ($p["I"] == 'UNIDAD') {
               $type =  1;
             }
 
-            if ($p["J"] == 'GRANEL') {
+            if ($p["I"] == 'GRANEL') {
               $type =  2;
             }
           }
 
-          if (isset($p["C"])) {
+          if (($p["C"]) != null) {
+
+
             $cost_price = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["C"]));
             $sale_price_tax_inc = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["D"]));
             $wholesale_price_tax_inc = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["E"]));
-            $quantity = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["G"]));
-            $minimum = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["H"]));
-            $maximum = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["I"]));
+            $quantity = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["F"]));
+            $minimum = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["G"]));
+            $maximum = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["H"]));
 
-            if (!is_string($quantity)) {
+            if (is_float((float)$cost_price) && ((float)$cost_price) != 0) {
+
+
+              $category_id = 1;
+              if (isset($p["K"]) && $p["K"] != '') {
+                $category = Category::firstOrCreate(['name' => $p["K"]]);
+                $category_id = $category->id;
+              }
+
+              $brand_id = 1;
+              if (isset($p["L"]) && $p["L"] != '') {
+                $brand = Brand::firstOrCreate(['name' => $p["L"]]);
+                $brand_id = $brand->id;
+              }
+
               $product = new Product();
               $product->barcode = $p["A"];
               $product->product = $p["B"];
               $product->cost_price = $cost_price;
               $product->sale_price_tax_inc = $sale_price_tax_inc;
               $product->wholesale_price_tax_inc = $wholesale_price_tax_inc;
-              $product->category_id = 1;
+              $product->category_id = $category_id;
+              $product->brand_id = $brand_id;
               $product->quantity = $quantity;
               $product->minimum = $minimum;
               $product->maximum = $maximum;
@@ -115,13 +134,9 @@ class ImportProductController extends Controller
 
               if ($percentage != 0) {
                 $product->sale_price_tax_exc = ($sale_price_tax_inc) / ($percentage);
-              } else {
-                $product->sale_price_tax_exc = ($sale_price_tax_inc);
-              }
-
-              if ($percentage != 0) {
                 $product->wholesale_price_tax_exc = ($wholesale_price_tax_inc) / ($percentage);
               } else {
+                $product->sale_price_tax_exc = ($sale_price_tax_inc);
                 $product->wholesale_price_tax_exc = ($wholesale_price_tax_inc);
               }
               $product->gain = $product->wholesale_price_tax_exc - $product->wholesale_price_tax_inc;
