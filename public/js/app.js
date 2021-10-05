@@ -10944,6 +10944,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -10975,11 +10978,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    price_tax_inc: function price_tax_inc() {
-      this.productsOrderList.forEach(function (product) {
-        return product.price_tax_inc_total = parseFloat(product.quantity * product.price_tax_inc - product.quantity * product.price_tax_inc * (product.discount_percentage / 100));
-      });
-    },
     total_tax_exc: function total_tax_exc() {
       var total = 0.0;
       this.productsOrderList.forEach(function (product) {
@@ -56334,10 +56332,11 @@ var render = function() {
                             _vm._v(
                               "\n                $\n                " +
                                 _vm._s(
-                                  p.quantity * p.price_tax_inc -
+                                  (p.price_tax_inc_total =
+                                    p.quantity * p.price_tax_inc -
                                     p.quantity *
                                       p.price_tax_inc *
-                                      (p.discount_percentage / 100)
+                                      (p.discount_percentage / 100))
                                 ) +
                                 "\n              "
                             )
@@ -57382,20 +57381,24 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "bg-primary" }, [
-      _c("div", [
-        _c("h1", { staticClass: "w-100 text-center" }, [_vm._v("Verificador")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "" } }, [_vm._v("Producto")]),
+    return _c(
+      "div",
+      { staticClass: "bg-primary w-100 text-center text-white" },
+      [
+        _c("div", { staticClass: "p-5" }, [
+          _c("h1", {}, [_vm._v("Consulte su producto")]),
           _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control-lg form-control",
-            attrs: { type: "text" }
-          })
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "" } }, [_vm._v("Producto")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control-lg form-control",
+              attrs: { type: "text" }
+            })
+          ])
         ])
-      ])
-    ])
+      ]
+    )
   }
 ]
 render._withStripped = true

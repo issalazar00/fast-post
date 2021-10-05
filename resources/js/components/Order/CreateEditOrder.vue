@@ -186,8 +186,11 @@
                 <td>
                   $
                   {{
-                    p.quantity * p.price_tax_inc -
-                    p.quantity * p.price_tax_inc * (p.discount_percentage / 100)
+                    (p.price_tax_inc_total =
+                      p.quantity * p.price_tax_inc -
+                      p.quantity *
+                        p.price_tax_inc *
+                        (p.discount_percentage / 100))
                   }}
                 </td>
                 <td>
@@ -336,17 +339,6 @@ export default {
     };
   },
   computed: {
-    price_tax_inc: function () {
-      this.productsOrderList.forEach(
-        (product) =>
-          (product.price_tax_inc_total = parseFloat(
-            product.quantity * product.price_tax_inc -
-              product.quantity *
-                product.price_tax_inc *
-                (product.discount_percentage / 100)
-          ))
-      );
-    },
     total_tax_exc: function () {
       var total = 0.0;
       this.productsOrderList.forEach(
