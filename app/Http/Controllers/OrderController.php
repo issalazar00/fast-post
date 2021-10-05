@@ -87,7 +87,7 @@ class OrderController extends Controller
 		}
 
 		$print = new PrintOrderController();
-		$print = $print->printTicket($order->id);
+		$print = $print->printTicket($order->id, $request->cash, $request->change);
 	}
 
 	/**

@@ -12,7 +12,7 @@ use Mike42\Escpos\Printer;
 
 class PrintOrderController extends Controller
 {
-	public function printTicket($order_id)
+	public function printTicket($order_id, $cash = null, $change = null)
 	{
 		// Orden
 
@@ -30,7 +30,6 @@ class PrintOrderController extends Controller
 
 		// Config de impresora
 		$connector = new WindowsPrintConnector($company->printer);
-	
 
 		try {
 
@@ -85,12 +84,21 @@ class PrintOrderController extends Controller
 			$printer->text("\n==========================================" . "\n");
 			$printer->setEmphasis(true);
 			$printer->setLineSpacing(2);
+			$printer->text("\n");
+			$printer->text(sprintf('%-25s %+15.15s', 'Subtotal', number_format($order->total_iva_exc, 2)));
+			$printer->text("\n");
+			$printer->text(sprintf('%-25s %+15.15s', 'Iva', number_format($total - $order->total_iva_exc, 2)));
 			$printer->setTextSize(1, 2);
 			$printer->text(sprintf('%-25s %+15.15s', 'TOTAL', number_format($total, 2)));
-			$printer->setEmphasis(false);
-
-			$printer->text("\n");
 			$printer->setTextSize(1, 1);
+			$printer->setEmphasis(false);
+			if ($cash != null && $change != null) {
+				$printer->text("\n");
+				$printer->text(sprintf('%-25s %+15.15s', 'Efectivo', number_format($cash, 2)));
+				$printer->text("\n");
+				$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($change, 2)));
+			}
+			$printer->text("\n");
 			$printer->setJustification(Printer::JUSTIFY_CENTER);
 			$printer->setLineSpacing(2);
 			$printer->setEmphasis(false);
