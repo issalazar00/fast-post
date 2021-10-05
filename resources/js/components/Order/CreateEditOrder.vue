@@ -186,12 +186,11 @@
                 <td>
                   $
                   {{
-                    (p.price_tax_inc_total = (
+                    (p.price_tax_inc_total =
                       p.quantity * p.price_tax_inc -
                       p.quantity *
                         p.price_tax_inc *
-                        (p.discount_percentage / 100)
-                    ).toFixed(2))
+                        (p.discount_percentage / 100))
                   }}
                 </td>
                 <td>
@@ -249,7 +248,7 @@
               <section class="card">
                 <div>
                   <table class="table table-sm table-primary text-right">
-                     <tr>
+                    <tr>
                       <th colspan="7">Subtotal:</th>
                       <th>
                         $ {{ (order.total_tax_exc = total_tax_exc).toFixed(2) }}
@@ -274,14 +273,14 @@
                         $ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}
                       </th>
                     </tr>
-                    <tr  class="">
+                    <tr class="">
                       <th colspan="7">Efectivo:</th>
                       <th>
                         <input
                           type="number"
                           value="0"
                           step="any"
-                          v-model="order.payment"
+                          v-model="order.cash"
                         />
                       </th>
                     </tr>
@@ -333,7 +332,8 @@ export default {
         total_tax_exc: 0.0,
         total_discount: 0.0,
         productsOrder: [],
-        payment: 0,
+        cash: 0,
+        change: 0,
       },
       companyLogo: "",
     };
@@ -350,21 +350,26 @@ export default {
     total_discount: function () {
       var total = 0.0;
       this.productsOrderList.forEach((product) => {
-        (total += parseFloat(product.discount_price)), product.quantity;
+        total += parseFloat(product.discount_price);
       });
       return total;
     },
     total_tax_inc: function () {
       var total = 0.0;
       this.productsOrderList.forEach((product) => {
-        (total += parseFloat(product.price_tax_inc_total)), product.quantity;
+        total += parseFloat(
+          product.quantity * product.price_tax_inc -
+            product.quantity *
+              product.price_tax_inc *
+              (product.discount_percentage / 100)
+        );
       });
       return total;
     },
     payment_return: function () {
       var value = 0.0;
-      if (this.order.payment > 0) {
-        value = (this.order.payment - this.total_tax_inc).toFixed(2);
+      if (this.order.cash > 0) {
+        value = (this.order.cash - this.total_tax_inc).toFixed(2);
       }
       return value;
     },
@@ -425,6 +430,7 @@ export default {
           if (result) {
             // Añade cantidad
             prod.quantity += 1;
+            prod.price_tax_inc_total = prod.price_tax_inc * prod.quantity;
           }
         }
       });
@@ -440,6 +446,7 @@ export default {
           price_tax_inc: new_product.sale_price_tax_inc,
           price_tax_exc: new_product.sale_price_tax_exc,
           product: new_product.product,
+          price_tax_inc_total: new_product.sale_price_tax_inc,
         });
       }
     },
