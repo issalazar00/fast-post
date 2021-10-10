@@ -165,5 +165,26 @@ return [
         'title'                 => 'título',
         'username'              => 'usuario',
         'year'                  => 'año',
+        //Product----------------------------
+        'barcode'               => 'codigo',
+        'product'               => 'producto',
+        'category_id'           => 'categoria',
+        'brand_id'              => 'marca',
+        'tax_id'                => 'impuesto',
+        'cost_price'            => 'precio costo',
+        'sale_price_tax_exc'    => 'precio venta sin iva',
+        'sale_price_tax_inc'    => 'precio venta con iva',
+        'gain'                  => 'ganancia',
+        'wholesale_price_tax_exc' => 'precio mayoreo sin iva',
+        'wholesale_price_tax_inc' => 'precio mayoreo con iva',
+        'stock'                  => 'inventario',
+        'quantity'               => 'cantidad',
+        'minimum'                => 'mínimo',
+        'maximum'                => 'máximo',
+        //Product----------------------------
+        //Configuration---------------------------
+        'condition_order'        => 'condicion de orden',
+        'condition_quotation'    => 'condicion de cotizacion',
+        //Configuration-------------------------------
     ],
 ];

@@ -28,9 +28,10 @@
               aria-label=" with two button addons"
               aria-describedby="button-addon4"
               v-model="filters.product"
+              @keyup="searchProduct()"
             />
             <div class="input-group-append" id="button-addon4">
-              <button class="btn btn-outline-secondary" type="button">
+              <button class="btn btn-outline-secondary" type="button" @click="searchProduct()">
                 Buscar Producto
               </button>
             </div>
@@ -92,15 +93,19 @@ export default {
       ProductList: {},
     };
   },
- 
+
   created() {
     this.listProducts();
   },
   methods: {
-   listProducts() {
+    listProducts() {
       let me = this;
       axios
-        .post("api/products/filter-product-list", null, this.$root.config)
+        .post(
+          `api/products/filter-product-list?product=${me.filters.product}`,
+          null,
+          this.$root.config
+        )
         .then(function (response) {
           me.ProductList = response;
         });
@@ -110,7 +115,8 @@ export default {
       if (me.filters.product == "") {
         return false;
       }
-      var url = "api/products/filter-product-list?product=" + me.filters.product;
+      var url =
+        "api/products/filter-product-list?product=" + me.filters.product;
       if (me.filters.product.length >= 3) {
         axios
           .post(url, null, me.$root.config)

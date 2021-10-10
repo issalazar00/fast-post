@@ -82,6 +82,7 @@
       tabindex="-1"
       aria-labelledby="taxModalLabel"
       aria-hidden="true"
+      data-backdrop="static"
     >
       <div class="modal-dialog">
         <div class="modal-content">

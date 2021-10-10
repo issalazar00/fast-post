@@ -16,30 +16,28 @@ import NoFound from './components/NoFound.vue';
 import Clients from './components/Client/Clients.vue'
 import CreateEditClient from './components/Client/CreateEditClient.vue'
 
-import Products from './components/Products.vue'
-import CreateEditProduct from './components/CreateEditProduct.vue'
+import Products from './components/Product/Products.vue'
+import CreateEditProduct from './components/Product/CreateEditProduct.vue'
+import ImportProducts from './components/Product/ImportProducts'
 
-import Taxes from './components/Taxes.vue'
-import CreateEditTax from './components/CreateEditTax.vue'
+import Taxes from './components/Tax/Taxes.vue'
+import CreateEditTax from './components/Tax/CreateEditTax.vue'
 
-import Categories from './components/Categories.vue'
-import CreateEditCategory from './components/CreateEditCategory.vue'
+import Categories from './components/Category/Categories.vue'
+import CreateEditCategory from './components/Category/CreateEditCategory.vue'
 
-import Brands from './components/Brands.vue'
-import CreateEditBrand from './components/CreateEditBrand.vue'
+import Brands from './components/Brand/Brands.vue'
+import CreateEditBrand from './components/Brand/CreateEditBrand.vue'
 
-import Suppliers from './components/Suppliers.vue'
-import CreateEditSupplier from './components/CreateEditSupplier.vue'
+import Suppliers from './components/Supplier/Suppliers.vue'
+import CreateEditSupplier from './components/Supplier/CreateEditSupplier.vue'
 
 import Orders from './components/Order/Orders.vue'
 import DetailsOrder from './components/Order/DetailsOrder.vue'
 import CreateEditOrder from './components/Order/CreateEditOrder.vue'
-import AddClient from './components/Order/AddClient.vue'
-import AddProduct from './components/Order/AddProduct'
-import ImportProducts from './components/ImportProducts'
 
-import Roles from './components/Roles.vue';
-import Users from './components/Users.vue';
+import Roles from './components/Rol/Roles.vue';
+import Users from './components/User/Users.vue';
 import Configuration from './components/Configuration.vue';
 //Services
 import global from './services/global.js';
@@ -58,7 +56,7 @@ Vue.use(VueSpinners)
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 // Vue.component('productos', require('./components/Products.vue').default);
 
 /**
@@ -75,21 +73,21 @@ const routes = [
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/products', component: Products },
   { path: '/create-edit-product', component: CreateEditProduct },
-  { path: '/taxes', component: Taxes, alias: "tax.index"},
+  { path: '/taxes', component: Taxes, alias: "tax.index" },
   { path: '/create-edit-tax', component: CreateEditTax },
-  { path: '/suppliers', component: Suppliers},
+  { path: '/suppliers', component: Suppliers },
   { path: '/create-edit-supplier', component: CreateEditSupplier },
   { path: '/categories', component: Categories, alias: "category.index" },
   { path: '/create-edit-category', component: CreateEditCategory },
-  { path: '/brands', component: Brands },
+  { path: '/brands', component: Brands, alias: "brand.index" },
   { path: '/create-edit-brand', component: CreateEditBrand },
   { path: '/orders', component: Orders },
   { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order' },
-  { path: '/create-edit-order/:order_id', component: CreateEditOrder, props: true, name : 'create-edit-order' },
+  { path: '/create-edit-order/:order_id', component: CreateEditOrder, props: true, name: 'create-edit-order' },
   { path: '/login', name: 'Login', component: Login },
-  { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index"},
-  { path: '/users', name: 'Users', component: Users, alias: "user.index"},
-  {path: '/configuration', name:'Configuration', component:Configuration},
+  { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index" },
+  { path: '/users', name: 'Users', component: Users, alias: "user.index" },
+  { path: '/configuration', name: 'Configuration', component: Configuration },
   { path: '**', name: 'NoFound', component: NoFound },
 
 ]

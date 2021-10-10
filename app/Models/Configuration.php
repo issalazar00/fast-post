@@ -10,6 +10,7 @@ class Configuration extends Model
     use HasFactory;
 
     protected $table =  'configurations';
+    
     protected $fillable = [
         'name',
         'legal_representative',
@@ -19,6 +20,9 @@ class Configuration extends Model
         'tax_regime',
         'telephone',
         'mobile',
-        'logo'
+        'logo',
+        'printer',
+        'condition_order',
+        'condition_quotation'
     ];
 }

@@ -71,7 +71,7 @@
   </div>
 </template>
 <script>
-import global from "./../services/global.js";
+import global from "./../../services/global.js";
 import CreateEditBrand from "./CreateEditBrand.vue";
 export default {
   data() {

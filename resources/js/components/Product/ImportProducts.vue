@@ -47,10 +47,9 @@
                   >Subir archivo de importación</label
                 >
               </div>
-              {{ file != '' ? filename : '' }}
-
+              {{ file != "" ? filename : "" }}
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" v-if="!isLoading">
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -61,6 +60,16 @@
               <button type="submit" class="btn btn-primary" value="upload">
                 Importar
               </button>
+            </div>
+            <div v-else class="modal-footer text-center">
+              <bar-loader
+                class="m-auto"
+                :loading="!isLoading"
+                :color="'#032F6C'"
+                :height="6"
+                :width="80"
+                widthUnit="%"
+              />
             </div>
           </form>
         </div>
@@ -73,6 +82,7 @@
 export default {
   data() {
     return {
+      isLoading: false,
       file: "",
       filename: "",
     };
@@ -84,7 +94,7 @@ export default {
       this.file = e.target.files[0];
     },
     uploadFile() {
-      console.log("hi");
+      this.isLoading = true;
 
       let me = this;
       const config = {
@@ -98,16 +108,20 @@ export default {
       // form data
       let formData = new FormData();
       formData.append("file", this.file);
-
       // send upload request
       axios
-        .post("import/upload-file-import", formData, config)
+        .post("api/import/upload-file-import", formData, this.$root.config)
         .then(function (response) {
           me.filename = "";
         })
         .catch(function (error) {
           me.output = error;
-        });
+        })
+        .finally(
+          () => (
+            (this.isLoading = false), $("#productImportModal").modal("hide")
+          )
+        );
     },
   },
 };

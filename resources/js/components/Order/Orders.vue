@@ -7,7 +7,7 @@
           class="btn btn-outline-primary"
           :to="{
             name: 'create-edit-order',
-            params: { order_id: null },
+            params: { order_id: 0 },
           }"
         >
           Nueva orden
@@ -26,6 +26,8 @@
               id="nro_factura"
               class="form-control"
               placeholder="Nro Factura"
+              v-model="filter.no_invoice"
+              @keypress="getOrders(1)"
             />
           </div>
           <div class="form-group">
@@ -36,6 +38,8 @@
               id="name_client"
               class="form-control"
               placeholder="Cliente"
+              v-model="filter.client"
+              @keypress="getOrders(1)"
             />
           </div>
         </div>
@@ -57,11 +61,11 @@
           </thead>
           <tbody>
             <tr v-for="o in OrderList.data" :key="o.id">
-              <th scope="row"> {{o.id}} - {{ o.no_invoice }}</th>
+              <th scope="row">{{ o.id }} - {{ o.no_invoice }}</th>
               <td>{{ o.total_paid }}</td>
               <td>{{ o.total_iva_exc }}</td>
               <td>{{ o.total_discount }}</td>
-              <td>{{ o.client_id }}</td>
+              <td>{{ o.client.name }}</td>
               <td>
                 <span v-if="o.state == 0">Desechada</span>
                 <span v-if="o.state == 1">Abierta</span>
@@ -82,7 +86,7 @@
                 </button>
               </td>
               <td>
-                <button class="btn">
+                <button class="btn" @click="generatePdf(o.id)">
                   <i class="bi bi-printer"></i>
                 </button>
               </td>
@@ -125,6 +129,10 @@ export default {
   data() {
     return {
       OrderList: {},
+      filter: {
+        client: "",
+        no_invoice: "",
+      },
     };
   },
   created() {
@@ -134,7 +142,10 @@ export default {
     getOrders(page = 1) {
       let me = this;
       axios
-        .get(`api/orders?page=${page}`, this.$root.config)
+        .get(
+          `api/orders?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}`,
+          this.$root.config
+        )
         .then(function (response) {
           me.OrderList = response.data.orders;
         });
@@ -143,6 +154,20 @@ export default {
       axios
         .delete(`api/orders/${order_id}`, this.$root.config)
         .then(() => this.getOrders(1));
+    },
+    generatePdf(id) {
+      axios
+        .get("api/orders/generatePdf/" + id, this.$root.config)
+        .then((response) => {
+          console.log(response);
+
+          const pdf = response.data.pdf;
+          var a = document.createElement("a");
+          a.href = "data:application/pdf;base64,"+pdf;
+          a.download = `Order-${id}.pdf`;
+          a.click();
+
+        });
     },
   },
 };

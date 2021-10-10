@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KitProduct;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 class ProductController extends Controller
 {
@@ -20,9 +24,18 @@ class ProductController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
-		$products = Product::select()->orderBy('product', 'asc')->paginate(10);
+		if ($request->product != '') {
+			$products = Product::select()
+				->where('state', 1)
+				->where('barcode', 'LIKE', "%$request->product%")
+				->orWhere('product', 'LIKE', "%$request->product%")
+				->orderBy('product', 'asc')
+				->paginate(10);
+		} else {
+			$products = Product::select()->orderBy('product', 'asc')->paginate(10);
+		}
 
 		return response()->json([
 			'status' => 'success',
@@ -50,8 +63,79 @@ class ProductController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$product = $request->all();
-		Product::create($product);
+
+		$new_product = $request->product;
+
+		$validate = Validator::make($new_product, [
+			'category_id' => 'required|integer|exists:categories,id',
+			'tax_id' => 'required|integer|exists:taxes,id',
+			'brand_id' => 'nullable|integer|exists:brands,id',
+			'product' => 'required|string|min:3|max:100',
+			'barcode' => 'required|numeric|unique:products',
+			'type' => 'required|integer',
+			'cost_price' => 'required|numeric',
+			'gain' => 'required|numeric',
+			'sale_price_tax_exc' => 'required|numeric',
+			'sale_price_tax_inc' => 'required|numeric',
+			'wholesale_price_tax_exc' => 'required|numeric',
+			'wholesale_price_tax_inc' => 'required|numeric',
+			'stock'=> 'required|boolean',
+			'quantity' => 'nullable|numeric',
+			'minimum' => 'nullable|numeric',
+			'maximum' => 'nullable|numeric'
+		]);
+
+		if(!$validate->fails()){
+			$product = new Product();
+			$product->barcode = $new_product['barcode'];
+			$product->product = $new_product['product'];
+			$product->type = $new_product['type'];
+			$product->cost_price = $new_product['cost_price'];
+			$product->gain = $new_product['gain'];
+			$product->sale_price_tax_exc = $new_product['sale_price_tax_exc'];
+			$product->sale_price_tax_inc = $new_product['sale_price_tax_inc'];
+			$product->wholesale_price_tax_exc = $new_product['wholesale_price_tax_exc'];
+			$product->wholesale_price_tax_inc = $new_product['wholesale_price_tax_inc'];
+			$product->stock = $new_product['stock'];
+			$product->quantity = $new_product['quantity'];
+			$product->minimum = $new_product['minimum'];
+			$product->maximum = $new_product['maximum'];
+			$product->category_id = $new_product['category_id'];
+			$product->tax_id = $new_product['tax_id'];
+			$product->brand_id = $new_product['brand_id'];
+			$product->save();
+	
+			if ($new_product['type'] == 3) {
+				if (count($request->itemListKit) > 0) {
+					foreach ($request->itemListKit as $item) {
+						$kitProduct = new KitProduct();
+						$kitProduct->product_parent_id = $product->id;
+						$kitProduct->product_child_id = $item['product_id'];
+						$kitProduct->quantity = $item['quantity'];
+						$kitProduct->product = $item['product'];
+						$kitProduct->barcode = $item['barcode'];
+						$kitProduct->save();
+					}
+				}
+			}
+
+			$data = [
+				'status' => 'success',
+				'code' => 200,
+				'message' => 'Registro exitoso',
+				'product' => $product
+			];
+		}else {
+			$data = [
+				'status' => 'error',
+                'code' =>  400,
+                'message' => 'Validación de datos incorrecta',
+                'errors' =>  $validate->errors()
+			];
+
+		}
+
+		return response()->json($data, $data['code']);
 	}
 
 	/**
@@ -85,25 +169,80 @@ class ProductController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		//
+		$p = $request->product;
 		$product = Product::find($id);
-		$product->barcode = $request['barcode'];
-		$product->product = $request['product'];
-		$product->type = $request['type'];
-		$product->cost_price = $request['cost_price'];
-		$product->gain = $request['gain'];
-		$product->sale_price_tax_exc = $request['sale_price_tax_exc'];
-		$product->sale_price_tax_inc = $request['sale_price_tax_inc'];
-		$product->wholesale_price_tax_exc = $request['wholesale_price_tax_exc'];
-		$product->wholesale_price_tax_inc = $request['wholesale_price_tax_inc'];
-		$product->stock = $request['stock'];
-		$product->quantity = $request['quantity'];
-		$product->minimum = $request['minimum'];
-		$product->maximum = $request['maximum'];
-		$product->category_id = $request['category_id'];
-		$product->tax_id = $request['tax_id'];
-		$product->brand_id = $request['brand_id'];
-		$product->save();
+		
+		$validate = Validator::make($p, [
+			'category_id' => 'required|integer|exists:categories,id',
+			'tax_id' => 'required|integer|exists:taxes,id',
+			'brand_id' => 'nullable|integer|exists:brands,id',
+			'product' => 'required|string|min:3|max:100',
+			'barcode' => ['required','numeric', Rule::unique('products')->ignore($product->barcode,'barcode')],
+			'type' => 'required|integer',
+			'cost_price' => 'required|numeric',
+			'gain' => 'required|numeric',
+			'sale_price_tax_exc' => 'required|numeric',
+			'sale_price_tax_inc' => 'required|numeric',
+			'wholesale_price_tax_exc' => 'required|numeric',
+			'wholesale_price_tax_inc' => 'required|numeric',
+			'stock'=> 'required|boolean',
+			'quantity' => 'nullable|numeric',
+			'minimum' => 'nullable|numeric',
+			'maximum' => 'nullable|numeric'
+		]);
+
+		if(!$validate->fails()){
+			
+			$product->barcode = $p['barcode'];
+			$product->product = $p['product'];
+			$product->type = $p['type'];
+			$product->cost_price = $p['cost_price'];
+			$product->gain = $p['gain'];
+			$product->sale_price_tax_exc = $p['sale_price_tax_exc'];
+			$product->sale_price_tax_inc = $p['sale_price_tax_inc'];
+			$product->wholesale_price_tax_exc = $p['wholesale_price_tax_exc'];
+			$product->wholesale_price_tax_inc = $p['wholesale_price_tax_inc'];
+			$product->stock = $p['stock'];
+			$product->quantity = $p['quantity'];
+			$product->minimum = $p['minimum'];
+			$product->maximum = $p['maximum'];
+			$product->category_id = $p['category_id'];
+			$product->tax_id = $p['tax_id'];
+			$product->brand_id = $p['brand_id'];
+			$product->save();
+	
+			if ($p['type'] == 3) {
+				if (count($request->itemListKit) > 0) {
+					foreach ($request->itemListKit as $item) {
+	
+						KitProduct::updateOrCreate(
+							['product_parent_id' => $id, 'product_child_id' => $item['product_id']],
+							[
+								'quantity' => $item['quantity'],
+								'product' => $item['product'],
+								'barcode' => $item['barcode']
+							]
+						);
+					}
+				}
+			}
+
+			$data = [
+				'status' => 'success',
+				'code' => 200,
+				'message' => 'Actualización exitoso',
+				'product' => $product
+			];
+		}else{
+			$data = [
+				'status' => 'error',
+                'code' =>  400,
+                'message' => 'Validación de datos incorrecta',
+                'errors' =>  $validate->errors()
+			];
+		}
+
+		return response()->json($data, $data['code']);
 	}
 
 	/**
@@ -136,26 +275,27 @@ class ProductController extends Controller
 
 		$products = Product::select()
 			->where('barcode', 'LIKE', "%$request->product%")
-		// 	->orWhere('product', 'LIKE', "%$request->product%")
-		// 	->where('state', 1)
+			->orWhere('product', 'LIKE', "%$request->product%")
+			->where('state', 1)
 			->first();
-		// var_dump($request->product);
 		return ['products' => $products];
 	}
 
 	public function filterProductList(Request $request)
 	{
 
-		if (!$request->product || $request->product == '') {
+		if (!$request->product || $request->product == '' || $request->product == NULL) {
 			$products = Product::select()
 				->where('state', 1)
+				->limit(5)
 				->get();
 		} else {
 			$products = Product::select()
 				->where('state', 1)
 				->where('barcode', 'LIKE', "%$request->product%")
 				->orWhere('product', 'LIKE', "%$request->product%")
-				->get(20);
+				->limit(5)
+				->get();
 		}
 
 

@@ -15508,3 +15508,7 @@ h3 {
 label {
   margin-bottom: 0;
 }
+
+.fixed-price-right {
+  right: auto;
+}
