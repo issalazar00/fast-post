@@ -24,3 +24,9 @@ $primary: #435EBE;
 $secondary: #919191;
 $danger: #ca2f3c;
 $success: #34BF9B;
+
+$topbar-base-height: 4.375rem !default;
+// Change below variable to change the width of the sidenav
+$sidebar-base-width: 14rem !default;
+// Change below variable to change the width of the sidenav when collapsed
+$sidebar-collapsed-width: 6.5rem !default;
