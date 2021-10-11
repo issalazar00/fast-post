@@ -127,6 +127,7 @@ export default {
     };
   },
   created() {
+    this.$root.validateToken();
     this.isLoading = true;
     let me = this;
     axios

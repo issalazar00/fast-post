@@ -99,6 +99,7 @@ export default {
     };
   },
   created() {
+    this.$root.validateToken();
     this.listClients(1);
   },
   methods: {

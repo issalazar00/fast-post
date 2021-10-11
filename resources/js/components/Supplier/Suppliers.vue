@@ -94,6 +94,7 @@ export default {
     };
   },
   created() {
+    this.$root.validateToken();
     this.listSuppliers(1);
   },
   methods: {

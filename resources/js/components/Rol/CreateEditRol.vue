@@ -16,6 +16,7 @@
             class="close"
             data-dismiss="modal"
             aria-label="Close"
+            @click="closeModal()"
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -168,7 +169,6 @@ export default {
       let me = this;
       $("#rolModal").modal("hide");
       me.formRol = {};
-      //$("#form_rol")[0].reset();
       this.assignErrors(false);
     },
     assignErrors(response) {

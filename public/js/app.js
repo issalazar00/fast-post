@@ -8972,6 +8972,7 @@ __webpack_require__.r(__webpack_exports__);
     CreateEditBrand: _CreateEditBrand_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   created: function created() {
+    this.$root.validateToken();
     this.listBrands(1);
   },
   methods: {
@@ -9296,6 +9297,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.$root.validateToken();
     this.listCategories(1);
   },
   methods: {
@@ -9556,6 +9558,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.$root.validateToken();
     this.listClients(1);
   },
   methods: {
@@ -10160,6 +10163,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.$root.validateToken();
     this.getCofiguration();
   },
   methods: {
@@ -11476,6 +11480,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.$root.validateToken();
     this.getOrders(1);
   },
   methods: {
@@ -12576,6 +12581,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
+    this.$root.validateToken();
     this.isLoading = true;
     var me = this;
     axios.get("api/products?page=1", this.$root.config).then(function (response) {
@@ -12622,6 +12628,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _services_global_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../services/global.js */ "./resources/js/services/global.js");
+//
 //
 //
 //
@@ -12782,8 +12789,7 @@ __webpack_require__.r(__webpack_exports__);
     ResetData: function ResetData() {
       var me = this;
       $("#rolModal").modal("hide");
-      me.formRol = {}; //$("#form_rol")[0].reset();
-
+      me.formRol = {};
       this.assignErrors(false);
     },
     assignErrors: function assignErrors(response) {
@@ -12901,6 +12907,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.$root.validateToken();
     this.listRoles(1);
   },
   methods: {
@@ -13337,6 +13344,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.$root.validateToken();
     this.listSuppliers(1);
   },
   methods: {
@@ -13632,6 +13640,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
+    this.$root.validateToken();
     this.listTaxes(1);
   },
   methods: {
@@ -14077,7 +14086,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @saeris/vue-spinners */ "./node_modules/@saeris/vue-spinners/lib/@saeris/vue-spinners.common.js");
 /* harmony import */ var _saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _components_Login_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Login.vue */ "./resources/js/components/Login.vue");
@@ -14102,6 +14111,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_User_Users_vue__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/User/Users.vue */ "./resources/js/components/User/Users.vue");
 /* harmony import */ var _components_Configuration_vue__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./components/Configuration.vue */ "./resources/js/components/Configuration.vue");
 /* harmony import */ var _services_global_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./services/global.js */ "./resources/js/services/global.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_25___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_25__);
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -14142,7 +14153,8 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].component('pagination', __webpack_re
  //Services
 
 
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_25__["default"]);
+
+vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vue_router__WEBPACK_IMPORTED_MODULE_26__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(_saeris_vue_spinners__WEBPACK_IMPORTED_MODULE_2__.VueSpinners);
 /**
  * The following block of code may be used to automatically register your
@@ -14241,7 +14253,7 @@ var routes = [{
   name: 'NoFound',
   component: _components_NoFound_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
 }];
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_25__["default"]({
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_26__["default"]({
   routes: routes // short for `routes: routes`
 
 });
@@ -14355,6 +14367,15 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1__["default"]({
     },
     validatePermission: function validatePermission(permission) {
       return _services_global_js__WEBPACK_IMPORTED_MODULE_24__["default"].validatePermission(this.permissions, permission);
+    },
+    validateToken: function validateToken() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_25___default().get('api/users/' + this.user.sub, this.config).then(function (response) {
+        return true;
+      })["catch"](function (response) {
+        _this.logout();
+      });
     }
   }
 });
@@ -59158,7 +59179,31 @@ var render = function() {
     [
       _c("div", { staticClass: "modal-dialog" }, [
         _c("div", { staticClass: "modal-content" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "modal-header" }, [
+            _c(
+              "h5",
+              { staticClass: "modal-title", attrs: { id: "rolModalLabel" } },
+              [_vm._v("Rol")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "close",
+                attrs: {
+                  type: "button",
+                  "data-dismiss": "modal",
+                  "aria-label": "Close"
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.closeModal()
+                  }
+                }
+              },
+              [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+            )
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "modal-body" }, [
             _c(
@@ -59310,31 +59355,7 @@ var render = function() {
     ]
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title", attrs: { id: "rolModalLabel" } }, [
-        _vm._v("Rol")
-      ]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

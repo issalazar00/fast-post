@@ -1,5 +1,6 @@
 const api = 'http://fast-post.com.devel/api';
 
+
 export default {
   api: api,
   token: function () {
@@ -19,6 +20,5 @@ export default {
     });
 
     return search.length > 0 ? true : false;
-  },
-
+  }
 };

@@ -83,6 +83,7 @@ export default {
     };
   },
   created() {
+    this.$root.validateToken();
     this.listRoles(1);
   },
   methods: {

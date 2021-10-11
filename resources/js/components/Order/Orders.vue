@@ -136,6 +136,7 @@ export default {
     };
   },
   created() {
+    this.$root.validateToken();
     this.getOrders(1);
   },
   methods: {

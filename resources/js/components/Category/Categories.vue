@@ -142,6 +142,7 @@ export default {
     };
   },
   created() {
+    this.$root.validateToken();
     this.listCategories(1);
   },
   methods: {
