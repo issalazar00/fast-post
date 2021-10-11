@@ -43,7 +43,7 @@ class PrintOrderController extends Controller
 				/* Images not supported on your PHP, or image file not found */
 				$printer->text($e->getMessage() . "\n");
 			}
-
+			$printer->setJustification(Printer::JUSTIFY_LEFT);
 			$printer->setTextSize(1, 2);
 			$printer->setEmphasis(true);
 			$printer->text($company->name . "\n");
@@ -53,7 +53,7 @@ class PrintOrderController extends Controller
 			$printer->text($company->nit . "\n");
 			$printer->text("Dirección: ");
 			$printer->text($company->address . "\n");
-			$printer->setJustification(Printer::JUSTIFY_LEFT);
+
 			$printer->setEmphasis(true);
 			$printer->text("Cajero(a): ");
 			$printer->text($system_user->name . "\n");

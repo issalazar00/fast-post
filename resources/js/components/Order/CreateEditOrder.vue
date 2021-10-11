@@ -1,23 +1,22 @@
 <template>
   <div class="container">
-    <!-- <img :src="companyLogo" alt="company-image" style="max-height: 100px" /> -->
-    <!-- <div class="row justify-content-end justify-content-sm-end"> -->
     <div
       class="sticky-top mb-2 text-uppercase w-50"
       style="z-index: 1022; left: 100%"
     >
       <table class="table table-borderless">
-        <tr class="h1 text-white bg-primary">
+        <tr class="h1 text-white bg-success">
           <td class="text-right">Total</td>
-          <td>$ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}</td>
+          <td>$ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}</td>
         </tr>
       </table>
       <!-- </div> -->
     </div>
     <div class="row justify-content-center">
-      <div class="position-fixed top-0 right-0 p-3" style="z-index: 3000">
+      <div class="position-fixed top-0 right-0 p-3 w-50" style="z-index: 3000">
         <div
-          class="toast fade hide border border-danger"
+          class="toast fade hide border border-danger w-100"
+          style="max-width: 90%"
           role="alert"
           id="no-results"
           aria-live="assertive"
@@ -25,7 +24,7 @@
           data-delay="3000"
         >
           <div class="toast-header">
-            <strong class="mr-auto h5">Advertencia</strong>
+            <strong class="mr-auto h3 text-danger">Advertencia</strong>
             <button
               type="button"
               class="ml-2 mb-1 close"
@@ -35,7 +34,9 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="toast-body">No se ha encontrado coincidencias</div>
+          <div class="toast-body text-dark h4">
+            No se ha encontrado coincidencias
+          </div>
         </div>
       </div>
       <div
@@ -113,7 +114,7 @@
               style="top: 4rem"
             >
               <tr>
-                <th>#</th>
+                <th></th>
                 <th>Código</th>
                 <th>Producto</th>
                 <th>Precio</th>
@@ -121,12 +122,19 @@
                 <th>Descuento %</th>
                 <th>Descuento $</th>
                 <th>Total</th>
-                <th></th>
               </tr>
             </thead>
             <tbody v-if="productsOrderList.length > 0">
               <tr v-for="(p, index) in productsOrderList" :key="p.id">
-                <th scope="row">{{ p.product_id }}</th>
+                <td>
+                  <button
+                    class="btn text-danger"
+                    @click="removeProduct(index, p.id)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+
                 <td>{{ p.barcode }}</td>
                 <td>{{ p.product }}</td>
 
@@ -140,6 +148,7 @@
                     v-model="p.price_tax_inc"
                     readonly
                     class="form-control form-control-sm"
+                    style="max-width: 100px"
                   />
                 </td>
                 <td>
@@ -151,6 +160,7 @@
                     placeholder="Cantidad"
                     class="form-control form-control-sm"
                     v-model="p.quantity"
+                    style="max-width: 60px"
                   />
                 </td>
                 <td>
@@ -162,6 +172,7 @@
                     placeholder="Descuento"
                     class="form-control form-control-sm"
                     v-model="p.discount_percentage"
+                    style="max-width: 60px"
                   />
                 </td>
                 <td>
@@ -178,9 +189,10 @@
                         p.quantity *
                         p.price_tax_inc *
                         (p.discount_percentage / 100)
-                      ).toFixed(2))
+                      ).toFixed(0))
                     "
                     readonly
+                    style="max-width: 100px"
                   />
                 </td>
                 <td>
@@ -192,14 +204,6 @@
                         p.price_tax_inc *
                         (p.discount_percentage / 100))
                   }}
-                </td>
-                <td>
-                  <button
-                    class="btn text-danger"
-                    @click="removeProduct(index, p.id)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
                 </td>
               </tr>
             </tbody>
@@ -251,26 +255,26 @@
                     <tr>
                       <th colspan="7">Subtotal:</th>
                       <th>
-                        $ {{ (order.total_tax_exc = total_tax_exc).toFixed(2) }}
+                        $ {{ (order.total_tax_exc = total_tax_exc).toFixed(0) }}
                       </th>
                     </tr>
                     <tr>
                       <th colspan="7">IVA:</th>
                       <th>
-                        $ {{ (total_tax_inc - total_tax_exc).toFixed(2) }}
+                        $ {{ (total_tax_inc - total_tax_exc).toFixed(0) }}
                       </th>
                     </tr>
                     <tr>
                       <th colspan="7">Descuento:</th>
                       <th>
                         $
-                        {{ (order.total_discount = total_discount).toFixed(2) }}
+                        {{ (order.total_discount = total_discount).toFixed(0) }}
                       </th>
                     </tr>
-                    <tr class="bg-primary h5 text-white">
+                    <tr class="bg-success h5 text-white">
                       <th colspan="7">Total:</th>
                       <th>
-                        $ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}
+                        $ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}
                       </th>
                     </tr>
                     <tr class="">
@@ -335,7 +339,6 @@ export default {
         cash: 0,
         change: 0,
       },
-      companyLogo: "",
     };
   },
   computed: {
@@ -369,18 +372,10 @@ export default {
     payment_return: function () {
       var value = 0.0;
       if (this.order.cash > 0) {
-        value = (this.order.cash - this.total_tax_inc).toFixed(2);
+        value = (this.order.cash - this.total_tax_inc).toFixed(0);
       }
       return value;
     },
-  },
-  created() {
-    axios
-      .get(`api/company-logo`, this.$root.config)
-      .then((response) => (this.companyLogo = response.data.logo))
-      .catch(function (error) {
-        console.log(error);
-      });
   },
   methods: {
     listItemsOrder() {
@@ -490,11 +485,11 @@ export default {
         if (this.order_id != 0) {
           axios
             .put(`api/orders/${this.order_id}`, this.order, this.$root.config)
-            .then(() => this.$router.replace("/orders"));
+            .then(() => this.$router.replace("/create-edit-order/0"));
         } else {
           axios
             .post(`api/orders`, this.order, this.$root.config)
-            .then(() => this.$router.replace("/orders"));
+            .then(() => this.$router.replace("/create-edit-order"));
         }
       } else {
         alert("No hay productos en la orden");

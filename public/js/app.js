@@ -10979,6 +10979,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -11005,8 +11009,7 @@ __webpack_require__.r(__webpack_exports__);
         productsOrder: [],
         cash: 0,
         change: 0
-      },
-      companyLogo: ""
+      }
     };
   },
   computed: {
@@ -11035,20 +11038,11 @@ __webpack_require__.r(__webpack_exports__);
       var value = 0.0;
 
       if (this.order.cash > 0) {
-        value = (this.order.cash - this.total_tax_inc).toFixed(2);
+        value = (this.order.cash - this.total_tax_inc).toFixed(0);
       }
 
       return value;
     }
-  },
-  created: function created() {
-    var _this = this;
-
-    axios.get("api/company-logo", this.$root.config).then(function (response) {
-      return _this.companyLogo = response.data.logo;
-    })["catch"](function (error) {
-      console.log(error);
-    });
   },
   methods: {
     listItemsOrder: function listItemsOrder() {
@@ -11150,7 +11144,7 @@ __webpack_require__.r(__webpack_exports__);
       me.filters.client = client.name;
     },
     createOrUpdateOrder: function createOrUpdateOrder(state_order) {
-      var _this2 = this;
+      var _this = this;
 
       this.order.state = state_order;
 
@@ -11159,11 +11153,11 @@ __webpack_require__.r(__webpack_exports__);
 
         if (this.order_id != 0) {
           axios.put("api/orders/".concat(this.order_id), this.order, this.$root.config).then(function () {
-            return _this2.$router.replace("/orders");
+            return _this.$router.replace("/create-edit-order/0");
           });
         } else {
           axios.post("api/orders", this.order, this.$root.config).then(function () {
-            return _this2.$router.replace("/orders");
+            return _this.$router.replace("/create-edit-order");
           });
         }
       } else {
@@ -11608,6 +11602,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+//
 //
 //
 //
@@ -14438,6 +14433,73 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/custom.js":
+/*!********************************!*\
+  !*** ./resources/js/custom.js ***!
+  \********************************/
+/***/ (() => {
+
+(function ($) {
+  "use strict"; // Start of use strict
+  // Toggle the side navigation
+
+  $("#sidebarToggle, #sidebarToggleTop").on('click', function (e) {
+    $("body").toggleClass("sidebar-toggled");
+    $(".sidebar").toggleClass("toggled");
+
+    if ($(".sidebar").hasClass("toggled")) {
+      $('.sidebar .collapse').collapse('hide');
+    }
+
+    ;
+  }); // Close any open menu accordions when window is resized below 768px
+
+  $(window).resize(function () {
+    if ($(window).width() < 768) {
+      $('.sidebar .collapse').collapse('hide');
+    }
+
+    ; // Toggle the side navigation when window is resized below 480px
+
+    if ($(window).width() < 480 && !$(".sidebar").hasClass("toggled")) {
+      $("body").addClass("sidebar-toggled");
+      $(".sidebar").addClass("toggled");
+      $('.sidebar .collapse').collapse('hide');
+    }
+
+    ;
+  }); // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
+
+  $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function (e) {
+    if ($(window).width() > 768) {
+      var e0 = e.originalEvent,
+          delta = e0.wheelDelta || -e0.detail;
+      this.scrollTop += (delta < 0 ? 1 : -1) * 30;
+      e.preventDefault();
+    }
+  }); // Scroll to top button appear
+
+  $(document).on('scroll', function () {
+    var scrollDistance = $(this).scrollTop();
+
+    if (scrollDistance > 100) {
+      $('.scroll-to-top').fadeIn();
+    } else {
+      $('.scroll-to-top').fadeOut();
+    }
+  }); // Smooth scrolling using jQuery easing
+
+  $(document).on('click', 'a.scroll-to-top', function (e) {
+    var $anchor = $(this);
+    $('html, body').stop().animate({
+      scrollTop: $($anchor.attr('href')).offset().top
+    }, 1000, 'easeInOutExpo');
+    e.preventDefault();
+  });
+})(jQuery); // End of use strict
 
 /***/ }),
 
@@ -56223,14 +56285,14 @@ var render = function() {
         },
         [
           _c("table", { staticClass: "table table-borderless" }, [
-            _c("tr", { staticClass: "h1 text-white bg-primary" }, [
+            _c("tr", { staticClass: "h1 text-white bg-success" }, [
               _c("td", { staticClass: "text-right" }, [_vm._v("Total")]),
               _vm._v(" "),
               _c("td", [
                 _vm._v(
                   "$ " +
                     _vm._s(
-                      (_vm.order.total_tax_inc = _vm.total_tax_inc).toFixed(2)
+                      (_vm.order.total_tax_inc = _vm.total_tax_inc).toFixed(0)
                     )
                 )
               ])
@@ -56395,8 +56457,19 @@ var render = function() {
                       "tbody",
                       _vm._l(_vm.productsOrderList, function(p, index) {
                         return _c("tr", { key: p.id }, [
-                          _c("th", { attrs: { scope: "row" } }, [
-                            _vm._v(_vm._s(p.product_id))
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn text-danger",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.removeProduct(index, p.id)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "bi bi-trash" })]
+                            )
                           ]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(p.barcode))]),
@@ -56414,6 +56487,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control form-control-sm",
+                              staticStyle: { "max-width": "100px" },
                               attrs: {
                                 type: "number",
                                 name: "price",
@@ -56449,6 +56523,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control form-control-sm",
+                              staticStyle: { "max-width": "60px" },
                               attrs: {
                                 type: "number",
                                 name: "quantity",
@@ -56479,6 +56554,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control form-control-sm",
+                              staticStyle: { "max-width": "60px" },
                               attrs: {
                                 type: "number",
                                 name: "discount_percentage",
@@ -56505,6 +56581,7 @@ var render = function() {
                           _c("td", [
                             _c("input", {
                               staticClass: "form-control form-control-sm",
+                              staticStyle: { "max-width": "100px" },
                               attrs: {
                                 type: "number",
                                 name: "discount_price",
@@ -56519,7 +56596,7 @@ var render = function() {
                                   p.quantity *
                                   p.price_tax_inc *
                                   (p.discount_percentage / 100)
-                                ).toFixed(2))
+                                ).toFixed(0))
                               }
                             })
                           ]),
@@ -56535,21 +56612,6 @@ var render = function() {
                                       (p.discount_percentage / 100))
                                 ) +
                                 "\n              "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn text-danger",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.removeProduct(index, p.id)
-                                  }
-                                }
-                              },
-                              [_c("i", { staticClass: "bi bi-trash" })]
                             )
                           ])
                         ])
@@ -56654,7 +56716,7 @@ var render = function() {
                               "\n                      $ " +
                                 _vm._s(
                                   (_vm.order.total_tax_exc =
-                                    _vm.total_tax_exc).toFixed(2)
+                                    _vm.total_tax_exc).toFixed(0)
                                 ) +
                                 "\n                    "
                             )
@@ -56672,7 +56734,7 @@ var render = function() {
                                 _vm._s(
                                   (
                                     _vm.total_tax_inc - _vm.total_tax_exc
-                                  ).toFixed(2)
+                                  ).toFixed(0)
                                 ) +
                                 "\n                    "
                             )
@@ -56689,14 +56751,14 @@ var render = function() {
                               "\n                      $\n                      " +
                                 _vm._s(
                                   (_vm.order.total_discount =
-                                    _vm.total_discount).toFixed(2)
+                                    _vm.total_discount).toFixed(0)
                                 ) +
                                 "\n                    "
                             )
                           ])
                         ]),
                         _vm._v(" "),
-                        _c("tr", { staticClass: "bg-primary h5 text-white" }, [
+                        _c("tr", { staticClass: "bg-success h5 text-white" }, [
                           _c("th", { attrs: { colspan: "7" } }, [
                             _vm._v("Total:")
                           ]),
@@ -56706,7 +56768,7 @@ var render = function() {
                               "\n                      $ " +
                                 _vm._s(
                                   (_vm.order.total_tax_inc =
-                                    _vm.total_tax_inc).toFixed(2)
+                                    _vm.total_tax_inc).toFixed(0)
                                 ) +
                                 "\n                    "
                             )
@@ -56803,14 +56865,15 @@ var staticRenderFns = [
     return _c(
       "div",
       {
-        staticClass: "position-fixed top-0 right-0 p-3",
+        staticClass: "position-fixed top-0 right-0 p-3 w-50",
         staticStyle: { "z-index": "3000" }
       },
       [
         _c(
           "div",
           {
-            staticClass: "toast fade hide border border-danger",
+            staticClass: "toast fade hide border border-danger w-100",
+            staticStyle: { "max-width": "90%" },
             attrs: {
               role: "alert",
               id: "no-results",
@@ -56821,7 +56884,7 @@ var staticRenderFns = [
           },
           [
             _c("div", { staticClass: "toast-header" }, [
-              _c("strong", { staticClass: "mr-auto h5" }, [
+              _c("strong", { staticClass: "mr-auto h3 text-danger" }, [
                 _vm._v("Advertencia")
               ]),
               _vm._v(" "),
@@ -56843,8 +56906,8 @@ var staticRenderFns = [
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "toast-body" }, [
-              _vm._v("No se ha encontrado coincidencias")
+            _c("div", { staticClass: "toast-body text-dark h4" }, [
+              _vm._v("\n          No se ha encontrado coincidencias\n        ")
             ])
           ]
         )
@@ -56897,7 +56960,7 @@ var staticRenderFns = [
       },
       [
         _c("tr", [
-          _c("th", [_vm._v("#")]),
+          _c("th"),
           _vm._v(" "),
           _c("th", [_vm._v("Código")]),
           _vm._v(" "),
@@ -56911,9 +56974,7 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("th", [_vm._v("Descuento $")]),
           _vm._v(" "),
-          _c("th", [_vm._v("Total")]),
-          _vm._v(" "),
-          _c("th")
+          _c("th", [_vm._v("Total")])
         ])
       ]
     )
@@ -57593,7 +57654,9 @@ var staticRenderFns = [
             _c("input", {
               staticClass: "form-control-lg form-control",
               attrs: { type: "text" }
-            })
+            }),
+            _vm._v(" "),
+            _c("p", [_vm._v("Nombre de producto")])
           ])
         ])
       ]
@@ -77021,6 +77084,7 @@ module.exports = JSON.parse('{"_from":"axios@0.21.3","_id":"axios@0.21.3","_inBu
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
 /******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/app.js")))
+/******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/js/custom.js")))
 /******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./resources/sass/app.scss")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	

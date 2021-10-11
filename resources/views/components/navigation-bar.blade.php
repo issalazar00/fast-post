@@ -1,73 +1,99 @@
-<nav v-if="token && user" class="navbar navbar navbar-expand-md navbar-light bg-white shadow-sm">
-    <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
-            {{-- {{ config('app.name', 'Laravel') }} --}}
-            <img src="{{ asset('images/logo.jpeg') }}" alt="" srcset="" width="200">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<ul v-if="token && user" class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Left Side Of Navbar -->
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <router-link class="nav-link " active-class="active" to="/orders">Ordenes</router-link>
-                </li>
-                <li class="nav-item" v-if="validatePermission('tax.index')">
-                    <router-link class="nav-link" to="/taxes">Iva</router-link>
-                </li>
-                <li class="nav-item" v-if="validatePermission('client.index')">
-                    <router-link class="nav-link" to="/clients">Clientes</router-link>
-                </li>
-                <li class="nav-item" v-if="validatePermission('supplier.index')">
-                    <router-link class="nav-link" to="/suppliers">Proveedores</router-link>
-                </li>
-                <li class="nav-item" v-if="validatePermission('rol.index')">
-                    <router-link class="nav-link" to="/roles">Roles</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/checker">Verificador</router-link>
-                </li>
-                <li class="nav-item" v-if="validatePermission('user.index')">
-                    <router-link class="nav-link" to="/users">Usuarios</router-link>
-                </li>
-                
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Configuraciones
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+	<a class="sidebar-brand d-flex align-items-center justify-content-center p-0" href="{{ url('/') }}">
+		<div class="sidebar-brand-icon ">
+			<img src="{{ asset('images/logo.jpeg') }}" alt="logo-tecnplus" srcset="" width="100%">
+			
+		</div>
+		{{-- <strong class="h3 text-bold text-dark">Tecno</strong><strong class="h3 text-bold text-white">plus</strong> --}}
+	</a>
 
-                        <router-link v-if="validatePermission('user.store')" class="dropdown-item" to="/configuration">
-                            Configuración general</router-link>
-                        <router-link class="dropdown-item " to="/products">Productos</router-link>
-                        <router-link class="dropdown-item " to="/categories">Categorias</router-link>
-                        <router-link class="dropdown-item " to="/brands">Marcas</router-link>
-                    </div>
-                </li>
-            </ul>
+	<hr class="sidebar-divider" />
+	<!-- Nav Item - Dashboard -->
 
-            <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ml-auto">
+	<li class="nav-item active">
+		<a class="nav-link" href="#">
+			<i class="bi bi-person-square"></i>
+			<span>@{{ user.name }}</span>
+		</a>
+	</li>
 
-                <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        @{{ user.name }}
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+	<hr class="sidebar-divider" />
 
-                        <router-link v-if="validatePermission('configuration')" class="dropdown-item" to="/configuration"> Configuración </router-link>
+	<!-- Nav Item - Dashboard -->
+	<div class="sidebar-heading">
+		Tecnoplus
+	</div>
+	<li class="nav-item">
+		<router-link class="nav-link " active-class="active" to="/orders"><i class="bi bi-receipt"></i><span>Ordenes</span>
+		</router-link>
+	</li>
+	<!-- Nav Item - Pages Collapse Menu -->
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePeople" aria-expanded="true"
+			aria-controls="collapsePeople">
+			<i class="bi bi-people"></i>
+			<span>Terceros</span>
+		</a>
+		<div id="collapsePeople" class="collapse" aria-labelledby="headingPeople" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<h6 class="collapse-header">Personas:</h6>
+				<router-link class="collapse-item" to="/clients" v-if="validatePermission('client.index')">
+					Clientes</router-link>
+				<router-link class="collapse-item" to="/suppliers" v-if="validatePermission('supplier.index')">
+					Proveedores</router-link>
+			</div>
+		</div>
+	</li>
 
-                        <a class="dropdown-item" href="#" @click="logout">
-                            Cerrar Sesión
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+	<!-- Nav Item - Shop Collapse Menu -->
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseShop" aria-expanded="true"
+			aria-controls="collapseShop">
+			<i class="bi bi-shop"></i>
+			<span>Almacén</span>
+		</a>
+		<div id="collapseShop" class="collapse" aria-labelledby="headingShop" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<h6 class="collapse-header">Almacén:</h6>
+				<router-link class="collapse-item " to="/products">Productos</router-link>
+				<router-link class="collapse-item " to="/categories">Categorias</router-link>
+				<router-link class="collapse-item " to="/brands">Marcas</router-link>
+				<router-link class="collapse-item" to="/taxes" v-if="validatePermission('tax.index')">Iva</router-link>
+			</div>
+		</div>
+	</li>
+
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSettings" aria-expanded="true"
+			aria-controls="collapseSettings">
+			<i class="bi bi-sliders"></i>
+			<span>Configuraciones</span>
+		</a>
+		<div id="collapseSettings" class="collapse" aria-labelledby="headingSettings" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<h6 class="collapse-header">Sistema:</h6>
+				<router-link v-if="validatePermission('user.store')" class="collapse-item" to="/configuration">Configuración
+					general</router-link>
+				<router-link class="collapse-item" to="/roles" v-if="validatePermission('rol.index')">Roles</router-link>
+				<router-link class="collapse-item" v-if="validatePermission('user.index')" to="/users">Usuarios
+				</router-link>
+			</div>
+		</div>
+	</li>
+
+	<hr class="sidebar-divider d-none d-md-block">
+
+	<li class="nav-item">
+		<a class="nav-link" href="#" @click="logout">
+			<i class="bi bi-box-arrow-right"></i>
+			<span>Cerrar Sesión</span></a>
+	</li>
+
+	<hr class="sidebar-divider d-none d-md-block">
+
+	<div class="text-center d-none d-md-inline">
+		<button class="rounded-circle border-0" id="sidebarToggle"><i class="bi bi-brightness-high"></i></button>
+	</div>
+</ul>
+{{-- </div> --}}
