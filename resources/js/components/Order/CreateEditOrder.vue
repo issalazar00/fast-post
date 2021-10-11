@@ -1,23 +1,22 @@
 <template>
-  <div class="container">
-    <!-- <img :src="companyLogo" alt="company-image" style="max-height: 100px" /> -->
-    <!-- <div class="row justify-content-end justify-content-sm-end"> -->
-    <div
-      class="sticky-top mb-2 text-uppercase w-50"
-      style="z-index: 1022; left: 100%"
-    >
-      <table class="table table-borderless">
-        <tr class="h1 text-white bg-primary">
-          <td class="text-right">Total</td>
-          <td>$ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}</td>
-        </tr>
-      </table>
-      <!-- </div> -->
-    </div>
-    <div class="row justify-content-center">
-      <div class="position-fixed top-0 right-0 p-3" style="z-index: 3000">
+  <div class="row px-2">
+    <div class="col-9 justify-content-center p-2">
+      <div
+        class="sticky-top mb-2 text-uppercase w-50"
+        style="z-index: 1022; left: 100%"
+      >
+        <table class="table table-borderless">
+          <tr class="h1 text-white bg-success">
+            <td class="text-right">Total</td>
+            <td>$ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}</td>
+          </tr>
+        </table>
+        <!-- </div> -->
+      </div>
+      <div class="position-fixed top-0 right-0 w-50" style="z-index: 3000">
         <div
-          class="toast fade hide border border-danger"
+          class="toast fade hide border border-danger w-100 m-3"
+          style="max-width: 90%"
           role="alert"
           id="no-results"
           aria-live="assertive"
@@ -25,7 +24,7 @@
           data-delay="3000"
         >
           <div class="toast-header">
-            <strong class="mr-auto h5">Advertencia</strong>
+            <strong class="mr-auto h3 text-danger">Advertencia</strong>
             <button
               type="button"
               class="ml-2 mb-1 close"
@@ -35,11 +34,13 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="toast-body">No se ha encontrado coincidencias</div>
+          <div class="toast-body text-dark h4">
+            No se ha encontrado coincidencias
+          </div>
         </div>
       </div>
       <div
-        class="row w-100 position-sticky sticky-top mb-2 bg-light py-1"
+        class="row position-sticky sticky-top mb-2 bg-light p-1"
         style="top: 0.5rem"
       >
         <div class="input-group col-6">
@@ -101,7 +102,7 @@
         </div>
       </div>
 
-      <section class="w-100">
+      <section>
         <div>
           <table
             class="
@@ -113,23 +114,41 @@
               style="top: 4rem"
             >
               <tr>
-                <th>#</th>
+                <th></th>
                 <th>Código</th>
                 <th>Producto</th>
-                <th>Precio</th>
                 <th>Cantidad</th>
+                <th>Precio</th>
                 <th>Descuento %</th>
                 <th>Descuento $</th>
                 <th>Total</th>
-                <th></th>
               </tr>
             </thead>
             <tbody v-if="productsOrderList.length > 0">
               <tr v-for="(p, index) in productsOrderList" :key="p.id">
-                <th scope="row">{{ p.product_id }}</th>
+                <td>
+                  <button
+                    class="btn text-danger"
+                    @click="removeProduct(index, p.id)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+
                 <td>{{ p.barcode }}</td>
                 <td>{{ p.product }}</td>
-
+                <td>
+                  <input
+                    type="number"
+                    name="quantity"
+                    id="quantity"
+                    step="2"
+                    placeholder="Cantidad"
+                    class="form-control form-control-sm"
+                    v-model="p.quantity"
+                    style="max-width: 60px"
+                  />
+                </td>
                 <td>
                   <input
                     type="number"
@@ -140,17 +159,7 @@
                     v-model="p.price_tax_inc"
                     readonly
                     class="form-control form-control-sm"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name="quantity"
-                    id="quantity"
-                    step="2"
-                    placeholder="Cantidad"
-                    class="form-control form-control-sm"
-                    v-model="p.quantity"
+                    style="max-width: 100px"
                   />
                 </td>
                 <td>
@@ -162,6 +171,7 @@
                     placeholder="Descuento"
                     class="form-control form-control-sm"
                     v-model="p.discount_percentage"
+                    style="max-width: 60px"
                   />
                 </td>
                 <td>
@@ -178,9 +188,10 @@
                         p.quantity *
                         p.price_tax_inc *
                         (p.discount_percentage / 100)
-                      ).toFixed(2))
+                      ).toFixed(0))
                     "
                     readonly
+                    style="max-width: 100px"
                   />
                 </td>
                 <td>
@@ -193,14 +204,6 @@
                         (p.discount_percentage / 100))
                   }}
                 </td>
-                <td>
-                  <button
-                    class="btn text-danger"
-                    @click="removeProduct(index, p.id)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
               </tr>
             </tbody>
             <tbody v-else>
@@ -209,99 +212,104 @@
               </tr>
             </tbody>
           </table>
-          <div class="row">
-            <div class="col-6">
-              <div class="text-right">
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-block"
-                  @click="createOrUpdateOrder(2)"
-                >
-                  <i class="bi bi-receipt"></i> Facturar
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-block"
-                  @click="createOrUpdateOrder(1)"
-                >
-                  <i class="bi bi-receipt"></i> Suspender
-                </button>
-
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-block"
-                  @click="createOrUpdateOrder(3)"
-                >
-                  <i class="bi bi-receipt"></i> Cotizar
-                </button>
-                <router-link
-                  to="/orders"
-                  type="button"
-                  class="btn btn-outline-secondary btn-block"
-                  v-if="order_id != 0"
-                >
-                  <i class="bi bi-receipt"></i> Cancelar
-                </router-link>
-              </div>
-            </div>
-            <div class="col-6">
-              <section class="card">
-                <div>
-                  <table class="table table-sm table-primary text-right">
-                    <tr>
-                      <th colspan="7">Subtotal:</th>
-                      <th>
-                        $ {{ (order.total_tax_exc = total_tax_exc).toFixed(2) }}
-                      </th>
-                    </tr>
-                    <tr>
-                      <th colspan="7">IVA:</th>
-                      <th>
-                        $ {{ (total_tax_inc - total_tax_exc).toFixed(2) }}
-                      </th>
-                    </tr>
-                    <tr>
-                      <th colspan="7">Descuento:</th>
-                      <th>
-                        $
-                        {{ (order.total_discount = total_discount).toFixed(2) }}
-                      </th>
-                    </tr>
-                    <tr class="bg-primary h5 text-white">
-                      <th colspan="7">Total:</th>
-                      <th>
-                        $ {{ (order.total_tax_inc = total_tax_inc).toFixed(2) }}
-                      </th>
-                    </tr>
-                    <tr class="">
-                      <th colspan="7">Efectivo:</th>
-                      <th>
-                        <input
-                          type="number"
-                          value="0"
-                          step="any"
-                          v-model="order.cash"
-                        />
-                      </th>
-                    </tr>
-                    <tr class="">
-                      <th colspan="7">Cambio:</th>
-                      <th>
-                        <input
-                          type="text"
-                          :value="payment_return"
-                          readonly
-                          disabled
-                        />
-                      </th>
-                    </tr>
-                  </table>
-                </div>
-              </section>
-            </div>
-          </div>
         </div>
       </section>
+    </div>
+    <div class="col-md-3">
+      <div class="">
+        <section class="card">
+          <div>
+            <table class="table table-sm table-primary text-right">
+              <tr>
+                <th colspan="7">Subtotal:</th>
+                <th>
+                  $ {{ (order.total_tax_exc = total_tax_exc).toFixed(0) }}
+                </th>
+              </tr>
+              <tr>
+                <th colspan="7">IVA:</th>
+                <th>$ {{ (total_tax_inc - total_tax_exc).toFixed(0) }}</th>
+              </tr>
+              <tr>
+                <th colspan="7">Descuento:</th>
+                <th>
+                  $
+                  {{ (order.total_discount = total_discount).toFixed(0) }}
+                </th>
+              </tr>
+              <tr class="bg-success h5 text-white">
+                <th colspan="7">Total:</th>
+                <th>
+                  $ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}
+                </th>
+              </tr>
+              <tr class="">
+                <th colspan="7">Efectivo:</th>
+                <th>
+                  <input
+                    type="number"
+                    value="0"
+                    step="any"
+                    v-model="order.cash"
+                  />
+                </th>
+              </tr>
+              <tr class="">
+                <th colspan="7">Cambio:</th>
+                <th>
+                  <input
+                    type="text"
+                    :value="payment_return"
+                    readonly
+                    disabled
+                  />
+                </th>
+              </tr>
+            </table>
+          </div>
+        </section>
+        <div class="">
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-block"
+            @click="createOrUpdateOrder(2)"
+          >
+          <!-- Facturar -->
+            <i class="bi bi-receipt"></i> Guardar
+          </button>
+           <button
+            type="button"
+            class="btn btn-outline-primary btn-block"
+            @click="createOrUpdateOrder(2)"
+          >
+          <!-- Facturar -->
+            <i class="bi bi-receipt"></i> Guardar e imprimir
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-block"
+            @click="createOrUpdateOrder(1)"
+          >
+            <i class="bi bi-receipt"></i> Suspender
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-block"
+            @click="createOrUpdateOrder(3)"
+          >
+            <i class="bi bi-receipt"></i> Cotizar
+          </button>
+          <router-link
+            to="/orders"
+            type="button"
+            class="btn btn-outline-secondary btn-block"
+            v-if="order_id != 0"
+          >
+            <i class="bi bi-receipt"></i> Cancelar
+          </router-link>
+        </div>
+      </div>
     </div>
 
     <add-product @add-product="addProduct($event)" />
@@ -312,9 +320,11 @@
 <script>
 import AddProduct from "./AddProduct.vue";
 import AddClient from "./AddClient.vue";
+
 export default {
   components: { AddProduct, AddClient },
   props: ["order_id"],
+
   data() {
     return {
       // add product or client with keyup
@@ -335,7 +345,6 @@ export default {
         cash: 0,
         change: 0,
       },
-      companyLogo: "",
     };
   },
   computed: {
@@ -369,18 +378,10 @@ export default {
     payment_return: function () {
       var value = 0.0;
       if (this.order.cash > 0) {
-        value = (this.order.cash - this.total_tax_inc).toFixed(2);
+        value = (this.order.cash - this.total_tax_inc).toFixed(0);
       }
       return value;
     },
-  },
-  created() {
-    axios
-      .get(`api/company-logo`, this.$root.config)
-      .then((response) => (this.companyLogo = response.data.logo))
-      .catch(function (error) {
-        console.log(error);
-      });
   },
   methods: {
     listItemsOrder() {
@@ -490,11 +491,11 @@ export default {
         if (this.order_id != 0) {
           axios
             .put(`api/orders/${this.order_id}`, this.order, this.$root.config)
-            .then(() => this.$router.replace("/orders"));
+            .then(() => this.$router.replace("/create-edit-order/0"));
         } else {
           axios
             .post(`api/orders`, this.order, this.$root.config)
-            .then(() => this.$router.replace("/orders"));
+            .then(() => this.$router.replace("/create-edit-order"));
         }
       } else {
         alert("No hay productos en la orden");
@@ -506,6 +507,7 @@ export default {
     if (this.order_id != null || this.order_id != 0) {
       this.listItemsOrder();
     }
+
   },
 };
 </script>

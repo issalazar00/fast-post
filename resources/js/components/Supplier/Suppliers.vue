@@ -1,6 +1,9 @@
 <template>
-  <div class="col-12">
-    <h3 class="page-header">Proveedores</h3>
+  <div class="w-100">
+    <header  class="page-header">
+      <h3>Proveedores</h3>
+    </header>
+    
     <moon-loader :loading="isLoading" :color="'#032F6C'" :size="100" />
     <div class="row justify-content-end mx-4">
       <button

@@ -5,6 +5,7 @@
       <div class="form-group">
         <label for="">Producto</label>
         <input type="text" class="form-control-lg form-control" />
+        <p>Nombre de producto</p>
       </div>
     </div>
   </div>

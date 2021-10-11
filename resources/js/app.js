@@ -71,7 +71,7 @@ Vue.use(VueSpinners)
 const routes = [
 
   { path: '', component: CreateEditOrder, props: { order_id: 0 } },
-  { path: '/clients', component: Clients, alias: "client.index"  },
+  { path: '/clients', component: Clients, alias: "client.index" },
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/products', component: Products },
   { path: '/create-edit-product', component: CreateEditProduct },
@@ -84,7 +84,7 @@ const routes = [
   { path: '/create-edit-category', component: CreateEditCategory },
   { path: '/brands', component: Brands, alias: "brand.index" },
   { path: '/create-edit-brand', component: CreateEditBrand },
-  { path: '/orders', component: Orders,  alias: "order.index"  },
+  { path: '/orders', component: Orders, alias: "order.index" },
   { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order' },
   { path: '/create-edit-order/:order_id', component: CreateEditOrder, props: true, name: 'create-edit-order' },
   { path: '/login', name: 'Login', component: Login },
@@ -133,6 +133,9 @@ router.beforeEach(async (to, from, next) => {
 
 });
 
+Vue.config.keyCodes = {
+  f4: 115,
+};
 
 const app = new Vue({
   el: '#app',
