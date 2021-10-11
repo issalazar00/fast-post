@@ -158,7 +158,21 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return abort(404);
+        $user = Request()->user();
+
+        if($user->id == $id){
+            return response()->json([
+                'status' => 'success',
+                'code' => 200,
+                'user' => $user
+            ]);
+        }else{
+            return response()->json([
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'No autorizado' 
+            ]);
+        }
     }
 
     /**

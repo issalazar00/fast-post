@@ -245,6 +245,7 @@ export default {
     };
   },
   created() {
+    this.$root.validateToken();
     this.getCofiguration();
   },
   methods: {

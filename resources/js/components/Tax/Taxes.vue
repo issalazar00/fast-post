@@ -134,6 +134,7 @@ export default {
     };
   },
   created() {
+    this.$root.validateToken();
     this.listTaxes(1);
   },
   methods: {

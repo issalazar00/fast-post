@@ -84,6 +84,7 @@ export default {
     CreateEditBrand,
   },
   created() {
+    this.$root.validateToken();
     this.listBrands(1);
   },
   methods: {

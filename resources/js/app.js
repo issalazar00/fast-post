@@ -42,6 +42,7 @@ import Users from './components/User/Users.vue';
 import Configuration from './components/Configuration.vue';
 //Services
 import global from './services/global.js';
+import axios from 'axios';
 
 Vue.use(VueRouter)
 Vue.use(VueSpinners)
@@ -105,7 +106,6 @@ router.beforeEach(async (to, from, next) => {
   const publicRoutes = ["Login"];
   const authRequired = !publicRoutes.includes(to.name);
   let isAuthenticated = false;
-
   try {
     isAuthenticated =
       localStorage.getItem("token") &&
@@ -176,6 +176,15 @@ const app = new Vue({
     },
     validatePermission(permission) {
       return global.validatePermission(this.permissions, permission);
+    },
+    validateToken(){
+      axios.get('api/users/'+this.user.sub, this.config)
+      .then( response => {
+        return true;
+      })
+      .catch(response =>{
+          this.logout();
+      });
     }
   }
 });
