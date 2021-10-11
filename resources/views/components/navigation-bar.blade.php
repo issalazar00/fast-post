@@ -15,16 +15,6 @@
                 <li class="nav-item">
                     <router-link class="nav-link " active-class="active" to="/orders">Ordenes</router-link>
                 </li>
-                {{-- <li class="nav-item" v-if="validatePermission('product.index')">
-                    <router-link class="nav-link " to="/products">Productos</router-link>
-                </li>
-                <li class="nav-item" v-if="validatePermission('category.index')">
-                    <router-link class="nav-link " to="/categories">Categorias</router-link>
-                </li>
-                <li class="nav-item" v-if="validatePermission('brand.index')">
-                    <router-link class="nav-link " to="/brands">Marcas</router-link>
-                </li> --}}
-
                 <li class="nav-item" v-if="validatePermission('tax.index')">
                     <router-link class="nav-link" to="/taxes">Iva</router-link>
                 </li>
@@ -54,9 +44,6 @@
                         <router-link v-if="validatePermission('user.store')" class="dropdown-item" to="/configuration">
                             Configuración general</router-link>
                         <router-link class="dropdown-item " to="/products">Productos</router-link>
-                        {{-- <a class="dropdown-item" href="#">Another action</a> --}}
-                        {{-- <div class="dropdown-divider"></div> --}}
-                        {{-- <a class="dropdown-item" href="#">Something else here</a> --}}
                         <router-link class="dropdown-item " to="/categories">Categorias</router-link>
                         <router-link class="dropdown-item " to="/brands">Marcas</router-link>
                     </div>
@@ -73,10 +60,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-<<<<<<< HEAD
-=======
                         <router-link v-if="validatePermission('configuration')" class="dropdown-item" to="/configuration"> Configuración </router-link>
->>>>>>> export-order
 
                         <a class="dropdown-item" href="#" @click="logout">
                             Cerrar Sesión
