@@ -1,4 +1,4 @@
-<ul v-if="token && user" class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul v-if="token && user" class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion toggled border-right-secondary" id="accordionSidebar">
 
 	<a class="sidebar-brand d-flex align-items-center justify-content-center p-0" href="{{ url('/') }}">
 		<div class="sidebar-brand-icon ">

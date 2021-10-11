@@ -1,7 +1,9 @@
 <template>
-  <div>
+  <div class="w-100">
+    <header class="page-header">
+      <h3>Tickets</h3>
+    </header>
     <div class="header">
-      <h3 class="h3 w-100">Tickets</h3>
       <div class="row justify-content-end mx-4">
         <router-link
           class="btn btn-outline-primary"
@@ -163,10 +165,9 @@ export default {
 
           const pdf = response.data.pdf;
           var a = document.createElement("a");
-          a.href = "data:application/pdf;base64,"+pdf;
+          a.href = "data:application/pdf;base64," + pdf;
           a.download = `Order-${id}.pdf`;
           a.click();
-
         });
     },
   },

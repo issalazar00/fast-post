@@ -1,21 +1,21 @@
 <template>
-  <div class="container">
-    <div
-      class="sticky-top mb-2 text-uppercase w-50"
-      style="z-index: 1022; left: 100%"
-    >
-      <table class="table table-borderless">
-        <tr class="h1 text-white bg-success">
-          <td class="text-right">Total</td>
-          <td>$ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}</td>
-        </tr>
-      </table>
-      <!-- </div> -->
-    </div>
-    <div class="row justify-content-center">
-      <div class="position-fixed top-0 right-0 p-3 w-50" style="z-index: 3000">
+  <div class="row px-2">
+    <div class="col-9 justify-content-center p-2">
+      <div
+        class="sticky-top mb-2 text-uppercase w-50"
+        style="z-index: 1022; left: 100%"
+      >
+        <table class="table table-borderless">
+          <tr class="h1 text-white bg-success">
+            <td class="text-right">Total</td>
+            <td>$ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}</td>
+          </tr>
+        </table>
+        <!-- </div> -->
+      </div>
+      <div class="position-fixed top-0 right-0 w-50" style="z-index: 3000">
         <div
-          class="toast fade hide border border-danger w-100"
+          class="toast fade hide border border-danger w-100 m-3"
           style="max-width: 90%"
           role="alert"
           id="no-results"
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div
-        class="row w-100 position-sticky sticky-top mb-2 bg-light py-1"
+        class="row position-sticky sticky-top mb-2 bg-light p-1"
         style="top: 0.5rem"
       >
         <div class="input-group col-6">
@@ -102,7 +102,7 @@
         </div>
       </div>
 
-      <section class="w-100">
+      <section>
         <div>
           <table
             class="
@@ -117,8 +117,8 @@
                 <th></th>
                 <th>Código</th>
                 <th>Producto</th>
-                <th>Precio</th>
                 <th>Cantidad</th>
+                <th>Precio</th>
                 <th>Descuento %</th>
                 <th>Descuento $</th>
                 <th>Total</th>
@@ -137,7 +137,18 @@
 
                 <td>{{ p.barcode }}</td>
                 <td>{{ p.product }}</td>
-
+                <td>
+                  <input
+                    type="number"
+                    name="quantity"
+                    id="quantity"
+                    step="2"
+                    placeholder="Cantidad"
+                    class="form-control form-control-sm"
+                    v-model="p.quantity"
+                    style="max-width: 60px"
+                  />
+                </td>
                 <td>
                   <input
                     type="number"
@@ -149,18 +160,6 @@
                     readonly
                     class="form-control form-control-sm"
                     style="max-width: 100px"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name="quantity"
-                    id="quantity"
-                    step="2"
-                    placeholder="Cantidad"
-                    class="form-control form-control-sm"
-                    v-model="p.quantity"
-                    style="max-width: 60px"
                   />
                 </td>
                 <td>
@@ -213,99 +212,104 @@
               </tr>
             </tbody>
           </table>
-          <div class="row">
-            <div class="col-6">
-              <div class="text-right">
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-block"
-                  @click="createOrUpdateOrder(2)"
-                >
-                  <i class="bi bi-receipt"></i> Facturar
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-block"
-                  @click="createOrUpdateOrder(1)"
-                >
-                  <i class="bi bi-receipt"></i> Suspender
-                </button>
-
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-block"
-                  @click="createOrUpdateOrder(3)"
-                >
-                  <i class="bi bi-receipt"></i> Cotizar
-                </button>
-                <router-link
-                  to="/orders"
-                  type="button"
-                  class="btn btn-outline-secondary btn-block"
-                  v-if="order_id != 0"
-                >
-                  <i class="bi bi-receipt"></i> Cancelar
-                </router-link>
-              </div>
-            </div>
-            <div class="col-6">
-              <section class="card">
-                <div>
-                  <table class="table table-sm table-primary text-right">
-                    <tr>
-                      <th colspan="7">Subtotal:</th>
-                      <th>
-                        $ {{ (order.total_tax_exc = total_tax_exc).toFixed(0) }}
-                      </th>
-                    </tr>
-                    <tr>
-                      <th colspan="7">IVA:</th>
-                      <th>
-                        $ {{ (total_tax_inc - total_tax_exc).toFixed(0) }}
-                      </th>
-                    </tr>
-                    <tr>
-                      <th colspan="7">Descuento:</th>
-                      <th>
-                        $
-                        {{ (order.total_discount = total_discount).toFixed(0) }}
-                      </th>
-                    </tr>
-                    <tr class="bg-success h5 text-white">
-                      <th colspan="7">Total:</th>
-                      <th>
-                        $ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}
-                      </th>
-                    </tr>
-                    <tr class="">
-                      <th colspan="7">Efectivo:</th>
-                      <th>
-                        <input
-                          type="number"
-                          value="0"
-                          step="any"
-                          v-model="order.cash"
-                        />
-                      </th>
-                    </tr>
-                    <tr class="">
-                      <th colspan="7">Cambio:</th>
-                      <th>
-                        <input
-                          type="text"
-                          :value="payment_return"
-                          readonly
-                          disabled
-                        />
-                      </th>
-                    </tr>
-                  </table>
-                </div>
-              </section>
-            </div>
-          </div>
         </div>
       </section>
+    </div>
+    <div class="col-md-3">
+      <div class="">
+        <section class="card">
+          <div>
+            <table class="table table-sm table-primary text-right">
+              <tr>
+                <th colspan="7">Subtotal:</th>
+                <th>
+                  $ {{ (order.total_tax_exc = total_tax_exc).toFixed(0) }}
+                </th>
+              </tr>
+              <tr>
+                <th colspan="7">IVA:</th>
+                <th>$ {{ (total_tax_inc - total_tax_exc).toFixed(0) }}</th>
+              </tr>
+              <tr>
+                <th colspan="7">Descuento:</th>
+                <th>
+                  $
+                  {{ (order.total_discount = total_discount).toFixed(0) }}
+                </th>
+              </tr>
+              <tr class="bg-success h5 text-white">
+                <th colspan="7">Total:</th>
+                <th>
+                  $ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}
+                </th>
+              </tr>
+              <tr class="">
+                <th colspan="7">Efectivo:</th>
+                <th>
+                  <input
+                    type="number"
+                    value="0"
+                    step="any"
+                    v-model="order.cash"
+                  />
+                </th>
+              </tr>
+              <tr class="">
+                <th colspan="7">Cambio:</th>
+                <th>
+                  <input
+                    type="text"
+                    :value="payment_return"
+                    readonly
+                    disabled
+                  />
+                </th>
+              </tr>
+            </table>
+          </div>
+        </section>
+        <div class="">
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-block"
+            @click="createOrUpdateOrder(2)"
+          >
+          <!-- Facturar -->
+            <i class="bi bi-receipt"></i> Guardar
+          </button>
+           <button
+            type="button"
+            class="btn btn-outline-primary btn-block"
+            @click="createOrUpdateOrder(2)"
+          >
+          <!-- Facturar -->
+            <i class="bi bi-receipt"></i> Guardar e imprimir
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-block"
+            @click="createOrUpdateOrder(1)"
+          >
+            <i class="bi bi-receipt"></i> Suspender
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline-primary btn-block"
+            @click="createOrUpdateOrder(3)"
+          >
+            <i class="bi bi-receipt"></i> Cotizar
+          </button>
+          <router-link
+            to="/orders"
+            type="button"
+            class="btn btn-outline-secondary btn-block"
+            v-if="order_id != 0"
+          >
+            <i class="bi bi-receipt"></i> Cancelar
+          </router-link>
+        </div>
+      </div>
     </div>
 
     <add-product @add-product="addProduct($event)" />
@@ -316,9 +320,11 @@
 <script>
 import AddProduct from "./AddProduct.vue";
 import AddClient from "./AddClient.vue";
+
 export default {
   components: { AddProduct, AddClient },
   props: ["order_id"],
+
   data() {
     return {
       // add product or client with keyup
@@ -501,6 +507,7 @@ export default {
     if (this.order_id != null || this.order_id != 0) {
       this.listItemsOrder();
     }
+
   },
 };
 </script>

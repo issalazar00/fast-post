@@ -33,15 +33,15 @@
 			@endcomponent
 			<main id="content-wrapper" class="d-flex flex-column">
 
-				<div class="row justify-content-center">
+				<div class="justify-content-center">
 					<router-view />
 				</div>
-
+				@component('components.footer')
+				@endcomponent
 			</main>
 		</div>
 	</div>
-	@component('components.footer')
-	@endcomponent
+
 </body>
 
 </html>

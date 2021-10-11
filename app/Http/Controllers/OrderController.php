@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Configuration;
 use App\Models\DetailOrder;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class OrderController extends Controller
 
 	public function __construct()
 	{
-		$this->middleware('can:order.index')->only('index','generatePdf');
+		$this->middleware('can:order.index')->only('index', 'generatePdf');
 		$this->middleware('can:order.store')->only('store');
 		$this->middleware('can:order.update')->only('update');
 		$this->middleware('can:order.delete')->only('destroy');
@@ -87,6 +88,9 @@ class OrderController extends Controller
 		foreach ($request->productsOrder as $details_order) {
 			$new_detail = new DetailOrderController;
 			$new_detail = $new_detail->store($details_order, $order->id);
+			
+			$update_stock = new ProductController;
+			$update_stock = $update_stock->updateStock(1, $details_order['barcode'], $details_order['quantity']);
 		}
 
 		$print = new PrintOrderController();
@@ -101,7 +105,6 @@ class OrderController extends Controller
 	 */
 	public function show(Order $order)
 	{
-		// var_dump($order);
 		$details  = Order::find($order->id);
 		return ['order_information' => $details, 'order_details' => $details->detailOrders()->get(), 'user' => $details->user()->first()];
 	}
@@ -165,21 +168,21 @@ class OrderController extends Controller
 		$order->delete();
 	}
 
-	public function generatePdf(Order $order){
+	public function generatePdf(Order $order)
+	{
 		$details  = $order;
 		$data = [
-			'orderInformation' => $details, 
-			'orderDetails' => $details->detailOrders()->get(), 
+			'orderInformation' => $details,
+			'orderDetails' => $details->detailOrders()->get(),
 			'user' => $details->user()->first(),
 			'configuration' => Configuration::first(),
 			'url' => URL::to('/')
 		];
-		
 
 		$pdf = PDF::loadView('templates.order', $data);
 
 		$pdf = $pdf->download('prueba.pdf');
-		
+
 		$data = [
 			'status' => 200,
 			'pdf' => base64_encode($pdf),

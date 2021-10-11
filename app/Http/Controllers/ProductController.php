@@ -79,13 +79,13 @@ class ProductController extends Controller
 			'sale_price_tax_inc' => 'required|numeric',
 			'wholesale_price_tax_exc' => 'required|numeric',
 			'wholesale_price_tax_inc' => 'required|numeric',
-			'stock'=> 'required|boolean',
+			'stock' => 'required|boolean',
 			'quantity' => 'nullable|numeric',
 			'minimum' => 'nullable|numeric',
 			'maximum' => 'nullable|numeric'
 		]);
 
-		if(!$validate->fails()){
+		if (!$validate->fails()) {
 			$product = new Product();
 			$product->barcode = $new_product['barcode'];
 			$product->product = $new_product['product'];
@@ -104,7 +104,7 @@ class ProductController extends Controller
 			$product->tax_id = $new_product['tax_id'];
 			$product->brand_id = $new_product['brand_id'];
 			$product->save();
-	
+
 			if ($new_product['type'] == 3) {
 				if (count($request->itemListKit) > 0) {
 					foreach ($request->itemListKit as $item) {
@@ -125,14 +125,13 @@ class ProductController extends Controller
 				'message' => 'Registro exitoso',
 				'product' => $product
 			];
-		}else {
+		} else {
 			$data = [
 				'status' => 'error',
-                'code' =>  400,
-                'message' => 'Validación de datos incorrecta',
-                'errors' =>  $validate->errors()
+				'code' =>  400,
+				'message' => 'Validación de datos incorrecta',
+				'errors' =>  $validate->errors()
 			];
-
 		}
 
 		return response()->json($data, $data['code']);
@@ -171,13 +170,13 @@ class ProductController extends Controller
 	{
 		$p = $request->product;
 		$product = Product::find($id);
-		
+
 		$validate = Validator::make($p, [
 			'category_id' => 'required|integer|exists:categories,id',
 			'tax_id' => 'required|integer|exists:taxes,id',
 			'brand_id' => 'nullable|integer|exists:brands,id',
 			'product' => 'required|string|min:3|max:100',
-			'barcode' => ['required','numeric', Rule::unique('products')->ignore($product->barcode,'barcode')],
+			'barcode' => ['required', 'numeric', Rule::unique('products')->ignore($product->barcode, 'barcode')],
 			'type' => 'required|integer',
 			'cost_price' => 'required|numeric',
 			'gain' => 'required|numeric',
@@ -185,14 +184,14 @@ class ProductController extends Controller
 			'sale_price_tax_inc' => 'required|numeric',
 			'wholesale_price_tax_exc' => 'required|numeric',
 			'wholesale_price_tax_inc' => 'required|numeric',
-			'stock'=> 'required|boolean',
+			'stock' => 'required|boolean',
 			'quantity' => 'nullable|numeric',
 			'minimum' => 'nullable|numeric',
 			'maximum' => 'nullable|numeric'
 		]);
 
-		if(!$validate->fails()){
-			
+		if (!$validate->fails()) {
+
 			$product->barcode = $p['barcode'];
 			$product->product = $p['product'];
 			$product->type = $p['type'];
@@ -210,11 +209,11 @@ class ProductController extends Controller
 			$product->tax_id = $p['tax_id'];
 			$product->brand_id = $p['brand_id'];
 			$product->save();
-	
+
 			if ($p['type'] == 3) {
 				if (count($request->itemListKit) > 0) {
 					foreach ($request->itemListKit as $item) {
-	
+
 						KitProduct::updateOrCreate(
 							['product_parent_id' => $id, 'product_child_id' => $item['product_id']],
 							[
@@ -233,16 +232,29 @@ class ProductController extends Controller
 				'message' => 'Actualización exitoso',
 				'product' => $product
 			];
-		}else{
+		} else {
 			$data = [
 				'status' => 'error',
-                'code' =>  400,
-                'message' => 'Validación de datos incorrecta',
-                'errors' =>  $validate->errors()
+				'code' =>  400,
+				'message' => 'Validación de datos incorrecta',
+				'errors' =>  $validate->errors()
 			];
 		}
 
 		return response()->json($data, $data['code']);
+	}
+
+	public function updateStock($type, $barcode, $quantity)
+	{
+		$product = Product::select('id','barcode', 'quantity')->where('barcode', $barcode)->first();
+		// var_dump($product);
+		if ($type == 1) {
+			$product->quantity = $product->quantity - $quantity;
+		}
+		if ($type == 2) {
+			$product->quantity = $product->quantity + $quantity;
+		}
+		$product->save();
 	}
 
 	/**

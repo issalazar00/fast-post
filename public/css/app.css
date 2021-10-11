@@ -15919,3 +15919,12 @@ label {
   background-image: linear-gradient(180deg, #34BF9B 10%, #13855c 100%);
   background-size: cover;
 }
+
+.border-right-secondary {
+  border-right: 0.25rem solid #919191 !important;
+}
+
+.page-header {
+  padding: 1rem;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+}
