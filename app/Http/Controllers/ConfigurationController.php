@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Validator;
 
 class ConfigurationController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:configuration');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -49,7 +54,9 @@ class ConfigurationController extends Controller
             'telephone' => 'required|string|min:5|max:13',
             'mobile' => 'required|string|min:5|max:13',
             'printer' => 'required|string|min:5|max:100',
-            'file0' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg'
+            'file0' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
+            'condition_order' => 'nullable|string',
+            'condition_quotation' => 'nullable|string'
         ]);
 
         if (!$validate->fails()) {

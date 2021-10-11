@@ -73,6 +73,10 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
+<<<<<<< HEAD
+=======
+                        <router-link v-if="validatePermission('configuration')" class="dropdown-item" to="/configuration"> Configuración </router-link>
+>>>>>>> export-order
 
                         <a class="dropdown-item" href="#" @click="logout">
                             Cerrar Sesión

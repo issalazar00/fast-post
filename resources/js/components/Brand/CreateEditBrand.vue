@@ -6,6 +6,7 @@
       tabindex="-1"
       aria-labelledby="brandModalLabel"
       aria-hidden="true"
+      data-backdrop="static"
     >
       <div class="modal-dialog">
         <div class="modal-content">

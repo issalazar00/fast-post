@@ -5,6 +5,7 @@
     tabindex="-1"
     aria-labelledby="rolModalLabel"
     aria-hidden="true"
+    data-backdrop="static"
   >
     <div class="modal-dialog">
       <div class="modal-content">

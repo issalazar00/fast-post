@@ -48,8 +48,9 @@ Route::middleware('auth:api')->group(function () {
 	Route::resource('/brands', BrandController::class);
 	Route::post('/brands/{brand}/activate',  [BrandController::class, 'activate']);
 
+	Route::get('/orders/generatePdf/{order}', [OrderController::class, 'generatePdf']);
 	Route::resource('/orders',  OrderController::class);
-
+	
 	Route::resource('/order-details', DetailOrderController::class);
 
 	Route::resource('/products',  ProductController::class);

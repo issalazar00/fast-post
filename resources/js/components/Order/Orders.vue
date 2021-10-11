@@ -86,7 +86,7 @@
                 </button>
               </td>
               <td>
-                <button class="btn">
+                <button class="btn" @click="generatePdf(o.id)">
                   <i class="bi bi-printer"></i>
                 </button>
               </td>
@@ -154,6 +154,20 @@ export default {
       axios
         .delete(`api/orders/${order_id}`, this.$root.config)
         .then(() => this.getOrders(1));
+    },
+    generatePdf(id) {
+      axios
+        .get("api/orders/generatePdf/" + id, this.$root.config)
+        .then((response) => {
+          console.log(response);
+
+          const pdf = response.data.pdf;
+          var a = document.createElement("a");
+          a.href = "data:application/pdf;base64,"+pdf;
+          a.download = `Order-${id}.pdf`;
+          a.click();
+
+        });
     },
   },
 };

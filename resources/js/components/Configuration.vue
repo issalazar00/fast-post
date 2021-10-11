@@ -128,6 +128,34 @@
               formErrors.mobile
             }}</small>
           </div>
+          
+            <div class="form-group col-12 col-md-6">
+              <label for="mobile">Condiciones de orden</label>
+              <textarea
+                class="form-control"
+                id="condition_order"
+                name="condition_order"
+                placeholder="Ingresar condiciones de orden"
+                :value="formConfiguration.condition_order"
+              ></textarea>
+              <small id="condition_orderHelp" class="form-text text-danger">{{
+                formErrors.condition_order
+              }}</small>
+            </div>
+            <div class="form-group col-12 col-md-6">
+              <label for="mobile">Condiciones de cotización</label>
+              <textarea
+                class="form-control"
+                id="condition_quotation"
+                name="condition_quotation"
+                placeholder="Ingresar condiciones de cotización"
+                :value="formConfiguration.condition_quotation"
+              ></textarea>
+              <small id="condition_quotationHelp" class="form-text text-danger">{{
+                formErrors.condition_quotation
+              }}</small>
+            </div>
+          
           <div class="form-group col-12 col-md-6">
             <label for="printer">Impresora POS</label>
             <input
@@ -169,9 +197,7 @@
                 data-info="image"
                 type="file"
                 style="display: none"
-                @change="function(event){
-                  readImage(event.target)
-                }"
+                @change="(event)=>{readImage(event.target);}"
               />
             </label>
           </div>
@@ -198,7 +224,9 @@ export default {
         telephone: "",
         mobile: "",
         logo: "",
-        printer : "",
+        printer: "",
+        condition_order: "",
+        condition_quotation: "",
       },
       formErrors: {
         name: "",
@@ -210,7 +238,9 @@ export default {
         telephone: "",
         mobile: "",
         file0: "",
-        printer : ""
+        printer: "",
+        condition_order: "",
+        condition_quotation: "",
       },
     };
   },
@@ -249,7 +279,9 @@ export default {
         "telephone",
         "mobile",
         "file0",
-        "printer"
+        "printer",
+        "condition_order",
+        "condition_quotation",
       ];
 
       if (response) {

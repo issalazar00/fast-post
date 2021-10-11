@@ -40,6 +40,9 @@
                     placeholder="Código de barras"
                     required
                   />
+                  <small id="barcodeHelp" class="form-text text-danger">{{
+                    formErrors.barcode
+                  }}</small>
                 </div>
                 <div class="form-group col-7">
                   <label for="product"
@@ -54,6 +57,9 @@
                     placeholder="Nombre o descripción de product"
                     required
                   />
+                  <small id="productHelp" class="form-text text-danger">{{
+                    formErrors.product
+                  }}</small>
                 </div>
               </div>
               <div class="form-group">
@@ -100,6 +106,11 @@
                     data-target="#addProductModal"
                     >Como paquete</label
                   >
+                </div>
+                <div class="">
+                  <small id="typeHelp" class="form-text text-danger">{{
+                    formErrors.type
+                  }}</small>
                 </div>
                 <hr />
                 <add-product-kit
@@ -159,6 +170,9 @@
                       {{ category.name }}
                     </option>
                   </select>
+                  <small id="category_idHelp" class="form-text text-danger">{{
+                    formErrors.category_id
+                  }}</small>
                 </div>
                 <div class="form-group col-6">
                   <label for="brand_id">Marca</label>
@@ -176,28 +190,30 @@
                       {{ brand.name }}
                     </option>
                   </select>
+                  <small id="brand_idHelp" class="form-text text-danger">{{
+                    formErrors.brand_id
+                  }}</small>
                 </div>
-              </div>
-              <div class="form-group col-6">
-                <label for="tax_id"
-                  >Impuesto <span class="text-danger">(*)</span></label
-                >
-                <select
-                  class="form-control"
-                  id="tax_id"
-                  v-model="formProduct.tax_id"
-                  @click="uploadTax(formProduct.tax_id)"
-                  required
-                >
-                  <option value="0">--Select--</option>
-                  <option
-                    v-for="t in taxList"
-                    :key="t.id"
-                    :value="t.id"
+                <div class="form-group col-6">
+                  <label for="tax_id"
+                    >Impuesto <span class="text-danger">(*)</span></label
                   >
-                    {{ t.percentage }}
-                  </option>
-                </select>
+                  <select
+                    class="form-control"
+                    id="tax_id"
+                    v-model="formProduct.tax_id"
+                    @click="uploadTax(formProduct.tax_id)"
+                    required
+                  >
+                    <option value="0">--Select--</option>
+                    <option v-for="t in taxList" :key="t.id" :value="t.id">
+                      {{ t.percentage }}
+                    </option>
+                  </select>
+                  <small id="tax_idHelp" class="form-text text-danger">{{
+                    formErrors.tax_id
+                  }}</small>
+                </div>
               </div>
               <hr />
               <div class="form-row">
@@ -214,6 +230,9 @@
                     placeholder="Precio de costo"
                     required
                   />
+                  <small id="cost_priceHelp" class="form-text text-danger">{{
+                    formErrors.cost_price
+                  }}</small>
                 </div>
                 <div class="form-group col-6">
                   <label for="sale_price_tax_exc">Precio venta sin iva</label>
@@ -229,6 +248,11 @@
                   <div class="d-none">
                     {{ (formProduct.sale_price_tax_exc = sale_price_tax_exc) }}
                   </div>
+                  <small
+                    id="sale_price_tax_excHelp"
+                    class="form-text text-danger"
+                    >{{ formErrors.sale_price_tax_exc }}</small
+                  >
                 </div>
                 <div class="form-group col-6">
                   <label for="gain">Ganancia</label>
@@ -244,6 +268,9 @@
                   <div class="d-none">
                     {{ (formProduct.gain = gain) }}
                   </div>
+                  <small id="gainHelp" class="form-text text-danger">{{
+                    formErrors.gain
+                  }}</small>
                 </div>
                 <div class="form-group col-6">
                   <label for="sale_price_tax_inc"
@@ -259,6 +286,11 @@
                     placeholder="Impuesto Incluído"
                     required
                   />
+                  <small
+                    id="sale_price_tax_incHelp"
+                    class="form-text text-danger"
+                    >{{ formErrors.sale_price_tax_inc }}</small
+                  >
                 </div>
                 <div class="form-group col-6">
                   <label for="wholesale_price_tax_exc"
@@ -279,6 +311,11 @@
                         wholesale_price_tax_exc)
                     }}
                   </div>
+                  <small
+                    id="wholesale_price_tax_excHelp"
+                    class="form-text text-danger"
+                    >{{ formErrors.wholesale_price_tax_exc }}</small
+                  >
                 </div>
                 <div class="form-group col-6">
                   <label for="wholesale_price_tax_inc"
@@ -292,6 +329,11 @@
                     v-model="formProduct.wholesale_price_tax_inc"
                     placeholder="impuesto incluído"
                   />
+                  <small
+                    id="wholesale_price_tax_incHelp"
+                    class="form-text text-danger"
+                    >{{ formErrors.wholesale_price_tax_inc }}</small
+                  >
                 </div>
               </div>
               <hr />
@@ -309,6 +351,9 @@
                     ¿Usa Inventario?
                   </label>
                 </div>
+                <small id="stockHelp" class="form-text text-danger">{{
+                  formErrors.stock
+                }}</small>
               </div>
               <div class="form-row" v-if="formProduct.stock == 1">
                 <div class="form-group col-md-9">
@@ -320,6 +365,9 @@
                     id="quantity"
                     v-model="formProduct.quantity"
                   />
+                  <small id="quantityHelp" class="form-text text-danger">{{
+                    formErrors.quantity
+                  }}</small>
                 </div>
                 <div class="form-group col-md-3">
                   <small id="" class="form-text text-muted mt-4">
@@ -337,6 +385,9 @@
                     id="minimum"
                     v-model="formProduct.minimum"
                   />
+                  <small id="minimumHelp" class="form-text text-danger">{{
+                    formErrors.minimum
+                  }}</small>
                 </div>
               </div>
               <div class="form-row" v-if="formProduct.stock == 1">
@@ -349,6 +400,9 @@
                     id="maximum"
                     v-model="formProduct.maximum"
                   />
+                  <small id="maximumHelp" class="form-text text-danger">{{
+                    formErrors.maximum
+                  }}</small>
                 </div>
               </div>
               <div class="modal-footer">
@@ -410,6 +464,25 @@ export default {
       taxList: [],
       categoryList: {},
       brandList: {},
+      formErrors: {
+        barcode: "",
+        product: "",
+        type: "",
+        cost_price: "",
+        gain: "",
+        sale_price_tax_exc: "",
+        sale_price_tax_inc: "",
+        wholesale_price_tax_exc: "",
+        wholesale_price_tax_inc: "",
+        stock: "",
+        quantity: "",
+        minimum: "",
+        maximum: "",
+        state: "",
+        category_id: "",
+        tax_id: "",
+        brand_id: "",
+      },
     };
   },
   components: {
@@ -505,20 +578,28 @@ export default {
     },
     CreateProduct() {
       let me = this;
+      me.assignErrors(false);
 
       var data = {
         product: me.formProduct,
         itemListKit: me.listItemsKit,
       };
 
-      axios.post("api/products", data, me.$root.config).then(function () {
-        $("#productModal").modal("hide");
-        me.CloseModal();
-        me.$emit("list-products");
-      });
+      axios
+        .post("api/products", data, me.$root.config)
+        .then(function () {
+          $("#productModal").modal("hide");
+          me.CloseModal();
+          me.$emit("list-products");
+        })
+        .catch((response) => {
+          me.assignErrors(response);
+        });
     },
     EditProduct() {
       let me = this;
+      me.assignErrors(false);
+
       var data = {
         product: me.formProduct,
         itemListKit: me.listItemsKit,
@@ -528,10 +609,13 @@ export default {
         .put("api/products/" + me.formProduct.id, data, me.$root.config)
         .then(function () {
           $("#productModal").modal("hide");
+          me.CloseModal();
+          me.edit = false;
           // me.$emit("list-products");
+        })
+        .catch((response) => {
+          me.assignErrors(response);
         });
-      me.CloseModal();
-      me.edit = false;
     },
     ResetData() {
       let me = this;
@@ -586,6 +670,42 @@ export default {
     },
     validatePermission(permission) {
       return global.validatePermission(this.$root.permissions, permission);
+    },
+    assignErrors(response) {
+      const fillable = [
+        "barcode",
+        "product",
+        "type",
+        "cost_price",
+        "gain",
+        "sale_price_tax_exc",
+        "sale_price_tax_inc",
+        "wholesale_price_tax_exc",
+        "wholesale_price_tax_inc",
+        "stock",
+        "quantity",
+        "minimum",
+        "maximum",
+        "state",
+        "category_id",
+        "tax_id",
+        "brand_id",
+      ];
+
+      if (response) {
+        var errors = response.response.data.errors;
+        console.log(errors);
+
+        fillable.forEach((index) => {
+          if (errors[index] != undefined) {
+            this.formErrors[index] = errors[index][0];
+          }
+        });
+      } else {
+        fillable.forEach((index) => {
+          this.formErrors[index] = "";
+        });
+      }
     },
   },
   created() {

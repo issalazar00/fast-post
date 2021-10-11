@@ -99,12 +99,20 @@ class UserController extends Controller
                 $data = [
                     'status' => 'error',
                     'code' => 400,
-                    'message' => 'Datos incorrectos'
+                    'message' => 'Contraseña incorrecta'
                 ];
             }
 
-            return response()->json($data, $data['code']);
+            
+        }else{
+            $data = [
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Usuario desactivado'
+            ];
         }
+
+        return response()->json($data, $data['code']);
     }
 
     /**

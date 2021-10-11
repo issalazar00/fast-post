@@ -89,6 +89,7 @@
       tabindex="-1"
       aria-labelledby="categoryModalLabel"
       aria-hidden="true"
+      data-backdrop="static"
     >
       <div class="modal-dialog">
         <div class="modal-content">

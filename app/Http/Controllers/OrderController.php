@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Configuration;
 use App\Models\DetailOrder;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use PDF;
 
 class OrderController extends Controller
 {
 
 	public function __construct()
 	{
-		$this->middleware('can:order.index')->only('index');
+		$this->middleware('can:order.index')->only('index','generatePdf');
 		$this->middleware('can:order.store')->only('store');
 		$this->middleware('can:order.update')->only('update');
 		$this->middleware('can:order.delete')->only('destroy');
@@ -160,5 +163,29 @@ class OrderController extends Controller
 	public function destroy(Order  $order)
 	{
 		$order->delete();
+	}
+
+	public function generatePdf(Order $order){
+		$details  = $order;
+		$data = [
+			'orderInformation' => $details, 
+			'orderDetails' => $details->detailOrders()->get(), 
+			'user' => $details->user()->first(),
+			'configuration' => Configuration::first(),
+			'url' => URL::to('/')
+		];
+		
+
+		$pdf = PDF::loadView('templates.order', $data);
+
+		$pdf = $pdf->download('prueba.pdf');
+		
+		$data = [
+			'status' => 200,
+			'pdf' => base64_encode($pdf),
+			'message' => 'Orden generada en pdf'
+		];
+
+		return response()->json($data);
 	}
 }
