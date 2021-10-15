@@ -41,12 +41,13 @@ class PrintOrderController extends Controller
 				$printer->bitImage($logo);
 			} catch (Exception $e) {
 				/* Images not supported on your PHP, or image file not found */
-				$printer->text($e->getMessage() . "\n");
+				//$printer->text($e->getMessage() . "\n");
 			}
-			$printer->setJustification(Printer::JUSTIFY_LEFT);
+			
 			$printer->setTextSize(1, 2);
 			$printer->setEmphasis(true);
 			$printer->text($company->name . "\n");
+			$printer->setJustification(Printer::JUSTIFY_LEFT);
 			$printer->setTextSize(1, 1);
 			$printer->setEmphasis(false);
 			$printer->text("NIT: ");
@@ -74,7 +75,7 @@ class PrintOrderController extends Controller
 			$printer->setEmphasis(false);
 			$printer->text("\n");
 			$total = 0;
-
+			$printer->setJustification(Printer::JUSTIFY_LEFT);
 			foreach ($order_details as $df) {
 				$line = sprintf('%-20s %10.0f %10.2f ', '-' . $df->product, $df->quantity, $df->price_tax_inc_total);
 				$total +=  $df->price_tax_inc_total;
@@ -87,7 +88,8 @@ class PrintOrderController extends Controller
 			$printer->text("\n");
 			$printer->text(sprintf('%-25s %+15.15s', 'Subtotal', number_format($order->total_iva_exc, 2)));
 			$printer->text("\n");
-			$printer->text(sprintf('%-25s %+15.15s', 'Iva', number_format($total - $order->total_iva_exc, 2)));
+			$printer->text(sprintf('%-25s %+15.15s', 'Iva', number_format($order->total_iva_inc - $order->total_iva_exc, 2)));
+			$printer->text("\n");
 			$printer->setTextSize(1, 2);
 			$printer->text(sprintf('%-25s %+15.15s', 'TOTAL', number_format($total, 2)));
 			$printer->setTextSize(1, 1);
@@ -103,7 +105,7 @@ class PrintOrderController extends Controller
 			$printer->setLineSpacing(2);
 			$printer->setEmphasis(false);
 			$printer->setFont(Printer::MODE_FONT_B);
-			$printer->text("Gracias por su compra\n");
+			$printer->text($company->condition_order."\n");
 			$printer->text("Tecnoplus");
 			$printer->text("\nwww.tecnoplus.com\n");
 			$printer->cut();

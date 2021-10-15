@@ -36,16 +36,16 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/users/{user}/activate',  [UserController::class, 'activate']);
 	Route::post('/register', [UserController::class, 'register']);
 
-	Route::resource('/categories', CategoryController::class);
 	Route::post('/categories/{category}/activate',  [CategoryController::class, 'activate']);
 	Route::get('/categories/category-list', [CategoryController::class, 'categoryList']);
+	Route::resource('/categories', CategoryController::class);
 
 	Route::resource('/taxes', TaxController::class);
 	Route::post('/taxes/{tax}/activate',  [TaxController::class, 'activate']);
-
-	Route::resource('/brands', BrandController::class);
+	
 	Route::post('/brands/{brand}/activate',  [BrandController::class, 'activate']);
 	Route::get('/brands/brand-list', [BrandController::class, 'brandList']);
+	Route::resource('/brands', BrandController::class);
 
 	Route::get('/orders/generatePdf/{order}', [OrderController::class, 'generatePdf']);
 	Route::resource('/orders',  OrderController::class);
