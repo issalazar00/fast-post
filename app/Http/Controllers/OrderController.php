@@ -32,20 +32,22 @@ class OrderController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		if ($request->client != '' || $request->invoice != '') {
-			$orders = Order::whereHas('client', function (Builder $query) use ($request) {
-				if ($request->client != '') {
-					$query->where('name', 'like', "%$request->client%");
-				}
-			});
-			if ($request->no_invoice != '') {
-				$orders = $orders->where('no_invoice', 'like', "%$request->no_invoice");
-			}
+		$user_id =  Auth::user()->id;
 
-			$orders = $orders->paginate(10);
-		} else {
-			$orders = Order::paginate(10);
+		$orders = Order::whereHas('client', function (Builder $query) use ($request) {
+			if ($request->client != '') {
+				$query->where('name', 'like', "%$request->client%");
+			}
+		});
+		if ($request->no_invoice != '') {
+			$orders = $orders->where('no_invoice', 'like', "%$request->no_invoice");
 		}
+		$today = date('Y-m-d');
+
+		$orders = $orders
+			->where('created_at', '>=', $today)
+			->where('user_id', $user_id)
+			->paginate(10);
 
 		return response()->json([
 			'status' => 'success',

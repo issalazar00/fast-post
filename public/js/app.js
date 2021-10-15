@@ -11473,10 +11473,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {},
   data: function data() {
@@ -57362,30 +57358,28 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "w-100" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "header" }, [
-      _c(
-        "div",
-        { staticClass: "row justify-content-end mx-4" },
-        [
-          _c(
-            "router-link",
-            {
-              staticClass: "btn btn-outline-primary",
-              attrs: {
-                to: {
-                  name: "create-edit-order",
-                  params: { order_id: 0 }
-                }
+    _c(
+      "header",
+      { staticClass: "page-header justify-content-between row px-4" },
+      [
+        _c("h3", [_vm._v("Ordenes")]),
+        _vm._v(" "),
+        _c(
+          "router-link",
+          {
+            staticClass: "btn btn-outline-primary",
+            attrs: {
+              to: {
+                name: "create-edit-order",
+                params: { order_id: 0 }
               }
-            },
-            [_vm._v("\n        Nueva orden\n      ")]
-          )
-        ],
-        1
-      )
-    ]),
+            }
+          },
+          [_vm._v("\n      Nueva orden\n    ")]
+        )
+      ],
+      1
+    ),
     _vm._v(" "),
     _c(
       "section",
@@ -57394,7 +57388,7 @@ var render = function() {
           _c("div", { staticClass: "form-row" }, [
             _c("h6", { staticClass: "w-100" }, [_vm._v("Buscar...")]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
+            _c("div", { staticClass: "form-group col-3" }, [
               _c("label", { attrs: { for: "nro_factura" } }, [
                 _vm._v("Nro Factura")
               ]),
@@ -57430,7 +57424,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
+            _c("div", { staticClass: "form-group col-3" }, [
               _c("label", { attrs: { for: "name_client" } }, [
                 _vm._v("Cliente")
               ]),
@@ -57473,7 +57467,7 @@ var render = function() {
               staticClass: "table table-sm table-bordered table-responsive-sm"
             },
             [
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -57616,14 +57610,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("header", { staticClass: "page-header" }, [
-      _c("h3", [_vm._v("Tickets")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

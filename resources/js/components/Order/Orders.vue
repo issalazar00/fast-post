@@ -1,26 +1,22 @@
 <template>
   <div class="w-100">
-    <header class="page-header">
-      <h3>Tickets</h3>
+    <header class="page-header justify-content-between row px-4">
+      <h3>Ordenes</h3>
+      <router-link
+        class="btn btn-outline-primary"
+        :to="{
+          name: 'create-edit-order',
+          params: { order_id: 0 },
+        }"
+      >
+        Nueva orden
+      </router-link>
     </header>
-    <div class="header">
-      <div class="row justify-content-end mx-4">
-        <router-link
-          class="btn btn-outline-primary"
-          :to="{
-            name: 'create-edit-order',
-            params: { order_id: 0 },
-          }"
-        >
-          Nueva orden
-        </router-link>
-      </div>
-    </div>
     <section>
       <div class="card-body">
         <div class="form-row">
           <h6 class="w-100">Buscar...</h6>
-          <div class="form-group">
+          <div class="form-group col-3">
             <label for="nro_factura">Nro Factura</label>
             <input
               type="text"
@@ -32,7 +28,7 @@
               @keypress="getOrders(1)"
             />
           </div>
-          <div class="form-group">
+          <div class="form-group col-3">
             <label for="name_client">Cliente</label>
             <input
               type="text"
