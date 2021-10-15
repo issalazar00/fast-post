@@ -274,15 +274,15 @@
             class="btn btn-outline-primary btn-block"
             @click="createOrUpdateOrder(2)"
           >
-          <!-- Facturar -->
+            <!-- Facturar -->
             <i class="bi bi-receipt"></i> Guardar
           </button>
-           <button
+          <button
             type="button"
             class="btn btn-outline-primary btn-block"
             @click="createOrUpdateOrder(2)"
           >
-          <!-- Facturar -->
+            <!-- Facturar -->
             <i class="bi bi-receipt"></i> Guardar e imprimir
           </button>
           <button
@@ -488,14 +488,19 @@ export default {
       this.order.state = state_order;
       if (this.productsOrderList.length > 0) {
         this.order.productsOrder = this.productsOrderList;
-        if (this.order_id != 0) {
+        if (this.order_id != 0 && this.order_id != null) {
           axios
             .put(`api/orders/${this.order_id}`, this.order, this.$root.config)
-            .then(() => this.$router.replace("/create-edit-order/0"));
+            .then(
+              () => (
+                this.$router.push({ name: "main", params: { order_id: 0 } }),
+                this.$router.go(0)
+              )
+            );
         } else {
           axios
             .post(`api/orders`, this.order, this.$root.config)
-            .then(() => this.$router.replace("/create-edit-order"));
+            .then(() => this.$router.go(0));
         }
       } else {
         alert("No hay productos en la orden");
@@ -507,7 +512,6 @@ export default {
     if (this.order_id != null || this.order_id != 0) {
       this.listItemsOrder();
     }
-
   },
 };
 </script>

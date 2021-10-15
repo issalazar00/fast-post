@@ -75,7 +75,7 @@ Vue.component('v-select', vSelect)
 // { path: '', component: require('./components/ExampleComponent.vue').default },
 const routes = [
 
-  { path: '', component: CreateEditOrder, props: { order_id: 0 } },
+  { path: '', component: CreateEditOrder, props: { order_id: 0 }, name: 'main' },
   { path: '/clients', component: Clients, alias: "client.index" },
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/products', component: Products },
