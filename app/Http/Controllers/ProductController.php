@@ -26,23 +26,31 @@ class ProductController extends Controller
 	 */
 	public function index(Request $request)
 	{
+		$products = Product::select()
+			->where('state', 1);
+			
 		if ($request->product != '') {
-			$products = Product::select()
-				->where('state', 1)
+			$products = $products
 				->where('barcode', 'LIKE', "%$request->product%")
-				->orWhere('product', 'LIKE', "%$request->product%")
-				->orderBy('product', 'asc')
-				->paginate(10);
-		} else {
-			$products = Product::select()->orderBy('product', 'asc')->paginate(10);
+				->orWhere('product', 'LIKE', "%$request->product%");
 		}
+		if ($request->category_id != '' && $request->category_id  != null && $request->category_id  != 0) {
+			$products = $products
+				->where('category_id', "$request->category_id");
+		}
+		if ($request->brand_id != '' && $request->brand_id  != null && $request->brand_id  != 0) {
+			$products = $products
+				->where('brand_id', "$request->brand_id");
+		}
+
+		$products = $products->orderBy('product', 'asc')->paginate(10);
+
 
 		return response()->json([
 			'status' => 'success',
 			'code' => 200,
 			'products' => $products,
 		]);
-		// return Product::orderBy('barcode', 'asc')->paginate(15);
 	}
 
 	/**
@@ -246,7 +254,7 @@ class ProductController extends Controller
 
 	public function updateStock($type, $barcode, $quantity)
 	{
-		$product = Product::select('id','barcode', 'quantity')->where('barcode', $barcode)->first();
+		$product = Product::select('id', 'barcode', 'quantity')->where('barcode', $barcode)->first();
 		// var_dump($product);
 		if ($type == 1) {
 			$product->quantity = $product->quantity - $quantity;

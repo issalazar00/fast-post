@@ -40,18 +40,12 @@
 
               <td v-if="$root.validatePermission('tax.active')">
                 <button
-                  class="btn btn-outline-success"
-                  v-if="tax.active == 1"
-                  @click="DeactivateTax(tax.id)"
+                  class="btn"
+                  :class="tax.active == '1' ? ' btn-success' : ' btn-danger'"
+                  @click="changeState(tax.id)"
                 >
-                  <i class="bi bi-check-circle-fill"></i>
-                </button>
-                <button
-                  class="btn btn-outline-danger"
-                  v-else
-                  @click="ActivateTax(tax.id)"
-                >
-                  <i class="bi bi-x-circle"></i>
+                  <i class="bi bi-check-circle-fill" v-if="tax.active == 1"></i>
+                  <i class="bi bi-x-circle" v-if="tax.active == 0"></i>
                 </button>
               </td>
               <td v-if="$root.validatePermission('tax.update')">
@@ -166,18 +160,10 @@ export default {
       this.$refs.CreateEditTax.ResetData();
       me.listTaxes(1);
     },
-    ActivateTax: function (id) {
+    changeState: function (id) {
       let me = this;
       axios
-        .post("api/taxes/" + id + "/activate", null, this.$root.config)
-        .then(function () {
-          me.listTaxes(1);
-        });
-    },
-    DeactivateTax: function (id) {
-      let me = this;
-      axios
-        .post("api/taxes/" + id + "/deactivate", null, this.$root.config)
+        .post("api/taxes/" + id + "/activate", null, me.$root.config)
         .then(function () {
           me.listTaxes(1);
         });

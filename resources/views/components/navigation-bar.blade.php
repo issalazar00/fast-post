@@ -1,9 +1,11 @@
-<ul v-if="token && user" class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion toggled border-right-secondary" id="accordionSidebar">
+<ul v-if="token && user"
+	class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion toggled border-right-secondary"
+	id="accordionSidebar">
 
 	<a class="sidebar-brand d-flex align-items-center justify-content-center p-0" href="{{ url('/') }}">
 		<div class="sidebar-brand-icon ">
 			<img src="{{ asset('images/logo.jpeg') }}" alt="logo-tecnplus" srcset="" width="100%">
-			
+
 		</div>
 		{{-- <strong class="h3 text-bold text-dark">Tecno</strong><strong class="h3 text-bold text-white">plus</strong> --}}
 	</a>
@@ -28,23 +30,6 @@
 		<router-link class="nav-link " active-class="active" to="/orders"><i class="bi bi-receipt"></i><span>Ordenes</span>
 		</router-link>
 	</li>
-	<!-- Nav Item - Pages Collapse Menu -->
-	<li class="nav-item">
-		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePeople" aria-expanded="true"
-			aria-controls="collapsePeople">
-			<i class="bi bi-people"></i>
-			<span>Terceros</span>
-		</a>
-		<div id="collapsePeople" class="collapse" aria-labelledby="headingPeople" data-parent="#accordionSidebar">
-			<div class="bg-white py-2 collapse-inner rounded">
-				<h6 class="collapse-header">Personas:</h6>
-				<router-link class="collapse-item" to="/clients" v-if="validatePermission('client.index')">
-					Clientes</router-link>
-				<router-link class="collapse-item" to="/suppliers" v-if="validatePermission('supplier.index')">
-					Proveedores</router-link>
-			</div>
-		</div>
-	</li>
 
 	<!-- Nav Item - Shop Collapse Menu -->
 	<li class="nav-item">
@@ -60,6 +45,23 @@
 				<router-link class="collapse-item " to="/categories">Categorias</router-link>
 				<router-link class="collapse-item " to="/brands">Marcas</router-link>
 				<router-link class="collapse-item" to="/taxes" v-if="validatePermission('tax.index')">Iva</router-link>
+			</div>
+		</div>
+	</li>
+	<!-- Nav Item - Pages Collapse Menu -->
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePeople" aria-expanded="true"
+			aria-controls="collapsePeople">
+			<i class="bi bi-people"></i>
+			<span>Terceros</span>
+		</a>
+		<div id="collapsePeople" class="collapse" aria-labelledby="headingPeople" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<h6 class="collapse-header">Personas:</h6>
+				<router-link class="collapse-item" to="/clients" v-if="validatePermission('client.index')">
+					Clientes</router-link>
+				<router-link class="collapse-item" to="/suppliers" v-if="validatePermission('supplier.index')">
+					Proveedores</router-link>
 			</div>
 		</div>
 	</li>

@@ -7,7 +7,6 @@
       <div class="card-body" v-if="!isLoading">
         <div class="form-row">
           <div class="col my-4">
-            <label for="search_product">Buscar Producto...</label>
             <input
               type="text"
               class="form-control"
@@ -17,6 +16,27 @@
               autofocus
               @keyup="listProducts(1)"
             />
+          </div>
+          <div class="col my-4">
+            <v-select
+              :options="categoryList"
+              label="name"
+              :reduce="(category) => category.id"
+              v-model="search_category"
+            />
+          </div>
+          <div class="col my-4">
+            <v-select
+              :options="brandList"
+              label="name"
+              :reduce="(brand) => brand.id"
+              v-model="search_brand"
+            />
+          </div>
+          <div class="col my-4">
+            <button class="btn btn-success btn-block" @click="listProducts(1)">
+              Buscar <i class="bi bi-search"></i>
+            </button>
           </div>
         </div>
         <div class="row justify-content-end">
@@ -46,7 +66,6 @@
           <table class="table table-sm table-bordered table-responsive-sm">
             <thead class="thead-primary">
               <tr>
-                <th scope="col">#</th>
                 <th>Código de barras</th>
                 <th scope="col">Producto</th>
                 <th>Categoria</th>
@@ -58,7 +77,6 @@
             </thead>
             <tbody>
               <tr v-for="product in ProductList.data" v-bind:key="product.id">
-                <td>{{ product.id }}</td>
                 <td>{{ product.barcode }}</td>
                 <td>{{ product.product }}</td>
                 <td>{{ product.category.name }}</td>
@@ -109,7 +127,7 @@
       ref="CreateEditProduct"
       @list-products="listProducts(1)"
     />
-    <import-products @list-products="listProducts(1)"/>
+    <import-products @list-products="listProducts(1)" />
   </div>
 </template>
 
@@ -122,8 +140,12 @@ export default {
   data() {
     return {
       search_product: "",
+      search_category: 0,
+      search_brand: 0,
       isLoading: false,
       ProductList: {},
+      categoryList: [],
+      brandList: [],
     };
   },
   created() {
@@ -141,11 +163,27 @@ export default {
       let me = this;
       axios
         .get(
-          `api/products?page=${page}&product=${me.search_product}`,
+          `api/products?page=${page}&product=${me.search_product}&category_id=${me.search_category}&brand_id=${me.search_brand}`,
           this.$root.config
         )
         .then(function (response) {
           me.ProductList = response.data.products;
+        });
+    },
+    listCategories() {
+      let me = this;
+      axios
+        .get(`api/categories/category-list`, this.$root.config)
+        .then(function (response) {
+          me.categoryList = response.data.categories;
+        });
+    },
+    listBrands() {
+      let me = this;
+      axios
+        .get(`api/brands/brand-list`, this.$root.config)
+        .then(function (response) {
+          me.brandList = response.data.brands;
         });
     },
     ShowData: function (product) {
@@ -165,6 +203,9 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() {
+    this.listCategories();
+    this.listBrands();
+  },
 };
 </script>

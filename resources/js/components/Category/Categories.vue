@@ -47,9 +47,7 @@
                 <button
                   class="btn"
                   :class="
-                    category.active == '1'
-                      ? ' btn-success'
-                      : ' btn-danger'
+                    category.active == '1' ? ' btn-success' : ' btn-danger'
                   "
                   @click="changeState(category.id)"
                 >
@@ -105,7 +103,10 @@
             </button>
           </div>
           <div class="modal-body">
-            <create-edit-category ref="CreateEditCategory" @list-categories ="listCategories(1)" />
+            <create-edit-category
+              ref="CreateEditCategory"
+              @list-categories="listCategories(1)"
+            />
           </div>
           <div class="modal-footer">
             <button
