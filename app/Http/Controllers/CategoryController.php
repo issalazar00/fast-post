@@ -191,9 +191,29 @@ class CategoryController extends Controller
      */
     public function activate($id)
     {
-        //
         $category = Category::find($id);
         $category->active = !$category->active;
         $category->save();
+    }
+
+    public function categoryList()
+    {
+        $categories = Category::where('active', 1)->get();
+
+        if ($categories) {
+            $data = [
+                'status' => 'success',
+                'code' => 200,
+                'categories' => $categories
+            ];
+        } else {
+            $data = [
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Registro no encontrado'
+            ];
+        }
+
+        return response()->json($data, $data['code']);
     }
 }

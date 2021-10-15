@@ -34,23 +34,22 @@ Route::post('/login', [UserController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
 	Route::resource('/users', UserController::class);
 	Route::post('/users/{user}/activate',  [UserController::class, 'activate']);
-	Route::post('/users/{user}/deactivate',  [UserController::class, 'deactivate']);
 	Route::post('/register', [UserController::class, 'register']);
 
 	Route::resource('/categories', CategoryController::class);
 	Route::post('/categories/{category}/activate',  [CategoryController::class, 'activate']);
-	Route::post('/categories/{category}/deactivate',  [CategoryController::class, 'deactivate']);
+	Route::get('/categories/category-list', [CategoryController::class, 'categoryList']);
 
 	Route::resource('/taxes', TaxController::class);
 	Route::post('/taxes/{tax}/activate',  [TaxController::class, 'activate']);
-	Route::post('/taxes/{tax}/deactivate',  [TaxController::class, 'deactivate']);
 
 	Route::resource('/brands', BrandController::class);
 	Route::post('/brands/{brand}/activate',  [BrandController::class, 'activate']);
+	Route::get('/brands/brand-list', [BrandController::class, 'brandList']);
 
 	Route::get('/orders/generatePdf/{order}', [OrderController::class, 'generatePdf']);
 	Route::resource('/orders',  OrderController::class);
-	
+
 	Route::resource('/order-details', DetailOrderController::class);
 
 	Route::resource('/products',  ProductController::class);
@@ -77,11 +76,10 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/departments/{id}/getMunicipalities', [DepartmentController::class, 'getMunicipalitiesByDepartment']);
 
 	Route::resource('/configurations', ConfigurationController::class)->except(['create', 'edit', 'destroy', 'show']);
-	Route::get('/company-logo', function(){
+	Route::get('/company-logo', function () {
 		$configuration = new Configuration();
 		$image = $configuration->select('logo')->first();
 		return $image;
 	});
-Route::post('/import/upload-file-import', [ImportProductController::class, 'uploadFile']);
-
+	Route::post('/import/upload-file-import', [ImportProductController::class, 'uploadFile']);
 });

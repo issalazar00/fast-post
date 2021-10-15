@@ -14,7 +14,7 @@ class SupplierController extends Controller
 		$this->middleware('can:supplier.store')->only('store');
 		$this->middleware('can:supplier.update')->only('update');
 		$this->middleware('can:supplier.delete')->only('destroy');
-		$this->middleware('can:supplier.active')->only('active', 'deactivate');
+		$this->middleware('can:supplier.active')->only('active');
 	}
 	/**
 	 * Display a listing of the resource.

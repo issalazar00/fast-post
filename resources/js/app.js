@@ -5,11 +5,12 @@
  */
 
 require('./bootstrap');
-Vue.component('pagination', require('laravel-vue-pagination'));
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { VueSpinners } from '@saeris/vue-spinners'
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 
 import Login from './components/Login.vue'
 import NoFound from './components/NoFound.vue';
@@ -40,12 +41,16 @@ import CreateEditOrder from './components/Order/CreateEditOrder.vue'
 import Roles from './components/Rol/Roles.vue';
 import Users from './components/User/Users.vue';
 import Configuration from './components/Configuration.vue';
+
 //Services
 import global from './services/global.js';
 import axios from 'axios';
 
 Vue.use(VueRouter)
 Vue.use(VueSpinners)
+
+Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('v-select', vSelect)
 
 /**
  * The following block of code may be used to automatically register your

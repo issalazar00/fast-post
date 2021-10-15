@@ -42,9 +42,9 @@ class OrderController extends Controller
 				$orders = $orders->where('no_invoice', 'like', "%$request->no_invoice");
 			}
 
-			$orders = $orders->paginate(15);
+			$orders = $orders->paginate(10);
 		} else {
-			$orders = Order::paginate(15);
+			$orders = Order::paginate(10);
 		}
 
 		return response()->json([
@@ -88,7 +88,7 @@ class OrderController extends Controller
 		foreach ($request->productsOrder as $details_order) {
 			$new_detail = new DetailOrderController;
 			$new_detail = $new_detail->store($details_order, $order->id);
-			
+
 			$update_stock = new ProductController;
 			$update_stock = $update_stock->updateStock(1, $details_order['barcode'], $details_order['quantity']);
 		}

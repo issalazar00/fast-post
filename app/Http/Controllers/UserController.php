@@ -17,7 +17,7 @@ class UserController extends Controller
         $this->middleware('can:user.store')->only('store','register');
         $this->middleware('can:user.update')->only('update');
         $this->middleware('can:user.delete')->only('destroy');
-        $this->middleware('can:user.active')->only('active', 'deactivate');
+        $this->middleware('can:user.active')->only('active');
     }
 
     public function register(Request $request)

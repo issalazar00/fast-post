@@ -30,6 +30,27 @@ class BrandController extends Controller
     ]);
   }
 
+  public function brandList()
+  {
+    $brands = Brand::where('active', 1)->get();
+
+    if ($brands) {
+      $data = [
+        'status' => 'success',
+        'code' => 200,
+        'brands' => $brands
+      ];
+    } else {
+      $data = [
+        'status' => 'error',
+        'code' => 400,
+        'message' => 'Registro no encontradox'
+      ];
+    }
+
+    return response()->json($data, $data['code']);
+  }
+
   /**
    * Show the form for creating a new resource.
    *

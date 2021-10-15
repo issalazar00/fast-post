@@ -29,6 +29,7 @@
         "@saeris/vue-spinners": "^1.0.8",
         "emotion": "^11.0.0",
         "laravel-vue-pagination": "^2.3.1",
-        "vue-router": "^3.5.2"
+        "vue-router": "^3.5.2",
+        "vue-select": "^3.13.2"
     }
 }
