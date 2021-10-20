@@ -9283,8 +9283,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -12706,7 +12704,169 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      search_product: "",
+      search_category: 0,
+      search_brand: 0,
+      isLoading: false,
+      ProductList: {},
+      categoryList: [],
+      brandList: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.isLoading = true;
+    var me = this;
+    axios.get("api/products?page=1", this.$root.config).then(function (response) {
+      me.ProductList = response.data.products;
+    })["finally"](function () {
+      return _this.isLoading = false;
+    });
+  },
+  methods: {
+    listProducts: function listProducts() {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      var me = this;
+      axios.get("api/products?page=".concat(page, "&product=").concat(me.search_product, "&category_id=").concat(me.search_category, "&brand_id=").concat(me.search_brand), this.$root.config).then(function (response) {
+        me.ProductList = response.data.products;
+      });
+    },
+    listCategories: function listCategories() {
+      var me = this;
+      axios.get("api/categories/category-list", this.$root.config).then(function (response) {
+        me.categoryList = response.data.categories;
+      });
+    },
+    listBrands: function listBrands() {
+      var me = this;
+      axios.get("api/brands/brand-list", this.$root.config).then(function (response) {
+        me.brandList = response.data.brands;
+      });
+    },
+    updateStock: function updateStock(id, quantity) {
+      var me = this;
+      axios.post("api/products/stock-update/".concat(id), {
+        quantity: quantity
+      }, this.$root.config).then(function (response) {
+        me.listProducts(1);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.listCategories();
+    this.listBrands();
+  }
+});
 
 /***/ }),
 
@@ -54196,235 +54356,244 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-12" }, [
-    _c(
-      "div",
-      { staticClass: "w-100 text-center" },
-      [
-        _c("h3", { staticClass: "page-header" }, [_vm._v("Categorias")]),
-        _vm._v(" "),
-        _c("moon-loader", {
-          staticClass: "m-auto",
-          attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
-        })
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-body" }, [
-      !_vm.isLoading
-        ? _c(
-            "section",
-            [
-              _c("div", { staticClass: "row justify-content-end my-4" }, [
-                _vm.$root.validatePermission("category.store")
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: {
-                          type: "button",
-                          "data-toggle": "modal",
-                          "data-target": "#categoryModal"
-                        },
-                        on: {
-                          click: function($event) {
-                            _vm.$refs.CreateEditCategory.ResetData(),
-                              (_vm.edit = false)
+  return _c(
+    "div",
+    { staticClass: "w-100" },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("moon-loader", {
+        staticClass: "m-auto",
+        attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        !_vm.isLoading
+          ? _c(
+              "section",
+              [
+                _c("div", { staticClass: "row justify-content-end my-4" }, [
+                  _vm.$root.validatePermission("category.store")
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: {
+                            type: "button",
+                            "data-toggle": "modal",
+                            "data-target": "#categoryModal"
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.$refs.CreateEditCategory.ResetData(),
+                                (_vm.edit = false)
+                            }
                           }
-                        }
-                      },
-                      [_vm._v("\n          Crear Categoria\n        ")]
-                    )
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c(
-                "table",
-                {
-                  staticClass:
-                    "table table-sm table-bordered table-responsive-sm"
-                },
-                [
-                  _c("thead", { staticClass: "thead-primary" }, [
-                    _c("tr", [
-                      _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-                      _vm._v(" "),
-                      _c("th", { attrs: { scope: "col" } }, [
-                        _vm._v("Categoria")
-                      ]),
-                      _vm._v(" "),
-                      _vm.$root.validatePermission("category.active")
-                        ? _c("th", [_vm._v("Estado")])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.$root.validatePermission("category.update")
-                        ? _c("th", [
-                            _vm._v("\n              Opciones\n            ")
-                          ])
-                        : _vm._e()
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.categoryList.data, function(category, index) {
-                      return _c("tr", { key: category.id }, [
-                        _c("th", { attrs: { scope: "row" } }, [
-                          _vm._v(_vm._s(index + 1))
+                        },
+                        [_vm._v("\n          Crear Categoria\n        ")]
+                      )
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "table",
+                  {
+                    staticClass:
+                      "table table-sm table-bordered table-responsive-sm"
+                  },
+                  [
+                    _c("thead", { staticClass: "thead-primary" }, [
+                      _c("tr", [
+                        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+                        _vm._v(" "),
+                        _c("th", { attrs: { scope: "col" } }, [
+                          _vm._v("Categoria")
                         ]),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(category.name))]),
-                        _vm._v(" "),
                         _vm.$root.validatePermission("category.active")
-                          ? _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn",
-                                  class:
-                                    category.active == "1"
-                                      ? " btn-success"
-                                      : " btn-danger",
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.changeState(category.id)
-                                    }
-                                  }
-                                },
-                                [
-                                  category.active == 1
-                                    ? _c("i", {
-                                        staticClass: "bi bi-check-circle-fill"
-                                      })
-                                    : _vm._e(),
-                                  _vm._v(" "),
-                                  category.active == 0
-                                    ? _c("i", { staticClass: "bi bi-x-circle" })
-                                    : _vm._e()
-                                ]
-                              )
-                            ])
+                          ? _c("th", [_vm._v("Estado")])
                           : _vm._e(),
                         _vm._v(" "),
                         _vm.$root.validatePermission("category.update")
-                          ? _c("td", [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-outline-success",
-                                  on: {
-                                    click: function($event) {
-                                      _vm.ShowData(category), (_vm.edit = true)
-                                    }
-                                  }
-                                },
-                                [_c("i", { staticClass: "bi bi-pen" })]
-                              )
+                          ? _c("th", [
+                              _vm._v("\n              Opciones\n            ")
                             ])
                           : _vm._e()
                       ])
-                    }),
-                    0
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "pagination",
-                {
-                  attrs: { align: "center", data: _vm.categoryList },
-                  on: { "pagination-change-page": _vm.listCategories }
-                },
-                [
-                  _c(
-                    "span",
-                    { attrs: { slot: "prev-nav" }, slot: "prev-nav" },
-                    [_vm._v("< Previous")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    { attrs: { slot: "next-nav" }, slot: "next-nav" },
-                    [_vm._v("Next >")]
-                  )
-                ]
-              )
-            ],
-            1
-          )
-        : _vm._e()
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "categoryModal",
-          tabindex: "-1",
-          "aria-labelledby": "categoryModalLabel",
-          "aria-hidden": "true",
-          "data-backdrop": "static"
-        }
-      },
-      [
-        _c("div", { staticClass: "modal-dialog" }, [
-          _c("div", { staticClass: "modal-content" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "modal-body" },
-              [
-                _c("create-edit-category", {
-                  ref: "CreateEditCategory",
-                  on: {
-                    "list-categories": function($event) {
-                      return _vm.listCategories(1)
-                    }
-                  }
-                })
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.categoryList.data, function(category, index) {
+                        return _c("tr", { key: category.id }, [
+                          _c("th", { attrs: { scope: "row" } }, [
+                            _vm._v(_vm._s(index + 1))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(category.name))]),
+                          _vm._v(" "),
+                          _vm.$root.validatePermission("category.active")
+                            ? _c("td", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn",
+                                    class:
+                                      category.active == "1"
+                                        ? " btn-success"
+                                        : " btn-danger",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.changeState(category.id)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    category.active == 1
+                                      ? _c("i", {
+                                          staticClass: "bi bi-check-circle-fill"
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    category.active == 0
+                                      ? _c("i", {
+                                          staticClass: "bi bi-x-circle"
+                                        })
+                                      : _vm._e()
+                                  ]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.$root.validatePermission("category.update")
+                            ? _c("td", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-outline-success",
+                                    on: {
+                                      click: function($event) {
+                                        _vm.ShowData(category),
+                                          (_vm.edit = true)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "bi bi-pen" })]
+                                )
+                              ])
+                            : _vm._e()
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "pagination",
+                  {
+                    attrs: { align: "center", data: _vm.categoryList },
+                    on: { "pagination-change-page": _vm.listCategories }
+                  },
+                  [
+                    _c(
+                      "span",
+                      { attrs: { slot: "prev-nav" }, slot: "prev-nav" },
+                      [_vm._v("< Previous")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      { attrs: { slot: "next-nav" }, slot: "next-nav" },
+                      [_vm._v("Next >")]
+                    )
+                  ]
+                )
               ],
               1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-footer" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      return _vm.closeModal()
-                    }
-                  }
-                },
-                [_vm._v("\n            Close\n          ")]
-              ),
+            )
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "categoryModal",
+            tabindex: "-1",
+            "aria-labelledby": "categoryModalLabel",
+            "aria-hidden": "true",
+            "data-backdrop": "static"
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(1),
               _vm._v(" "),
               _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      return _vm.SaveCategory()
+                "div",
+                { staticClass: "modal-body" },
+                [
+                  _c("create-edit-category", {
+                    ref: "CreateEditCategory",
+                    on: {
+                      "list-categories": function($event) {
+                        return _vm.listCategories(1)
+                      }
                     }
-                  }
-                },
-                [_vm._v("\n            Guardar\n          ")]
-              )
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.closeModal()
+                      }
+                    }
+                  },
+                  [_vm._v("\n            Close\n          ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.SaveCategory()
+                      }
+                    }
+                  },
+                  [_vm._v("\n            Guardar\n          ")]
+                )
+              ])
             ])
           ])
-        ])
-      ]
-    )
-  ])
+        ]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "page-header text-center" }, [
+      _c("h3", {}, [_vm._v("Categorias")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -59655,9 +59824,265 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c(
+    "div",
+    { staticClass: "w-100" },
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("moon-loader", {
+        staticClass: "m-auto",
+        attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
+      }),
+      _vm._v(" "),
+      !_vm.isLoading
+        ? _c("div", { staticClass: "page-search mx-2" }, [
+            _c("div", { staticClass: "form-row" }, [
+              _c("div", { staticClass: "col my-4" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.search_product,
+                      expression: "search_product"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    id: "search_product",
+                    placeholder: "Nombre | Código de barras",
+                    autofocus: ""
+                  },
+                  domProps: { value: _vm.search_product },
+                  on: {
+                    keyup: function($event) {
+                      return _vm.listProducts(1)
+                    },
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.search_product = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col my-4" },
+                [
+                  _c("v-select", {
+                    attrs: {
+                      options: _vm.categoryList,
+                      label: "name",
+                      reduce: function(category) {
+                        return category.id
+                      }
+                    },
+                    model: {
+                      value: _vm.search_category,
+                      callback: function($$v) {
+                        _vm.search_category = $$v
+                      },
+                      expression: "search_category"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col my-4" },
+                [
+                  _c("v-select", {
+                    attrs: {
+                      options: _vm.brandList,
+                      label: "name",
+                      reduce: function(brand) {
+                        return brand.id
+                      }
+                    },
+                    model: {
+                      value: _vm.search_brand,
+                      callback: function($$v) {
+                        _vm.search_brand = $$v
+                      },
+                      expression: "search_brand"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col my-4" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success btn-block",
+                    on: {
+                      click: function($event) {
+                        return _vm.listProducts(1)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v("\n          Buscar "),
+                    _c("i", { staticClass: "bi bi-search" })
+                  ]
+                )
+              ])
+            ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "page-content mx-2" }, [
+        _c(
+          "section",
+          { staticClass: "mt-4" },
+          [
+            _c(
+              "table",
+              {
+                staticClass: "table table-sm table-bordered table-responsive-sm"
+              },
+              [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.ProductList.data, function(product) {
+                    return _c("tr", { key: product.id }, [
+                      _c("td", [_vm._v(_vm._s(product.barcode))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(product.product))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(product.category.name))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(product.brand.name))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(product.quantity))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("div", { staticClass: "input-group mb-3" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: product.qty,
+                                expression: "product.qty"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "number",
+                              placeholder: "Product quantity",
+                              "aria-label": "Product quantity",
+                              "aria-describedby": "button-qty",
+                              value: "0"
+                            },
+                            domProps: { value: product.qty },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(product, "qty", $event.target.value)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "input-group-append" }, [
+                            product.qty && product.qty != 0
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-outline-success",
+                                    attrs: { type: "button", id: "button-qty" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.updateStock(
+                                          product.id,
+                                          product.qty
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "bi bi-check2-circle"
+                                    })
+                                  ]
+                                )
+                              : _vm._e()
+                          ])
+                        ])
+                      ])
+                    ])
+                  }),
+                  0
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "pagination",
+              {
+                attrs: { align: "center", data: _vm.ProductList, limit: 8 },
+                on: { "pagination-change-page": _vm.listProducts }
+              },
+              [
+                _c("span", { attrs: { slot: "prev-nav" }, slot: "prev-nav" }, [
+                  _c("i", { staticClass: "bi bi-chevron-double-left" })
+                ]),
+                _vm._v(" "),
+                _c("span", { attrs: { slot: "next-nav" }, slot: "next-nav" }, [
+                  _c("i", { staticClass: "bi bi-chevron-double-right" })
+                ])
+              ]
+            )
+          ],
+          1
+        )
+      ])
+    ],
+    1
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "page-header text-center mb-2" }, [
+      _c("h3", {}, [_vm._v("Stock")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "thead-primary" }, [
+      _c("tr", [
+        _c("th", [_vm._v("Código de barras")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Producto")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Categoria")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Marca")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Cantidad")]),
+        _vm._v(" "),
+        _c("td", [_vm._v("Editar")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

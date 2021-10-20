@@ -92,7 +92,7 @@ class OrderController extends Controller
 			$new_detail = $new_detail->store($details_order, $order->id);
 
 			$update_stock = new ProductController;
-			$update_stock = $update_stock->updateStock(1, $details_order['barcode'], $details_order['quantity']);
+			$update_stock = $update_stock->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity']);
 		}
 
 		$print = new PrintOrderController();

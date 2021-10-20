@@ -41,10 +41,11 @@
 		<div id="collapseShop" class="collapse" aria-labelledby="headingShop" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Almacén:</h6>
-				<router-link class="collapse-item " to="/products">Productos</router-link>
-				<router-link class="collapse-item " to="/categories">Categorias</router-link>
+				<router-link class="collapse-item " to="/products" v-if="validatePermission('product.index')">Productos</router-link>
+				<router-link class="collapse-item " to="/stock" v-if="validatePermission('product.update')">Inventario</router-link>
+				<router-link class="collapse-item " to="/categories" v-if="validatePermission('category.index')">Categorias</router-link>
 				<router-link class="collapse-item " to="/brands">Marcas</router-link>
-				<router-link class="collapse-item" to="/taxes" v-if="validatePermission('tax.index')">Iva</router-link>
+				<router-link class="collapse-item" to="/taxes" v-if="validatePermission('tax.index')">Impuestos</router-link>
 			</div>
 		</div>
 	</li>

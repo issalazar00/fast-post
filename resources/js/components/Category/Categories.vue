@@ -1,16 +1,14 @@
 <template>
-  <div class="col-12">
-    <div class="w-100 text-center">
-      <h3 class="page-header">Categorias</h3>
-
-      <moon-loader
-        class="m-auto"
-        :loading="isLoading"
-        :color="'#032F6C'"
-        :size="100"
-      />
+  <div class="w-100">
+    <div class="page-header text-center">
+      <h3 class="">Categorias</h3>
     </div>
-
+    <moon-loader
+      class="m-auto"
+      :loading="isLoading"
+      :color="'#032F6C'"
+      :size="100"
+    />
     <div class="card-body">
       <section v-if="!isLoading">
         <div class="row justify-content-end my-4">
