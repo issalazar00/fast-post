@@ -53,7 +53,7 @@ class ConfigurationController extends Controller
             'tax_regime' => 'required|string:min3|max:255',
             'telephone' => 'required|string|min:5|max:13',
             'mobile' => 'required|string|min:5|max:13',
-            'printer' => 'required|string|min:5|max:100',
+            'printer' => 'required|string|min:3|max:100',
             'file0' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg',
             'condition_order' => 'nullable|string',
             'condition_quotation' => 'nullable|string'

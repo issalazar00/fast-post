@@ -21,6 +21,7 @@ import Products from './components/Product/Products.vue'
 import CreateEditProduct from './components/Product/CreateEditProduct.vue'
 import ImportProducts from './components/Product/ImportProducts'
 import Checker from './components/Product/Checker'
+import Stock from './components/Product/Stock'
 
 import Taxes from './components/Tax/Taxes.vue'
 import CreateEditTax from './components/Tax/CreateEditTax.vue'
@@ -84,6 +85,7 @@ const routes = [
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/products', component: Products },
   { path: '/create-edit-product', component: CreateEditProduct },
+  {path: '/stock', component: Stock },
   { path: '/checker', component: Checker },
   { path: '/taxes', component: Taxes, alias: "tax.index" },
   { path: '/create-edit-tax', component: CreateEditTax },

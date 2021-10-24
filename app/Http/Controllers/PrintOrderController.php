@@ -70,14 +70,13 @@ class PrintOrderController extends Controller
 			$printer->text("\n-----------------------------------------" . "\n\n");
 			$printer->setLineSpacing(1);
 			$printer->setEmphasis(true);
-			$printer->text(sprintf('%-20s %+10.8s %+10.7s', 'ARTICULO', 'CANT', 'PRECIO'));
+			$printer->text(sprintf('%-22s %+8s %+10.7s', 'ARTICULO', 'CANT', 'PRECIO'));
 			$printer->text("\n-----------------------------------------" . "\n\n");
 			$printer->setEmphasis(false);
 			$printer->text("\n");
 			$total = 0;
-			$printer->setJustification(Printer::JUSTIFY_LEFT);
 			foreach ($order_details as $df) {
-				$line = sprintf('%-20s %10.0f %10.2f ', '-' . $df->product, $df->quantity, $df->price_tax_inc_total);
+				$line = sprintf('%-22s %8.2f %10.2f ', '-' . mb_strimwidth($df->product, 0, 21, '') , $df->quantity, $df->price_tax_inc_total);
 				$total +=  $df->price_tax_inc_total;
 				$printer->text($line);
 				$printer->text("\n");
@@ -86,19 +85,19 @@ class PrintOrderController extends Controller
 			$printer->setEmphasis(true);
 			$printer->setLineSpacing(2);
 			$printer->text("\n");
-			$printer->text(sprintf('%-25s %+15.15s', 'Subtotal', number_format($order->total_iva_exc, 2)));
+			$printer->text(sprintf('%-25s %+15.15s', 'Subtotal', number_format($order->total_iva_exc, 2), '.', ','));
 			$printer->text("\n");
-			$printer->text(sprintf('%-25s %+15.15s', 'Iva', number_format($order->total_iva_inc - $order->total_iva_exc, 2)));
+			$printer->text(sprintf('%-25s %+15.15s', 'Iva', number_format($order->total_iva_inc - $order->total_iva_exc, 2, '.', ',')));
 			$printer->text("\n");
 			$printer->setTextSize(1, 2);
-			$printer->text(sprintf('%-25s %+15.15s', 'TOTAL', number_format($total, 2)));
+			$printer->text(sprintf('%-25s %+15.15s', 'TOTAL', number_format($total, 2, '.', ',')));
 			$printer->setTextSize(1, 1);
 			$printer->setEmphasis(false);
 			if ($cash != null && $change != null) {
 				$printer->text("\n");
-				$printer->text(sprintf('%-25s %+15.15s', 'Efectivo', number_format($cash, 2)));
+				$printer->text(sprintf('%-25s %+15.15s', 'Efectivo', number_format($cash, 2, '.', ',')));
 				$printer->text("\n");
-				$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($change, 2)));
+				$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($change, 2, '.', ',')));
 			}
 			$printer->text("\n");
 			$printer->setJustification(Printer::JUSTIFY_CENTER);

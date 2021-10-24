@@ -42,7 +42,7 @@ Route::middleware('auth:api')->group(function () {
 
 	Route::resource('/taxes', TaxController::class);
 	Route::post('/taxes/{tax}/activate',  [TaxController::class, 'activate']);
-	
+
 	Route::post('/brands/{brand}/activate',  [BrandController::class, 'activate']);
 	Route::get('/brands/brand-list', [BrandController::class, 'brandList']);
 	Route::resource('/brands', BrandController::class);
@@ -56,6 +56,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
 	Route::post('/products/search-product',  [ProductController::class, 'searchProduct']);
 	Route::post('/products/filter-product-list',  [ProductController::class, 'filterProductList']);
+	Route::post('/products/stock-update/{id}', [ProductController::class, 'updateStockById']);
 
 	Route::resource('kit-products', KitProductController::class);
 

@@ -28,7 +28,7 @@ class ProductController extends Controller
 	{
 		$products = Product::select()
 			->where('state', 1);
-			
+
 		if ($request->product != '') {
 			$products = $products
 				->where('barcode', 'LIKE', "%$request->product%")
@@ -60,7 +60,7 @@ class ProductController extends Controller
 	 */
 	public function create()
 	{
-		//
+		abort(404);
 	}
 
 	/**
@@ -164,7 +164,7 @@ class ProductController extends Controller
 	 */
 	public function edit($id)
 	{
-		//
+		abort(404);
 	}
 
 	/**
@@ -252,16 +252,22 @@ class ProductController extends Controller
 		return response()->json($data, $data['code']);
 	}
 
-	public function updateStock($type, $barcode, $quantity)
+	public function updateStockByBarcode($type, $barcode, $quantity)
 	{
 		$product = Product::select('id', 'barcode', 'quantity')->where('barcode', $barcode)->first();
-		// var_dump($product);
 		if ($type == 1) {
 			$product->quantity = $product->quantity - $quantity;
 		}
 		if ($type == 2) {
 			$product->quantity = $product->quantity + $quantity;
 		}
+		$product->save();
+	}
+
+	public function updateStockById(Request $request, $id)
+	{
+		$product = Product::findOrFail($id);
+		$product->quantity = $product->quantity + $request->quantity;
 		$product->save();
 	}
 
@@ -273,7 +279,7 @@ class ProductController extends Controller
 	 */
 	public function destroy($id)
 	{
-		//
+		abort(404);
 	}
 
 	/**
@@ -292,12 +298,12 @@ class ProductController extends Controller
 
 	public function searchProduct(Request $request)
 	{
-
 		$products = Product::select()
 			->where('barcode', 'LIKE', "%$request->product%")
 			->orWhere('product', 'LIKE', "%$request->product%")
 			->where('state', 1)
 			->first();
+
 		return ['products' => $products];
 	}
 
