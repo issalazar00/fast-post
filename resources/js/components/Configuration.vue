@@ -128,34 +128,29 @@
               formErrors.mobile
             }}</small>
           </div>
-          
-            <div class="form-group col-12 col-md-6">
-              <label for="mobile">Condiciones de orden</label>
-              <textarea
-                class="form-control"
-                id="condition_order"
-                name="condition_order"
-                placeholder="Ingresar condiciones de orden"
-                :value="formConfiguration.condition_order"
-              ></textarea>
-              <small id="condition_orderHelp" class="form-text text-danger">{{
-                formErrors.condition_order
-              }}</small>
-            </div>
-            <div class="form-group col-12 col-md-6">
-              <label for="mobile">Condiciones de cotización</label>
-              <textarea
-                class="form-control"
-                id="condition_quotation"
-                name="condition_quotation"
-                placeholder="Ingresar condiciones de cotización"
-                :value="formConfiguration.condition_quotation"
-              ></textarea>
-              <small id="condition_quotationHelp" class="form-text text-danger">{{
-                formErrors.condition_quotation
-              }}</small>
-            </div>
-          
+
+          <div class="form-group col-12 col-md-6">
+            <label for="mobile">Condiciones de ticket</label>
+            <textarea class="form-control" name="condition_order" id="condition_order" cols="30" rows="4" :value= "formConfiguration.condition_order"></textarea>
+            <small id="condition_orderHelp" class="form-text text-danger">{{
+              formErrors.condition_order
+            }}</small>
+          </div>
+          <div class="form-group col-12 col-md-6">
+            <label for="mobile">Condiciones de cotización</label>
+            <ckeditor
+              :editor="editor"
+              :config="editorConfig"
+              v-model="formConfiguration.condition_quotation"
+              :tagName="'textarea'"
+              id="condition_quotation"
+              name="condition_quotation"
+            ></ckeditor>
+            <small id="condition_quotationHelp" class="form-text text-danger">{{
+              formErrors.condition_quotation
+            }}</small>
+          </div>
+
           <div class="form-group col-12 col-md-6">
             <label for="printer">Impresora POS</label>
             <input
@@ -197,7 +192,11 @@
                 data-info="image"
                 type="file"
                 style="display: none"
-                @change="(event)=>{readImage(event.target);}"
+                @change="
+                  (event) => {
+                    readImage(event.target);
+                  }
+                "
               />
             </label>
           </div>
@@ -211,6 +210,9 @@
   </div>
 </template>
 <script>
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "@ckeditor/ckeditor5-build-classic/build/translations/es";
+
 export default {
   data() {
     return {
@@ -242,6 +244,22 @@ export default {
         condition_order: "",
         condition_quotation: "",
       },
+      editor: ClassicEditor,
+      editorConfig: {
+        toolbar: {
+          removeItems: [
+            "uploadImage",
+            "mediaEmbed",
+            "blockQuote",
+            "insertTable",
+            "outdent",
+            "indent",
+            "link"
+          ],
+          shouldNotGroupWhenFull: true,
+        },
+        language: "es",
+      },
     };
   },
   created() {
@@ -253,6 +271,7 @@ export default {
       axios.get("api/configurations", this.$root.config).then((response) => {
         if (response.data.configuration) {
           this.formConfiguration = response.data.configuration;
+          this.formConfiguration.condition_quotation = this.formConfiguration.condition_quotation ?? "";
         }
       });
     },
@@ -260,6 +279,11 @@ export default {
       this.assignErrors(false);
       var form = new FormData($("#form_configuration")[0]);
       form.append("id", this.formConfiguration.id);
+      form.set(
+        "condition_quotation",
+        this.formConfiguration.condition_quotation
+      );
+
       axios
         .post("api/configurations", form, this.$root.config)
         .then((response) => {

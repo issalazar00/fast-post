@@ -1,4 +1,4 @@
-const api = 'http://localhost/fast-post/public/api';
+const api = 'http://fast-post.test/api';
 
 
 export default {

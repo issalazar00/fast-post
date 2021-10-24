@@ -44,8 +44,12 @@ import Configuration from './components/Configuration.vue';
 import global from './services/global.js';
 import axios from 'axios';
 
+import CKEditor from '@ckeditor/ckeditor5-vue2';
+
+
 Vue.use(VueRouter)
 Vue.use(VueSpinners)
+Vue.use(CKEditor)
 
 /**
  * The following block of code may be used to automatically register your
