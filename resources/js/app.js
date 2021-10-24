@@ -46,8 +46,12 @@ import Configuration from './components/Configuration.vue';
 import global from './services/global.js';
 import axios from 'axios';
 
+import CKEditor from '@ckeditor/ckeditor5-vue2';
+
+
 Vue.use(VueRouter)
 Vue.use(VueSpinners)
+Vue.use(CKEditor)
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('v-select', vSelect)

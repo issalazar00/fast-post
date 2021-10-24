@@ -196,7 +196,7 @@
     <div>
         <h4>Condiciones:</h4>
         <p>
-            {{$configuration->condition_order}}
+            {!! $configuration->condition_quotation !!}
         </p>
     </div>
     <footer class="text-center">
