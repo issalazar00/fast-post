@@ -14,7 +14,8 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
+        User::create(['id' => 1, 'name' => 'Administrador', 'email' => 'administrador@mail.com', 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi']);
+        User::create(['id' => 2, 'name' => 'Cajero', 'email' => 'cajero@mail.com', 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi']);
         User::find(1)->assignRole('Admin');
         User::find(2)->assignRole('Atm');
     }
