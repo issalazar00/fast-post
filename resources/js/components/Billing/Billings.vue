@@ -73,7 +73,7 @@
               <td>
                 <router-link
                   class="btn"
-                  :to="{ name: 'details-order', params: { billing_id: o.id } }"
+                  :to="{ name: 'details-billing', params: { billing_id: o.id } }"
                 >
                   <i class="bi bi-eye"></i>
                 </router-link>

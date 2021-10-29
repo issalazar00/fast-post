@@ -1,47 +1,47 @@
 <template>
   <div>
     <section class="page-header">
-      <h4 class="w-100 text-center">Detalles de Orden</h4>
+      <h4 class="w-100 text-center">Detalles de Factura</h4>
       <table class="table table-bordered w-100 table-sm">
         <tbody>
           <tr>
             <td>No. Factura</td>
             <th>
-              {{ orderInformation.no_invoice }}
+              {{ billingInformation.no_invoice }}
             </th>
           </tr>
           <tr>
             <td>Fecha</td>
             <th>
-              {{ orderInformation.updated_at }}
+              {{ billingInformation.updated_at }}
             </th>
           </tr>
           <tr>
-            <th colspan="2" class="text-center">Cliente</th>
+            <th colspan="2" class="text-center">Proveedor</th>
           </tr>
           <tr>
             <td>Nombres:</td>
             <th>
-              {{ orderInformation.client.name }}
+              {{ billingInformation.supplier.name }}
             </th>
           </tr>
           <tr>
             <td>Documento / Nit:</td>
             <th>
-              {{ orderInformation.client.document }}
+              {{ billingInformation.supplier.document }}
             </th>
           </tr>
           <tr>
             <td>Direccion</td>
-            <td>{{ orderInformation.client.address }}</td>
+            <td>{{ billingInformation.supplier.address }}</td>
           </tr>
            <tr>
             <td>Email</td>
-            <td>{{ orderInformation.client.email }}</td>
+            <td>{{ billingInformation.supplier.email }}</td>
           </tr>
            <tr>
             <td>Celular / Télefono</td>
-            <td>{{ orderInformation.client.mobile }}</td>
+            <td>{{ billingInformation.supplier.mobile }}</td>
           </tr>
         </tbody>
       </table>
@@ -79,19 +79,19 @@
           <tr>
             <td colspan="8">Subtotal</td>
             <td class="text-right">
-            $  {{ orderInformation.total_iva_exc }}
+            $  {{ billingInformation.total_iva_exc }}
             </td>
           </tr>
           <tr>
             <td colspan="8">Descuento</td>
             <td class="text-right">
-            $  {{ orderInformation.total_discount }}
+            $  {{ billingInformation.total_discount }}
             </td>
           </tr>
           <tr>
             <td colspan="8">Total</td>
             <th class="h5 text-right">
-            $  {{ orderInformation.total_iva_inc }}
+            $  {{ billingInformation.total_iva_inc }}
             </th>
           </tr>
         </tfoot>
@@ -105,23 +105,23 @@ export default {
   props: ["billing_id"],
   data() {
     return {
-      orderInformation: {
-        client: "",
+      billingInformation: {
+        supplier: "",
       },
       ItemList: {},
     };
   },
   created() {
-    this.getDetailsOrder();
+    this.getDetailsBilling();
   },
   methods: {
-    getDetailsOrder() {
+    getDetailsBilling() {
       let me = this;
       axios
-        .get(`api/orders/${this.billing_id}`, this.$root.config)
+        .get(`api/billings/${this.billing_id}`, this.$root.config)
         .then(function (response) {
-          me.orderInformation = response.data.order_information;
-          me.ItemList = response.data.order_details;
+          me.billingInformation = response.data.billing_information;
+          me.ItemList = response.data.billing_details;
         });
     },
   },

@@ -9999,21 +9999,21 @@ __webpack_require__.r(__webpack_exports__);
   props: ["billing_id"],
   data: function data() {
     return {
-      orderInformation: {
-        client: ""
+      billingInformation: {
+        supplier: ""
       },
       ItemList: {}
     };
   },
   created: function created() {
-    this.getDetailsOrder();
+    this.getDetailsBilling();
   },
   methods: {
-    getDetailsOrder: function getDetailsOrder() {
+    getDetailsBilling: function getDetailsBilling() {
       var me = this;
-      axios.get("api/orders/".concat(this.billing_id), this.$root.config).then(function (response) {
-        me.orderInformation = response.data.order_information;
-        me.ItemList = response.data.order_details;
+      axios.get("api/billings/".concat(this.billing_id), this.$root.config).then(function (response) {
+        me.billingInformation = response.data.billing_information;
+        me.ItemList = response.data.billing_details;
       });
     }
   }
@@ -56189,7 +56189,7 @@ var render = function() {
                             staticClass: "btn",
                             attrs: {
                               to: {
-                                name: "details-order",
+                                name: "details-billing",
                                 params: { billing_id: o.id }
                               }
                             }
@@ -57026,7 +57026,7 @@ var render = function() {
   return _c("div", [
     _c("section", { staticClass: "page-header" }, [
       _c("h4", { staticClass: "w-100 text-center" }, [
-        _vm._v("Detalles de Orden")
+        _vm._v("Detalles de Factura")
       ]),
       _vm._v(" "),
       _c("table", { staticClass: "table table-bordered w-100 table-sm" }, [
@@ -57037,7 +57037,7 @@ var render = function() {
             _c("th", [
               _vm._v(
                 "\n            " +
-                  _vm._s(_vm.orderInformation.no_invoice) +
+                  _vm._s(_vm.billingInformation.no_invoice) +
                   "\n          "
               )
             ])
@@ -57049,7 +57049,7 @@ var render = function() {
             _c("th", [
               _vm._v(
                 "\n            " +
-                  _vm._s(_vm.orderInformation.updated_at) +
+                  _vm._s(_vm.billingInformation.updated_at) +
                   "\n          "
               )
             ])
@@ -57063,7 +57063,7 @@ var render = function() {
             _c("th", [
               _vm._v(
                 "\n            " +
-                  _vm._s(_vm.orderInformation.client.name) +
+                  _vm._s(_vm.billingInformation.supplier.name) +
                   "\n          "
               )
             ])
@@ -57075,7 +57075,7 @@ var render = function() {
             _c("th", [
               _vm._v(
                 "\n            " +
-                  _vm._s(_vm.orderInformation.client.document) +
+                  _vm._s(_vm.billingInformation.supplier.document) +
                   "\n          "
               )
             ])
@@ -57084,19 +57084,19 @@ var render = function() {
           _c("tr", [
             _c("td", [_vm._v("Direccion")]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.orderInformation.client.address))])
+            _c("td", [_vm._v(_vm._s(_vm.billingInformation.supplier.address))])
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v("Email")]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.orderInformation.client.email))])
+            _c("td", [_vm._v(_vm._s(_vm.billingInformation.supplier.email))])
           ]),
           _vm._v(" "),
           _c("tr", [
             _c("td", [_vm._v("Celular / Télefono")]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(_vm.orderInformation.client.mobile))])
+            _c("td", [_vm._v(_vm._s(_vm.billingInformation.supplier.mobile))])
           ])
         ])
       ])
@@ -57144,7 +57144,7 @@ var render = function() {
             _c("td", { staticClass: "text-right" }, [
               _vm._v(
                 "\n          $  " +
-                  _vm._s(_vm.orderInformation.total_iva_exc) +
+                  _vm._s(_vm.billingInformation.total_iva_exc) +
                   "\n          "
               )
             ])
@@ -57156,7 +57156,7 @@ var render = function() {
             _c("td", { staticClass: "text-right" }, [
               _vm._v(
                 "\n          $  " +
-                  _vm._s(_vm.orderInformation.total_discount) +
+                  _vm._s(_vm.billingInformation.total_discount) +
                   "\n          "
               )
             ])
@@ -57168,7 +57168,7 @@ var render = function() {
             _c("th", { staticClass: "h5 text-right" }, [
               _vm._v(
                 "\n          $  " +
-                  _vm._s(_vm.orderInformation.total_iva_inc) +
+                  _vm._s(_vm.billingInformation.total_iva_inc) +
                   "\n          "
               )
             ])
@@ -57185,7 +57185,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("tr", [
       _c("th", { staticClass: "text-center", attrs: { colspan: "2" } }, [
-        _vm._v("Cliente")
+        _vm._v("Proveedor")
       ])
     ])
   },
