@@ -30,6 +30,10 @@
 		<router-link class="nav-link " active-class="active" to="/orders"><i class="bi bi-receipt"></i><span>Ordenes</span>
 		</router-link>
 	</li>
+	<li class="nav-item">
+		<router-link class="nav-link " active-class="active" to="/billings"><i class="bi bi-receipt"></i><span>Facturación</span>
+		</router-link>
+	</li>
 
 	<!-- Nav Item - Shop Collapse Menu -->
 	<li class="nav-item">
