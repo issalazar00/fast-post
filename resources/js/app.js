@@ -39,6 +39,10 @@ import Orders from './components/Order/Orders.vue'
 import DetailsOrder from './components/Order/DetailsOrder.vue'
 import CreateEditOrder from './components/Order/CreateEditOrder.vue'
 
+import Billings from './components/Billing/Billings.vue'
+import DetailsBilling from './components/Billing/DetailsBilling.vue'
+import CreateEditBilling from './components/Billing/CreateEditBilling.vue'
+
 import Roles from './components/Rol/Roles.vue';
 import Users from './components/User/Users.vue';
 import Configuration from './components/Configuration.vue';
@@ -47,8 +51,12 @@ import Configuration from './components/Configuration.vue';
 import global from './services/global.js';
 import axios from 'axios';
 
+import CKEditor from '@ckeditor/ckeditor5-vue2';
+
+
 Vue.use(VueRouter)
 Vue.use(VueSpinners)
+Vue.use(CKEditor)
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('v-select', vSelect)
@@ -81,7 +89,7 @@ const routes = [
   { path: '/create-edit-client', component: CreateEditClient },
   { path: '/products', component: Products },
   { path: '/create-edit-product', component: CreateEditProduct },
-  {path: '/stock', component: Stock },
+  { path: '/stock', component: Stock },
   { path: '/checker', component: Checker },
   { path: '/taxes', component: Taxes, alias: "tax.index" },
   { path: '/create-edit-tax', component: CreateEditTax },
@@ -94,6 +102,12 @@ const routes = [
   { path: '/orders', component: Orders, alias: "order.index" },
   { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order' },
   { path: '/create-edit-order/:order_id', component: CreateEditOrder, props: true, name: 'create-edit-order' },
+
+  { path: '/billings', component: Billings, alias: "order.index" },
+  { path: '/billings/:billing_id/details-billing', component: DetailsBilling, props: true, name: 'details-billing' },
+  { path: '/create-edit-billing/:billing_id', component: CreateEditBilling, props: true, name: 'create-edit-billing' },
+
+
   { path: '/login', name: 'Login', component: Login },
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index" },
   { path: '/users', name: 'Users', component: Users, alias: "user.index" },
@@ -187,14 +201,14 @@ const app = new Vue({
     validatePermission(permission) {
       return global.validatePermission(this.permissions, permission);
     },
-    validateToken(){
-      axios.get('api/users/'+this.user.sub, this.config)
-      .then( response => {
-        return true;
-      })
-      .catch(response =>{
+    validateToken() {
+      axios.get('api/users/' + this.user.sub, this.config)
+        .then(response => {
+          return true;
+        })
+        .catch(response => {
           this.logout();
-      });
+        });
     }
   }
 });

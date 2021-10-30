@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role; 
 
+
 class RoleSeeder extends Seeder
 {
     /**
@@ -76,5 +77,13 @@ class RoleSeeder extends Seeder
 
         Permission::create(['guard_name' => 'api', 'name' => 'configuration', 'description' => 'Configuracion', 'component' => 'Configuracion'])->syncRoles([$admin]);
         
+
+        Permission::create(['guard_name' => 'api', 'name' => 'billing.index', 'description' => 'Listar', 'component' => 'Facturación'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'billing.store', 'description' => 'Crear', 'component' => 'Facturación'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'billing.update', 'description' => 'Editar', 'component' => 'Facturación'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'billing.delete', 'description' => 'Eliminar', 'component' => 'Facturación'])->syncRoles([$admin]);
+        Permission::create(['guard_name' => 'api', 'name' => 'billing.active', 'description' => 'Activar', 'component' => 'Facturación'])->syncRoles([$admin]);
+
+        //billing
     }
 }
