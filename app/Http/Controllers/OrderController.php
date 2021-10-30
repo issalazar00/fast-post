@@ -43,9 +43,25 @@ class OrderController extends Controller
 			$orders = $orders->where('no_invoice', 'like', "%$request->no_invoice");
 		}
 		$today = date('Y-m-d');
+		$from = $request->from;
+		$to = $request->to;
+
+		if ($from != '') {
+			$orders = $orders
+				->where('created_at', '>=', $from);
+		}
+
+		if ($to != '') {
+			$orders = $orders
+				->where('created_at', '<=', $to);
+		}
+
+		if ($from == '' && $to == '') {
+			$orders = $orders
+				->where('created_at', '>=', $today);
+		}
 
 		$orders = $orders
-			->where('created_at', '>=', $today)
 			->where('user_id', $user_id)
 			->paginate(10);
 
@@ -84,7 +100,11 @@ class OrderController extends Controller
 		$order->total_iva_inc = $request->total_tax_inc;
 		$order->total_iva_exc = $request->total_tax_exc;
 		$order->total_discount = $request->total_discount;
-		$order->state = $request->state;
+		if ($request->state == 4) {
+			$order->state = 2;
+		} else {
+			$order->state = $request->state;
+		}
 		$order->save();
 
 		foreach ($request->productsOrder as $details_order) {
@@ -94,9 +114,10 @@ class OrderController extends Controller
 			$update_stock = new ProductController;
 			$update_stock = $update_stock->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity']);
 		}
-
-		$print = new PrintOrderController();
-		$print = $print->printTicket($order->id, $request->cash, $request->change);
+		if ($request->state == 4) {
+			$print = new PrintOrderController();
+			$print = $print->printTicket($order->id, $request->cash, $request->change);
+		}
 	}
 
 	/**
@@ -138,7 +159,12 @@ class OrderController extends Controller
 		$order->total_iva_inc = $request->total_tax_inc;
 		$order->total_iva_exc = $request->total_tax_exc;
 		$order->total_discount = $request->total_discount;
-		$order->state = $request->state;
+		if ($request->state == 4) {
+			$order->state = 2;
+		} else {
+			$order->state = $request->state;
+		}
+
 		$order->update();
 
 		foreach ($request->productsOrder as $details_order) {
@@ -158,8 +184,10 @@ class OrderController extends Controller
 			);
 		}
 
-		$print = new PrintOrderController();
-		$print = $print->printTicket($order->id, $request->cash, $request->change);
+		if ($request->state == 4) {
+			$print = new PrintOrderController();
+			$print = $print->printTicket($order->id, $request->cash, $request->change);
+		}
 	}
 
 	/**

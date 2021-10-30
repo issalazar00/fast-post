@@ -280,7 +280,7 @@
           <button
             type="button"
             class="btn btn-outline-primary btn-block"
-            @click="createOrUpdateOrder(2)"
+            @click="createOrUpdateOrder(4)"
           >
             <!-- Facturar -->
             <i class="bi bi-receipt"></i> Guardar e imprimir

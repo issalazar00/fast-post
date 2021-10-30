@@ -25,7 +25,6 @@
               class="form-control"
               placeholder="Nro Factura"
               v-model="filter.no_invoice"
-              @keypress="getOrders(1)"
             />
           </div>
           <div class="form-group col-3">
@@ -37,8 +36,30 @@
               class="form-control"
               placeholder="Cliente"
               v-model="filter.client"
-              @keypress="getOrders(1)"
             />
+          </div>
+          <div class="form-group col-md-3">
+            <label for="from_date">Desde</label>
+            <input
+              type="date"
+              class="form-control"
+              id="from_date"
+              v-model="filter.from"
+            />
+          </div>
+          <div class="form-group col-md-3">
+            <label for="to_date">Hasta</label>
+            <input
+              type="date"
+              class="form-control"
+              id="to_date"
+              v-model="filter.to"
+            />
+          </div>
+          <div class="form-group offset-9 col-md-3">
+            <button class="btn btn-success btn-block" @click="getOrders(1)">
+              Buscar
+            </button>
           </div>
         </div>
         <table class="table table-sm table-bordered table-responsive-sm">
@@ -130,6 +151,8 @@ export default {
       filter: {
         client: "",
         no_invoice: "",
+        from: "",
+        to: "",
       },
     };
   },
@@ -142,7 +165,7 @@ export default {
       let me = this;
       axios
         .get(
-          `api/orders?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}`,
+          `api/orders?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}&from=${me.filter.from}&to=${me.filter.to}`,
           this.$root.config
         )
         .then(function (response) {
