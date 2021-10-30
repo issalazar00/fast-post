@@ -14,6 +14,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TaxController;
+use App\Http\Controllers\BillingController;
+use App\Http\Controllers\DetailBillingController;
 use App\Models\Configuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -49,8 +51,12 @@ Route::middleware('auth:api')->group(function () {
 
 	Route::get('/orders/generatePdf/{order}', [OrderController::class, 'generatePdf']);
 	Route::resource('/orders',  OrderController::class);
-
 	Route::resource('/order-details', DetailOrderController::class);
+	
+	Route::get('/billings/generatePdf/{billing}', [BillingController::class, 'generatePdf']);
+	Route::resource('/billings',  BillingController::class);
+	Route::resource('/billing-details', DetailBillingController::class);
+
 
 	Route::resource('/products',  ProductController::class);
 	Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
@@ -62,6 +68,8 @@ Route::middleware('auth:api')->group(function () {
 
 	Route::resource('/suppliers',  SupplierController::class);
 	Route::post('/suppliers/{supplier}/activate',  [SupplierController::class, 'activate']);
+	Route::post('/suppliers/search-supplier',  [SupplierController::class, 'searchSupplier']);
+	Route::post('/suppliers/filter-supplier-list',  [SupplierController::class, 'filterSupplierList']);
 
 	Route::resource('/clients',  ClientController::class);
 	Route::post('/clients/{client}/activate',  [ClientController::class, 'activate']);

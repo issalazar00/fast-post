@@ -126,4 +126,40 @@ class SupplierController extends Controller
 		$supplier->active = !$supplier->active;
 		$supplier->save();
 	}
+
+	public function searchSupplier(Request $request)
+	{
+
+		$supplier = Supplier::select()
+			->where('active', 1)
+			->where('document', 'LIKE', "%$request->supplier%")
+			->orWhere('name', 'LIKE', "%$request->supplier%")
+			->first();
+
+		return $supplier;
+	}
+
+	/**
+	 * Find a Client with name or document
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+
+	public function filterSupplierList(Request $request)
+	{
+		if (!$request->supplier || $request->supplier == '') {
+			$suppliers = Supplier::select()
+				->where('active', 1)
+				->get();
+		} else {
+			$suppliers = Supplier::select()
+				->where('active', 1)
+				->where('document', 'LIKE', "%$request->supplier%")
+				->orWhere('name', 'LIKE', "%$request->supplier%")
+				->get(20);
+		}
+
+		return $suppliers;
+	}
 }
+
