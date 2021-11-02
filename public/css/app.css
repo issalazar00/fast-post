@@ -15861,7 +15861,8 @@ h3 {
   color: #fff;
 }
 .sidebar-dark #sidebarToggle {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
 }
 .sidebar-dark #sidebarToggle::after {
   color: rgba(255, 255, 255, 0.5);

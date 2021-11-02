@@ -1,5 +1,5 @@
 <ul v-if="token && user"
-	class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion toggled border-right-secondary"
+	class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion toggledx border-right-secondary"
 	id="accordionSidebar">
 
 	<a class="sidebar-brand d-flex align-items-center justify-content-center p-0" href="{{ url('/') }}">
@@ -27,11 +27,8 @@
 		Tecnoplus
 	</div>
 	<li class="nav-item">
-		<router-link class="nav-link " active-class="active" to="/orders"><i class="bi bi-receipt"></i><span>Ordenes</span>
-		</router-link>
-	</li>
-	<li class="nav-item">
-		<router-link class="nav-link " active-class="active" to="/billings"><i class="bi bi-receipt"></i><span>Facturación</span>
+		<router-link class="nav-link " active-class="active" to="/checker"><i
+				class="bi bi-receipt"></i><span>Verificador</span>
 		</router-link>
 	</li>
 
@@ -45,14 +42,27 @@
 		<div id="collapseShop" class="collapse" aria-labelledby="headingShop" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Almacén:</h6>
-				<router-link class="collapse-item " to="/products" v-if="validatePermission('product.index')">Productos</router-link>
-				<router-link class="collapse-item " to="/stock" v-if="validatePermission('product.update')">Inventario</router-link>
-				<router-link class="collapse-item " to="/categories" v-if="validatePermission('category.index')">Categorias</router-link>
+				<router-link class="collapse-item " to="/products" v-if="validatePermission('product.index')">Productos
+				</router-link>
+				<router-link class="collapse-item " to="/stock" v-if="validatePermission('product.update')">Inventario
+				</router-link>
+				<router-link class="collapse-item " to="/categories" v-if="validatePermission('category.index')">Categorias
+				</router-link>
 				<router-link class="collapse-item " to="/brands">Marcas</router-link>
 				<router-link class="collapse-item" to="/taxes" v-if="validatePermission('tax.index')">Impuestos</router-link>
 			</div>
 		</div>
 	</li>
+	<li class="nav-item">
+		<router-link class="nav-link " active-class="active" to="/orders"><i class="bi bi-receipt"></i><span>Ordenes</span>
+		</router-link>
+	</li>
+	<li class="nav-item">
+		<router-link class="nav-link " active-class="active" to="/billings"><i
+				class="bi bi-receipt"></i><span>Compras</span>
+		</router-link>
+	</li>
+
 	<!-- Nav Item - Pages Collapse Menu -->
 	<li class="nav-item">
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePeople" aria-expanded="true"

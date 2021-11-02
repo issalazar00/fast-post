@@ -15,10 +15,10 @@ use PhpOffice\PhpSpreadsheet\Helper\Sample; //eliminar
 
 class ImportProductController extends Controller
 {
-  public function __construct()
-  {
-    $this->middleware('can:product.store');
-  }
+  // public function __construct()
+  // {
+  //   $this->middleware('can:product.store');
+  // }
 
   public function downloadExample()
   {

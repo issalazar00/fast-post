@@ -468,7 +468,8 @@
 
     // Color the sidebar toggler
     #sidebarToggle {
-        background-color: fade-out($white, 0.8);
+        background-color: fade-out($white, 0.7);
+        color: $white;
 
         &::after {
             color: fade-out($white, 0.5);

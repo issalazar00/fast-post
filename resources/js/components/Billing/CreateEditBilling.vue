@@ -6,7 +6,7 @@
         style="z-index: 1022; left: 100%"
       >
         <table class="table table-borderless">
-          <tr class="h1 text-white bg-success">
+          <tr class="h1 text-white bg-primary">
             <td class="text-right">Total</td>
             <td>$ {{ (billing.total_tax_inc = total_tax_inc).toFixed(0) }}</td>
           </tr>
@@ -237,7 +237,7 @@
                   {{ (billing.total_discount = total_discount).toFixed(0) }}
                 </th>
               </tr>
-              <tr class="bg-success h5 text-white">
+              <tr class="bg-primary h5 text-white">
                 <th colspan="7">Total:</th>
                 <th>
                   $ {{ (billing.total_tax_inc = total_tax_inc).toFixed(0) }}

@@ -43,9 +43,25 @@ class BillingController extends Controller
 			$billings = $billings->where('no_invoice', 'like', "%$request->no_invoice");
 		}
 		$today = date('Y-m-d');
+		$from = $request->from;
+		$to = $request->to;
+
+		if ($from != '') {
+			$billings = $billings
+				->where('created_at', '>=', $from);
+		}
+
+		if ($to != '') {
+			$billings = $billings
+				->where('created_at', '<=', $to);
+		}
+
+		if ($from == '' && $to == '') {
+			$billings = $billings
+				->where('created_at', '>=', $today);
+		}
 
 		$billings = $billings
-			->where('created_at', '>=', $today)
 			->where('user_id', $user_id)
 			->paginate(10);
 
@@ -92,11 +108,8 @@ class BillingController extends Controller
 			$new_detail = $new_detail->store($details_billing, $billing->id);
 
 			$update_stock = new ProductController;
-			$update_stock = $update_stock->updateStockByBarcode(1, $details_billing['barcode'], $details_billing['quantity']);
+			$update_stock = $update_stock->updateStockByBarcode(2, $details_billing['barcode'], $details_billing['quantity']);
 		}
-
-		$print = new PrintOrderController();
-		$print = $print->printTicket($billing->id, $request->cash, $request->change);
 	}
 
 	/**
