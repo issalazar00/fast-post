@@ -12,7 +12,7 @@ class ReportController extends Controller
     {
         $sales = Order::select(DB::raw('SUM(total_paid) as total_paid'), DB::raw('SUM(total_discount) as total_discount'), 'payment_date')
         ->selectRaw('count(id) as number_of_orders')
-        ->where('state', 1)
+        // ->where('state', 1)
         ->groupBy('payment_date')->get();
         return $sales;
     }

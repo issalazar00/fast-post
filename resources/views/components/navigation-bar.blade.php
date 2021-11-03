@@ -34,7 +34,7 @@
 
 	<!-- Nav Item - Shop Collapse Menu -->
 	<li class="nav-item">
-		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReport" aria-expanded="true"
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseShop" aria-expanded="true"
 			aria-controls="collapseShop">
 			<i class="bi bi-shop"></i>
 			<span>Almacén</span>
