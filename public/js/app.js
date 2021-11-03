@@ -9354,10 +9354,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {},
   data: function data() {
     return {
+      isLoading: false,
       BillingList: {},
       filter: {
         supplier: "",
@@ -9387,14 +9390,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     generatePdf: function generatePdf(id) {
+      this.isLoading = true;
       axios.get("api/billings/generatePdf/" + id, this.$root.config).then(function (response) {
-        console.log(response);
         var pdf = response.data.pdf;
         var a = document.createElement("a");
         a.href = "data:application/pdf;base64," + pdf;
         a.download = "Billing-".concat(id, ".pdf");
         a.click();
-      });
+      })["finally"](this.isLoading = false);
     }
   }
 });
@@ -56186,7 +56189,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("\n      Nueva compra\n    ")]
+          [_vm._v("\n\t\t\tNueva compra\n\t\t")]
         )
       ],
       1
@@ -56328,7 +56331,7 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("\n            Buscar\n          ")]
+                [_vm._v("\n\t\t\t\t\t\tBuscar\n\t\t\t\t\t")]
               )
             ])
           ]),
@@ -56392,14 +56395,6 @@ var render = function() {
                       ],
                       1
                     ),
-                    _vm._v(" "),
-                    _c("td", [
-                      o.state != 0 && o.state != 2
-                        ? _c("button", { staticClass: "btn" }, [
-                            _c("i", { staticClass: "bi bi-receipt" })
-                          ])
-                        : _vm._e()
-                    ]),
                     _vm._v(" "),
                     _c("td", [
                       _c(
@@ -56478,7 +56473,17 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "footer" })
+    _c(
+      "div",
+      { staticClass: "footer" },
+      [
+        _c("moon-loader", {
+          staticClass: "m-auto",
+          attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
+        })
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = [
@@ -56501,8 +56506,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Estado")]),
         _vm._v(" "),
         _c("th", [_vm._v("Ver")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Facturar")]),
         _vm._v(" "),
         _c("th", [_vm._v("Imprimir")]),
         _vm._v(" "),
