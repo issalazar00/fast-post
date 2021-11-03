@@ -2,7 +2,7 @@
   <div>
     <div class="col-12">
       <h3 class="page-header">Productos</h3>
-      <moon-loader :loading="isLoading" :color="'#032F6C'" :size="100" />
+      <moon-loader :loading="isLoading" class="m-auto" :color="'#032F6C'" :size="100" />
 
       <div class="card-body" v-if="!isLoading">
         <div class="form-row">

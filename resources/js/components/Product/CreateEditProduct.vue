@@ -218,20 +218,37 @@
               <hr />
               <div class="form-row">
                 <div class="form-group col-6">
-                  <label for="cost_price"
-                    >Precio Costo <span class="text-danger">(*)</span></label
+                  <label for="cost_price_tax_exc"
+                    >Precio Costo sin IVA <span class="text-danger">(*)</span></label
                   >
                   <input
                     type="number"
                     step="any"
                     class="form-control"
-                    id="cost_price"
-                    v-model="formProduct.cost_price"
+                    id="cost_price_tax_exc"
+                    v-model="formProduct.cost_price_tax_exc"
                     placeholder="Precio de costo"
                     required
                   />
-                  <small id="cost_priceHelp" class="form-text text-danger">{{
-                    formErrors.cost_price
+                  <small id="cost_price_tax_excHelp" class="form-text text-danger">{{
+                    formErrors.cost_price_tax_exc
+                  }}</small>
+                </div>
+                <div class="form-group col-6">
+                  <label for="cost_price_tax_inc"
+                    >Precio Costo con IVA <span class="text-danger">(*)</span></label
+                  >
+                  <input
+                    type="number"
+                    step="any"
+                    class="form-control"
+                    id="cost_price_tax_inc"
+                    v-model="formProduct.cost_price_tax_inc"
+                    placeholder="Precio de costo"
+                    required
+                  />
+                  <small id="cost_price_tax_incHelp" class="form-text text-danger">{{
+                    formErrors.cost_price_tax_inc
                   }}</small>
                 </div>
                 <div class="form-group col-6">
@@ -447,7 +464,8 @@ export default {
         product: "",
         type: 0,
         tax_id: 0,
-        cost_price: 0.0,
+        cost_price_tax_exc: 0.0,
+        cost_price_tax_inc: 0.0,
         gain: 0.0,
         sale_price_tax_exc: 0.0,
         sale_price_tax_inc: 0.0,
@@ -468,7 +486,8 @@ export default {
         barcode: "",
         product: "",
         type: "",
-        cost_price: "",
+        cost_price_tax_exc: "",
+        cost_price_tax_inc: "",
         gain: "",
         sale_price_tax_exc: "",
         sale_price_tax_inc: "",
@@ -496,12 +515,12 @@ export default {
         this.formProduct.tax_id != 0
       ) {
         result = parseFloat(
-          this.formProduct.sale_price_tax_exc - this.formProduct.cost_price
+          this.formProduct.sale_price_tax_exc - this.formProduct.cost_price_tax_inc
         );
         return result;
       } else {
         result = parseFloat(
-          this.formProduct.sale_price_tax_exc - this.formProduct.cost_price
+          this.formProduct.sale_price_tax_exc - this.formProduct.cost_price_tax_inc
         );
         return result;
       }
@@ -676,7 +695,8 @@ export default {
         "barcode",
         "product",
         "type",
-        "cost_price",
+        "cost_price_tax_exc",
+        "cost_price_tax_inc",
         "gain",
         "sale_price_tax_exc",
         "sale_price_tax_inc",

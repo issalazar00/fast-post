@@ -96,14 +96,14 @@ class ImportProductController extends Controller
           if (($p["C"]) != null) {
 
 
-            $cost_price = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["C"]));
+            $cost_price_tax_inc = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["C"]));
             $sale_price_tax_inc = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["D"]));
             $wholesale_price_tax_inc = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["E"]));
             $quantity = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["F"]));
             $minimum = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["G"]));
             $maximum = (float) str_replace(',', '', preg_replace('/[$\@\;\" "]+/', '', $p["H"]));
 
-            if (is_float((float)$cost_price) && ((float)$cost_price) != 0) {
+            if (is_float((float)$cost_price_tax_inc) && ((float)$cost_price_tax_inc) != 0) {
 
 
               $category_id = 1;
@@ -121,7 +121,7 @@ class ImportProductController extends Controller
               $product = new Product();
               $product->barcode = $p["A"];
               $product->product = $p["B"];
-              $product->cost_price = $cost_price;
+              $product->cost_price_tax_inc = $cost_price_tax_inc;
               $product->sale_price_tax_inc = $sale_price_tax_inc;
               $product->wholesale_price_tax_inc = $wholesale_price_tax_inc;
               $product->category_id = $category_id;
@@ -133,9 +133,11 @@ class ImportProductController extends Controller
               $product->tax_id = $tax_id;
 
               if ($percentage != 0) {
+                $product->cost_price_tax_exc = ($cost_price_tax_inc) / ($percentage);
                 $product->sale_price_tax_exc = ($sale_price_tax_inc) / ($percentage);
                 $product->wholesale_price_tax_exc = ($wholesale_price_tax_inc) / ($percentage);
               } else {
+                $product->cost_price_tax_exc = $cost_price_tax_inc;
                 $product->sale_price_tax_exc = ($sale_price_tax_inc);
                 $product->wholesale_price_tax_exc = ($wholesale_price_tax_inc);
               }

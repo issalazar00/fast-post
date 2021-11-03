@@ -81,7 +81,8 @@ class ProductController extends Controller
 			'product' => 'required|string|min:3|max:100',
 			'barcode' => 'required|numeric|unique:products',
 			'type' => 'required|integer',
-			'cost_price' => 'required|numeric',
+			'cost_price_tax_exc' => 'required|numeric',
+			'cost_price_tax_inc' => 'required|numeric',
 			'gain' => 'required|numeric',
 			'sale_price_tax_exc' => 'required|numeric',
 			'sale_price_tax_inc' => 'required|numeric',
@@ -98,7 +99,8 @@ class ProductController extends Controller
 			$product->barcode = $new_product['barcode'];
 			$product->product = $new_product['product'];
 			$product->type = $new_product['type'];
-			$product->cost_price = $new_product['cost_price'];
+			$product->cost_price_tax_exc = $new_product['cost_price_tax_exc'];
+			$product->cost_price_tax_inc = $new_product['cost_price_tax_inc'];
 			$product->gain = $new_product['gain'];
 			$product->sale_price_tax_exc = $new_product['sale_price_tax_exc'];
 			$product->sale_price_tax_inc = $new_product['sale_price_tax_inc'];
@@ -186,7 +188,8 @@ class ProductController extends Controller
 			'product' => 'required|string|min:3|max:100',
 			'barcode' => ['required', 'numeric', Rule::unique('products')->ignore($product->barcode, 'barcode')],
 			'type' => 'required|integer',
-			'cost_price' => 'required|numeric',
+			'cost_price_tax_exc' => 'required|numeric',
+			'cost_price_tax_inc' => 'required|numeric',
 			'gain' => 'required|numeric',
 			'sale_price_tax_exc' => 'required|numeric',
 			'sale_price_tax_inc' => 'required|numeric',
@@ -203,7 +206,8 @@ class ProductController extends Controller
 			$product->barcode = $p['barcode'];
 			$product->product = $p['product'];
 			$product->type = $p['type'];
-			$product->cost_price = $p['cost_price'];
+			$product->cost_price_tax_exc = $p['cost_price_tax_exc'];
+			$product->cost_price_tax_inc = $p['cost_price_tax_inc'];
 			$product->gain = $p['gain'];
 			$product->sale_price_tax_exc = $p['sale_price_tax_exc'];
 			$product->sale_price_tax_inc = $p['sale_price_tax_inc'];

@@ -22,7 +22,8 @@ class CreateProductsTable extends Migration
             $table->string('barcode', 20)->unique();
             $table->tinyInteger('type');
             $table->tinyInteger('state')->default(1);
-            $table->decimal('cost_price', 10, 2);
+            $table->decimal('cost_price_tax_exc', 10, 2);
+            $table->decimal('cost_price_tax_inc', 10, 2);
             $table->decimal('gain', 10, 2);
             $table->decimal('sale_price_tax_exc', 10, 2);
             $table->decimal('sale_price_tax_inc', 10, 2);

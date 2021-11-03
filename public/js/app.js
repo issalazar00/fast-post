@@ -13371,6 +13371,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -13385,7 +13402,8 @@ __webpack_require__.r(__webpack_exports__);
         product: "",
         type: 0,
         tax_id: 0,
-        cost_price: 0.0,
+        cost_price_tax_exc: 0.0,
+        cost_price_tax_inc: 0.0,
         gain: 0.0,
         sale_price_tax_exc: 0.0,
         sale_price_tax_inc: 0.0,
@@ -13406,7 +13424,8 @@ __webpack_require__.r(__webpack_exports__);
         barcode: "",
         product: "",
         type: "",
-        cost_price: "",
+        cost_price_tax_exc: "",
+        cost_price_tax_inc: "",
         gain: "",
         sale_price_tax_exc: "",
         sale_price_tax_inc: "",
@@ -13431,10 +13450,10 @@ __webpack_require__.r(__webpack_exports__);
       var result = 0.0;
 
       if (this.formProduct.sale_price_tax_inc != 0 && this.formProduct.tax_id != 0) {
-        result = parseFloat(this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
+        result = parseFloat(this.formProduct.sale_price_tax_exc - this.formProduct.cost_price_tax_inc);
         return result;
       } else {
-        result = parseFloat(this.formProduct.sale_price_tax_exc - this.formProduct.cost_price);
+        result = parseFloat(this.formProduct.sale_price_tax_exc - this.formProduct.cost_price_tax_inc);
         return result;
       }
     },
@@ -13591,7 +13610,7 @@ __webpack_require__.r(__webpack_exports__);
     assignErrors: function assignErrors(response) {
       var _this = this;
 
-      var fillable = ["barcode", "product", "type", "cost_price", "gain", "sale_price_tax_exc", "sale_price_tax_inc", "wholesale_price_tax_exc", "wholesale_price_tax_inc", "stock", "quantity", "minimum", "maximum", "state", "category_id", "tax_id", "brand_id"];
+      var fillable = ["barcode", "product", "type", "cost_price_tax_exc", "cost_price_tax_inc", "gain", "sale_price_tax_exc", "sale_price_tax_inc", "wholesale_price_tax_exc", "wholesale_price_tax_inc", "stock", "quantity", "minimum", "maximum", "state", "category_id", "tax_id", "brand_id"];
 
       if (response) {
         var errors = response.response.data.errors;
@@ -62157,19 +62176,19 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.formProduct.cost_price,
-                          expression: "formProduct.cost_price"
+                          value: _vm.formProduct.cost_price_tax_exc,
+                          expression: "formProduct.cost_price_tax_exc"
                         }
                       ],
                       staticClass: "form-control",
                       attrs: {
                         type: "number",
                         step: "any",
-                        id: "cost_price",
+                        id: "cost_price_tax_exc",
                         placeholder: "Precio de costo",
                         required: ""
                       },
-                      domProps: { value: _vm.formProduct.cost_price },
+                      domProps: { value: _vm.formProduct.cost_price_tax_exc },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
@@ -62177,7 +62196,7 @@ var render = function() {
                           }
                           _vm.$set(
                             _vm.formProduct,
-                            "cost_price",
+                            "cost_price_tax_exc",
                             $event.target.value
                           )
                         }
@@ -62188,9 +62207,54 @@ var render = function() {
                       "small",
                       {
                         staticClass: "form-text text-danger",
-                        attrs: { id: "cost_priceHelp" }
+                        attrs: { id: "cost_price_tax_excHelp" }
                       },
-                      [_vm._v(_vm._s(_vm.formErrors.cost_price))]
+                      [_vm._v(_vm._s(_vm.formErrors.cost_price_tax_exc))]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-6" }, [
+                    _vm._m(6),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.formProduct.cost_price_tax_inc,
+                          expression: "formProduct.cost_price_tax_inc"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "number",
+                        step: "any",
+                        id: "cost_price_tax_inc",
+                        placeholder: "Precio de costo",
+                        required: ""
+                      },
+                      domProps: { value: _vm.formProduct.cost_price_tax_inc },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.formProduct,
+                            "cost_price_tax_inc",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "small",
+                      {
+                        staticClass: "form-text text-danger",
+                        attrs: { id: "cost_price_tax_incHelp" }
+                      },
+                      [_vm._v(_vm._s(_vm.formErrors.cost_price_tax_inc))]
                     )
                   ]),
                   _vm._v(" "),
@@ -62284,7 +62348,7 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group col-6" }, [
-                    _vm._m(6),
+                    _vm._m(7),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -62558,7 +62622,7 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _vm._m(7)
+                      _vm._m(8)
                     ])
                   : _vm._e(),
                 _vm._v(" "),
@@ -62755,8 +62819,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { attrs: { for: "cost_price" } }, [
-      _vm._v("Precio Costo "),
+    return _c("label", { attrs: { for: "cost_price_tax_exc" } }, [
+      _vm._v("Precio Costo sin IVA "),
+      _c("span", { staticClass: "text-danger" }, [_vm._v("(*)")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "cost_price_tax_inc" } }, [
+      _vm._v("Precio Costo con IVA "),
       _c("span", { staticClass: "text-danger" }, [_vm._v("(*)")])
     ])
   },
@@ -63001,6 +63074,7 @@ var render = function() {
           _c("h3", { staticClass: "page-header" }, [_vm._v("Productos")]),
           _vm._v(" "),
           _c("moon-loader", {
+            staticClass: "m-auto",
             attrs: { loading: _vm.isLoading, color: "#032F6C", size: 100 }
           }),
           _vm._v(" "),
