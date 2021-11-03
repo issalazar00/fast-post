@@ -34,7 +34,7 @@
 
 	<!-- Nav Item - Shop Collapse Menu -->
 	<li class="nav-item">
-		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseShop" aria-expanded="true"
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReport" aria-expanded="true"
 			aria-controls="collapseShop">
 			<i class="bi bi-shop"></i>
 			<span>Almacén</span>
@@ -77,6 +77,21 @@
 					Clientes</router-link>
 				<router-link class="collapse-item" to="/suppliers" v-if="validatePermission('supplier.index')">
 					Proveedores</router-link>
+			</div>
+		</div>
+	</li>
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReport" aria-expanded="true"
+			aria-controls="collapseReport">
+			<i class="bi bi-shop"></i>
+			<span>Informes</span>
+		</a>
+		<div id="collapseReport" class="collapse" aria-labelledby="headingReport" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<h6 class="collapse-header">Informe:</h6>
+				<router-link class="collapse-item " to="/reports/report-sale" v-if="validatePermission('product.index')">Informe de ventas diarias
+				</router-link>
+				
 			</div>
 		</div>
 	</li>

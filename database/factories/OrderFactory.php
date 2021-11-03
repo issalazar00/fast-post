@@ -22,13 +22,14 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'client_id' => $this->faker->numberBetween(1,10),
-            'user_id' => $this->faker->numberBetween(1,10),
+            'client_id' => '1',
+            'user_id' => $this->faker->numberBetween(1,2),
             'no_invoice' => $this->faker->randomLetter(),
             'total_paid' => $this->faker->randomFloat(2,1, 10000),
             'total_iva_inc' => $this->faker->randomFloat(2,1, 10000),
             'total_iva_exc' => $this->faker->randomFloat(2,1, 10000),
             'total_discount' => $this->faker->randomFloat(2,1, 10000),
+            'payment_date' => $this->faker->date('Y-m-d'),
             'state' =>'1',
         ];
     }

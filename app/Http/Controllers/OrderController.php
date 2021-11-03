@@ -102,8 +102,12 @@ class OrderController extends Controller
 		$order->total_discount = $request->total_discount;
 		if ($request->state == 4) {
 			$order->state = 2;
+			$order->payment_date = date('Y-m-d');
 		} else {
 			$order->state = $request->state;
+			if ($request->state == 2) {
+				$order->payment_date = date('Y-m-d');
+			}
 		}
 		$order->save();
 
@@ -161,8 +165,12 @@ class OrderController extends Controller
 		$order->total_discount = $request->total_discount;
 		if ($request->state == 4) {
 			$order->state = 2;
+			$order->payment_date = date('Y-m-d');
 		} else {
 			$order->state = $request->state;
+			if ($request->state == 2) {
+				$order->payment_date = date('Y-m-d');
+			}
 		}
 
 		$order->update();

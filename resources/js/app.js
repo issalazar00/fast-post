@@ -43,6 +43,8 @@ import Billings from './components/Billing/Billings.vue'
 import DetailsBilling from './components/Billing/DetailsBilling.vue'
 import CreateEditBilling from './components/Billing/CreateEditBilling.vue'
 
+import ReportSale from './components/Report/ReportSale'
+
 import Roles from './components/Rol/Roles.vue';
 import Users from './components/User/Users.vue';
 import Configuration from './components/Configuration.vue';
@@ -85,20 +87,27 @@ Vue.component('v-select', vSelect)
 const routes = [
 
   { path: '', component: CreateEditOrder, props: { order_id: 0 }, name: 'main' },
+
   { path: '/clients', component: Clients, alias: "client.index" },
   { path: '/create-edit-client', component: CreateEditClient },
+
   { path: '/products', component: Products },
   { path: '/create-edit-product', component: CreateEditProduct },
   { path: '/stock', component: Stock },
   { path: '/checker', component: Checker },
+
   { path: '/taxes', component: Taxes, alias: "tax.index" },
   { path: '/create-edit-tax', component: CreateEditTax },
+
   { path: '/suppliers', component: Suppliers, alias: "supplier.index" },
   { path: '/create-edit-supplier', component: CreateEditSupplier },
+
   { path: '/categories', component: Categories, alias: "category.index" },
   { path: '/create-edit-category', component: CreateEditCategory },
+
   { path: '/brands', component: Brands, alias: "brand.index" },
   { path: '/create-edit-brand', component: CreateEditBrand },
+
   { path: '/orders', component: Orders, alias: "order.index" },
   { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order' },
   { path: '/create-edit-order/:order_id', component: CreateEditOrder, props: true, name: 'create-edit-order' },
@@ -107,6 +116,7 @@ const routes = [
   { path: '/billings/:billing_id/details-billing', component: DetailsBilling, props: true, name: 'details-billing' },
   { path: '/create-edit-billing/:billing_id', component: CreateEditBilling, props: true, name: 'create-edit-billing' },
 
+  { path: '/reports/report-sale', component: ReportSale, props: true, name: 'report-sale' },
 
   { path: '/login', name: 'Login', component: Login },
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index" },

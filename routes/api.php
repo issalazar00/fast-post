@@ -16,6 +16,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\DetailBillingController;
+use App\Http\Controllers\ReportController;
 use App\Models\Configuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -91,4 +92,6 @@ Route::middleware('auth:api')->group(function () {
 		return $image;
 	});
 	Route::post('/import/upload-file-import', [ImportProductController::class, 'uploadFile']);
+
+	Route::get('/reports/report-sales', [ReportController::class, 'reportSales']);
 });
