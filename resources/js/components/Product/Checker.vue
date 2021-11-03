@@ -6,7 +6,7 @@
         <div class="p-5 w-100">
             <!-- <h1 class="">Consulte su producto</h1> -->
             <div class="form-group w-100">
-                <label for="filter">Buscar</label>
+                <label for="filter" style="font-size:2rem;">Buscar</label>
                 <input
                     id="filter"
                     type="text"

@@ -46,12 +46,12 @@ class BillingController extends Controller
 		$from = $request->from;
 		$to = $request->to;
 
-		if ($from != '') {
+		if ($from != '' && $from != 'undefined') {
 			$billings = $billings
 				->where('created_at', '>=', $from);
 		}
 
-		if ($to != '') {
+		if ($to != '' && $to != 'undefined') {
 			$billings = $billings
 				->where('created_at', '<=', $to);
 		}

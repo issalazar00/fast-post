@@ -9354,21 +9354,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {},
   data: function data() {
@@ -9376,7 +9361,9 @@ __webpack_require__.r(__webpack_exports__);
       BillingList: {},
       filter: {
         supplier: "",
-        no_invoice: ""
+        no_invoice: "",
+        from: "",
+        to: ""
       }
     };
   },
@@ -9723,6 +9710,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -9756,7 +9752,7 @@ __webpack_require__.r(__webpack_exports__);
     total_tax_exc: function total_tax_exc() {
       var total = 0.0;
       this.productsBillingList.forEach(function (product) {
-        return total += parseFloat(product.price_tax_exc * product.quantity);
+        return total += parseFloat(product.cost_price_tax_exc * product.quantity);
       });
       return total;
     },
@@ -9770,7 +9766,7 @@ __webpack_require__.r(__webpack_exports__);
     total_tax_inc: function total_tax_inc() {
       var total = 0.0;
       this.productsBillingList.forEach(function (product) {
-        total += parseFloat(product.quantity * product.price_tax_inc - product.quantity * product.price_tax_inc * (product.discount_percentage / 100));
+        total += parseFloat(product.quantity * product.cost_price_tax_inc - product.quantity * product.cost_price_tax_inc * (product.discount_percentage / 100));
       });
       return total;
     },
@@ -9829,7 +9825,7 @@ __webpack_require__.r(__webpack_exports__);
           if (result) {
             // Añade cantidad
             prod.quantity += 1;
-            prod.price_tax_inc_total = prod.price_tax_inc * prod.quantity;
+            prod.cost_price_tax_inc_total = prod.cost_price_tax_inc * prod.quantity;
           }
         }
       });
@@ -9842,10 +9838,10 @@ __webpack_require__.r(__webpack_exports__);
           discount_percentage: 0,
           discount_price: 0,
           quantity: 1,
-          price_tax_inc: new_product.sale_price_tax_inc,
-          price_tax_exc: new_product.sale_price_tax_exc,
+          cost_price_tax_inc: new_product.cost_price_tax_inc,
+          cost_price_tax_exc: new_product.cost_price_tax_exc,
           product: new_product.product,
-          price_tax_inc_total: new_product.sale_price_tax_inc
+          cost_price_tax_inc_total: new_product.cost_price_tax_inc
         });
       }
     },
@@ -56190,7 +56186,7 @@ var render = function() {
               }
             }
           },
-          [_vm._v("\n            Nueva compra\n        ")]
+          [_vm._v("\n      Nueva compra\n    ")]
         )
       ],
       1
@@ -56332,11 +56328,7 @@ var render = function() {
                     }
                   }
                 },
-                [
-                  _vm._v(
-                    "\n                        Buscar\n                    "
-                  )
-                ]
+                [_vm._v("\n            Buscar\n          ")]
               )
             ])
           ]),
@@ -56561,12 +56553,13 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [
                   _vm._v(
-                    "$ " +
+                    "\n            $\n            " +
                       _vm._s(
                         (_vm.billing.total_tax_inc = _vm.total_tax_inc).toFixed(
                           0
                         )
-                      )
+                      ) +
+                      "\n          "
                   )
                 ])
               ])
@@ -56784,8 +56777,8 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: p.price_tax_inc,
-                                  expression: "p.price_tax_inc"
+                                  value: p.cost_price_tax_inc,
+                                  expression: "p.cost_price_tax_inc"
                                 }
                               ],
                               staticClass: "form-control form-control-sm",
@@ -56798,7 +56791,7 @@ var render = function() {
                                 placeholder: "Cantidad",
                                 readonly: ""
                               },
-                              domProps: { value: p.price_tax_inc },
+                              domProps: { value: p.cost_price_tax_inc },
                               on: {
                                 input: function($event) {
                                   if ($event.target.composing) {
@@ -56806,7 +56799,7 @@ var render = function() {
                                   }
                                   _vm.$set(
                                     p,
-                                    "price_tax_inc",
+                                    "cost_price_tax_inc",
                                     $event.target.value
                                   )
                                 }
@@ -56865,7 +56858,7 @@ var render = function() {
                               domProps: {
                                 value: (p.discount_price = (
                                   p.quantity *
-                                  p.price_tax_inc *
+                                  p.cost_price_tax_inc *
                                   (p.discount_percentage / 100)
                                 ).toFixed(0))
                               }
@@ -56876,10 +56869,10 @@ var render = function() {
                             _vm._v(
                               "\n                $\n                " +
                                 _vm._s(
-                                  (p.price_tax_inc_total =
-                                    p.quantity * p.price_tax_inc -
+                                  (p.cost_price_tax_inc_total =
+                                    p.quantity * p.cost_price_tax_inc -
                                     p.quantity *
-                                      p.price_tax_inc *
+                                      p.cost_price_tax_inc *
                                       (p.discount_percentage / 100))
                                 ) +
                                 "\n              "
@@ -56911,7 +56904,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", [
                       _vm._v(
-                        "\n                $ " +
+                        "\n                $\n                " +
                           _vm._s(
                             (_vm.billing.total_tax_exc =
                               _vm.total_tax_exc).toFixed(0)
@@ -56926,10 +56919,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", [
                       _vm._v(
-                        "$ " +
+                        "\n                $\n                " +
                           _vm._s(
                             (_vm.total_tax_inc - _vm.total_tax_exc).toFixed(0)
-                          )
+                          ) +
+                          "\n              "
                       )
                     ])
                   ]),
@@ -56956,7 +56950,7 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", [
                       _vm._v(
-                        "\n                $ " +
+                        "\n                $\n                " +
                           _vm._s(
                             (_vm.billing.total_tax_inc =
                               _vm.total_tax_inc).toFixed(0)
@@ -61510,7 +61504,11 @@ var render = function() {
     [
       _c("div", { staticClass: "p-5 w-100" }, [
         _c("div", { staticClass: "form-group w-100" }, [
-          _c("label", { attrs: { for: "filter" } }, [_vm._v("Buscar")]),
+          _c(
+            "label",
+            { staticStyle: { "font-size": "2rem" }, attrs: { for: "filter" } },
+            [_vm._v("Buscar")]
+          ),
           _vm._v(" "),
           _c("input", {
             directives: [

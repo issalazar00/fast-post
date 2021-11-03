@@ -41,9 +41,9 @@ class DetailBillingController extends Controller
 			$detail->barcode = $request['barcode'];
 			$detail->discount_percentage = $request['discount_percentage'];
 			$detail->discount_price = $request['discount_price'];
-			$detail->price_tax_exc = $request['price_tax_exc'];
-			$detail->price_tax_inc = $request['price_tax_inc'];
-			$detail->price_tax_inc_total = $request['price_tax_inc_total'];
+			$detail->price_tax_exc = $request['cost_price_tax_exc'];
+			$detail->price_tax_inc = $request['cost_price_tax_inc'];
+			$detail->price_tax_inc_total = $request['cost_price_tax_inc_total'];
 			$detail->quantity = $request['quantity'];
 			$detail->product = $request['product'];
 			$detail->save();

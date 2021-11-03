@@ -8,9 +8,13 @@
         <table class="table table-borderless">
           <tr class="h1 text-white bg-primary">
             <td class="text-right">Total</td>
-            <td>$ {{ (billing.total_tax_inc = total_tax_inc).toFixed(0) }}</td>
+            <td>
+              $
+              {{ (billing.total_tax_inc = total_tax_inc).toFixed(0) }}
+            </td>
           </tr>
         </table>
+
         <!-- </div> -->
       </div>
       <div class="position-fixed top-0 right-0 w-50" style="z-index: 3000">
@@ -156,7 +160,7 @@
                     id="price"
                     step="any"
                     placeholder="Cantidad"
-                    v-model="p.price_tax_inc"
+                    v-model="p.cost_price_tax_inc"
                     readonly
                     class="form-control form-control-sm"
                     style="max-width: 100px"
@@ -186,7 +190,7 @@
                     :value="
                       (p.discount_price = (
                         p.quantity *
-                        p.price_tax_inc *
+                        p.cost_price_tax_inc *
                         (p.discount_percentage / 100)
                       ).toFixed(0))
                     "
@@ -197,10 +201,10 @@
                 <td>
                   $
                   {{
-                    (p.price_tax_inc_total =
-                      p.quantity * p.price_tax_inc -
+                    (p.cost_price_tax_inc_total =
+                      p.quantity * p.cost_price_tax_inc -
                       p.quantity *
-                        p.price_tax_inc *
+                        p.cost_price_tax_inc *
                         (p.discount_percentage / 100))
                   }}
                 </td>
@@ -223,12 +227,16 @@
               <tr>
                 <th colspan="7">Subtotal:</th>
                 <th>
-                  $ {{ (billing.total_tax_exc = total_tax_exc).toFixed(0) }}
+                  $
+                  {{ (billing.total_tax_exc = total_tax_exc).toFixed(0) }}
                 </th>
               </tr>
               <tr>
                 <th colspan="7">IVA:</th>
-                <th>$ {{ (total_tax_inc - total_tax_exc).toFixed(0) }}</th>
+                <th>
+                  $
+                  {{ (total_tax_inc - total_tax_exc).toFixed(0) }}
+                </th>
               </tr>
               <tr>
                 <th colspan="7">Descuento:</th>
@@ -240,7 +248,8 @@
               <tr class="bg-primary h5 text-white">
                 <th colspan="7">Total:</th>
                 <th>
-                  $ {{ (billing.total_tax_inc = total_tax_inc).toFixed(0) }}
+                  $
+                  {{ (billing.total_tax_inc = total_tax_inc).toFixed(0) }}
                 </th>
               </tr>
               <tr class="">
@@ -307,7 +316,7 @@ export default {
       // add product or supplier with keyup
       filters: {
         product: "",
-        supplier: "",
+        supplier: ""
       },
       productsBillingList: [],
 
@@ -320,45 +329,45 @@ export default {
         total_discount: 0.0,
         productsBilling: [],
         cash: 0,
-        change: 0,
-      },
+        change: 0
+      }
     };
   },
   computed: {
-    total_tax_exc: function () {
+    total_tax_exc: function() {
       var total = 0.0;
       this.productsBillingList.forEach(
-        (product) =>
-          (total += parseFloat(product.price_tax_exc * product.quantity))
+        product =>
+          (total += parseFloat(product.cost_price_tax_exc * product.quantity))
       );
       return total;
     },
-    total_discount: function () {
+    total_discount: function() {
       var total = 0.0;
-      this.productsBillingList.forEach((product) => {
+      this.productsBillingList.forEach(product => {
         total += parseFloat(product.discount_price);
       });
       return total;
     },
-    total_tax_inc: function () {
+    total_tax_inc: function() {
       var total = 0.0;
-      this.productsBillingList.forEach((product) => {
+      this.productsBillingList.forEach(product => {
         total += parseFloat(
-          product.quantity * product.price_tax_inc -
+          product.quantity * product.cost_price_tax_inc -
             product.quantity *
-              product.price_tax_inc *
+              product.cost_price_tax_inc *
               (product.discount_percentage / 100)
         );
       });
       return total;
     },
-    payment_return: function () {
+    payment_return: function() {
       var value = 0.0;
       if (this.billing.cash > 0) {
         value = (this.billing.cash - this.total_tax_inc).toFixed(0);
       }
       return value;
-    },
+    }
   },
   methods: {
     listItemsBilling() {
@@ -370,8 +379,8 @@ export default {
 
       axios
         .get(`api/billings/${me.billing_id}`, this.$root.config)
-        .then(function (response) {
-          me.billing.id_supplier= response.data.billing_information.billing_id;
+        .then(function(response) {
+          me.billing.id_supplier = response.data.billing_information.billing_id;
           me.billing.supplier = response.data.billing_information.supplier.name;
 
           me.productsBillingList = response.data.billing_details;
@@ -385,7 +394,7 @@ export default {
       var url = "api/products/search-product?product=" + me.filters.product;
       axios
         .post(url, null, this.$root.config)
-        .then(function (response) {
+        .then(function(response) {
           var new_product = response.data.products;
           if (!new_product) {
             $("#no-results").toast("show");
@@ -393,7 +402,7 @@ export default {
             me.addProduct(new_product);
           }
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
       me.filters.product = "";
@@ -402,13 +411,14 @@ export default {
       let me = this;
       let result = false;
       // Verifica si el producto existe en la lista
-      me.productsBillingList.filter((prod) => {
+      me.productsBillingList.filter(prod => {
         if (new_product.barcode == prod.barcode) {
           result = true;
           if (result) {
             // Añade cantidad
             prod.quantity += 1;
-            prod.price_tax_inc_total = prod.price_tax_inc * prod.quantity;
+            prod.cost_price_tax_inc_total =
+              prod.cost_price_tax_inc * prod.quantity;
           }
         }
       });
@@ -421,10 +431,10 @@ export default {
           discount_percentage: 0,
           discount_price: 0,
           quantity: 1,
-          price_tax_inc: new_product.sale_price_tax_inc,
-          price_tax_exc: new_product.sale_price_tax_exc,
+          cost_price_tax_inc: new_product.cost_price_tax_inc,
+          cost_price_tax_exc: new_product.cost_price_tax_exc,
           product: new_product.product,
-          price_tax_inc_total: new_product.sale_price_tax_inc,
+          cost_price_tax_inc_total: new_product.cost_price_tax_inc
         });
       }
     },
@@ -442,7 +452,7 @@ export default {
       var url = "api/clients/search-supplier?supplier=" + me.filters.supplier;
       axios
         .post(url, null, me.$root.config)
-        .then(function (response) {
+        .then(function(response) {
           var new_client = response.data;
           if (!new_client) {
             $("#no-results").toast("show");
@@ -450,7 +460,7 @@ export default {
             me.addSupplier(new_client);
           }
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
@@ -467,10 +477,17 @@ export default {
         this.billing.productsBilling = this.productsBillingList;
         if (this.billing_id != 0 && this.billing_id != null) {
           axios
-            .put(`api/billings/${this.billing_id}`, this.billing, this.$root.config)
+            .put(
+              `api/billings/${this.billing_id}`,
+              this.billing,
+              this.$root.config
+            )
             .then(
               () => (
-                this.$router.push({ name: "main", params: { billing_id: 0 } }),
+                this.$router.push({
+                  name: "main",
+                  params: { billing_id: 0 }
+                }),
                 this.$router.go(0)
               )
             );
@@ -482,13 +499,13 @@ export default {
       } else {
         alert("No hay productos en la orden");
       }
-    },
+    }
   },
   mounted() {
     $("#no-results").toast("hide");
     if (this.billing_id != null || this.billing_id != 0) {
       this.listItemsBilling();
     }
-  },
+  }
 };
 </script>
