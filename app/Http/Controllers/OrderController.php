@@ -22,7 +22,6 @@ class OrderController extends Controller
 		$this->middleware('can:order.store')->only('store');
 		$this->middleware('can:order.update')->only('update');
 		$this->middleware('can:order.delete')->only('destroy');
-		$this->middleware('can:order.active')->only('active');
 	}
 
 	/**

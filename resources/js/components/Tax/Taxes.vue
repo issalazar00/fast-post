@@ -28,8 +28,8 @@
               <th scope="col">#</th>
               <th>Impuesto</th>
               <th scope="col">Porcentaje</th>
-              <th>Estado</th>
-              <th v-if="$root.validatePermission('tax.active')">Opciones</th>
+              <th v-if="$root.validatePermission('tax.active')">Estado</th>
+              <th v-if="$root.validatePermission('tax.update')">Opciones</th>
             </tr>
           </thead>
           <tbody>

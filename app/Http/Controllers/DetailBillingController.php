@@ -7,6 +7,13 @@ use App\Models\DetailBilling;
 
 class DetailBillingController extends Controller
 {
+	public function __construct()
+	{
+		$this->middleware('can:billing.index')->only('index');
+		$this->middleware('can:billing.store')->only('store');
+		$this->middleware('can:billing.update')->only('update');
+		$this->middleware('can:billing.delete')->only('destroy');
+	}
 	/**
 	 * Display a listing of the resource.
 	 *

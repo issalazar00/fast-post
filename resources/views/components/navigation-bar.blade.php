@@ -42,22 +42,22 @@
 		<div id="collapseShop" class="collapse" aria-labelledby="headingShop" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Almacén:</h6>
-				<router-link class="collapse-item " to="/products" v-if="validatePermission('product.index')">Productos
+				<router-link v-if="validatePermission('product.index')" class="collapse-item " to="/products" v-if="validatePermission('product.index')">Productos
 				</router-link>
-				<router-link class="collapse-item " to="/stock" v-if="validatePermission('product.update')">Inventario
+				<router-link v-if="validatePermission('product.index')" class="collapse-item " to="/stock" v-if="validatePermission('product.update')">Inventario
 				</router-link>
-				<router-link class="collapse-item " to="/categories" v-if="validatePermission('category.index')">Categorias
+				<router-link  v-if="validatePermission('category.index')" class="collapse-item " to="/categories" v-if="validatePermission('category.index')">Categorias
 				</router-link>
-				<router-link class="collapse-item " to="/brands">Marcas</router-link>
-				<router-link class="collapse-item" to="/taxes" v-if="validatePermission('tax.index')">Impuestos</router-link>
+				<router-link v-if="validatePermission('brand.index')" class="collapse-item " to="/brands">Marcas</router-link>
+				<router-link v-if="validatePermission('tax.index')" class="collapse-item" to="/taxes" v-if="validatePermission('tax.index')">Impuestos</router-link>
 			</div>
 		</div>
 	</li>
-	<li class="nav-item">
+	<li class="nav-item" v-if="validatePermission('order.index')">
 		<router-link class="nav-link " active-class="active" to="/orders"><i class="bi bi-receipt"></i><span>Ordenes</span>
 		</router-link>
 	</li>
-	<li class="nav-item">
+	<li class="nav-item" v-if="validatePermission('billing.index')">
 		<router-link class="nav-link " active-class="active" to="/billings"><i
 				class="bi bi-receipt"></i><span>Compras</span>
 		</router-link>
@@ -73,9 +73,9 @@
 		<div id="collapsePeople" class="collapse" aria-labelledby="headingPeople" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Personas:</h6>
-				<router-link class="collapse-item" to="/clients" v-if="validatePermission('client.index')">
+				<router-link v-if="validatePermission('client.index')" class="collapse-item" to="/clients" v-if="validatePermission('client.index')">
 					Clientes</router-link>
-				<router-link class="collapse-item" to="/suppliers" v-if="validatePermission('supplier.index')">
+				<router-link v-if="validatePermission('supplier.index')" class="collapse-item" to="/suppliers" v-if="validatePermission('supplier.index')">
 					Proveedores</router-link>
 			</div>
 		</div>
@@ -105,7 +105,7 @@
 		<div id="collapseSettings" class="collapse" aria-labelledby="headingSettings" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Sistema:</h6>
-				<router-link v-if="validatePermission('user.store')" class="collapse-item" to="/configuration">Configuración
+				<router-link v-if="validatePermission('configuration')" class="collapse-item" to="/configuration">Configuración
 					general</router-link>
 				<router-link class="collapse-item" to="/roles" v-if="validatePermission('rol.index')">Roles</router-link>
 				<router-link class="collapse-item" v-if="validatePermission('user.index')" to="/users">Usuarios

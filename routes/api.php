@@ -65,7 +65,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/products/filter-product-list',  [ProductController::class, 'filterProductList']);
 	Route::post('/products/stock-update/{id}', [ProductController::class, 'updateStockById']);
 
-	Route::resource('kit-products', KitProductController::class);
+	Route::resource('kit-products', KitProductController::class)->middleware('can:product.store');
 
 	Route::resource('/suppliers',  SupplierController::class);
 	Route::post('/suppliers/{supplier}/activate',  [SupplierController::class, 'activate']);
@@ -85,13 +85,13 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/departments', [DepartmentController::class, 'index']);
 	Route::get('/departments/{id}/getMunicipalities', [DepartmentController::class, 'getMunicipalitiesByDepartment']);
 
-	Route::resource('/configurations', ConfigurationController::class)->except(['create', 'edit', 'destroy', 'show']);
+	Route::resource('/configurations', ConfigurationController::class)->except(['create', 'edit', 'destroy', 'show'])->middleware('can:configuration');;
 	Route::get('/company-logo', function () {
 		$configuration = new Configuration();
 		$image = $configuration->select('logo')->first();
 		return $image;
 	});
-	Route::post('/import/upload-file-import', [ImportProductController::class, 'uploadFile']);
+	Route::post('/import/upload-file-import', [ImportProductController::class, 'uploadFile'])->middleware('can:product.store');
 
 	Route::get('/reports/report-sales', [ReportController::class, 'reportSales']);
 });

@@ -22,7 +22,6 @@ class BillingController extends Controller
 		$this->middleware('can:billing.store')->only('store');
 		$this->middleware('can:billing.update')->only('update');
 		$this->middleware('can:billing.delete')->only('destroy');
-		$this->middleware('can:billing.active')->only('active');
 	}
 
 	/**

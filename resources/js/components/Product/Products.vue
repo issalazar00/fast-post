@@ -39,13 +39,13 @@
             </button>
           </div>
         </div>
-        <div class="row justify-content-end">
+        <div class="row justify-content-end" v-if="$root.validatePermission('product.store')">
           <button
             type="button"
             class="btn btn-outline-primary mr-2"
             data-toggle="modal"
             data-target="#productImportModal"
-            v-if="validatePermission('product.store')"
+            v-if="$root.validatePermission('product.store')"
           >
             <i class="bi bi-cloud-arrow-up-fill"></i>
             Importar Productos
@@ -55,7 +55,7 @@
             class="btn btn-outline-primary"
             data-toggle="modal"
             data-target="#productModal"
-            v-if="validatePermission('product.store')"
+            v-if="$root.validatePermission('product.store')"
           >
             <i class="bi bi-plus-circle-dotted"></i>
             Crear Producto
@@ -71,8 +71,8 @@
                 <th>Categoria</th>
                 <th scope="col">Precio Venta con IVA</th>
                 <th scope="col">Cantidad</th>
-                <th>Estado</th>
-                <th>Opciones</th>
+                <th v-if="$root.validatePermission('product.active')">Estado</th>
+                <th v-if="$root.validatePermission('product.update')">Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -82,7 +82,7 @@
                 <td>{{ product.category.name }}</td>
                 <td class="text-right">$ {{ product.sale_price_tax_inc }}</td>
                 <td>{{ product.quantity }}</td>
-                <td>
+                <td v-if="$root.validatePermission('product.active')">
                   <button
                     class="btn"
                     :class="product.state == 1 ? ' btn-success' : ' btn-danger'"
@@ -95,7 +95,7 @@
                     <i class="bi bi-x-circle" v-else></i>
                   </button>
                 </td>
-                <td>
+                <td v-if="$root.validatePermission('product.update')">
                   <button
                     class="btn btn-outline-success"
                     @click="ShowData(product)"
@@ -197,10 +197,6 @@ export default {
         .then(function () {
           me.listProducts(1);
         });
-    },
-
-    validatePermission(permission) {
-      return global.validatePermission(this.$root.permissions, permission);
     },
   },
 

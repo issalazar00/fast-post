@@ -11,6 +11,7 @@
           data-toggle="modal"
           data-target="#clientModal"
           @click="$refs.CreateEditClient.ResetData(), (edit = false)"
+          v-if="$root.validatePermission('client.store')"
         >
           Crear Cliente
         </button>
@@ -27,8 +28,8 @@
               <th>Telefono</th>
               <th>Correo</th>
               <th>Contacto</th>
-              <th>Estado</th>
-              <th>Opciones</th>
+              <th v-if="$root.validatePermission('client.active')">Estado</th>
+              <th v-if="$root.validatePermission('client.update')">Opciones</th>
             </tr>
           </thead>
           <tbody>
@@ -42,7 +43,7 @@
               <td>
                 {{ client.contact }}
               </td>
-              <td>
+              <td v-if="$root.validatePermission('client.active')">
                 <button
                   class="btn"
                   :class="
@@ -59,7 +60,7 @@
                   <i class="bi bi-x-circle" v-else></i>
                 </button>
               </td>
-              <td>
+              <td v-if="$root.validatePermission('client.update')">
                 <button
                   class="btn btn-outline-success"
                   @click="ShowData(client)"

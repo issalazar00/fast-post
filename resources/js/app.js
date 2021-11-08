@@ -91,7 +91,7 @@ const routes = [
   { path: '/clients', component: Clients, alias: "client.index" },
   { path: '/create-edit-client', component: CreateEditClient },
 
-  { path: '/products', component: Products },
+  { path: '/products', component: Products, alias: "product.index"},
   { path: '/create-edit-product', component: CreateEditProduct },
   { path: '/stock', component: Stock },
   { path: '/checker', component: Checker },
@@ -109,19 +109,19 @@ const routes = [
   { path: '/create-edit-brand', component: CreateEditBrand },
 
   { path: '/orders', component: Orders, alias: "order.index" },
-  { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order' },
-  { path: '/create-edit-order/:order_id', component: CreateEditOrder, props: true, name: 'create-edit-order' },
+  { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order', alias: "order.index" },
+  { path: '/create-edit-order/:order_id', component: CreateEditOrder, props: true, name: 'create-edit-order', alias: "order.store" },
 
-  { path: '/billings', component: Billings, alias: "order.index" },
-  { path: '/billings/:billing_id/details-billing', component: DetailsBilling, props: true, name: 'details-billing' },
-  { path: '/create-edit-billing/:billing_id', component: CreateEditBilling, props: true, name: 'create-edit-billing' },
+  { path: '/billings', component: Billings, alias: "billing.index" },
+  { path: '/billings/:billing_id/details-billing', component: DetailsBilling, props: true, name: 'details-billing', alias: "billing.index" },
+  { path: '/create-edit-billing/:billing_id', component: CreateEditBilling, props: true, name: 'create-edit-billing', alias: "billing.store" },
 
   { path: '/reports/report-sale', component: ReportSale, props: true, name: 'report-sale' },
 
   { path: '/login', name: 'Login', component: Login },
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index" },
   { path: '/users', name: 'Users', component: Users, alias: "user.index" },
-  { path: '/configuration', name: 'Configuration', component: Configuration },
+  { path: '/configuration', name: 'Configuration', component: Configuration, alias: "configuration" },
   { path: '**', name: 'NoFound', component: NoFound },
 
 ]

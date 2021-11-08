@@ -8,6 +8,7 @@
 					name: 'create-edit-billing',
 					params: { billing_id: 0 }
 				}"
+				v-if="$root.validatePermission('billing.store')"
 			>
 				Nueva compra
 			</router-link>
@@ -74,8 +75,8 @@
 							<th>Ver</th>
 
 							<th>Imprimir</th>
-							<th>Editar</th>
-							<th>Eliminar</th>
+							<th v-if="$root.validatePermission('billing.update')">Editar</th>
+							<th v-if="$root.validatePermission('billing.delete')">Eliminar</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -107,7 +108,7 @@
 									<i class="bi bi-printer"></i>
 								</button>
 							</td>
-							<td>
+							<td v-if="$root.validatePermission('billing.update')">
 								<router-link
 									class="btn"
 									:to="{
@@ -118,7 +119,7 @@
 									<i class="bi bi-pencil-square"></i>
 								</router-link>
 							</td>
-							<td>
+							<td v-if="$root.validatePermission('billing.delete')">
 								<button class="btn" @click="deleteBilling(o.id)">
 									<i class="bi bi-trash"></i>
 								</button>

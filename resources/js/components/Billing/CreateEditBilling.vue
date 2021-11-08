@@ -316,7 +316,7 @@ export default {
       // add product or supplier with keyup
       filters: {
         product: "",
-        supplier: ""
+        supplier: "",
       },
       productsBillingList: [],
 
@@ -329,29 +329,29 @@ export default {
         total_discount: 0.0,
         productsBilling: [],
         cash: 0,
-        change: 0
-      }
+        change: 0,
+      },
     };
   },
   computed: {
-    total_tax_exc: function() {
+    total_tax_exc: function () {
       var total = 0.0;
       this.productsBillingList.forEach(
-        product =>
+        (product) =>
           (total += parseFloat(product.cost_price_tax_exc * product.quantity))
       );
       return total;
     },
-    total_discount: function() {
+    total_discount: function () {
       var total = 0.0;
-      this.productsBillingList.forEach(product => {
+      this.productsBillingList.forEach((product) => {
         total += parseFloat(product.discount_price);
       });
       return total;
     },
-    total_tax_inc: function() {
+    total_tax_inc: function () {
       var total = 0.0;
-      this.productsBillingList.forEach(product => {
+      this.productsBillingList.forEach((product) => {
         total += parseFloat(
           product.quantity * product.cost_price_tax_inc -
             product.quantity *
@@ -361,13 +361,13 @@ export default {
       });
       return total;
     },
-    payment_return: function() {
+    payment_return: function () {
       var value = 0.0;
       if (this.billing.cash > 0) {
         value = (this.billing.cash - this.total_tax_inc).toFixed(0);
       }
       return value;
-    }
+    },
   },
   methods: {
     listItemsBilling() {
@@ -379,7 +379,7 @@ export default {
 
       axios
         .get(`api/billings/${me.billing_id}`, this.$root.config)
-        .then(function(response) {
+        .then(function (response) {
           me.billing.id_supplier = response.data.billing_information.billing_id;
           me.billing.supplier = response.data.billing_information.supplier.name;
 
@@ -394,7 +394,7 @@ export default {
       var url = "api/products/search-product?product=" + me.filters.product;
       axios
         .post(url, null, this.$root.config)
-        .then(function(response) {
+        .then(function (response) {
           var new_product = response.data.products;
           if (!new_product) {
             $("#no-results").toast("show");
@@ -402,7 +402,7 @@ export default {
             me.addProduct(new_product);
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
       me.filters.product = "";
@@ -411,7 +411,7 @@ export default {
       let me = this;
       let result = false;
       // Verifica si el producto existe en la lista
-      me.productsBillingList.filter(prod => {
+      me.productsBillingList.filter((prod) => {
         if (new_product.barcode == prod.barcode) {
           result = true;
           if (result) {
@@ -434,7 +434,7 @@ export default {
           cost_price_tax_inc: new_product.cost_price_tax_inc,
           cost_price_tax_exc: new_product.cost_price_tax_exc,
           product: new_product.product,
-          cost_price_tax_inc_total: new_product.cost_price_tax_inc
+          cost_price_tax_inc_total: new_product.cost_price_tax_inc,
         });
       }
     },
@@ -452,7 +452,7 @@ export default {
       var url = "api/clients/search-supplier?supplier=" + me.filters.supplier;
       axios
         .post(url, null, me.$root.config)
-        .then(function(response) {
+        .then(function (response) {
           var new_client = response.data;
           if (!new_client) {
             $("#no-results").toast("show");
@@ -460,7 +460,7 @@ export default {
             me.addSupplier(new_client);
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -486,7 +486,7 @@ export default {
               () => (
                 this.$router.push({
                   name: "main",
-                  params: { billing_id: 0 }
+                  params: { billing_id: 0 },
                 }),
                 this.$router.go(0)
               )
@@ -499,13 +499,28 @@ export default {
       } else {
         alert("No hay productos en la orden");
       }
-    }
+    },
+    commands() {
+      let me = this;
+        shortcut.add("F1", function () {
+          me.createOrUpdateBilling(2);
+        });
+
+        shortcut.add("F2", function () {
+          me.createOrUpdateBilling(4);
+        });
+
+        shortcut.add("F10", function () {
+          $("#addProductModal").modal("show");
+        });
+    },
   },
   mounted() {
     $("#no-results").toast("hide");
     if (this.billing_id != null || this.billing_id != 0) {
       this.listItemsBilling();
     }
-  }
+    this.commands();
+  },
 };
 </script>

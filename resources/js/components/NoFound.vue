@@ -1,7 +1,7 @@
 <template>
   <div class="container">
       <div class="d-flex justify-content-center align-items-center content-found">
-          <img class="img-fluid" src="/images/no-found.png" alt="" width="50%">
+          <img class="img-fluid" src="/images/no-found2.png" alt="" width="50%">
           
       </div>
   </div>

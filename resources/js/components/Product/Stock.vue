@@ -55,7 +55,7 @@
               <th>Categoria</th>
               <th>Marca</th>
               <th scope="col">Cantidad</th>
-              <td>Editar</td>
+              <td v-if="$root.validatePermission('product.update')">Editar</td>
             </tr>
           </thead>
           <tbody>
@@ -65,7 +65,7 @@
               <td>{{ product.category.name }}</td>
               <td>{{ product.brand.name }}</td>
               <td>{{ product.quantity }}</td>
-              <td>
+              <td v-if="$root.validatePermission('product.update')">
                 <div class="input-group mb-3">
                   <input
                     type="number"

@@ -9,7 +9,7 @@ class ClientController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('can:client.index')->only('index');
+		$this->middleware('can:client.index')->only('index', 'show');
 		$this->middleware('can:client.store')->only('store');
 		$this->middleware('can:client.update')->only('update');
 		$this->middleware('can:client.delete')->only('destroy');

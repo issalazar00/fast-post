@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Models\RoleDefault;
 use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
@@ -27,7 +28,7 @@ class RoleController extends Controller
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'roles' => Role::paginate(10),
+            'roles' => RoleDefault::paginate(10),
         ]);
     }
 

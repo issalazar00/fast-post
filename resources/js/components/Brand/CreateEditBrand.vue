@@ -80,6 +80,7 @@ export default {
         .then(function () {
           $("#brandModal").modal("hide");
           me.formBrand = {};
+          me.$emit("list-brands");
         })
         .catch((response) => {
           this.assignErrors(response);
@@ -104,6 +105,7 @@ export default {
         .then(function () {
           $("#brandModal").modal("hide");
           me.formBrand = {};
+          me.$emit("list-brands");
         })
         .catch((response) => {
           this.assignErrors(response);

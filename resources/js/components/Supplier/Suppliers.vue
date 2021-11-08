@@ -12,6 +12,7 @@
         data-toggle="modal"
         data-target="#supplierModal"
         @click="edit = false"
+        v-if="$root.validatePermission('supplier.store')"
       >
         Crear Proveedor
       </button>
@@ -28,8 +29,8 @@
             <th>Telefono</th>
             <th>Correo</th>
             <th>Contacto</th>
-            <th>Estado</th>
-            <th>Opciones</th>
+            <th v-if="$root.validatePermission('supplier.active')">Estado</th>
+            <th v-if="$root.validatePermission('supplier.update')">Opciones</th>
           </tr>
         </thead>
         <tbody>
@@ -43,7 +44,7 @@
             <td>
               {{ supplier.contact }}
             </td>
-            <td>
+            <td v-if="$root.validatePermission('supplier.active')">
               <button
                 class="btn"
                 :class="supplier.active == 1 ? ' btn-success' : 'btn-danger'"
@@ -56,7 +57,7 @@
                 <i class="bi bi-x-circle" v-else></i>
               </button>
             </td>
-            <td>
+            <td v-if="$root.validatePermission('supplier.update')">
               <button
                 class="btn btn-outline-success"
                 @click="ShowData(supplier)"

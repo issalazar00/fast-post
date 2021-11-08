@@ -506,12 +506,29 @@ export default {
         alert("No hay productos en la orden");
       }
     },
+    commands() {
+      let me = this;
+      
+      shortcut.add("F1", function () {
+        me.createOrUpdateOrder(2);
+      });
+
+      shortcut.add("F2", function () {
+        me.createOrUpdateOrder(4);
+      });
+
+      shortcut.add("F10", function () {
+        $("#addProductModal").modal("show");
+      });
+      
+    },
   },
   mounted() {
     $("#no-results").toast("hide");
     if (this.order_id != null || this.order_id != 0) {
       this.listItemsOrder();
     }
+    this.commands();
   },
 };
 </script>

@@ -9,10 +9,6 @@ use Illuminate\Support\Facades\Validator;
 class ConfigurationController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('can:configuration');
-    }
     /**
      * Display a listing of the resource.
      *

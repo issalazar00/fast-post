@@ -11,6 +11,7 @@
             class="btn btn-outline-primary"
             data-toggle="modal"
             data-target="#brandModal"
+            v-if="$root.validatePermission('brand.store')"
           >
             Crear Marca
           </button>
@@ -31,15 +32,15 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
-                <th scope="col">Estado</th>
-                <th>Opciones</th>
+                <th scope="col" v-if="$root.validatePermission('brand.active')">Estado</th>
+                <th v-if="$root.validatePermission('brand.update')">Opciones</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="brand in BrandList.data" :key="brand.id">
                 <th scope="row">{{ brand.id }}</th>
                 <td>{{ brand.name }}</td>
-                <td>
+                <td v-if="$root.validatePermission('brand.active')">
                   <button
                     class="btn"
                     :class="
@@ -53,7 +54,7 @@
                     <i v-if="brand.active == 0" class="bi bi-check-circle"></i>
                   </button>
                 </td>
-                <td>
+                <td v-if="$root.validatePermission('brand.update')">
                   <button
                     class="btn btn-outline-success"
                     @click="ShowData(brand)"
@@ -67,7 +68,7 @@
         </section>
       </div>
     </div>
-    <create-edit-brand ref="CreateEditBrand" />
+    <create-edit-brand ref="CreateEditBrand" @list-brands="listBrands(1)" />
   </div>
 </template>
 <script>

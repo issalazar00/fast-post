@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class DetailOrderController extends Controller
 {
+	public function __construct()
+	{
+		$this->middleware('can:order.index')->only('index');
+		$this->middleware('can:order.store')->only('store');
+		$this->middleware('can:order.update')->only('update');
+		$this->middleware('can:order.delete')->only('destroy');
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
