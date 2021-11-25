@@ -187,5 +187,11 @@ return [
         'condition_order'        => 'condicion de orden',
         'condition_quotation'    => 'condicion de cotizacion',
         //Configuration-------------------------------
+        //Box--------------------------------------
+        'consecutive_box.*.from_nro' => 'consecutivo inicial',
+        'consecutive_box.*.until_nro' => 'consecutivo final',
+        'consecutive_box.*.from_date' => 'fecha inicial',
+        'consecutive_box.*.until_date' => 'fecha vencimiento'
+        //Box---------------------------------------
     ],
 ];

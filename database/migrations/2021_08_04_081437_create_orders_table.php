@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
       $table->id();
       $table->foreignId('user_id');
       $table->foreignId('client_id')->nullable();
+      $table->string('bill_number');
       $table->string('no_invoice')->rand(1, 10);
       $table->float('total_paid', 20, 2);
       $table->float('total_iva_inc', 20, 2);
