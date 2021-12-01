@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Box;
+use App\Models\BoxUser;
 use App\Models\ConsecutiveBox;
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class BoxController extends Controller
@@ -32,6 +35,17 @@ class BoxController extends Controller
             'code' => 200,
             'boxes' => Box::paginate(20),
         ]);
+    }
+
+    public function getBoxesByUser(){
+        return response()->json([
+            'status' => 'success',
+            'code' =>  200,
+            'boxes' =>  Box::select('boxes.*')
+                            ->join('box_users as bx', 'bx.box_id', '=', 'boxes.id')
+                            ->where('bx.user_id', Auth::id())
+                            ->get()
+        ], 200);
     }
 
     /**
@@ -184,22 +198,24 @@ class BoxController extends Controller
             }
     
             ConsecutiveBox::whereNotIn('id', $used)->where('box_id', $box->id)->delete();
-
+            //return response()->json($used,400);
             foreach($request->consecutive_box as $item){
-                ConsecutiveBox::create([
-                    'box_id' => $box->id,
-                    'from_nro'=> $item['from_nro'], 
-                    'until_nro'=> $item['until_nro'], 
-                    'from_date'=> $item['from_date'], 
-                    'until_date'=> $item['until_date']
-                ]);
+                if(!isset($item['id']) || !in_array($item['id'], $used)){
+                    ConsecutiveBox::create([
+                        'box_id' => $box->id,
+                        'from_nro'=> $item['from_nro'], 
+                        'until_nro'=> $item['until_nro'], 
+                        'from_date'=> $item['from_date'], 
+                        'until_date'=> $item['until_date']
+                    ]);
+                }
             }
 
             $data = [
                 'status' => 'success',
                 'code' =>  200,
                 'message' => 'Actualización exitosa',
-                'category' =>  $box
+                'box' =>  $box
             ];
         } else {
             $data = [
@@ -271,5 +287,77 @@ class BoxController extends Controller
             'code' => 200,
             'consecutive' => $consecutive
         ], 200);
+    }
+
+    public function getAssignUserByBox($id){
+        $box = Box::find($id);
+
+        if ($box) {
+            $assignments = User::select('users.id','users.name')->get();
+
+            $assignments->map(function($item) use ($box){
+                $item->assign = $item->boxUser()->where('box_id',$box->id)->count();
+            });
+
+            $data = [
+                'status' => 'success',
+                'code' => 200,
+                'assignments' => $assignments
+            ];
+        } else {
+            $data = [
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Registro no encontrado'
+            ];
+        }
+
+        return response()->json($data, $data['code']);
+    }
+
+    public function toAssignUserByBox(Request $request, $id){
+        $box = Box::find($id);
+        if ($box) {
+
+            $validate = Validator::make($request->all(),[
+                'assignments' => 'required|array',
+                'assignments.*'=> 'integer|exists:users,id'
+            ]);
+
+            if ($validate->fails()) {
+                $data =[
+                    'status' => 'error',
+                    'code' =>  400,
+                    'message' => 'Validación de datos incorrecta',
+                    'errors' =>  $validate->errors()
+                ];
+            }else{
+
+                BoxUser::where('box_id', $box->id)->delete();
+
+                foreach($request->assignments as $user){
+                    BoxUser::create([
+                        'box_id' =>  $box->id,
+                        'user_id' => $user
+                    ]);
+                }
+
+                $data = [
+                    'status' => 'success',
+                    'code' =>  200,
+                    'message' => 'Registro exitoso',
+                ];
+            }
+            
+
+        } else {
+            $data = [
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Registro no encontrado'
+            ];
+        }
+
+        return response()->json($data, $data['code']);
     }
 }

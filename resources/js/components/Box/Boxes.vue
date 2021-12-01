@@ -40,12 +40,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="brand in boxList.data" :key="brand.id">
-                <th scope="row">{{ brand.id }}</th>
-                <td>{{ brand.name }}</td>
-                <td>{{ brand.prefix }}</td>
+              <tr v-for="box in boxList.data" :key="box.id">
+                <th scope="row">{{ box.id }}</th>
+                <td>{{ box.name }}</td>
+                <td>{{ box.prefix }}</td>
                 <th>
-                  <button class="btn btn-outline-primary">
+                  <button class="btn btn-outline-primary" @click="$refs.AssignUser.OpenAssignUser(box)">
                     <i class="bi bi-person-plus-fill"></i>
                   </button>
                 </th>
@@ -53,20 +53,20 @@
                   <button
                     class="btn"
                     :class="
-                      brand.active == 1
+                      box.active == 1
                         ? 'btn-outline-danger'
                         : 'btn-outline-success'
                     "
-                    @click="changeState(brand.id)"
+                    @click="changeState(box.id)"
                   >
-                    <i v-if="brand.active == 1" class="bi bi-x-circle"></i>
-                    <i v-if="brand.active == 0" class="bi bi-check-circle"></i>
+                    <i v-if="box.active == 1" class="bi bi-x-circle"></i>
+                    <i v-if="box.active == 0" class="bi bi-check-circle"></i>
                   </button>
                 </td>
                 <td v-if="$root.validatePermission('brand.update')">
                   <button
                     class="btn btn-outline-success"
-                    @click="ShowData(brand)"
+                    @click="ShowData(box)"
                   >
                     <i class="bi bi-pen"></i>
                   </button>
@@ -83,7 +83,7 @@
 </template>
 <script>
 import CreateEditBox from "./CreateEditBox.vue";
-import CreateEditBox from "./AssignUser.vue";
+import AssignUser from "./AssignUser.vue";
 export default {
   data() {
     return {

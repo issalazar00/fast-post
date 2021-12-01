@@ -8,10 +8,12 @@
       aria-hidden="true"
       data-backdrop="static"
     >
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="assignUserModalLabel">Asignar Usuarios</h5>
+            <h5 class="modal-title" id="assignUserModalLabel">
+              Asignar Usuarios
+            </h5>
             <button
               type="button"
               class="close"
@@ -23,33 +25,44 @@
           </div>
           <div class="modal-body">
             <form id="formAssignUser">
-              <div class="form-group">
-                <label for="formGroupExampleInput">Nombre o Numero</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="name"
-                  placeholder="Ingresar nombre o número"
-                  v-model="formBox.name"
-                />
-                <small id="nameHelp" class="form-text text-danger">{{
-                  formErrors.name
-                }}</small>
+              <div class="row">
+                <div class="col border-bottom">
+                  <p>
+                    <span class="font-weight-bold"> Caja: </span
+                    >{{ formBox.name }}
+                  </p>
+                </div>
+                <div class="col border-bottom">
+                  <p>
+                    <span class="font-weight-bold"> Prefijo: </span
+                    >{{ formBox.prefix }}
+                  </p>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="formGroupExampleInput">Prefijo</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="prefix"
-                  placeholder="Ingresar prefijo"
-                  v-model="formBox.prefix"
-                  :disabled ="formBox.process"
-                />
-                <small id="nameHelp" class="form-text text-danger">{{
-                  formErrors.prefix
-                }}</small>
-              </div>  
+              <div class="form-row mt-3">
+                <div
+                  class="form-group col-6"
+                  v-for="user in assignments"
+                  :key="user.id"
+                >
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      name ="assignments[]"
+                      :value="user.id"
+                      :id="`check_assign_${user.id}`"
+                      :checked="user.assign > 0"
+                    />
+                    <label
+                      class="form-check-label"
+                      :for="`check_assign_${user.id}`"
+                    >
+                      {{ user.name }}
+                    </label>
+                  </div>
+                </div>
+              </div>
             </form>
           </div>
           <div class="modal-footer">
@@ -63,7 +76,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              @click="formBox.id ? EditBox() : CreateBox()"
+              @click="assignUsers()"
             >
               Guardar
             </button>
@@ -81,38 +94,35 @@ export default {
     return {
       formBox: {},
       consecutive_boxErrors: {},
+      assignments: [],
       formErrors: {
         name: "",
         prefix: "",
       },
-      
     };
   },
   created() {},
   methods: {
-    getConsecutiveAllByBox(box){
-      axios.
-      get("api/boxes/"+box+"/consecutiveAll", this.$root.config)
-      .then(response => {
-        this.formBox.consecutive_load = response.data.consecutive;
-        this.consecutive_box = response.data.consecutive;
-      })
-      .catch(response => {
-        this.consecutive_box = [];
-      });
-    },
-    AssignUsers() {
-      let me = this;
-      me.assignErrors(false);
-      me.formBox.consecutive_box = this.consecutive_box;
+    getConsecutiveAllByBox(box) {
       axios
-        .post("api/boxes", this.formBox, this.$root.config)
+        .get("api/boxes/" + box + "/getAssignUserByBox", this.$root.config)
+        .then((response) => {
+          this.assignments = response.data.assignments;
+        })
+        .catch((response) => {});
+    },
+    assignUsers() {
+      let me = this;
+
+        const formAssignments = new FormData($("#formAssignUser")[0]);
+
+      axios
+        .post("api/boxes/"+me.formBox.id+"/toAssignUserByBox", formAssignments, me.$root.config)
         .then(function () {
           me.ResetData();
-          me.$emit("list-boxes");
         })
         .catch((response) => {
-          me.assignErrors(response);
+          
         });
     },
     OpenAssignUser(box) {
@@ -120,8 +130,7 @@ export default {
       me.ResetData();
       $("#assignUserModal").modal("show");
       me.formBox = box;
-      me.getConsecutiveAllByBox(me.formBox.id);
-      
+      this.getConsecutiveAllByBox(box.id);
     },
 
     ResetData() {
@@ -131,30 +140,9 @@ export default {
       me.formBox = {
         name: "",
         prefix: "",
-        process: null,
-        consecutive_box: [],
-        consecutive_load: []
-      }
-      me.assignErrors(false);
-    },
-    assignErrors(response) {
-      if (response) {
-        var errors = response.response.data.errors;
-        this.consecutive_boxErrors = errors;
-
-        if (errors.name) {
-          this.formErrors.name = errors.name[0];
-        }
-
-        if (errors.prefix) {
-          this.formErrors.prefix = errors.prefix[0];
-        }
-      } else {
-        this.formErrors.name = "";
-        this.formErrors.prefix = "";
-        this.consecutive_boxErrors = {};      
-      }
-    },
+      };
+      $("#formAssignUser")[0].reset();
+    }
   },
   mounted() {},
 };

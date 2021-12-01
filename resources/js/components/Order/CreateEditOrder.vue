@@ -269,6 +269,15 @@
           </div>
         </section>
         <div class="">
+          <div class="my-2">
+              <label for="selected_box_user" class="font-weight-bold">Caja <i class="bi bi-box"></i></label>
+            	<select name="selected_box_user" id="selected_box_user" class="form-control" v-model="$root.box">
+									<option value="" disabled>Seleccione una caja</option>
+									<option v-for="item in $root.listBoxes" :value="item.id" :key="item.id">
+										{{ item.name+' '+item.prefix }}
+									</option>
+							</select>
+          </div>
           <button
             type="button"
             class="btn btn-outline-primary btn-block"
@@ -488,6 +497,7 @@ export default {
       this.order.state = state_order;
       if (this.productsOrderList.length > 0) {
         this.order.productsOrder = this.productsOrderList;
+        this.order.box_id = this.$root.box; 
         if (this.order_id != 0 && this.order_id != null) {
           axios
             .put(`api/orders/${this.order_id}`, this.order, this.$root.config)
@@ -498,9 +508,13 @@ export default {
               )
             );
         } else {
-          axios
-            .post(`api/orders`, this.order, this.$root.config)
-            .then(() => this.$router.go(0));
+          if(this.order.box_id > 0){
+            axios
+              .post(`api/orders`, this.order, this.$root.config)
+              .then(() => this.$router.go(0));
+          }else{
+            alert("Selecciona una caja");
+          }
         }
       } else {
         alert("No hay productos en la orden");

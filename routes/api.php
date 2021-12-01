@@ -96,7 +96,13 @@ Route::middleware('auth:api')->group(function () {
 
 	Route::get('/reports/report-sales', [ReportController::class, 'reportSales']);
 
+	Route::get('/boxes/byUser', [BoxController::class, 'getBoxesByUser']);
 	Route::resource('/boxes', BoxController::class);
 	Route::post('/boxes/{box}/activate', [BoxController::class,'activate']);
+	
 	Route::get('/boxes/{box}/consecutiveAll', [BoxController::class, 'consecutiveAllByBox'])->middleware('can:category.index');
+	Route::get('/boxes/{box}/getAssignUserByBox', [BoxController::class, 'getAssignUserByBox'])->middleware('can:category.index');
+	Route::post('/boxes/{box}/toAssignUserByBox', [BoxController::class, 'toAssignUserByBox'])->middleware('can:category.index');
+	
+	
 });

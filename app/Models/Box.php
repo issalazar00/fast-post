@@ -29,4 +29,8 @@ class Box extends Model
 
         return $orders > 0 ? true: false;
     }
+
+    public function consecutiveBox(){
+        return $this->hasMany(ConsecutiveBox::class);
+    }
 }

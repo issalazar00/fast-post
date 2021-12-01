@@ -53,4 +53,8 @@ class User extends Authenticatable implements Authorizable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function boxUser(){
+        return $this->hasMany(BoxUser::class);
+    }
 }

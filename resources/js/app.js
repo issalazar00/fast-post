@@ -183,16 +183,22 @@ const app = new Vue({
       headers: {
         Authorization: "",
       },
-    })
+    }),
+    box: '',
+    listBoxes: []
   },
   watch: {
     $route(to, from) {
       this.assignDataRequired();
+    },
+    box(){
+      localStorage.setItem("box_worker", this.box);
     }
   },
   router,
   created() {
     this.assignDataRequired();
+    this.selectedBox();
   },
   methods: {
     assignDataRequired() {
@@ -224,7 +230,37 @@ const app = new Vue({
         .catch(response => {
           this.logout();
         });
+    },
+    selectedBox(){
+
+      axios.
+      get('api/boxes/byUser',this.config)
+      .then((response)=>{
+        this.listBoxes = response.data.boxes;
+        
+      })
+      .catch((response)=>{
+        this.listBoxes = [];
+      });
+      
+      let box = localStorage.getItem('box_worker');
+      if(box){
+        this.box = box;
+      }else{
+        $("#selected_box_user").modal("show");
+      }
+
+      
+    },
+    saveBox(){
+      localStorage.setItem("box_worker", this.box);
+      $("#selected_box_user").modal("hide");
+    },
+    resetBox(){
+      this.box = null;
+      localStorage.removeItem("box_worker");
     }
+
   }
 });
 
