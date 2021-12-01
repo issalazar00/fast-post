@@ -45,6 +45,8 @@ import CreateEditBilling from './components/Billing/CreateEditBilling.vue'
 
 import ReportSale from './components/Report/ReportSale'
 
+import Boxes from './components/Box/Boxes.vue'
+
 import Roles from './components/Rol/Roles.vue';
 import Users from './components/User/Users.vue';
 import Configuration from './components/Configuration.vue';
@@ -118,6 +120,9 @@ const routes = [
 
   { path: '/reports/report-sale', component: ReportSale, props: true, name: 'report-sale' },
 
+  {path: '/boxes', component: Boxes, alias: 'category.index'},
+  //
+
   { path: '/login', name: 'Login', component: Login },
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index" },
   { path: '/users', name: 'Users', component: Users, alias: "user.index" },
@@ -178,16 +183,22 @@ const app = new Vue({
       headers: {
         Authorization: "",
       },
-    })
+    }),
+    box: '',
+    listBoxes: []
   },
   watch: {
     $route(to, from) {
       this.assignDataRequired();
+    },
+    box(){
+      localStorage.setItem("box_worker", this.box);
     }
   },
   router,
   created() {
     this.assignDataRequired();
+    this.selectedBox();
   },
   methods: {
     assignDataRequired() {
@@ -219,7 +230,37 @@ const app = new Vue({
         .catch(response => {
           this.logout();
         });
+    },
+    selectedBox(){
+
+      axios.
+      get('api/boxes/byUser',this.config)
+      .then((response)=>{
+        this.listBoxes = response.data.boxes;
+        
+      })
+      .catch((response)=>{
+        this.listBoxes = [];
+      });
+      
+      let box = localStorage.getItem('box_worker');
+      if(box){
+        this.box = box;
+      }else{
+        $("#selected_box_user").modal("show");
+      }
+
+      
+    },
+    saveBox(){
+      localStorage.setItem("box_worker", this.box);
+      $("#selected_box_user").modal("hide");
+    },
+    resetBox(){
+      this.box = null;
+      localStorage.removeItem("box_worker");
     }
+
   }
 });
 
