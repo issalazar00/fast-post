@@ -138,7 +138,7 @@
 								</td>
 
 								<td>{{ p.barcode }}</td>
-								<td>{{ p.product }}</td>
+								<td style="font-size:18px; max-width:10rem" class="text-truncate">{{ p.product }}</td>
 								<td>
 									<input
 										type="number"

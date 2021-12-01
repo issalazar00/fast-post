@@ -15,6 +15,7 @@ class ReportController extends Controller
             ->selectRaw("count(case when state = '1' then 1 end) as suspended")
             ->selectRaw("count(case when state = '2' then 1 end) as registered")
             ->selectRaw("count(case when state = '3' then 1 end) as quoted")
+            ->orderBy('payment_date', 'desc')
             ->groupBy('payment_date')->get();
         return $sales;
     }

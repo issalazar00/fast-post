@@ -9723,6 +9723,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -56774,13 +56791,13 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [
                   _vm._v(
-                    "\n            $\n            " +
+                    "\n\t\t\t\t\t\t\t$\n\t\t\t\t\t\t\t" +
                       _vm._s(
                         (_vm.billing.total_tax_inc = _vm.total_tax_inc).toFixed(
                           0
                         )
                       ) +
-                      "\n          "
+                      "\n\t\t\t\t\t\t"
                   )
                 ])
               ])
@@ -56853,7 +56870,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("\n            Añadir Producto\n          ")]
+                    [_vm._v("\n\t\t\t\t\t\t\tAñadir Producto\n\t\t\t\t\t\t")]
                   ),
                   _vm._v(" "),
                   _vm._m(1)
@@ -56916,7 +56933,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("\n            Añadir Proveedor\n          ")]
+                    [_vm._v("\n\t\t\t\t\t\t\tAñadir Proveedor\n\t\t\t\t\t\t")]
                   ),
                   _vm._v(" "),
                   _vm._m(2)
@@ -56932,7 +56949,7 @@ var render = function() {
               "table",
               {
                 staticClass:
-                  "\n            table table-sm table-responsive-sm table-bordered table-hover\n          "
+                  "\n              table table-sm table-responsive-sm table-bordered table-hover\n            "
               },
               [
                 _vm._m(3),
@@ -57009,8 +57026,7 @@ var render = function() {
                                 name: "price",
                                 id: "price",
                                 step: "any",
-                                placeholder: "Cantidad",
-                                readonly: ""
+                                placeholder: "Cantidad"
                               },
                               domProps: { value: p.cost_price_tax_inc },
                               on: {
@@ -57064,40 +57080,84 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            _c("input", {
-                              staticClass: "form-control form-control-sm",
-                              staticStyle: { "max-width": "100px" },
-                              attrs: {
-                                type: "number",
-                                name: "discount_price",
-                                id: "discount_price",
-                                step: "2",
-                                placeholder: "Descuento",
-                                disabled: "",
-                                readonly: ""
-                              },
-                              domProps: {
-                                value: (p.discount_price = (
-                                  p.quantity *
-                                  p.cost_price_tax_inc *
-                                  (p.discount_percentage / 100)
-                                ).toFixed(0))
-                              }
-                            })
+                            p.discount_percentage != 0
+                              ? _c("input", {
+                                  staticClass: "form-control form-control-sm",
+                                  staticStyle: { "max-width": "100px" },
+                                  attrs: {
+                                    type: "number",
+                                    name: "discount_price",
+                                    id: "discount_price",
+                                    step: "2",
+                                    placeholder: "Descuento"
+                                  },
+                                  domProps: {
+                                    value: (p.discount_price = (
+                                      p.quantity *
+                                      p.cost_price_tax_inc *
+                                      (p.discount_percentage / 100)
+                                    ).toFixed(0))
+                                  }
+                                })
+                              : _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: p.discount_price,
+                                      expression: "p.discount_price"
+                                    }
+                                  ],
+                                  staticClass: "form-control form-control-sm",
+                                  staticStyle: { "max-width": "100px" },
+                                  attrs: {
+                                    type: "number",
+                                    name: "discount_price",
+                                    id: "discount_price",
+                                    step: "2"
+                                  },
+                                  domProps: { value: p.discount_price },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        p,
+                                        "discount_price",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(
-                              "\n                $\n                " +
-                                _vm._s(
-                                  (p.cost_price_tax_inc_total =
-                                    p.quantity * p.cost_price_tax_inc -
-                                    p.quantity *
-                                      p.cost_price_tax_inc *
-                                      (p.discount_percentage / 100))
-                                ) +
-                                "\n              "
-                            )
+                            p.discount_percentage != 0
+                              ? _c("span", [
+                                  _vm._v(
+                                    "\n\t\t\t\t\t\t\t\t\t\t$\n\t\t\t\t\t\t\t\t\t\t" +
+                                      _vm._s(
+                                        (p.cost_price_tax_inc_total =
+                                          p.quantity * p.cost_price_tax_inc -
+                                          p.quantity *
+                                            p.cost_price_tax_inc *
+                                            (p.discount_percentage / 100))
+                                      ) +
+                                      "\n\t\t\t\t\t\t\t\t\t"
+                                  )
+                                ])
+                              : _c("span", [
+                                  _vm._v(
+                                    "\n\t\t\t\t\t\t\t\t\t\t$\n\t\t\t\t\t\t\t\t\t\t" +
+                                      _vm._s(
+                                        (p.cost_price_tax_inc_total =
+                                          p.quantity * p.cost_price_tax_inc -
+                                          p.discount_price).toFixed(2)
+                                      ) +
+                                      "\n\t\t\t\t\t\t\t\t\t"
+                                  )
+                                ])
                           ])
                         ])
                       }),
@@ -57125,12 +57185,12 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", [
                       _vm._v(
-                        "\n                $\n                " +
+                        "\n\t\t\t\t\t\t\t\t\t$\n\t\t\t\t\t\t\t\t\t" +
                           _vm._s(
                             (_vm.billing.total_tax_exc =
                               _vm.total_tax_exc).toFixed(0)
                           ) +
-                          "\n              "
+                          "\n\t\t\t\t\t\t\t\t"
                       )
                     ])
                   ]),
@@ -57140,11 +57200,11 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", [
                       _vm._v(
-                        "\n                $\n                " +
+                        "\n\t\t\t\t\t\t\t\t\t$\n\t\t\t\t\t\t\t\t\t" +
                           _vm._s(
                             (_vm.total_tax_inc - _vm.total_tax_exc).toFixed(0)
                           ) +
-                          "\n              "
+                          "\n\t\t\t\t\t\t\t\t"
                       )
                     ])
                   ]),
@@ -57156,12 +57216,12 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", [
                       _vm._v(
-                        "\n                $\n                " +
+                        "\n\t\t\t\t\t\t\t\t\t$\n\t\t\t\t\t\t\t\t\t" +
                           _vm._s(
                             (_vm.billing.total_discount =
                               _vm.total_discount).toFixed(0)
                           ) +
-                          "\n              "
+                          "\n\t\t\t\t\t\t\t\t"
                       )
                     ])
                   ]),
@@ -57171,12 +57231,12 @@ var render = function() {
                     _vm._v(" "),
                     _c("th", [
                       _vm._v(
-                        "\n                $\n                " +
+                        "\n\t\t\t\t\t\t\t\t\t$\n\t\t\t\t\t\t\t\t\t" +
                           _vm._s(
                             (_vm.billing.total_tax_inc =
                               _vm.total_tax_inc).toFixed(0)
                           ) +
-                          "\n              "
+                          "\n\t\t\t\t\t\t\t\t"
                       )
                     ])
                   ]),
@@ -57242,7 +57302,7 @@ var render = function() {
                 },
                 [
                   _c("i", { staticClass: "bi bi-receipt" }),
-                  _vm._v(" Guardar\n        ")
+                  _vm._v(" Guardar\n\t\t\t\t\t")
                 ]
               ),
               _vm._v(" "),
@@ -57255,7 +57315,7 @@ var render = function() {
                     },
                     [
                       _c("i", { staticClass: "bi bi-receipt" }),
-                      _vm._v(" Cancelar\n        ")
+                      _vm._v(" Cancelar\n\t\t\t\t\t")
                     ]
                   )
                 : _vm._e()
@@ -57334,7 +57394,9 @@ var staticRenderFns = [
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "toast-body text-dark h4" }, [
-              _vm._v("\n          No se ha encontrado coincidencias\n        ")
+              _vm._v(
+                "\n\t\t\t\t\t\tNo se ha encontrado coincidencias\n\t\t\t\t\t"
+              )
             ])
           ]
         )
@@ -60527,7 +60589,17 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(p.barcode))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(p.product))]),
+                          _c(
+                            "td",
+                            {
+                              staticClass: "text-truncate",
+                              staticStyle: {
+                                "font-size": "18px",
+                                "max-width": "10rem"
+                              }
+                            },
+                            [_vm._v(_vm._s(p.product))]
+                          ),
                           _vm._v(" "),
                           _c("td", [
                             _c("input", {
