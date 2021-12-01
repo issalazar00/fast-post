@@ -305,7 +305,7 @@ class ProductController extends Controller
 	{
 		$products = Product::select()
 			->where('barcode', "%$request->product%")
-			->orWhere('product', "%$request->product%")
+			->orWhere('product', 'LIKE', "%$request->product%")
 			->where('state', 1)
 			->first();
 
