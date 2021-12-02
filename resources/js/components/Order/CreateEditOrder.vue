@@ -323,15 +323,17 @@
 
     <add-product @add-product="addProduct($event)" />
     <add-client @add-client="addClient($event)" />
+    <modal-box ref="ModalBox"></modal-box>
   </div>
 </template>
 
 <script>
 import AddProduct from "./AddProduct.vue";
 import AddClient from "./AddClient.vue";
+import ModalBox from  "./../ModalBox.vue";
 
 export default {
-  components: { AddProduct, AddClient },
+  components: { AddProduct, AddClient, ModalBox },
   props: ["order_id"],
 
   data() {
@@ -543,6 +545,7 @@ export default {
       this.listItemsOrder();
     }
     this.commands();
+    this.$refs.ModalBox.selectedBox();
   },
 };
 </script>

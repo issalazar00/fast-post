@@ -33,34 +33,7 @@
 			<!-- Sidebar -->
 			@component('components.navigation-bar')
 			@endcomponent
-			<main id="content-wrapper" class="d-flex flex-column">
-				<button  type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#selected_box_user">
-				
-				</button>
-				<div class="modal" id="selected_box_user" data-keyboard="false" tabindex="-1"  data-backdrop="static" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">Seleccionar Caja</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="resetBox">
-							<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<select id="" class="form-control" v-model="box">
-									<option value="" disabled>Seleccione una caja</option>
-									<option v-for="item in listBoxes" :value="item.id" :key="item.id">
-										@{{ item.name+' '+item.prefix }}
-									</option>
-							</select>	
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal" @click="resetBox">Cancelar</button>
-							<button type="button" class="btn btn-primary" @click="saveBox">Guardar</button>
-						</div>
-						</div>
-					</div>
-				</div>
+			<main id="content-wrapper" class="d-flex flex-column">			
 				<div class="justify-content-center">
 					<router-view />
 				</div>

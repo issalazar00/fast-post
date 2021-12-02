@@ -50,6 +50,7 @@ import Boxes from './components/Box/Boxes.vue'
 import Roles from './components/Rol/Roles.vue';
 import Users from './components/User/Users.vue';
 import Configuration from './components/Configuration.vue';
+import Profile from './components/Profile.vue';
 
 //Services
 import global from './services/global.js';
@@ -127,6 +128,8 @@ const routes = [
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index" },
   { path: '/users', name: 'Users', component: Users, alias: "user.index" },
   { path: '/configuration', name: 'Configuration', component: Configuration, alias: "configuration" },
+  {path: '/profile', name:'Profile', component:Profile},
+  
   { path: '**', name: 'NoFound', component: NoFound },
 
 ]
@@ -232,37 +235,15 @@ const app = new Vue({
         });
     },
     selectedBox(){
-
-      if(this.user){
         axios.
         get('api/boxes/byUser',this.config)
         .then((response)=>{
           this.listBoxes = response.data.boxes;
-          
         })
         .catch((response)=>{
           this.listBoxes = [];
-        });
-        
-        let box = localStorage.getItem('box_worker');
-        if(box > 0){
-          this.box = box;
-        }else{
-          $("#selected_box_user").modal("show");
-        }
-      }
-
-      
-    },
-    saveBox(){
-      localStorage.setItem("box_worker", this.box);
-      $("#selected_box_user").modal("hide");
-    },
-    resetBox(){
-      this.box = null;
-      localStorage.removeItem("box_worker");
+        });       
     }
-
   }
 });
 
