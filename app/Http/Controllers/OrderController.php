@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Box;
 use App\Models\Configuration;
 use App\Models\DetailOrder;
 use App\Models\Order;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -91,6 +93,54 @@ class OrderController extends Controller
 	{
 		$user_id =  Auth::user()->id;
 
+		$latestOrder = Order::where('box_id', $request->box_id)->orderByDesc('id')->first();
+		$box = Box::find($request->box_id);
+		$dateValidate = Carbon::now()->toDateString();
+
+		if ($latestOrder) {
+
+			$lastConsecutive = str_replace($box->prefix, '', $latestOrder->bill_number);
+			$lastConsecutive = intval($lastConsecutive);
+			
+
+			$consecutiveBox = $box->consecutiveBox()->where([
+				['from_nro', '<=', $lastConsecutive],
+				['until_nro', '>=', $lastConsecutive]
+			])
+				->where('until_date', '>=', $dateValidate)
+				->orderBy('from_nro')
+				->first();
+
+			if ($consecutiveBox && $consecutiveBox->until_nro > $lastConsecutive) {
+				$bill_number = $box->prefix . ($lastConsecutive + 1);
+			} else {
+				$continue = $box->consecutiveBox()
+					->where('until_nro', '>', $lastConsecutive)
+					->where('from_date', '<=', $dateValidate)
+					->where('until_date', '>=', $dateValidate)
+					->where('id', '!=', isset($consecutiveBox->id) ? $consecutiveBox->id : null)
+					->orderBy('from_nro')
+					->first();
+
+				if (!$continue) {
+					return abort(500);
+				}
+
+				$bill_number = $box->prefix . $continue->from_nro;
+			}
+		} else {
+			$continue = $box->consecutiveBox()
+				->where('from_date', '<=', $dateValidate)
+				->where('until_date', '>=', $dateValidate)
+				->orderBy('from_nro')
+				->first();
+
+			if (!$continue) {
+				return abort(500);
+			}
+			$bill_number = $box->prefix . $continue->from_nro;
+		}
+
 		$order = new Order;
 		$order->client_id = $request->id_client;
 		$order->user_id = $user_id;
@@ -99,6 +149,9 @@ class OrderController extends Controller
 		$order->total_iva_inc = $request->total_tax_inc;
 		$order->total_iva_exc = $request->total_tax_exc;
 		$order->total_discount = $request->total_discount;
+		$order->box_id = $box->id;
+		$order->bill_number = $bill_number;
+
 		if ($request->state == 4) {
 			$order->state = 2;
 			$order->payment_date = date('Y-m-d');

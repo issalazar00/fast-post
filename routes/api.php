@@ -15,6 +15,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\BoxController;
 use App\Http\Controllers\DetailBillingController;
 use App\Http\Controllers\ReportController;
 use App\Models\Configuration;
@@ -94,4 +95,14 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/import/upload-file-import', [ImportProductController::class, 'uploadFile'])->middleware('can:product.store');
 
 	Route::get('/reports/report-sales', [ReportController::class, 'reportSales']);
+
+	Route::get('/boxes/byUser', [BoxController::class, 'getBoxesByUser']);
+	Route::resource('/boxes', BoxController::class);
+	Route::post('/boxes/{box}/activate', [BoxController::class,'activate']);
+	
+	Route::get('/boxes/{box}/consecutiveAll', [BoxController::class, 'consecutiveAllByBox'])->middleware('can:category.index');
+	Route::get('/boxes/{box}/getAssignUserByBox', [BoxController::class, 'getAssignUserByBox'])->middleware('can:category.index');
+	Route::post('/boxes/{box}/toAssignUserByBox', [BoxController::class, 'toAssignUserByBox'])->middleware('can:category.index');
+	
+	
 });
