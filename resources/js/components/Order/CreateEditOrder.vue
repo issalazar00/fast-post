@@ -137,9 +137,8 @@
 									</button>
 								</td>
 
-<<<<<<< HEAD
 								<td>{{ p.barcode }}</td>
-								<td style="font-size:18px; max-width:10rem" class="text-truncate">{{ p.product }}</td>
+								<td>{{ p.product }}</td>
 								<td>
 									<input
 										type="number"
@@ -272,13 +271,33 @@
 					</div>
 				</section>
 				<div class="">
+					<div class="my-2">
+						<label for="selected_box_user" class="font-weight-bold"
+							>Caja <i class="bi bi-box"></i
+						></label>
+						<select
+							name="selected_box_user"
+							id="selected_box_user"
+							class="form-control"
+							v-model="$root.box"
+						>
+							<option value="" disabled>Seleccione una caja</option>
+							<option
+								v-for="item in $root.listBoxes"
+								:value="item.id"
+								:key="item.id"
+							>
+								{{ item.name + " " + item.prefix }}
+							</option>
+						</select>
+					</div>
 					<button
 						type="button"
 						class="btn btn-outline-primary btn-block"
 						@click="createOrUpdateOrder(2)"
 					>
 						<!-- Facturar -->
-						<i class="bi bi-receipt"></i> <b>F1</b> Guardar
+						<i class="bi bi-receipt"></i> Guardar
 					</button>
 					<button
 						type="button"
@@ -286,7 +305,7 @@
 						@click="createOrUpdateOrder(4)"
 					>
 						<!-- Facturar -->
-						<i class="bi bi-receipt"></i> <b>F2</b> Guardar e imprimir
+						<i class="bi bi-receipt"></i> Guardar e imprimir
 					</button>
 					<button
 						type="button"
@@ -295,174 +314,6 @@
 					>
 						<i class="bi bi-receipt"></i> Suspender
 					</button>
-=======
-                <td>{{ p.barcode }}</td>
-                <td>{{ p.product }}</td>
-                <td>
-                  <input
-                    type="number"
-                    name="quantity"
-                    id="quantity"
-                    step="2"
-                    placeholder="Cantidad"
-                    class="form-control form-control-sm"
-                    v-model="p.quantity"
-                    style="max-width: 60px"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name="price"
-                    id="price"
-                    step="any"
-                    placeholder="Cantidad"
-                    v-model="p.price_tax_inc"
-                    readonly
-                    class="form-control form-control-sm"
-                    style="max-width: 100px"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name="discount_percentage"
-                    id="discount_percentage"
-                    step="any"
-                    placeholder="Descuento"
-                    class="form-control form-control-sm"
-                    v-model="p.discount_percentage"
-                    style="max-width: 60px"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    class="form-control form-control-sm"
-                    name="discount_price"
-                    id="discount_price"
-                    step="2"
-                    placeholder="Descuento"
-                    disabled
-                    :value="
-                      (p.discount_price = (
-                        p.quantity *
-                        p.price_tax_inc *
-                        (p.discount_percentage / 100)
-                      ).toFixed(0))
-                    "
-                    readonly
-                    style="max-width: 100px"
-                  />
-                </td>
-                <td>
-                  $
-                  {{
-                    (p.price_tax_inc_total =
-                      p.quantity * p.price_tax_inc -
-                      p.quantity *
-                        p.price_tax_inc *
-                        (p.discount_percentage / 100))
-                  }}
-                </td>
-              </tr>
-            </tbody>
-            <tbody v-else>
-              <tr>
-                <td colspan="8">No se han añadido productos</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
-    <div class="col-md-3">
-      <div class="">
-        <section class="card">
-          <div>
-            <table class="table table-sm table-primary text-right">
-              <tr>
-                <th colspan="7">Subtotal:</th>
-                <th>
-                  $ {{ (order.total_tax_exc = total_tax_exc).toFixed(0) }}
-                </th>
-              </tr>
-              <tr>
-                <th colspan="7">IVA:</th>
-                <th>$ {{ (total_tax_inc - total_tax_exc).toFixed(0) }}</th>
-              </tr>
-              <tr>
-                <th colspan="7">Descuento:</th>
-                <th>
-                  $
-                  {{ (order.total_discount = total_discount).toFixed(0) }}
-                </th>
-              </tr>
-              <tr class="bg-success h5 text-white">
-                <th colspan="7">Total:</th>
-                <th>
-                  $ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}
-                </th>
-              </tr>
-              <tr class="">
-                <th colspan="7">Efectivo:</th>
-                <th>
-                  <input
-                    type="number"
-                    value="0"
-                    step="any"
-                    v-model="order.cash"
-                  />
-                </th>
-              </tr>
-              <tr class="">
-                <th colspan="7">Cambio:</th>
-                <th>
-                  <input
-                    type="text"
-                    :value="payment_return"
-                    readonly
-                    disabled
-                  />
-                </th>
-              </tr>
-            </table>
-          </div>
-        </section>
-        <div class="">
-          <div class="my-2">
-              <label for="selected_box_user" class="font-weight-bold">Caja <i class="bi bi-box"></i></label>
-            	<select name="selected_box_user" id="selected_box_user" class="form-control" v-model="$root.box">
-									<option value="" disabled>Seleccione una caja</option>
-									<option v-for="item in $root.listBoxes" :value="item.id" :key="item.id">
-										{{ item.name+' '+item.prefix }}
-									</option>
-							</select>
-          </div>
-          <button
-            type="button"
-            class="btn btn-outline-primary btn-block"
-            @click="createOrUpdateOrder(2)"
-          >
-            <!-- Facturar -->
-            <i class="bi bi-receipt"></i> Guardar
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-primary btn-block"
-            @click="createOrUpdateOrder(4)"
-          >
-            <!-- Facturar -->
-            <i class="bi bi-receipt"></i> Guardar e imprimir
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-primary btn-block"
-            @click="createOrUpdateOrder(1)"
-          >
-            <i class="bi bi-receipt"></i> Suspender
-          </button>
->>>>>>> feature/box-settings
 
 					<button
 						type="button"
@@ -677,19 +528,13 @@ export default {
 				alert("No hay productos en la orden");
 			}
 		},
-		commands() {
-			let me = this;
+	
 
-<<<<<<< HEAD
-			shortcut.add("F1", function() {
-				me.createOrUpdateOrder(2);
-			});
-=======
     createOrUpdateOrder(state_order) {
       this.order.state = state_order;
       if (this.productsOrderList.length > 0) {
         this.order.productsOrder = this.productsOrderList;
-        this.order.box_id = this.$root.box; 
+        this.order.box_id = this.$root.box;
         if (this.order_id != 0 && this.order_id != null) {
           axios
             .put(`api/orders/${this.order_id}`, this.order, this.$root.config)
@@ -714,11 +559,10 @@ export default {
     },
     commands() {
       let me = this;
-      
+
       shortcut.add("F1", function () {
         me.createOrUpdateOrder(2);
       });
->>>>>>> feature/box-settings
 
 			shortcut.add("F2", function() {
 				me.createOrUpdateOrder(4);
