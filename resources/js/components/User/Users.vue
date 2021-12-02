@@ -31,6 +31,7 @@
               <th scope="col">#</th>
               <th scope="col">Nombre</th>
               <th scope="col">Email</th>
+              <th scope="col">Username</th>
               <th scope="col">Rol</th>
               <th v-if="$root.validatePermission('user.active')">Estado</th>
               <th v-if="$root.validatePermission('user.update')">
@@ -46,6 +47,7 @@
               <th scope="row">{{ index + 1 }}</th>
               <td>{{ user.name }}</td>
               <td>{{ user.email }}</td>
+              <td>{{ user.username }}</td>
               <td v-if=" user.roles.length > 0 " >{{ user.roles[0].name }}</td>
               <td v-else> No definido</td>
               <td v-if="$root.validatePermission('user.active')">

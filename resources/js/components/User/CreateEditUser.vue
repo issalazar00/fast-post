@@ -33,7 +33,9 @@
                 v-model="formUser.name"
                 required
               />
-              <small id="nameHelp" class="form-text text-danger">{{formErrors.name}}</small>
+              <small id="nameHelp" class="form-text text-danger">{{
+                formErrors.name
+              }}</small>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
@@ -49,6 +51,21 @@
               />
               <small id="emailHelp" class="form-text text-danger">{{
                 formErrors.email
+              }}</small>
+            </div>
+            <div class="form-group">
+              <label for="name">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                placeholder="Ingresar nombre de usuario"
+                v-model="formUser.username"
+                required
+              />
+              <small id="usernameHelp" class="form-text text-danger">{{
+                formErrors.username
               }}</small>
             </div>
             <div class="form-row">
@@ -129,10 +146,10 @@ export default {
     return {
       formUser: {},
       formErrors: {
-        name : '',
-        email:'',
-        password: '',
-        rol: ''
+        name: "",
+        email: "",
+        password: "",
+        rol: "",
       },
       listRoles: [],
     };
@@ -201,13 +218,15 @@ export default {
         if (errors.email != undefined) {
           this.formErrors.email = errors.email[0];
         }
+        if (errors.username != undefined) {
+          this.formErrors.username = errors.username[0];
+        }
         if (errors.password != undefined) {
           this.formErrors.password = errors.password[0];
         }
         if (errors.rol != undefined) {
           this.formErrors.rol = errors.rol[0];
         }
-
       } else {
         this.formErrors.name = "";
         this.formErrors.email = "";

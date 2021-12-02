@@ -10369,8 +10369,8 @@ __webpack_require__.r(__webpack_exports__);
         return _this.isLoading = false;
       });
     },
-    ShowData: function ShowData(brand) {
-      this.$refs.CreateEditBox.OpenEditBox(brand);
+    ShowData: function ShowData(box) {
+      this.$refs.CreateEditBox.OpenEditBox(box);
     },
     changeState: function changeState(id) {
       var me = this;
@@ -12088,11 +12088,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
       data: "Login",
       api: _services_global_js__WEBPACK_IMPORTED_MODULE_0__["default"].api,
       formValues: {
-        email: "",
+        username: "",
         password: ""
       },
       formErrors: {
-        email: "",
+        username: "",
         password: ""
       }
     };
@@ -12107,7 +12107,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           "Content-Type": "multipart/form-data"
         }
       };
-      this.formErrors.email = "";
+      this.formErrors.username = "";
       this.formErrors.password = "";
       var formLogin = document.getElementById("form_login");
       axios.post(this.api + "/login", new FormData(formLogin), config).then(function (response) {
@@ -12123,10 +12123,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         var errors = error.response.data.errors;
 
         if (typeof errors != "undefined") {
-          if (typeof errors.email != "undefined") {
-            _this.formValues.email = "";
+          if (typeof errors.username != "undefined") {
+            _this.formValues.username = "";
             _this.formValues.password = "";
-            _this.formErrors.email = errors.email[0];
+            _this.formErrors.username = errors.username[0];
           }
 
           _this.formValues.password = "";
@@ -16120,16 +16120,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CreateEditUser",
   data: function data() {
     return {
       formUser: {},
       formErrors: {
-        name: '',
-        email: '',
-        password: '',
-        rol: ''
+        name: "",
+        email: "",
+        password: "",
+        rol: ""
       },
       listRoles: []
     };
@@ -16200,6 +16217,10 @@ __webpack_require__.r(__webpack_exports__);
           this.formErrors.email = errors.email[0];
         }
 
+        if (errors.username != undefined) {
+          this.formErrors.username = errors.username[0];
+        }
+
         if (errors.password != undefined) {
           this.formErrors.password = errors.password[0];
         }
@@ -16234,6 +16255,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _CreateEditUser_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateEditUser.vue */ "./resources/js/components/User/CreateEditUser.vue");
+//
+//
 //
 //
 //
@@ -16750,17 +16773,19 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_35__["default"]({
     selectedBox: function selectedBox() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_33___default().get('api/boxes/byUser', this.config).then(function (response) {
-        _this2.listBoxes = response.data.boxes;
-      })["catch"](function (response) {
-        _this2.listBoxes = [];
-      });
-      var box = localStorage.getItem('box_worker');
+      if (this.user) {
+        axios__WEBPACK_IMPORTED_MODULE_33___default().get('api/boxes/byUser', this.config).then(function (response) {
+          _this2.listBoxes = response.data.boxes;
+        })["catch"](function (response) {
+          _this2.listBoxes = [];
+        });
+        var box = localStorage.getItem('box_worker');
 
-      if (box) {
-        this.box = box;
-      } else {
-        $("#selected_box_user").modal("show");
+        if (box > 0) {
+          this.box = box;
+        } else {
+          $("#selected_box_user").modal("show");
+        }
       }
     },
     saveBox: function saveBox() {
@@ -58745,7 +58770,7 @@ var render = function() {
           _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "col text-right" }, [
-            _vm.$root.validatePermission("brand.store")
+            _vm.$root.validatePermission("box.store")
               ? _c(
                   "button",
                   {
@@ -58810,17 +58835,19 @@ var render = function() {
                           _vm._v("Prefijo")
                         ]),
                         _vm._v(" "),
-                        _c("td", { attrs: { scope: "col" } }, [
-                          _vm._v("Asignar usuarios")
-                        ]),
+                        _vm.$root.validatePermission("box.store")
+                          ? _c("td", { attrs: { scope: "col" } }, [
+                              _vm._v("Asignar usuarios")
+                            ])
+                          : _vm._e(),
                         _vm._v(" "),
-                        _vm.$root.validatePermission("brand.active")
+                        _vm.$root.validatePermission("box.active")
                           ? _c("th", { attrs: { scope: "col" } }, [
                               _vm._v("Estado")
                             ])
                           : _vm._e(),
                         _vm._v(" "),
-                        _vm.$root.validatePermission("brand.update")
+                        _vm.$root.validatePermission("box.update")
                           ? _c("th", [_vm._v("Opciones")])
                           : _vm._e()
                       ])
@@ -58838,28 +58865,30 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(box.prefix))]),
                           _vm._v(" "),
-                          _c("th", [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-outline-primary",
-                                on: {
-                                  click: function($event) {
-                                    return _vm.$refs.AssignUser.OpenAssignUser(
-                                      box
-                                    )
-                                  }
-                                }
-                              },
-                              [
-                                _c("i", {
-                                  staticClass: "bi bi-person-plus-fill"
-                                })
-                              ]
-                            )
-                          ]),
+                          _vm.$root.validatePermission("box.store")
+                            ? _c("th", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-outline-primary",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.$refs.AssignUser.OpenAssignUser(
+                                          box
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "bi bi-person-plus-fill"
+                                    })
+                                  ]
+                                )
+                              ])
+                            : _vm._e(),
                           _vm._v(" "),
-                          _vm.$root.validatePermission("brand.active")
+                          _vm.$root.validatePermission("box.active")
                             ? _c("td", [
                                 _c(
                                   "button",
@@ -58892,7 +58921,7 @@ var render = function() {
                               ])
                             : _vm._e(),
                           _vm._v(" "),
-                          _vm.$root.validatePermission("brand.update")
+                          _vm.$root.validatePermission("box.update")
                             ? _c("td", [
                                 _c(
                                   "button",
@@ -61502,8 +61531,8 @@ var render = function() {
               },
               [
                 _c("div", { staticClass: "form-group" }, [
-                  _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                    _vm._v("Email")
+                  _c("label", { attrs: { for: "exampleInputUsername1" } }, [
+                    _vm._v("Username")
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -61511,26 +61540,30 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.formValues.email,
-                        expression: "formValues.email"
+                        value: _vm.formValues.username,
+                        expression: "formValues.username"
                       }
                     ],
                     staticClass: "form-control",
                     attrs: {
-                      type: "email",
-                      id: "email",
-                      "aria-describedby": "emailHelp",
-                      name: "email",
-                      placeholder: "Ingresar email",
+                      type: "text",
+                      id: "username",
+                      "aria-describedby": "usernameHelp",
+                      name: "username",
+                      placeholder: "Ingresar username",
                       required: ""
                     },
-                    domProps: { value: _vm.formValues.email },
+                    domProps: { value: _vm.formValues.username },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.formValues, "email", $event.target.value)
+                        _vm.$set(
+                          _vm.formValues,
+                          "username",
+                          $event.target.value
+                        )
                       }
                     }
                   }),
@@ -61539,9 +61572,9 @@ var render = function() {
                     "small",
                     {
                       staticClass: "form-text text-danger",
-                      attrs: { id: "emailHelp" }
+                      attrs: { id: "usernameHelp" }
                     },
-                    [_vm._v(_vm._s(_vm.formErrors.email))]
+                    [_vm._v(_vm._s(_vm.formErrors.username))]
                   )
                 ]),
                 _vm._v(" "),
@@ -67744,6 +67777,47 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "name" } }, [_vm._v("Username")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.formUser.username,
+                      expression: "formUser.username"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    id: "username",
+                    name: "username",
+                    placeholder: "Ingresar nombre de usuario",
+                    required: ""
+                  },
+                  domProps: { value: _vm.formUser.username },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.formUser, "username", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "small",
+                  {
+                    staticClass: "form-text text-danger",
+                    attrs: { id: "usernameHelp" }
+                  },
+                  [_vm._v(_vm._s(_vm.formErrors.username))]
+                )
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "form-row" }, [
                 _c("div", { staticClass: "form-group col-12 col-md-6" }, [
                   _c("label", { attrs: { for: "password" } }, [
@@ -68059,6 +68133,10 @@ var render = function() {
                           _vm._v("Email")
                         ]),
                         _vm._v(" "),
+                        _c("th", { attrs: { scope: "col" } }, [
+                          _vm._v("Username")
+                        ]),
+                        _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [_vm._v("Rol")]),
                         _vm._v(" "),
                         _vm.$root.validatePermission("user.active")
@@ -68084,6 +68162,8 @@ var render = function() {
                           _c("td", [_vm._v(_vm._s(user.name))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(user.email))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(user.username))]),
                           _vm._v(" "),
                           user.roles.length > 0
                             ? _c("td", [_vm._v(_vm._s(user.roles[0].name))])

@@ -11,7 +11,7 @@
             class="btn btn-outline-primary"
             data-toggle="modal"
             data-target="#boxModal"
-            v-if="$root.validatePermission('brand.store')"
+            v-if="$root.validatePermission('box.store')"
             @click="$refs.CreateEditBox.ResetData()"
           >
             Crear Cajas
@@ -34,9 +34,9 @@
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Prefijo</th>
-                <td scope="col">Asignar usuarios</td>
-                <th scope="col" v-if="$root.validatePermission('brand.active')">Estado</th>
-                <th v-if="$root.validatePermission('brand.update')">Opciones</th>
+                <td scope="col" v-if="$root.validatePermission('box.store')">Asignar usuarios</td>
+                <th scope="col" v-if="$root.validatePermission('box.active')">Estado</th>
+                <th v-if="$root.validatePermission('box.update')">Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -44,12 +44,12 @@
                 <th scope="row">{{ box.id }}</th>
                 <td>{{ box.name }}</td>
                 <td>{{ box.prefix }}</td>
-                <th>
+                <th v-if="$root.validatePermission('box.store')">
                   <button class="btn btn-outline-primary" @click="$refs.AssignUser.OpenAssignUser(box)">
                     <i class="bi bi-person-plus-fill"></i>
                   </button>
                 </th>
-                <td v-if="$root.validatePermission('brand.active')">
+                <td v-if="$root.validatePermission('box.active')">
                   <button
                     class="btn"
                     :class="
@@ -63,7 +63,7 @@
                     <i v-if="box.active == 0" class="bi bi-check-circle"></i>
                   </button>
                 </td>
-                <td v-if="$root.validatePermission('brand.update')">
+                <td v-if="$root.validatePermission('box.update')">
                   <button
                     class="btn btn-outline-success"
                     @click="ShowData(box)"
@@ -111,8 +111,8 @@ export default {
         })
         .finally(() => (this.isLoading = false));
     },
-    ShowData: function (brand) {
-      this.$refs.CreateEditBox.OpenEditBox(brand);
+    ShowData: function (box) {
+      this.$refs.CreateEditBox.OpenEditBox(box);
     },
     changeState: function (id) {
       let me = this;

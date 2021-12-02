@@ -37,7 +37,7 @@
 				<button  type="button" class="btn btn-primary d-none" data-toggle="modal" data-target="#selected_box_user">
 				
 				</button>
-				<div class="modal" id="selected_box_user" tabindex="-1" aria-hidden="true" data-backdrop="static">
+				<div class="modal" id="selected_box_user" data-keyboard="false" tabindex="-1"  data-backdrop="static" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 						<div class="modal-header">
@@ -47,7 +47,7 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<select name="selected_box_user" id="" class="form-control" v-model="box">
+							<select id="" class="form-control" v-model="box">
 									<option value="" disabled>Seleccione una caja</option>
 									<option v-for="item in listBoxes" :value="item.id" :key="item.id">
 										@{{ item.name+' '+item.prefix }}

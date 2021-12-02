@@ -25,6 +25,7 @@ class UserController extends Controller
         $validate = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:255',
             'email' => 'required|email:rfc,dns|unique:users|max:255',
+            'username' => 'required|alpha_num|unique:users|min:4|max:25',
             'password' => 'required|confirmed|min:8',
             'rol' => 'required|integer|exists:roles,id'
         ]);
@@ -41,6 +42,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'username' => $request->input('username'),
             'password' => Hash::make($request->input('password')),
         ]);
 
@@ -57,7 +59,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users',
+            'username' => 'required|alpha_num|exists:users',
             'password' => 'required'
         ]);
 
@@ -71,7 +73,7 @@ class UserController extends Controller
         }
 
 
-        $user = User::where('email', $request->input('email'))->first();
+        $user = User::where('username', $request->input('username'))->first();
 
         if (is_object($user) && $user->state) {
             $validatePassword = Hash::check($request->input('password'), $user->password);
@@ -89,6 +91,7 @@ class UserController extends Controller
                         'sub' => $user->id,
                         'name' => $user->name,
                         'email' => $user->email,
+                        'username' => $user->username,
                         'permissions' => $user->getAllPermissions(),
                         'iat' => time(),
                         'exp' => time() + (7 * 60),
@@ -199,8 +202,8 @@ class UserController extends Controller
                 'name' => 'required|string|min:3|max:255',
                 'rol' => 'required|integer|exists:roles,id',
                 'password' => 'nullable|confirmed|min:8',
-                'email' => 'required|email:rfc,dns|max:255', Rule::unique('users')->ignore($request->user()->id)
-
+                'email' => 'required|email:rfc,dns|max:255', Rule::unique('users')->ignore($request->user()->id),
+                'username' => 'required|alpha_num|min:4|max:25', Rule::unique('users')->ignore($request->user()->id)
             ]);
 
             if ($validate->fails()) {
@@ -214,7 +217,8 @@ class UserController extends Controller
 
             $user = User::where('id', $id)->update([
                 'name' => $request->input('name'),
-                'email' => $request->input('email')
+                'email' => $request->input('email'),
+                'username' => $request->input('username')
             ]);
 
             $user = User::find($id);

@@ -233,21 +233,23 @@ const app = new Vue({
     },
     selectedBox(){
 
-      axios.
-      get('api/boxes/byUser',this.config)
-      .then((response)=>{
-        this.listBoxes = response.data.boxes;
+      if(this.user){
+        axios.
+        get('api/boxes/byUser',this.config)
+        .then((response)=>{
+          this.listBoxes = response.data.boxes;
+          
+        })
+        .catch((response)=>{
+          this.listBoxes = [];
+        });
         
-      })
-      .catch((response)=>{
-        this.listBoxes = [];
-      });
-      
-      let box = localStorage.getItem('box_worker');
-      if(box){
-        this.box = box;
-      }else{
-        $("#selected_box_user").modal("show");
+        let box = localStorage.getItem('box_worker');
+        if(box > 0){
+          this.box = box;
+        }else{
+          $("#selected_box_user").modal("show");
+        }
       }
 
       
