@@ -16,11 +16,11 @@ class BoxController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:category.index')->only('index', 'show');
-        $this->middleware('can:category.store')->only('store');
-        $this->middleware('can:category.update')->only('update');
-        $this->middleware('can:category.delete')->only('destroy');
-        $this->middleware('can:category.active')->only('active');
+        $this->middleware('can:box.index')->only('index', 'show');
+        $this->middleware('can:box.store')->only('store');
+        $this->middleware('can:box.update')->only('update');
+        $this->middleware('can:box.delete')->only('destroy');
+        $this->middleware('can:box.active')->only('active');
     }
 
     /**
@@ -242,7 +242,7 @@ class BoxController extends Controller
             $data = [
                 'status' => 'success',
                 'code' => 200,
-                'category' => $box
+                'box' => $box
             ];
         } else {
             $data = [

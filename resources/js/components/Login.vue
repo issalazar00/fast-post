@@ -10,19 +10,19 @@
           <div class="col-6">
             <form id="form_login" autocomplete="off" @submit.prevent="login">
               <div class="form-group">
-                <label for="exampleInputEmail1">Email</label>
+                <label for="exampleInputUsername1">Username</label>
                 <input
-                  type="email"
+                  type="text"
                   class="form-control"
-                  id="email"
-                  aria-describedby="emailHelp"
-                  name="email"
-                  placeholder="Ingresar email"
+                  id="username"
+                  aria-describedby="usernameHelp"
+                  name="username"
+                  placeholder="Ingresar username"
                   required
-                  v-model="formValues.email"
+                  v-model="formValues.username"
                 />
-                <small id="emailHelp" class="form-text text-danger">{{
-                  formErrors.email
+                <small id="usernameHelp" class="form-text text-danger">{{
+                  formErrors.username
                 }}</small>
               </div>
               <div class="form-group">
@@ -61,11 +61,11 @@ export default {
       data: "Login",
       api: global.api,
       formValues: {
-        email: "",
+        username: "",
         password: "",
       },
       formErrors: {
-        email: "",
+        username: "",
         password: "",
       },
     };
@@ -79,7 +79,7 @@ export default {
         },
       };
 
-      this.formErrors.email = "";
+      this.formErrors.username = "";
       this.formErrors.password = "";
 
       const formLogin = document.getElementById("form_login");
@@ -100,11 +100,11 @@ export default {
           var errors = error.response.data.errors;
 
           if (typeof errors != "undefined") {
-            if (typeof errors.email != "undefined") {
-              this.formValues.email = "";
+            if (typeof errors.username != "undefined") {
+              this.formValues.username = "";
               this.formValues.password = "";
 
-              this.formErrors.email = errors.email[0];
+              this.formErrors.username = errors.username[0];
             }
 
             this.formValues.password = "";
