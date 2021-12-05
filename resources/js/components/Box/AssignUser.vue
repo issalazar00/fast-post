@@ -93,12 +93,7 @@ export default {
   data() {
     return {
       formBox: {},
-      consecutive_boxErrors: {},
       assignments: [],
-      formErrors: {
-        name: "",
-        prefix: "",
-      },
     };
   },
   created() {},
@@ -135,13 +130,14 @@ export default {
 
     ResetData() {
       let me = this;
+      $("#formAssignUser")[0].reset();
       $("#assignUserModal").modal("hide");
-      me.consecutive_box = [];
       me.formBox = {
         name: "",
         prefix: "",
       };
-      $("#formAssignUser")[0].reset();
+      me.assignments = [];
+      
     }
   },
   mounted() {},

@@ -10,7 +10,7 @@
           <div class="col-6">
             <form id="form_login" autocomplete="off" @submit.prevent="login">
               <div class="form-group">
-                <label for="exampleInputUsername1">Username</label>
+                <label for="exampleInputUsername1">Usuario o email</label>
                 <input
                   type="text"
                   class="form-control"
@@ -26,7 +26,7 @@
                 }}</small>
               </div>
               <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
+                <label for="exampleInputPassword1">Contraseña</label>
                 <input
                   type="password"
                   class="form-control"

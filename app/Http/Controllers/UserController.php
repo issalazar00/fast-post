@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         $this->middleware('can:user.index')->only('index');
         $this->middleware('can:user.store')->only('store','register');
-        $this->middleware('can:user.update')->only('update');
+        //$this->middleware('can:user.update')->only('update');
         $this->middleware('can:user.delete')->only('destroy');
         $this->middleware('can:user.active')->only('active');
     }
@@ -59,7 +59,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'username' => 'required|alpha_num|exists:users',
+            'username' => 'required',
             'password' => 'required'
         ]);
 
@@ -72,8 +72,32 @@ class UserController extends Controller
             ], 400);
         }
 
+        if(strpos($request->username, "@")){
+            $condition = [
+                'validate' => 'string|exists:users,email',
+                'where' => 'email'
+            ];
+        }else{
+            $condition = [
+                'validate' => 'alpha_num|exists:users',
+                'where' => 'username'
+            ];
+        }
 
-        $user = User::where('username', $request->input('username'))->first();
+        $validateAccess = Validator::make($request->all(), [
+            'username' => $condition['validate'],
+        ]);
+
+        if ($validateAccess->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'code' =>  400,
+                'message' => 'Validación de datos incorrecta',
+                'errors' =>  $validateAccess->errors()
+            ], 400);
+        }
+
+        $user = User::where($condition['where'], $request->input('username'))->first();
 
         if (is_object($user) && $user->state) {
             $validatePassword = Hash::check($request->input('password'), $user->password);
@@ -200,7 +224,8 @@ class UserController extends Controller
     {
             $validate = Validator::make($request->all(), [
                 'name' => 'required|string|min:3|max:255',
-                'rol' => 'required|integer|exists:roles,id',
+                'edit_profile' => 'nullable|boolean',
+                'rol' => 'required_if:edit_profile,==,false|integer|exists:roles,id',
                 'password' => 'nullable|confirmed|min:8',
                 'email' => 'required|email:rfc,dns|max:255', Rule::unique('users')->ignore($request->user()->id),
                 'username' => 'required|alpha_num|min:4|max:25', Rule::unique('users')->ignore($request->user()->id)
@@ -215,19 +240,28 @@ class UserController extends Controller
                 ], 400);
             }
 
-            $user = User::where('id', $id)->update([
+            $update = [
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'username' => $request->input('username')
-            ]);
+            ];
 
-            $user = User::find($id);
-            $user->syncRoles([$request->input('rol')]);
+            if($request->password)
+            {
+                $update['password'] = Hash::make($request->input('password'));
+            }
+
+            $user = User::where('id', $id)->update($update);  
+
+            if(!$request->edit_profile){
+                $user = User::find($id);
+                $user->syncRoles([$request->input('rol')]);
+            }
 
             $data = [
                 'status' => 'success',
                 'code' =>  200,
-                'message' => 'Actualización exitosa ',
+                'message' => 'Actualización exitosa',
                 'user' => $user
             ];
 
@@ -258,4 +292,52 @@ class UserController extends Controller
         $user->state = !$user->state;
         $user->save();
     }
+
+    public function changePassword(Request $request){
+
+        $validate = Validator::make($request->all(), [
+            'old_password' => 'required|min:8',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'code' =>  400,
+                'message' => 'Validación de datos incorrecta',
+                'errors' =>  $validate->errors()
+            ], 400);
+        }
+
+        $user  = User::find($request->user()->id);
+
+        $validatePassword = Hash::check($request->old_password, $user->password);
+
+        if($validatePassword){
+            $user->password = Hash::make($request->password);
+            $user->update();
+
+            $data = [
+                'status' => 'success',
+                'code' =>  200,
+                'message' => 'Actualización exitosa'
+            ];
+        }else{
+            $data = [
+                'status' => 'error',
+                'code' =>  400,
+                'message' => 'Validación de datos incorrecta',
+                'errors' =>  [
+                    'old_password' => [
+                        'Contraseña invalida'
+                    ]
+                ]
+            ];
+        }
+
+        return response()->json($data, $data['code']);
+        
+    }
+
+    
 }

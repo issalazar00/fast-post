@@ -196,6 +196,13 @@ const app = new Vue({
     },
     box(){
       localStorage.setItem("box_worker", this.box);
+    },
+    user:{
+      deep:true,
+      handler(){
+        localStorage.setItem("user", JSON.stringify(this.user));
+      }
+
     }
   },
   router,

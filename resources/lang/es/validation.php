@@ -191,7 +191,10 @@ return [
         'consecutive_box.*.from_nro' => 'consecutivo inicial',
         'consecutive_box.*.until_nro' => 'consecutivo final',
         'consecutive_box.*.from_date' => 'fecha inicial',
-        'consecutive_box.*.until_date' => 'fecha vencimiento'
+        'consecutive_box.*.until_date' => 'fecha vencimiento',
         //Box---------------------------------------
+        //Configuration Profile ---------------------------
+        'old_password' => 'contraseña actual',
+        //Configuration Profile ---------------------------
     ],
 ];

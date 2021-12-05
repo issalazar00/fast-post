@@ -10196,12 +10196,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       formBox: {},
-      consecutive_boxErrors: {},
-      assignments: [],
-      formErrors: {
-        name: "",
-        prefix: ""
-      }
+      assignments: []
     };
   },
   created: function created() {},
@@ -10229,13 +10224,13 @@ __webpack_require__.r(__webpack_exports__);
     },
     ResetData: function ResetData() {
       var me = this;
+      $("#formAssignUser")[0].reset();
       $("#assignUserModal").modal("hide");
-      me.consecutive_box = [];
       me.formBox = {
         name: "",
         prefix: ""
       };
-      $("#formAssignUser")[0].reset();
+      me.assignments = [];
     }
   },
   mounted: function mounted() {}
@@ -13970,56 +13965,317 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      formUser: {
+        id: this.$root.user.sub,
+        name: this.$root.user.name,
+        email: this.$root.user.email,
+        username: this.$root.user.username,
+        edit_profile: true
+      },
+      formPassword: {
+        old_password: "",
+        password: "",
+        password_confirmation: ""
+      },
+      formUserErrors: {
+        name: "",
+        email: "",
+        username: ""
+      },
+      formPasswordErrors: {
+        old_password: "",
+        password: "",
+        password_confirmation: ""
+      }
+    };
   },
   created: function created() {
-    this.$root.validateToken(); //this.getCofiguration();
+    this.$root.validateToken();
   },
   methods: {
-    getCofiguration: function getCofiguration() {
+    updateProfile: function updateProfile() {
       var _this = this;
 
-      axios.get("api/configurations", this.$root.config).then(function (response) {
-        if (response.data.configuration) {
-          var _this$formConfigurati;
-
-          _this.formConfiguration = response.data.configuration;
-          _this.formConfiguration.condition_quotation = (_this$formConfigurati = _this.formConfiguration.condition_quotation) !== null && _this$formConfigurati !== void 0 ? _this$formConfigurati : "";
-        }
-      });
-    },
-    saveConfiguration: function saveConfiguration() {
-      var _this2 = this;
-
-      this.assignErrors(false);
-      var form = new FormData($("#form_configuration")[0]);
-      form.append("id", this.formConfiguration.id);
-      form.set("condition_quotation", this.formConfiguration.condition_quotation);
-      axios.post("api/configurations", form, this.$root.config).then(function (response) {
-        _this2.formConfiguration = response.data.configuration;
+      var me = this;
+      this.assignErrors(false, 1);
+      axios.put("api/users/" + this.formUser.id, this.formUser, this.$root.config).then(function () {
+        me.$root.user.name = me.formUser.name;
+        me.$root.user.email = me.formUser.email;
+        me.$root.user.username = me.formUser.username;
+        $("#modalInformationBasic").modal("hide");
       })["catch"](function (response) {
-        _this2.assignErrors(response);
+        _this.assignErrors(response, 1);
       });
     },
-    assignErrors: function assignErrors(response) {
-      var _this3 = this;
+    updatePassword: function updatePassword() {
+      this.assignErrors(false, 2);
+      var me = this;
+      axios.put("api/users/changePassword", this.formPassword, this.$root.config).then(function (response) {
+        me.resetData(2);
+      })["catch"](function (response) {
+        me.assignErrors(response, 2);
+      });
+    },
+    resetData: function resetData(optionForm) {
+      if (optionForm == 1) {
+        this.formUser = {
+          id: this.$root.user.sub,
+          name: this.$root.user.name,
+          email: this.$root.user.email,
+          username: this.$root.user.username,
+          edit_profile: true
+        };
+      } else if (optionForm == 2) {
+        this.formPassword = {
+          old_password: "",
+          password: "",
+          password_confirmation: ""
+        };
+        this.assignErrors(false, 2);
+        $("#modalChangePassword").modal("hide");
+      }
+    },
+    assignErrors: function assignErrors(response, optionForm) {
+      if (optionForm == 1) {
+        if (response) {
+          var errors = response.response.data.errors;
 
-      var fillable = ["name", "legal_representative", "nit", "address", "email", "tax_regime", "telephone", "mobile", "file0", "printer", "condition_order", "condition_quotation"];
-
-      if (response) {
-        var errors = response.response.data.errors;
-        console.log(errors);
-        fillable.forEach(function (index) {
-          if (errors[index] != undefined) {
-            _this3.formErrors[index] = errors[index][0];
+          if (errors.name != undefined) {
+            this.formUserErrors.name = errors.name[0];
           }
-        });
-      } else {
-        fillable.forEach(function (index) {
-          _this3.formErrors[index] = "";
-        });
+
+          if (errors.email != undefined) {
+            this.formUserErrors.email = errors.email[0];
+          }
+
+          if (errors.username != undefined) {
+            this.formUserErrors.username = errors.username[0];
+          }
+        } else {
+          this.formUserErrors.name = "";
+          this.formUserErrors.email = "";
+          this.formUserErrors.username = "";
+        }
+      } else if (optionForm == 2) {
+        if (response) {
+          var errors = response.response.data.errors;
+
+          if (errors.old_password != undefined) {
+            this.formPasswordErrors.old_password = errors.old_password[0];
+          }
+
+          if (errors.password != undefined) {
+            this.formPasswordErrors.password = errors.password[0];
+          }
+        } else {
+          this.formPasswordErrors.old_password = "";
+          this.formPasswordErrors.password = "";
+        }
       }
     }
   }
@@ -15438,6 +15694,7 @@ __webpack_require__.r(__webpack_exports__);
         this.formErrors.email = "";
         this.formErrors.password = "";
         this.formErrors.rol = "";
+        this.formErrors.username = "";
       }
     }
   },
@@ -15943,6 +16200,12 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_36__["default"]({
     },
     box: function box() {
       localStorage.setItem("box_worker", this.box);
+    },
+    user: {
+      deep: true,
+      handler: function handler() {
+        localStorage.setItem("user", JSON.stringify(this.user));
+      }
     }
   },
   router: router,
@@ -60654,7 +60917,7 @@ var render = function() {
               [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "exampleInputUsername1" } }, [
-                    _vm._v("Username")
+                    _vm._v("Usuario o email")
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -60702,7 +60965,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "exampleInputPassword1" } }, [
-                    _vm._v("Password")
+                    _vm._v("Contraseña")
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -63756,19 +64019,485 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "col-12" }, [
+    _c("h3", { staticClass: "text-center page-header" }, [
+      _vm._v("Configuración Perfil")
+    ]),
+    _vm._v(" "),
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "modalInformationBasic",
+          "data-backdrop": "static",
+          "data-keyboard": "false",
+          tabindex: "-1",
+          "aria-labelledby": "modalInformationBasicLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header" }, [
+              _c(
+                "h5",
+                {
+                  staticClass: "modal-title",
+                  attrs: { id: "modalInformationBasicLabel" }
+                },
+                [_vm._v("\n            Editar Informacion basica\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "modal",
+                    "aria-label": "Close"
+                  }
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      attrs: { "aria-hidden": "true" },
+                      on: {
+                        click: function($event) {
+                          return _vm.resetData(1)
+                        }
+                      }
+                    },
+                    [_vm._v("×")]
+                  )
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("form", { attrs: { id: "form_rol" } }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formUser.name,
+                        expression: "formUser.name"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      id: "name",
+                      name: "name",
+                      placeholder: "Ingresar nombre",
+                      required: ""
+                    },
+                    domProps: { value: _vm.formUser.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.formUser, "name", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass: "form-text text-danger",
+                      attrs: { id: "nameHelp" }
+                    },
+                    [_vm._v(_vm._s(_vm.formUserErrors.name))]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formUser.email,
+                        expression: "formUser.email"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "email",
+                      id: "email",
+                      name: "email",
+                      placeholder: "Ingresar email",
+                      pattern:
+                        "[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}",
+                      required: ""
+                    },
+                    domProps: { value: _vm.formUser.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.formUser, "email", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass: "form-text text-danger",
+                      attrs: { id: "emailHelp" }
+                    },
+                    [_vm._v(_vm._s(_vm.formUserErrors.email))]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "name" } }, [_vm._v("Username")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formUser.username,
+                        expression: "formUser.username"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      id: "username",
+                      name: "username",
+                      placeholder: "Ingresar nombre de usuario",
+                      required: ""
+                    },
+                    domProps: { value: _vm.formUser.username },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.formUser, "username", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass: "form-text text-danger",
+                      attrs: { id: "usernameHelp" }
+                    },
+                    [_vm._v(_vm._s(_vm.formUserErrors.username))]
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button", "data-dismiss": "modal" },
+                  on: {
+                    click: function($event) {
+                      return _vm.resetData(1)
+                    }
+                  }
+                },
+                [_vm._v("\n            Cancelar\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      return _vm.updateProfile()
+                    }
+                  }
+                },
+                [_vm._v("\n            Guardar\n          ")]
+              )
+            ])
+          ])
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "modalChangePassword",
+          "data-backdrop": "static",
+          "data-keyboard": "false",
+          tabindex: "-1",
+          "aria-labelledby": "modalInformationBasicLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("div", { staticClass: "form-row" }, [
+                _c("div", { staticClass: "form-group col-12" }, [
+                  _c("label", { attrs: { for: "old_password" } }, [
+                    _vm._v("Contraseña Actual")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formPassword.old_password,
+                        expression: "formPassword.old_password"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "password",
+                      id: "old_password",
+                      name: "password_confirmation",
+                      placeholder: "Ingresar contraseña",
+                      pattern:
+                        "^(?=\\w*\\d)(?=\\w*[A-Z])(?=\\w*[a-z])\\S{8,16}$",
+                      required: ""
+                    },
+                    domProps: { value: _vm.formPassword.old_password },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formPassword,
+                          "old_password",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass: "form-text text-danger",
+                      attrs: { id: "old_passwordHelp" }
+                    },
+                    [_vm._v(_vm._s(_vm.formPasswordErrors.old_password))]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group col-12 col-md-6" }, [
+                  _c("label", { attrs: { for: "password" } }, [
+                    _vm._v("Nueva Contraseña")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formPassword.password,
+                        expression: "formPassword.password"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "password",
+                      id: "password",
+                      name: "password",
+                      placeholder: "Ingresar contraseña",
+                      pattern:
+                        "^(?=\\w*\\d)(?=\\w*[A-Z])(?=\\w*[a-z])\\S{8,16}$",
+                      required: ""
+                    },
+                    domProps: { value: _vm.formPassword.password },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formPassword,
+                          "password",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass: "form-text text-danger",
+                      attrs: { id: "passwordHelp" }
+                    },
+                    [_vm._v(_vm._s(_vm.formPasswordErrors.password))]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group col-12 col-md-6" }, [
+                  _c("label", { attrs: { for: "password_confirmation" } }, [
+                    _vm._v("Confirmar contraseña")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formPassword.password_confirmation,
+                        expression: "formPassword.password_confirmation"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "password",
+                      id: "password_confirmation",
+                      name: "password_confirmation",
+                      placeholder: "Ingresar contraseña",
+                      pattern:
+                        "^(?=\\w*\\d)(?=\\w*[A-Z])(?=\\w*[a-z])\\S{8,16}$",
+                      required: ""
+                    },
+                    domProps: { value: _vm.formPassword.password_confirmation },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formPassword,
+                          "password_confirmation",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "small",
+                    {
+                      staticClass: "form-text text-danger",
+                      attrs: { id: "passwordHelp" }
+                    },
+                    [_vm._v(_vm._s(_vm.formPasswordErrors.password))]
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button", "data-dismiss": "modal" }
+                },
+                [_vm._v("\n            Cancelar\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: { click: _vm.updatePassword }
+                },
+                [_vm._v("Guardar")]
+              )
+            ])
+          ])
+        ])
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12" }, [
-      _c("h3", { staticClass: "text-center page-header" }, [
-        _vm._v("Configuración")
-      ]),
+    return _c("div", { staticClass: "d-flex justify-content-center" }, [
+      _c("div", { staticClass: "list-group w-100" }, [
+        _c(
+          "a",
+          {
+            staticClass: "list-group-item list-group-item-action",
+            attrs: {
+              href: "#",
+              "data-toggle": "modal",
+              "data-target": "#modalInformationBasic"
+            }
+          },
+          [_vm._v("\n        1. Información basica\n      ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "list-group-item list-group-item-action",
+            attrs: {
+              href: "#",
+              "data-toggle": "modal",
+              "data-target": "#modalChangePassword"
+            }
+          },
+          [_vm._v("2. Cambiar contraseña")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        {
+          staticClass: "modal-title",
+          attrs: { id: "modalChangePasswordLabel" }
+        },
+        [_vm._v("\n            Cambiar Password\n          ")]
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "d-flex justify-content-center" })
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
     ])
   }
 ]
