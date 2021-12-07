@@ -32,12 +32,8 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nombre</th>
-                <th scope="col" v-if="$root.validatePermission('brand.active')">
-                  Estado
-                </th>
-                <th v-if="$root.validatePermission('brand.update')">
-                  Opciones
-                </th>
+                <th scope="col" v-if="$root.validatePermission('brand.active')">Estado</th>
+                <th v-if="$root.validatePermission('brand.update')">Opciones</th>
               </tr>
             </thead>
             <tbody>
@@ -69,14 +65,6 @@
               </tr>
             </tbody>
           </table>
-          <pagination
-            :align="'center'"
-            :data="BrandList"
-            @pagination-change-page="listBrands"
-          >
-            <span slot="prev-nav">&lt; Previous</span>
-            <span slot="next-nav">Next &gt;</span></pagination
-          >
         </section>
       </div>
     </div>

@@ -8,7 +8,6 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
-use PhpParser\Node\Expr\Cast\Array_;
 
 class ProductController extends Controller
 {
@@ -80,7 +79,7 @@ class ProductController extends Controller
 			'tax_id' => 'required|integer|exists:taxes,id',
 			'brand_id' => 'nullable|integer|exists:brands,id',
 			'product' => 'required|string|min:3|max:100',
-			'barcode' => 'required|string|unique:products',
+			'barcode' => 'required|numeric|unique:products',
 			'type' => 'required|integer',
 			'cost_price_tax_exc' => 'required|numeric',
 			'cost_price_tax_inc' => 'required|numeric',
@@ -187,7 +186,7 @@ class ProductController extends Controller
 			'tax_id' => 'required|integer|exists:taxes,id',
 			'brand_id' => 'nullable|integer|exists:brands,id',
 			'product' => 'required|string|min:3|max:100',
-			'barcode' => ['required', 'string', Rule::unique('products')->ignore($product->barcode, 'barcode')],
+			'barcode' => ['required', 'numeric', Rule::unique('products')->ignore($product->barcode, 'barcode')],
 			'type' => 'required|integer',
 			'cost_price_tax_exc' => 'required|numeric',
 			'cost_price_tax_inc' => 'required|numeric',
@@ -304,7 +303,7 @@ class ProductController extends Controller
 	public function searchProduct(Request $request)
 	{
 		$products = Product::select()
-			->where('barcode', 'LIKE', "$request->product%")
+			->where('barcode', 'LIKE', "%$request->product%")
 			->orWhere('product', 'LIKE', "%$request->product%")
 			->where('state', 1)
 			->first();
@@ -325,7 +324,7 @@ class ProductController extends Controller
 				->where('state', 1)
 				->where('barcode', 'LIKE', "%$request->product%")
 				->orWhere('product', 'LIKE', "%$request->product%")
-				// ->limit(5)
+				->limit(5)
 				->get();
 		}
 
@@ -377,12 +376,5 @@ class ProductController extends Controller
 		}
 
 		die(json_encode($_FILES));
-	}
-
-	public function updatePriceById($id, $cost_price_tax_inc)
-	{
-		$product = Product::select('id', 'cost_price_tax_inc')->where('id', $id)->first();
-		$product->cost_price_tax_inc  =  $cost_price_tax_inc;
-		$product->save();
 	}
 }
