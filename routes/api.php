@@ -36,6 +36,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
+	
+	Route::put('/users/changePassword',  [UserController::class, 'changePassword']);
 	Route::resource('/users', UserController::class);
 	Route::post('/users/{user}/activate',  [UserController::class, 'activate']);
 	Route::post('/register', [UserController::class, 'register']);

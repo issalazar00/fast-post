@@ -334,18 +334,31 @@
 			</div>
 		</div>
 
+<<<<<<< HEAD
 		<add-product @add-product="addProduct($event)" />
 		<add-client @add-client="addClient($event)" />
 	</div>
+=======
+    <add-product @add-product="addProduct($event)" />
+    <add-client @add-client="addClient($event)" />
+    <modal-box ref="ModalBox"></modal-box>
+  </div>
+>>>>>>> feature/box-settings
 </template>
 
 <script>
 import AddProduct from "./AddProduct.vue";
 import AddClient from "./AddClient.vue";
+import ModalBox from  "./../ModalBox.vue";
 
 export default {
+<<<<<<< HEAD
 	components: { AddProduct, AddClient },
 	props: ["order_id"],
+=======
+  components: { AddProduct, AddClient, ModalBox },
+  props: ["order_id"],
+>>>>>>> feature/box-settings
 
 	data() {
 		return {
@@ -568,6 +581,7 @@ export default {
 				me.createOrUpdateOrder(4);
 			});
 
+<<<<<<< HEAD
 			shortcut.add("F10", function() {
 				$("#addProductModal").modal("show");
 			});
@@ -580,5 +594,21 @@ export default {
 		}
 		this.commands();
 	}
+=======
+      shortcut.add("F10", function () {
+        $("#addProductModal").modal("show");
+      });
+      
+    },
+  },
+  mounted() {
+    $("#no-results").toast("hide");
+    if (this.order_id != null || this.order_id != 0) {
+      this.listItemsOrder();
+    }
+    this.commands();
+    this.$refs.ModalBox.selectedBox();
+  },
+>>>>>>> feature/box-settings
 };
 </script>

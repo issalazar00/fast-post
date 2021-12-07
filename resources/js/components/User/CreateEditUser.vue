@@ -232,6 +232,7 @@ export default {
         this.formErrors.email = "";
         this.formErrors.password = "";
         this.formErrors.rol = "";
+        this.formErrors.username = "";
       }
     },
   },

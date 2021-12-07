@@ -105,11 +105,13 @@
 		<div id="collapseSettings" class="collapse" aria-labelledby="headingSettings" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Sistema:</h6>
+				<router-link class="collapse-item" to="/profile">Perfil</router-link>
 				<router-link v-if="validatePermission('configuration')" class="collapse-item" to="/configuration">Configuración
 					general</router-link>
 				<router-link class="collapse-item" to="/roles" v-if="validatePermission('rol.index')">Roles</router-link>
 				<router-link class="collapse-item" v-if="validatePermission('user.index')" to="/users">Usuarios
 				</router-link>
+				<router-link class="collapse-item" v-if="validatePermission('box.index')" to="/boxes">Cajas</router-link>
 			</div>
 		</div>
 	</li>
