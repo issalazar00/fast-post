@@ -11,8 +11,6 @@
 						<td>$ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}</td>
 					</tr>
 				</table>
-
-				<!-- </div> -->
 			</div>
 			<div class="position-fixed top-0 right-0 w-50" style="z-index: 3000">
 				<div
@@ -334,16 +332,10 @@
 			</div>
 		</div>
 
-<<<<<<< HEAD
-		<add-product @add-product="addProduct($event)" />
-		<add-client @add-client="addClient($event)" />
-	</div>
-=======
     <add-product @add-product="addProduct($event)" />
     <add-client @add-client="addClient($event)" />
     <modal-box ref="ModalBox"></modal-box>
   </div>
->>>>>>> feature/box-settings
 </template>
 
 <script>
@@ -352,13 +344,8 @@ import AddClient from "./AddClient.vue";
 import ModalBox from  "./../ModalBox.vue";
 
 export default {
-<<<<<<< HEAD
-	components: { AddProduct, AddClient },
-	props: ["order_id"],
-=======
   components: { AddProduct, AddClient, ModalBox },
   props: ["order_id"],
->>>>>>> feature/box-settings
 
 	data() {
 		return {
@@ -581,20 +568,6 @@ export default {
 				me.createOrUpdateOrder(4);
 			});
 
-<<<<<<< HEAD
-			shortcut.add("F10", function() {
-				$("#addProductModal").modal("show");
-			});
-		}
-	},
-	mounted() {
-		$("#no-results").toast("hide");
-		if (this.order_id != null || this.order_id != 0) {
-			this.listItemsOrder();
-		}
-		this.commands();
-	}
-=======
       shortcut.add("F10", function () {
         $("#addProductModal").modal("show");
       });
@@ -609,6 +582,5 @@ export default {
     this.commands();
     this.$refs.ModalBox.selectedBox();
   },
->>>>>>> feature/box-settings
 };
 </script>
