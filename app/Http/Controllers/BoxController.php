@@ -101,6 +101,11 @@ class BoxController extends Controller
             ]);
         }
 
+        BoxUser::create([
+            'box_id' => $box->id,
+            'user_id' => Auth::id()
+        ]);
+
         return response()->json([
             'status' => 'success',
             'code' => 200,

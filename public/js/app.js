@@ -12161,6 +12161,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _Box_CreateEditBox_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Box/CreateEditBox.vue */ "./resources/js/components/Box/CreateEditBox.vue");
 //
 //
 //
@@ -12215,12 +12216,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "ModalBox",
   data: function data() {
     return {};
   },
   created: function created() {//this.$root.validateToken();
+  },
+  components: {
+    CreateEditBox: _Box_CreateEditBox_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   methods: {
     selectedBox: function selectedBox() {
@@ -60046,9 +60077,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Consecutivo final")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Facha de inicio")]),
+      _c("th", [_vm._v("Fecha de inicio")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Facha vencimiento")]),
+      _c("th", [_vm._v("Fecha vencimiento")]),
       _vm._v(" "),
       _c("th", [_vm._v("Opciones")])
     ])
@@ -62295,130 +62326,179 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "staticBackdrop",
-          "data-backdrop": "static",
-          "data-keyboard": "false",
-          tabindex: "-1",
-          "aria-labelledby": "staticBackdropLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c("div", { staticClass: "modal-dialog" }, [
-          _c("div", { staticClass: "modal-content" }, [
-            _c("div", { staticClass: "modal-header" }, [
-              _c("h5", { staticClass: "modal-title" }, [
-                _vm._v("Seleccionar Caja")
+  return _c(
+    "div",
+    [
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "staticBackdrop",
+            "data-backdrop": "static",
+            "data-keyboard": "false",
+            tabindex: "-1",
+            "aria-labelledby": "staticBackdropLabel",
+            "aria-hidden": "true"
+          }
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h5", { staticClass: "modal-title" }, [
+                  _vm._v("Seleccionar Caja")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    },
+                    on: { click: _vm.resetBox }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
               ]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "close",
-                  attrs: {
-                    type: "button",
-                    "data-dismiss": "modal",
-                    "aria-label": "Close"
-                  },
-                  on: { click: _vm.resetBox }
-                },
-                [
-                  _c("span", { attrs: { "aria-hidden": "true" } }, [
-                    _vm._v("×")
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-body" }, [
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.$root.box,
-                      expression: "$root.box"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { id: "" },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
+              _c("div", { staticClass: "modal-body" }, [
+                _c("div", { staticClass: "form-row" }, [
+                  _c("div", { staticClass: "form-group col-md-6" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.$root.box,
+                            expression: "$root.box"
+                          }
+                        ],
+                        staticClass: "form-control custom-select",
+                        attrs: { id: "" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.$root,
+                              "box",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "", disabled: "" } }, [
+                          _vm._v("Seleccione una caja")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.$root.listBoxes, function(item) {
+                          return _c(
+                            "option",
+                            { key: item.id, domProps: { value: item.id } },
+                            [
+                              _vm._v(
+                                "\n\t\t\t\t\t\t\t\t\t\t" +
+                                  _vm._s(item.name + " - " + item.prefix) +
+                                  "\n\t\t\t\t\t\t\t\t\t"
+                              )
+                            ]
+                          )
                         })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.$set(
-                        _vm.$root,
-                        "box",
-                        $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      )
-                    }
-                  }
-                },
-                [
-                  _c("option", { attrs: { value: "", disabled: "" } }, [
-                    _vm._v("Seleccione una caja")
+                      ],
+                      2
+                    )
                   ]),
                   _vm._v(" "),
-                  _vm._l(_vm.$root.listBoxes, function(item) {
-                    return _c(
-                      "option",
-                      { key: item.id, domProps: { value: item.id } },
-                      [
-                        _vm._v(
-                          "\n            " +
-                            _vm._s(item.name + " - " + item.prefix) +
-                            "\n          "
+                  _c(
+                    "div",
+                    { staticClass: "form-group col-md-1 text-center" },
+                    [_vm._v("\n                ó\n              ")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-md-5" }, [
+                    _vm.$root.validatePermission("box.store")
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-outline-primary btn-block",
+                            attrs: {
+                              type: "button",
+                              "data-toggle": "modal",
+                              "data-target": "#boxModal"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.$refs.CreateEditBox.ResetData()
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n\t\t\t\t\t\t\t\t\tCrear Cajas\n\t\t\t\t\t\t\t\t"
+                            )
+                          ]
                         )
-                      ]
-                    )
-                  })
-                ],
-                2
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "modal-footer" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-secondary",
-                  attrs: { type: "button", "data-dismiss": "modal" },
-                  on: { click: _vm.resetBox }
-                },
-                [_vm._v("\n          Cancelar\n        ")]
-              ),
+                      : _vm._e()
+                  ])
+                ])
+              ]),
               _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  attrs: { type: "button" },
-                  on: { click: _vm.saveBox }
-                },
-                [_vm._v("\n          Guardar\n        ")]
-              )
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" },
+                    on: { click: _vm.resetBox }
+                  },
+                  [_vm._v("\n\t\t\t\t\t\t\tCancelar\n\t\t\t\t\t\t")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    attrs: { type: "button" },
+                    on: { click: _vm.saveBox }
+                  },
+                  [_vm._v("\n\t\t\t\t\t\t\tGuardar\n\t\t\t\t\t\t")]
+                )
+              ])
             ])
           ])
-        ])
-      ]
-    )
-  ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("create-edit-box", {
+        ref: "CreateEditBox",
+        on: {
+          "list-boxes": function($event) {
+            return _vm.selectedBox()
+          }
+        }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

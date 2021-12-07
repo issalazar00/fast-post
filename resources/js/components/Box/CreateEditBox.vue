@@ -66,8 +66,8 @@
                     <th>#</th>
                     <th>Consecutivo inicial</th>
                     <th>Consecutivo final</th>
-                    <th>Facha de inicio</th>
-                    <th>Facha vencimiento</th>
+                    <th>Fecha de inicio</th>
+                    <th>Fecha vencimiento</th>
                     <th>Opciones</th>
                   </thead>
                   <tbody>
