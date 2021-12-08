@@ -9,10 +9,7 @@
 					<thead class=" thead-dark">
 						<tr>
 							<th>Fecha venta</th>
-							<th>Número de facturas</th>
-							<th>Nro. facturas registradas</th>
-							<th>Nro. facturas suspendidas</th>
-							<th>Nro. facturas cotizadas</th>
+							<th>Número de ventas</th>
 							<th>Total Descuento</th>
 							<th>Total Pago</th>
 						</tr>
@@ -24,15 +21,6 @@
 							</td>
 							<td>
 								{{ l.number_of_orders }}
-							</td>
-							<td>
-								{{ l.registered }}
-							</td>
-							<td>
-								{{ l.suspended }}
-							</td>
-							<td>
-								{{ l.quoted }}
 							</td>
 							<td>
 								{{ (l.total_discount).toFixed(2) }}
