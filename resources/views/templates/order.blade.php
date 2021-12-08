@@ -99,15 +99,9 @@
             <table class="table">
                 <tbody>
                     <tr>
-                        <td>No.</td>
-                        <th>
-                            {{ $orderInformation->no_invoice }}
-                        </th>
-                    </tr>
-                    <tr>
                         <td>No. Factura</td>
                         <th>
-                            {{ $orderInformation->bill_number }}
+                            {{ $orderInformation->no_invoice }}
                         </th>
                     </tr>
                     <tr>

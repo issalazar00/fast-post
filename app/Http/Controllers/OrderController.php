@@ -40,24 +40,24 @@ class OrderController extends Controller
 				$query->where('name', 'like', "%$request->client%");
 			}
 		});
-		if (isset($request->no_invoice) && $request->no_invoice != '') {
+		if ($request->no_invoice != '') {
 			$orders = $orders->where('no_invoice', 'like', "%$request->no_invoice");
 		}
 		$today = date('Y-m-d');
 		$from = $request->from;
 		$to = $request->to;
 
-		if (isset($request->no_invoice) && $from != '') {
+		if ($from != '') {
 			$orders = $orders
 				->where('created_at', '>=', $from);
 		}
 
-		if (isset($request->no_invoice) && $to != '') {
+		if ($to != '') {
 			$orders = $orders
 				->where('created_at', '<=', $to);
 		}
 
-		if (!is_null($from) && $from == '' && !is_null($to) && $to == '') {
+		if ($from == '' && $to == '') {
 			$orders = $orders
 				->where('created_at', '>=', $today);
 		}
