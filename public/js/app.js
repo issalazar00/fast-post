@@ -14184,8 +14184,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -14293,8 +14291,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     listBrands: function listBrands() {
       var me = this;
-      axios.get("api/brands", me.$root.config).then(function (response) {
-        me.brandList = response.data.brands.data;
+      axios.get("api/brands/brand-list", me.$root.config).then(function (response) {
+        me.brandList = response.data.brands;
       });
     },
     listCategories: function listCategories() {
@@ -65012,9 +65010,9 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                    " +
+                                "\n\t\t\t\t\t\t\t\t\t\t" +
                                   _vm._s(category.name) +
-                                  "\n                  "
+                                  "\n\t\t\t\t\t\t\t\t\t"
                               )
                             ]
                           )
@@ -65033,75 +65031,42 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "form-group col-6" }, [
-                    _c("label", { attrs: { for: "brand_id" } }, [
-                      _vm._v("Marca")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formProduct.brand_id,
-                            expression: "formProduct.brand_id"
+                  _c(
+                    "div",
+                    { staticClass: "form-group col-6" },
+                    [
+                      _c("label", { attrs: { for: "brand_id" } }, [
+                        _vm._v("Marca")
+                      ]),
+                      _vm._v(" "),
+                      _c("v-select", {
+                        attrs: {
+                          options: _vm.brandList,
+                          label: "name",
+                          reduce: function(brand) {
+                            return brand.id
                           }
-                        ],
-                        staticClass: "form-control",
-                        attrs: { id: "brand_id" },
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.formProduct,
-                              "brand_id",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
+                        },
+                        model: {
+                          value: _vm.formProduct.brand_id,
+                          callback: function($$v) {
+                            _vm.$set(_vm.formProduct, "brand_id", $$v)
+                          },
+                          expression: "formProduct.brand_id"
                         }
-                      },
-                      [
-                        _c("option", { attrs: { value: "0" } }, [
-                          _vm._v("--Select--")
-                        ]),
-                        _vm._v(" "),
-                        _vm._l(_vm.brandList, function(brand) {
-                          return _c(
-                            "option",
-                            { key: brand.id, domProps: { value: brand.id } },
-                            [
-                              _vm._v(
-                                "\n                    " +
-                                  _vm._s(brand.name) +
-                                  "\n                  "
-                              )
-                            ]
-                          )
-                        })
-                      ],
-                      2
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "small",
-                      {
-                        staticClass: "form-text text-danger",
-                        attrs: { id: "brand_idHelp" }
-                      },
-                      [_vm._v(_vm._s(_vm.formErrors.brand_id))]
-                    )
-                  ]),
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "small",
+                        {
+                          staticClass: "form-text text-danger",
+                          attrs: { id: "brand_idHelp" }
+                        },
+                        [_vm._v(_vm._s(_vm.formErrors.brand_id))]
+                      )
+                    ],
+                    1
+                  ),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group col-6" }, [
                     _vm._m(4),
@@ -65153,9 +65118,9 @@ var render = function() {
                             { key: t.id, domProps: { value: t.id } },
                             [
                               _vm._v(
-                                "\n                    " +
+                                "\n\t\t\t\t\t\t\t\t\t\t" +
                                   _vm._s(t.percentage) +
-                                  "\n                  "
+                                  "\n\t\t\t\t\t\t\t\t\t"
                               )
                             ]
                           )
@@ -65287,12 +65252,12 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "d-none" }, [
                       _vm._v(
-                        "\n                  " +
+                        "\n\t\t\t\t\t\t\t\t\t" +
                           _vm._s(
                             (_vm.formProduct.sale_price_tax_exc =
                               _vm.sale_price_tax_exc)
                           ) +
-                          "\n                "
+                          "\n\t\t\t\t\t\t\t\t"
                       )
                     ]),
                     _vm._v(" "),
@@ -65341,9 +65306,9 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "d-none" }, [
                       _vm._v(
-                        "\n                  " +
+                        "\n\t\t\t\t\t\t\t\t\t" +
                           _vm._s((_vm.formProduct.gain = _vm.gain)) +
-                          "\n                "
+                          "\n\t\t\t\t\t\t\t\t"
                       )
                     ]),
                     _vm._v(" "),
@@ -65443,12 +65408,12 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "d-none" }, [
                       _vm._v(
-                        "\n                  " +
+                        "\n\t\t\t\t\t\t\t\t\t" +
                           _vm._s(
                             (_vm.formProduct.wholesale_price_tax_exc =
                               _vm.wholesale_price_tax_exc)
                           ) +
-                          "\n                "
+                          "\n\t\t\t\t\t\t\t\t"
                       )
                     ]),
                     _vm._v(" "),
@@ -65569,7 +65534,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                  ¿Usa Inventario?\n                "
+                          "\n\t\t\t\t\t\t\t\t\t¿Usa Inventario?\n\t\t\t\t\t\t\t\t"
                         )
                       ]
                     )
@@ -65742,7 +65707,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("\n                Cerrar\n              ")]
+                    [_vm._v("\n\t\t\t\t\t\t\t\tCerrar\n\t\t\t\t\t\t\t")]
                   ),
                   _vm._v(" "),
                   _c(
@@ -65758,7 +65723,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("\n                Guardar\n              ")]
+                    [_vm._v("\n\t\t\t\t\t\t\t\tGuardar\n\t\t\t\t\t\t\t")]
                   )
                 ])
               ])
@@ -65775,7 +65740,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("label", { attrs: { for: "barcode" } }, [
-      _vm._v("Codigo de barras\n                  "),
+      _vm._v("Codigo de barras\n\t\t\t\t\t\t\t\t\t"),
       _c("span", { staticClass: "text-danger" }, [_vm._v("(*)")])
     ])
   },
@@ -65784,7 +65749,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("label", { attrs: { for: "product" } }, [
-      _vm._v("Descripción Producto\n                  "),
+      _vm._v("Descripción Producto\n\t\t\t\t\t\t\t\t\t"),
       _c("span", { staticClass: "text-danger" }, [_vm._v("(*)")])
     ])
   },
@@ -65830,7 +65795,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("label", { attrs: { for: "cost_price_tax_exc" } }, [
-      _vm._v("Precio Costo sin IVA "),
+      _vm._v("Precio Costo sin IVA\n\t\t\t\t\t\t\t\t\t"),
       _c("span", { staticClass: "text-danger" }, [_vm._v("(*)")])
     ])
   },
@@ -65839,7 +65804,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("label", { attrs: { for: "cost_price_tax_inc" } }, [
-      _vm._v("Precio Costo con IVA "),
+      _vm._v("Precio Costo con IVA\n\t\t\t\t\t\t\t\t\t"),
       _c("span", { staticClass: "text-danger" }, [_vm._v("(*)")])
     ])
   },
@@ -65848,7 +65813,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("label", { attrs: { for: "sale_price_tax_inc" } }, [
-      _vm._v("Precio venta con iva\n                  "),
+      _vm._v("Precio venta con iva\n\t\t\t\t\t\t\t\t\t"),
       _c("span", { staticClass: "text-danger" }, [_vm._v("(*)")])
     ])
   },
@@ -65860,7 +65825,7 @@ var staticRenderFns = [
       _c(
         "small",
         { staticClass: "form-text text-muted mt-4", attrs: { id: "" } },
-        [_vm._v("\n                  En este momento\n                ")]
+        [_vm._v("\n\t\t\t\t\t\t\t\t\tEn este momento\n\t\t\t\t\t\t\t\t")]
       )
     ])
   }
