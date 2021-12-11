@@ -479,7 +479,7 @@ export default {
 			listItemsKit: [],
 			taxList: [],
 			categoryList: {},
-			brandList: {},
+			brandList:[],
 			formErrors: {
 				barcode: "",
 				product: "",
@@ -571,7 +571,7 @@ export default {
 		listBrands() {
 			let me = this;
 			axios
-				.get("api/brands/brand-list", me.$root.config)
+				.get(`api/brands/brand-list`, this.$root.config)
 				.then(function(response) {
 					me.brandList = response.data.brands;
 				});
