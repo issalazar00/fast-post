@@ -62,6 +62,11 @@
 				class="bi bi-receipt"></i><span>Compras</span>
 		</router-link>
 	</li>
+	<li class="nav-item" v-if="validatePermission('credit.index')">
+		<router-link class="nav-link " active-class="active" to="/credits"><i
+				class="bi bi-receipt"></i><span>Créditos</span>
+		</router-link>
+	</li>
 
 	<!-- Nav Item - Pages Collapse Menu -->
 	<li class="nav-item">

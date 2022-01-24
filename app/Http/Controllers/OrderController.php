@@ -172,7 +172,7 @@ class OrderController extends Controller
 		}
 		if ($request->state == 4) {
 			$print = new PrintOrderController();
-			$print = $print->printTicket($order->id, $request->cash, $request->change);
+			$print = $print->printTicket($order->id, $request->cash, $request->change, 'App\Models\Order');
 		}
 	}
 
@@ -246,7 +246,7 @@ class OrderController extends Controller
 
 		if ($request->state == 4) {
 			$print = new PrintOrderController();
-			$print = $print->printTicket($order->id, $request->cash, $request->change);
+			$print = $print->printTicket($order->id, $request->cash, $request->change, 'App\Models\Order');
 		}
 	}
 

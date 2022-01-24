@@ -160,7 +160,7 @@
 										id="price"
 										step="any"
 										placeholder="Cantidad"
-										v-model="p.cost_price_tax_inc"
+										v-model="p.price_tax_inc"
 										class="form-control form-control-sm"
 										style="max-width: 100px"
 									/>
@@ -189,7 +189,7 @@
 										:value="
 											(p.discount_price = (
 												p.quantity *
-												p.cost_price_tax_inc *
+												p.price_tax_inc *
 												(p.discount_percentage / 100)
 											).toFixed(0))
 										"
@@ -210,18 +210,18 @@
 									<span v-if="p.discount_percentage != 0">
 										$
 										{{
-											(p.cost_price_tax_inc_total =
-												p.quantity * p.cost_price_tax_inc -
+											(p.price_tax_inc_total =
+												p.quantity * p.price_tax_inc -
 												p.quantity *
-													p.cost_price_tax_inc *
+													p.price_tax_inc *
 													(p.discount_percentage / 100))
 										}}
 									</span>
 									<span v-else>
 										$
 										{{
-											(p.cost_price_tax_inc_total =
-												p.quantity * p.cost_price_tax_inc - p.discount_price).toFixed(2)
+											(p.price_tax_inc_total =
+												p.quantity * p.price_tax_inc - p.discount_price).toFixed(2)
 										}}
 									</span>
 								</td>
@@ -321,7 +321,7 @@
 </template>
 
 <script>
-import AddProduct from "./AddProduct.vue";
+import AddProduct from "../Order/AddProduct.vue";
 import AddSupplier from "./AddSupplier.vue";
 
 export default {
@@ -355,7 +355,7 @@ export default {
 			var total = 0.0;
 			this.productsBillingList.forEach(
 				product =>
-					(total += parseFloat(product.cost_price_tax_exc * product.quantity))
+					(total += parseFloat(product.price_tax_exc * product.quantity))
 			);
 			return total;
 		},
@@ -370,9 +370,9 @@ export default {
 			var total = 0.0;
 			this.productsBillingList.forEach(product => {
 				total += parseFloat(
-					product.quantity * product.cost_price_tax_inc -
+					product.quantity * product.price_tax_inc -
 						product.quantity *
-							product.cost_price_tax_inc *
+							product.price_tax_inc *
 							(product.discount_percentage / 100)
 				);
 			});
@@ -397,7 +397,7 @@ export default {
 			axios
 				.get(`api/billings/${me.billing_id}`, this.$root.config)
 				.then(function(response) {
-					me.billing.id_supplier = response.data.billing_information.billing_id;
+					me.billing.id_supplier = response.data.billing_information.supplier_id;
 					me.billing.supplier = response.data.billing_information.supplier.name;
 
 					me.productsBillingList = response.data.billing_details;
@@ -434,8 +434,7 @@ export default {
 					if (result) {
 						// Añade cantidad
 						prod.quantity += 1;
-						prod.cost_price_tax_inc_total =
-							prod.cost_price_tax_inc * prod.quantity;
+						prod.price_tax_inc_total = prod.price_tax_inc * prod.quantity;
 					}
 				}
 			});
@@ -448,10 +447,10 @@ export default {
 					discount_percentage: 0,
 					discount_price: 0,
 					quantity: 1,
-					cost_price_tax_inc: new_product.cost_price_tax_inc,
-					cost_price_tax_exc: new_product.cost_price_tax_exc,
+					price_tax_inc: new_product.sale_price_tax_inc,
+					price_tax_exc: new_product.sale_price_tax_exc,
 					product: new_product.product,
-					cost_price_tax_inc_total: new_product.cost_price_tax_inc
+					price_tax_inc_total: new_product.sale_price_tax_inc
 				});
 			}
 		},
@@ -501,11 +500,7 @@ export default {
 						)
 						.then(
 							() => (
-								this.$router.push({
-									name: "main",
-									params: { billing_id: 0 }
-								}),
-								this.$router.go(0)
+								this.$router.push("/billings")
 							)
 						);
 				} else {

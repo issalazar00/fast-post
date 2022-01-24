@@ -16,7 +16,9 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BoxController;
+use App\Http\Controllers\CreditController;
 use App\Http\Controllers\DetailBillingController;
+use App\Http\Controllers\DetailCreditController;
 use App\Http\Controllers\ReportController;
 use App\Models\Configuration;
 use Illuminate\Http\Request;
@@ -60,6 +62,13 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/billings/generatePdf/{billing}', [BillingController::class, 'generatePdf']);
 	Route::resource('/billings',  BillingController::class);
 	Route::resource('/billing-details', DetailBillingController::class);
+
+
+	Route::get('/credits/byClient/{client_id}', [CreditController::class, 'creditByClient']);
+	Route::get('/credits/generatePdf/{credit}', [CreditController::class, 'generatePdf']);
+	Route::post('/credits/payCreditByClient', [CreditController::class, 'payCreditByClient']);
+	Route::resource('/credits',  CreditController::class);
+	Route::resource('/credit-details', DetailCreditController::class);
 
 
 	Route::resource('/products',  ProductController::class);

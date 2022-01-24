@@ -43,6 +43,10 @@ import Billings from './components/Billing/Billings.vue'
 import DetailsBilling from './components/Billing/DetailsBilling.vue'
 import CreateEditBilling from './components/Billing/CreateEditBilling.vue'
 
+import Credits from './components/Credit/Credits.vue'
+import DetailsCredit from './components/Credit/DetailsCredit.vue'
+import CreateEditCredit from './components/Credit/CreateEditCredit.vue'
+
 import ReportSale from './components/Report/ReportSale'
 
 import Boxes from './components/Box/Boxes.vue'
@@ -100,7 +104,6 @@ const routes = [
   { path: '/checker', component: Checker },
 
   { path: '/taxes', component: Taxes, alias: "tax.index" },
-  { path: '/create-edit-tax', component: CreateEditTax },
 
   { path: '/suppliers', component: Suppliers, alias: "supplier.index" },
   { path: '/create-edit-supplier', component: CreateEditSupplier },
@@ -109,7 +112,6 @@ const routes = [
   { path: '/create-edit-category', component: CreateEditCategory },
 
   { path: '/brands', component: Brands, alias: "brand.index" },
-  { path: '/create-edit-brand', component: CreateEditBrand },
 
   { path: '/orders', component: Orders, alias: "order.index" },
   { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order', alias: "order.index" },
@@ -122,7 +124,10 @@ const routes = [
   { path: '/reports/report-sale', component: ReportSale, props: true, name: 'report-sale' },
 
   {path: '/boxes', component: Boxes, alias: 'category.index'},
-  //
+  
+  { path: '/credits', component: Credits, alias: "credit.index" },
+  { path: '/credits/:credit_id/details-credit', component: DetailsCredit, props: true, name: 'details-credit', alias: "credit.index" },
+  { path: '/create-edit-credit/:credit_id', component: CreateEditCredit, props: true, name: 'create-edit-credit', alias: "credit.store" },
 
   { path: '/login', name: 'Login', component: Login },
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index" },

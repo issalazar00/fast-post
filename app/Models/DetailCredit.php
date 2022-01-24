@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DetailBilling extends Model
+class DetailCredit extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'billing_id',
+        'client_id',
         'product_id',
         'barcode',
         'discount_percentage',
@@ -22,9 +22,9 @@ class DetailBilling extends Model
         'product',
     ];
 
-    public function billing()
+    public function credit()
     {
-        return $this->belongsTo(Billing::class, 'billing_id');
+        return $this->belongsTo(Billing::class, 'credit_id');
     }
 
     public function product()

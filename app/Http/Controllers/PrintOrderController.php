@@ -12,11 +12,11 @@ use Mike42\Escpos\Printer;
 
 class PrintOrderController extends Controller
 {
-	public function printTicket($order_id, $cash = null, $change = null)
+	public function printTicket($order_id, $cash = null, $change = null, $model)
 	{
 		// Orden
 
-		$order = Order::find($order_id);
+		$order = $model::find($order_id);
 		$order_details = $order->detailOrders()->get();
 		$system_user = $order->user()->first();
 

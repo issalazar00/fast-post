@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailCredit;
 use Illuminate\Http\Request;
-use App\Models\DetailBilling;
 
-class DetailBillingController extends Controller
+class DetailCreditController extends Controller
 {
 	public function __construct()
 	{
@@ -40,10 +40,10 @@ class DetailBillingController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store($request, $billing_id)
+	public function store($request, $credit_id)
 	{
-			$detail = new DetailBilling;
-			$detail->billing_id = $billing_id;
+			$detail = new DetailCredit;
+			$detail->credit_id = $credit_id;
 			$detail->product_id = $request['product_id'];
 			$detail->barcode = $request['barcode'];
 			$detail->discount_percentage = $request['discount_percentage'];
@@ -59,10 +59,10 @@ class DetailBillingController extends Controller
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  \App\Models\DetailBilling  $detailBilling
+	 * @param  \App\Models\DetailCredit  $detailCredit
 	 * @return \Illuminate\Http\Response
 	 */
-	public function show(DetailBilling $detailBilling)
+	public function show(DetailCredit $detailCredit)
 	{
 		//
 	}
@@ -70,10 +70,10 @@ class DetailBillingController extends Controller
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  \App\Models\DetailBilling  $detailBilling
+	 * @param  \App\Models\DetailCredit  $detailCredit
 	 * @return \Illuminate\Http\Response
 	 */
-	public function edit(DetailBilling $detailBilling)
+	public function edit(DetailCredit $detailCredit)
 	{
 		//
 	}
@@ -82,10 +82,10 @@ class DetailBillingController extends Controller
 	 * Update the specified resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \App\Models\DetailBilling  $detailBilling
+	 * @param  \App\Models\DetailCredit  $detailCredit
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, DetailBilling $detailBilling)
+	public function update(Request $request, DetailCredit $detailCredit)
 	{
 		//
 	}
@@ -93,12 +93,12 @@ class DetailBillingController extends Controller
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  \App\Models\DetailBilling  $detailBilling
+	 * @param  \App\Models\DetailCredit  $detailCredit
 	 * @return \Illuminate\Http\Response
 	 */
 	public function destroy($id)
 	{
-		$detailBilling = DetailBilling::find($id);
-		$detailBilling->delete();
+		$detailCredit = DetailCredit::find($id);
+		$detailCredit->delete();
 	}
 }

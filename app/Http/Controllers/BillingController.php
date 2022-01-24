@@ -110,7 +110,7 @@ class BillingController extends Controller
 			$update_stock = $update_stock->updateStockByBarcode(2, $details_billing['barcode'], $details_billing['quantity']);
 
 			$update_price_cost = new ProductController;
-			$update_price_cost = $update_price_cost->updatePriceById($details_billing['product_id'], $details_billing['cost_price_tax_inc']);
+			$update_price_cost = $update_price_cost->updatePriceById($details_billing['product_id'], $details_billing['price_tax_inc']);
 		}
 	}
 
@@ -148,7 +148,7 @@ class BillingController extends Controller
 	{
 
 		$billing = Billing::find($id);
-		$billing->client_id = $request->id_client;
+		$billing->supplier_id = $request->id_supplier;
 		$billing->total_paid = $request->total_tax_inc;
 		$billing->total_iva_inc = $request->total_tax_inc;
 		$billing->total_iva_exc = $request->total_tax_exc;
@@ -159,7 +159,7 @@ class BillingController extends Controller
 		foreach ($request->productsBilling as $details_billing) {
 
 			DetailBilling::updateOrCreate(
-				['order_id' => $id, 'product_id' => $details_billing['product_id']],
+				['billing_id' => $id, 'product_id' => $details_billing['product_id']],
 				[
 					'discount_percentage' => $details_billing['discount_percentage'],
 					'discount_price' => $details_billing['discount_price'],
@@ -173,8 +173,6 @@ class BillingController extends Controller
 			);
 		}
 
-		$print = new PrintOrderController();
-		$print = $print->printTicket($billing->id, $request->cash, $request->change);
 	}
 
 	/**
@@ -206,7 +204,7 @@ class BillingController extends Controller
 		$data = [
 			'status' => 200,
 			'pdf' => base64_encode($pdf),
-			'message' => 'Orden generada en pdf'
+			'message' => 'Crédito generada en pdf'
 		];
 
 		return response()->json($data);
