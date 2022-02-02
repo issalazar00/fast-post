@@ -42,18 +42,20 @@ class DetailOrderController extends Controller
 	 */
 	public function store($request, $order_id)
 	{
-			$detail = new DetailOrder;
-			$detail->order_id = $order_id;
-			$detail->product_id = $request['product_id'];
-			$detail->barcode = $request['barcode'];
-			$detail->discount_percentage = $request['discount_percentage'];
-			$detail->discount_price = $request['discount_price'];
-			$detail->price_tax_exc = $request['price_tax_exc'];
-			$detail->price_tax_inc = $request['price_tax_inc'];
-			$detail->price_tax_inc_total = $request['price_tax_inc_total'];
-			$detail->quantity = $request['quantity'];
-			$detail->product = $request['product'];
-			$detail->save();
+		$detail = new DetailOrder;
+		$detail->order_id = $order_id;
+		$detail->product_id = $request['product_id'];
+		$detail->barcode = $request['barcode'];
+		$detail->discount_percentage = $request['discount_percentage'];
+		$detail->discount_price = $request['discount_price'];
+		$detail->price_tax_exc = $request['price_tax_exc'];
+		$detail->price_tax_inc = $request['price_tax_inc'];
+		$detail->price_tax_inc_total = $request['price_tax_inc_total'];
+		$detail->cost_price_tax_inc = $request['cost_price_tax_inc'];
+		$detail->cost_price_tax_inc_total = $request['cost_price_tax_inc_total'];
+		$detail->quantity = $request['quantity'];
+		$detail->product = $request['product'];
+		$detail->save();
 	}
 
 	/**

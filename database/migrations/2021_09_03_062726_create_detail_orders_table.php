@@ -23,6 +23,8 @@ class CreateDetailOrdersTable extends Migration
             $table->float('price_tax_exc', 20, 4);
             $table->float('price_tax_inc', 20, 4);
             $table->float('price_tax_inc_total', 20, 4);
+            $table->float('cost_price_tax_inc', 20, 4);
+            $table->float('cost_price_tax_inc_total', 20, 4);
             $table->float('quantity', 20, 4);
             $table->string('product');
 

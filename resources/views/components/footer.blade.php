@@ -3,8 +3,8 @@
  
     <!-- Copyright -->
     <div class="text-center p-4">
-      © 2021 Copyright:
-      <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+      © 2022 Copyright:
+      <a class="text-reset fw-bold" href="https://mdbootstrap.com/">Tecnoplus.com</a>
     </div>
     <!-- Copyright -->
   </footer>

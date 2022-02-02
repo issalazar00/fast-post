@@ -29,6 +29,7 @@ class OrderFactory extends Factory
             'total_iva_inc' => $this->faker->randomFloat(2,1, 10000),
             'total_iva_exc' => $this->faker->randomFloat(2,1, 10000),
             'total_discount' => $this->faker->randomFloat(2,1, 10000),
+            'total_cost_price_tax_inc' => $this->faker->randomFloat(2,1, 10000),
             'payment_date' => $this->faker->date('Y-m-d'),
             'state' =>'1',
         ];
