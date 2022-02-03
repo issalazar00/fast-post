@@ -34,8 +34,8 @@
           </thead>
           <tbody>
             <tr v-for="(tax, index) in taxListing.data" :key="tax.id">
-              <th scope="row">{{ index + 1 }}</th>
-              <th>{{ tax.name }}</th>
+              <td scope="row">{{ index + 1 }}</td>
+              <td>{{ tax.name }}</td>
               <td>{{ tax.percentage }}</td>
 
               <td v-if="$root.validatePermission('tax.active')">

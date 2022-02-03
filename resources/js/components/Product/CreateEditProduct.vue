@@ -189,7 +189,7 @@
 								</div>
 								<div class="form-group col-6">
 									<label for="tax_id"
-										>Impuesto <span class="text-danger">(*)</span></label
+										>Impuesto % <span class="text-danger">(*)</span></label
 									>
 									<select
 										class="form-control"
