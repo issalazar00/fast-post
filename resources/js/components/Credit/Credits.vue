@@ -82,7 +82,7 @@
               <th>Saldo</th>
               <th>Total Sin Iva</th>
               <th>Total Descuento</th>
-              <th>Proveedor</th>
+              <th>Cliente</th>
               <th>Estado</th>
               <th>Ver</th>
 

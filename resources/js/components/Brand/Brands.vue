@@ -48,14 +48,14 @@
                   <button
                     class="btn"
                     :class="
-                      brand.active == 1
+                      brand.active == 0
                         ? 'btn-outline-danger'
                         : 'btn-outline-success'
                     "
                     @click="changeState(brand.id)"
                   >
-                    <i v-if="brand.active == 1" class="bi bi-x-circle"></i>
-                    <i v-if="brand.active == 0" class="bi bi-check-circle"></i>
+                    <i v-if="brand.active == 0" class="bi bi-x-circle"></i>
+                    <i v-if="brand.active == 1" class="bi bi-check-circle"></i>
                   </button>
                 </td>
                 <td v-if="$root.validatePermission('brand.update')">

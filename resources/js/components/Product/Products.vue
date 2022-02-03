@@ -80,7 +80,7 @@
                 <td>{{ product.barcode }}</td>
                 <td>{{ product.product }}</td>
                 <td>{{ product.category.name }}</td>
-                <td class="text-right">$ {{ product.sale_price_tax_inc }}</td>
+                <td class="text-right"> {{ product.sale_price_tax_inc | currency }}</td>
                 <td>{{ product.quantity }}</td>
                 <td v-if="$root.validatePermission('product.active')">
                   <button
