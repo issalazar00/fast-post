@@ -16,6 +16,7 @@ class Order extends Model
         'total_paid',
         'total_iva_inc',
         'total_iva_exc',
+        'total_cost_price_tax_inc',
         'total_discount',
         'payment_date',
         'state'

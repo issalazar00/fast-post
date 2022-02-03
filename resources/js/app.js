@@ -11,6 +11,7 @@ import VueRouter from 'vue-router'
 import { VueSpinners } from '@saeris/vue-spinners'
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
+import { dollarFilter } from './filters';
 
 import Login from './components/Login.vue'
 import NoFound from './components/NoFound.vue';
@@ -67,6 +68,8 @@ Vue.use(VueRouter)
 Vue.use(VueSpinners)
 Vue.use(CKEditor)
 
+Vue.filter('currency', dollarFilter)
+
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('v-select', vSelect)
 
@@ -98,7 +101,7 @@ const routes = [
   { path: '/clients', component: Clients, alias: "client.index" },
   { path: '/create-edit-client', component: CreateEditClient },
 
-  { path: '/products', component: Products, alias: "product.index"},
+  { path: '/products', component: Products, alias: "product.index" },
   { path: '/create-edit-product', component: CreateEditProduct },
   { path: '/stock', component: Stock },
   { path: '/checker', component: Checker },
@@ -123,8 +126,8 @@ const routes = [
 
   { path: '/reports/report-sale', component: ReportSale, props: true, name: 'report-sale' },
 
-  {path: '/boxes', component: Boxes, alias: 'category.index'},
-  
+  { path: '/boxes', component: Boxes, alias: 'category.index' },
+
   { path: '/credits', component: Credits, alias: "credit.index" },
   { path: '/credits/:credit_id/details-credit', component: DetailsCredit, props: true, name: 'details-credit', alias: "credit.index" },
   { path: '/create-edit-credit/:credit_id', component: CreateEditCredit, props: true, name: 'create-edit-credit', alias: "credit.store" },
@@ -133,8 +136,8 @@ const routes = [
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index" },
   { path: '/users', name: 'Users', component: Users, alias: "user.index" },
   { path: '/configuration', name: 'Configuration', component: Configuration, alias: "configuration" },
-  {path: '/profile', name:'Profile', component:Profile},
-  
+  { path: '/profile', name: 'Profile', component: Profile },
+
   { path: '**', name: 'NoFound', component: NoFound },
 
 ]
@@ -199,12 +202,12 @@ const app = new Vue({
     $route(to, from) {
       this.assignDataRequired();
     },
-    box(){
+    box() {
       localStorage.setItem("box_worker", this.box);
     },
-    user:{
-      deep:true,
-      handler(){
+    user: {
+      deep: true,
+      handler() {
         localStorage.setItem("user", JSON.stringify(this.user));
       }
 
@@ -246,15 +249,15 @@ const app = new Vue({
           this.logout();
         });
     },
-    selectedBox(){
-        axios.
-        get('api/boxes/byUser',this.config)
-        .then((response)=>{
+    selectedBox() {
+      axios.
+        get('api/boxes/byUser', this.config)
+        .then((response) => {
           this.listBoxes = response.data.boxes;
         })
-        .catch((response)=>{
+        .catch((response) => {
           this.listBoxes = [];
-        });       
+        });
     }
   }
 });

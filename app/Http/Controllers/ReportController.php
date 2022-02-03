@@ -10,7 +10,14 @@ class ReportController extends Controller
 {
     public function reportSales()
     {
-        $sales = Order::select(DB::raw('SUM(total_paid) as total_paid'), DB::raw('SUM(total_discount) as total_discount'), 'payment_date')
+        $sales = Order::select(
+            DB::raw('SUM(total_paid) as total_paid'),
+            DB::raw('SUM(total_discount) as total_discount'),
+            DB::raw('SUM(total_cost_price_tax_inc) as total_cost_price_tax_inc'),
+            DB::raw('SUM(total_iva_inc) as total_iva_inc'),
+            DB::raw('SUM(total_iva_exc) as total_iva_exc'),
+            'payment_date'
+        )
             ->selectRaw('count(id) as number_of_orders')
             ->selectRaw("count(case when state = '1' then 1 end) as suspended")
             ->selectRaw("count(case when state = '2' then 1 end) as registered")
