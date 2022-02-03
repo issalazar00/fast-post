@@ -101,7 +101,7 @@ class OrderController extends Controller
 
 			$lastConsecutive = str_replace($box->prefix, '', $latestOrder->bill_number);
 			$lastConsecutive = intval($lastConsecutive);
-			
+
 
 			$consecutiveBox = $box->consecutiveBox()->where([
 				['from_nro', '<=', $lastConsecutive],
@@ -149,6 +149,7 @@ class OrderController extends Controller
 		$order->total_iva_inc = $request->total_tax_inc;
 		$order->total_iva_exc = $request->total_tax_exc;
 		$order->total_discount = $request->total_discount;
+		$order->total_cost_price_tax_inc = $request->total_cost_price_tax_inc;
 		$order->box_id = $box->id;
 		$order->bill_number = $bill_number;
 
@@ -214,6 +215,7 @@ class OrderController extends Controller
 		$order->total_paid = $request->total_tax_inc;
 		$order->total_iva_inc = $request->total_tax_inc;
 		$order->total_iva_exc = $request->total_tax_exc;
+		$order->total_cost_price_tax_inc = $request->total_cost_price_tax_inc;
 		$order->total_discount = $request->total_discount;
 		if ($request->state == 4) {
 			$order->state = 2;
@@ -237,6 +239,8 @@ class OrderController extends Controller
 					'price_tax_exc' => $details_order['price_tax_exc'],
 					'price_tax_inc' => $details_order['price_tax_inc'],
 					'price_tax_inc_total' => $details_order['price_tax_inc_total'],
+					'cost_price_tax_inc' => $details_order['cost_price_tax_inc'],
+					'cost_price_tax_inc_total' => $details_order['cost_price_tax_inc_total'],
 					'quantity' => $details_order['quantity'],
 					'barcode' => $details_order['barcode'],
 					'product' => $details_order['product'],

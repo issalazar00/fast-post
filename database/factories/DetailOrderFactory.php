@@ -30,6 +30,8 @@ class DetailOrderFactory extends Factory
             'price_tax_exc' => $this->faker->randomFloat(2, 2000, 3000),
             'price_tax_inc' => $this->faker->randomFloat(2, 2000, 3000),
             'price_tax_inc_total' => $this->faker->randomFloat(2, 2000, 3000),
+            'cost_price_tax_inc' => $this->faker->randomFloat(2, 2000, 3000),
+            'cost_price_tax_inc_total' => $this->faker->randomFloat(2, 2000, 3000),
             'quantity' => $this->faker->randomFloat(2, 2000, 3000),
             'product' => $this->faker->name(),
         ];

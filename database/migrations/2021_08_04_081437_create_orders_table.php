@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
       $table->float('total_iva_inc', 20, 2);
       $table->float('total_iva_exc', 20, 2);
       $table->float('total_discount', 20, 2);
+      $table->float('total_cost_price_tax_inc', 20, 2);
       $table->tinyInteger('state')->default('1');
       $table->date('payment_date')->nullable();
 

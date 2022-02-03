@@ -20,6 +20,8 @@ class DetailOrder extends Model
         'price_tax_inc_total',
         'quantity',
         'product',
+        'cost_price_tax_inc',
+        'cost_price_tax_inc_total'
     ];
 
     public function order()

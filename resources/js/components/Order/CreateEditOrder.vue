@@ -148,6 +148,12 @@
 										v-model="p.quantity"
 										style="max-width: 60px"
 									/>
+									<span class="hidden d-none">
+										{{
+											(p.cost_price_tax_inc_total =
+												p.cost_price_tax_inc * p.quantity)
+										}}
+									</span>
 								</td>
 								<td>
 									<input
@@ -332,20 +338,20 @@
 			</div>
 		</div>
 
-    <add-product @add-product="addProduct($event)" />
-    <add-client @add-client="addClient($event)" />
-    <modal-box ref="ModalBox"></modal-box>
-  </div>
+		<add-product @add-product="addProduct($event)" />
+		<add-client @add-client="addClient($event)" />
+		<modal-box ref="ModalBox"></modal-box>
+	</div>
 </template>
 
 <script>
 import AddProduct from "./AddProduct.vue";
 import AddClient from "./AddClient.vue";
-import ModalBox from  "./../ModalBox.vue";
+import ModalBox from "./../ModalBox.vue";
 
 export default {
-  components: { AddProduct, AddClient, ModalBox },
-  props: ["order_id"],
+	components: { AddProduct, AddClient, ModalBox },
+	props: ["order_id"],
 
 	data() {
 		return {
@@ -363,6 +369,7 @@ export default {
 				total_tax_inc: 0.0,
 				total_tax_exc: 0.0,
 				total_discount: 0.0,
+				total_cost_price_tax_inc: 0.0,
 				productsOrder: [],
 				cash: 0,
 				change: 0
@@ -382,6 +389,13 @@ export default {
 			var total = 0.0;
 			this.productsOrderList.forEach(product => {
 				total += parseFloat(product.discount_price);
+			});
+			return total;
+		},
+		total_cost_price_tax_inc: function() {
+			var total = 0.0;
+			this.productsOrderList.forEach(product => {
+				total += parseFloat(product.cost_price_tax_inc_total);
 			});
 			return total;
 		},
@@ -454,6 +468,8 @@ export default {
 						// Añade cantidad
 						prod.quantity += 1;
 						prod.price_tax_inc_total = prod.price_tax_inc * prod.quantity;
+						prod.cost_price_tax_inc_total =
+							prod.cost_price_tax_inc * prod.quantity;
 					}
 				}
 			});
@@ -469,7 +485,9 @@ export default {
 					price_tax_inc: new_product.sale_price_tax_inc,
 					price_tax_exc: new_product.sale_price_tax_exc,
 					product: new_product.product,
-					price_tax_inc_total: new_product.sale_price_tax_inc
+					price_tax_inc_total: new_product.sale_price_tax_inc,
+					cost_price_tax_inc: new_product.cost_price_tax_inc,
+					cost_price_tax_inc_total: new_product.cost_price_tax_inc
 				});
 			}
 		},
@@ -528,59 +546,58 @@ export default {
 				alert("No hay productos en la orden");
 			}
 		},
-	
 
-    createOrUpdateOrder(state_order) {
-      this.order.state = state_order;
-      if (this.productsOrderList.length > 0) {
-        this.order.productsOrder = this.productsOrderList;
-        this.order.box_id = this.$root.box;
-        if (this.order_id != 0 && this.order_id != null) {
-          axios
-            .put(`api/orders/${this.order_id}`, this.order, this.$root.config)
-            .then(
-              () => (
-                this.$router.push({ name: "main", params: { order_id: 0 } }),
-                this.$router.go(0)
-              )
-            );
-        } else {
-          if(this.order.box_id > 0){
-            axios
-              .post(`api/orders`, this.order, this.$root.config)
-              .then(() => this.$router.go(0));
-          }else{
-            alert("Selecciona una caja");
-          }
-        }
-      } else {
-        alert("No hay productos en la orden");
-      }
-    },
-    commands() {
-      let me = this;
+		createOrUpdateOrder(state_order) {
+			this.order.state = state_order;
+			if (this.productsOrderList.length > 0) {
+				this.order.total_cost_price_tax_inc = this.total_cost_price_tax_inc;
+				this.order.productsOrder = this.productsOrderList;
+				this.order.box_id = this.$root.box;
+				if (this.order_id != 0 && this.order_id != null) {
+					axios
+						.put(`api/orders/${this.order_id}`, this.order, this.$root.config)
+						.then(
+							() => (
+								this.$router.push({ name: "main", params: { order_id: 0 } }),
+								this.$router.go(0)
+							)
+						);
+				} else {
+					if (this.order.box_id > 0) {
+						axios
+							.post(`api/orders`, this.order, this.$root.config)
+							.then(() => this.$router.go(0));
+					} else {
+						alert("Selecciona una caja");
+					}
+				}
+			} else {
+				alert("No hay productos en la orden");
+			}
+		},
+		commands() {
+			let me = this;
 
-      shortcut.add("F1", function () {
-        me.createOrUpdateOrder(2);
-      });
+			shortcut.add("F1", function() {
+				me.createOrUpdateOrder(2);
+			});
 
 			shortcut.add("F2", function() {
 				me.createOrUpdateOrder(4);
 			});
 
-      shortcut.add("F10", function () {
-        $("#addProductModal").modal("show");
-      });
-      
-    },
-  },
-  mounted() {
-    $("#no-results").toast("hide");
-    if (this.order_id != null || this.order_id != 0) {
-      this.listItemsOrder();
-    }
-    this.commands();
-    this.$refs.ModalBox.selectedBox();
-  },
+			shortcut.add("F10", function() {
+				$("#addProductModal").modal("show");
+			});
+		}
+	},
+	mounted() {
+		$("#no-results").toast("hide");
+		if (this.order_id != null || this.order_id != 0) {
+			this.listItemsOrder();
+		}
+		this.commands();
+		this.$refs.ModalBox.selectedBox();
+	}
 };
 </script>

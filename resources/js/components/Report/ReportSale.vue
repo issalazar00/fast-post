@@ -13,8 +13,12 @@
 							<th>Nro. facturas registradas</th>
 							<th>Nro. facturas suspendidas</th>
 							<th>Nro. facturas cotizadas</th>
+							<th>Total precio de costo</th>
+							<th>Total IVA excluido</th>
+							<th>Total IVA incluido</th>
 							<th>Total Descuento</th>
 							<th>Total Pago</th>
+							<th>Total Ganancia</th>
 						</tr>
 					</thead>
 					<tbody v-if="List.length > 0">
@@ -35,10 +39,22 @@
 								{{ l.quoted }}
 							</td>
 							<td>
-								{{ (l.total_discount).toFixed(2) }}
+								{{ l.total_cost_price_tax_inc.toFixed(2) | currency }}
 							</td>
 							<td>
-								{{ (l.total_paid).toFixed(2) }}
+								{{ l.total_iva_exc.toFixed(2)  | currency}}
+							</td>
+							<td>
+								{{ l.total_iva_inc.toFixed(2)  | currency}}
+							</td>
+							<td>
+								{{ l.total_discount.toFixed(2)  | currency}}
+							</td>
+							<td>
+								{{ l.total_paid.toFixed(2) | currency }}
+							</td>
+							<td>
+								{{(l.total_iva_exc - l.total_cost_price_tax_inc).toFixed(2)  | currency}}
 							</td>
 						</tr>
 					</tbody>

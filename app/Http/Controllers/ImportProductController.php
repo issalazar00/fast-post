@@ -141,7 +141,7 @@ class ImportProductController extends Controller
                 $product->sale_price_tax_exc = ($sale_price_tax_inc);
                 $product->wholesale_price_tax_exc = ($wholesale_price_tax_inc);
               }
-              $product->gain = $product->wholesale_price_tax_exc - $product->wholesale_price_tax_inc;
+              $product->gain = $product->sale_price_tax_exc - $product->cost_price_tax_inc;
               $product->save();
             }
           }
