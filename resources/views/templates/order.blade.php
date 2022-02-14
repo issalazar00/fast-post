@@ -60,6 +60,7 @@
         footer {
             color: white;
             background-color: #19AC0D;
+            padding: 5px auto;
         }
 
     </style>
@@ -101,7 +102,7 @@
                     <tr>
                         <td>No. Factura</td>
                         <th>
-                            {{ $orderInformation->no_invoice }}
+                            {{ $orderInformation->bill_number }}
                         </th>
                     </tr>
                     <tr>
@@ -126,7 +127,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <td>Direccion</td>
+                        <td>Dirección</td>
                         <td>{{ $orderInformation->client->address }}</td>
                     </tr>
                     <tr>
@@ -134,7 +135,7 @@
                         <td>{{ $orderInformation->client->email }}</td>
                     </tr>
                     <tr>
-                        <td>Celular / Télefono</td>
+                        <td>Celular / Teléfono</td>
                         <td>{{ $orderInformation->client->mobile }}</td>
                     </tr>
                 </tbody>
@@ -214,6 +215,16 @@
             <img class="icon" src="{{ $url.'/images/'.'location-pin.png'}}">
             {{$configuration->address}}
         </p>
+        @if ($consecutiveBox)
+
+            <p>{{ $consecutive_expires }}</p>
+            <p>Prefijo: {{ $orderInformation->box->prefix}}</p>
+            <p>
+                {{
+                    "De No. ".$consecutiveBox->from_nro." AL ".$consecutiveBox->until_nro." Autoriza"
+                }}
+            </p>
+        @endif
     </footer>
     @endif
 </body>

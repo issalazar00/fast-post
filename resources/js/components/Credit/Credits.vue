@@ -14,6 +14,7 @@
       </router-link>
     </header>
     <section>
+      <load-pdf :loading="load_pdf" />
       <div class="card-body">
         <div class="form-row">
           <h6 class="w-100">Buscar...</h6>
@@ -96,13 +97,13 @@
           <tbody>
             <tr v-for="o in creditList.data" :key="o.id">
               <th scope="row">{{ o.id }} - {{ o.no_invoice }}</th>
-              <td>{{ o.total_paid }}</td>
-              <td class="bg-success">{{ o.paid_payment }}</td>
+              <td>{{ o.total_paid | currency}}</td>
+              <td class="bg-success">{{ o.paid_payment | currency}}</td>
               <td :class="{ 'bg-danger': o.total_paid - o.paid_payment > 0 }">
-                {{ o.total_paid - o.paid_payment }}
+                {{ o.total_paid - o.paid_payment | currency}}
               </td>
-              <td>{{ o.total_iva_exc }}</td>
-              <td>{{ o.total_discount }}</td>
+              <td>{{ o.total_iva_exc | currency}}</td>
+              <td>{{ o.total_discount | currency}}</td>
               <td>{{ o.client.name }}</td>
               <td>
                 <span v-if="o.state == 0">Desechada</span>
@@ -156,23 +157,16 @@
         <span slot="next-nav"><i class="bi bi-chevron-double-right"></i></span>
       </pagination>
     </section>
-    <div class="footer">
-      <moon-loader
-        :loading="isLoading"
-        class="m-auto"
-        :color="'#032F6C'"
-        :size="100"
-      />
-    </div>
   </div>
 </template>
 <script>
 import PaymentCredit from './PaymentCredit.vue';
+import LoadPdf from './../Order/LoadPdf.vue';
 export default {
-  components: { PaymentCredit },
+  components: { PaymentCredit, LoadPdf },
   data() {
     return {
-      isLoading: false,
+      load_pdf: false,
       creditList: {},
       filter: {
         client: "",
@@ -204,7 +198,7 @@ export default {
         .then(() => this.getCredits(1));
     },
     generatePdf(id) {
-      this.isLoading = true;
+      this.load_pdf = true;
       axios
         .get("api/credits/generatePdf/" + id, this.$root.config)
         .then((response) => {
@@ -214,7 +208,9 @@ export default {
           a.download = `Credit-${id}.pdf`;
           a.click();
         })
-        .finally((this.isLoading = false));
+        .finally(()=>{
+          this.load_pdf = false;
+        });
     },
   },
 };

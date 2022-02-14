@@ -7,7 +7,7 @@
           <tr>
             <td>No. Factura</td>
             <th>
-              {{ orderInformation.no_invoice }}
+              {{ orderInformation.bill_number }}
             </th>
           </tr>
           <tr>

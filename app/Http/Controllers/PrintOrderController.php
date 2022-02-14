@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Configuration;
 use App\Models\Order;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Mike42\Escpos\EscposImage;
@@ -62,7 +63,13 @@ class PrintOrderController extends Controller
 			$printer->text("Fecha: ");
 			$printer->text(date('Y-m-d h:i:s A') .  "\n");
 			$printer->text("N° Factura: ");
-			$printer->text($order->id . "\n");        // 
+
+			if(isset($order->bill_number)){
+				$printer->text($order->bill_number . "\n");        // 
+			}else{
+				$printer->text($order->no_invoice . "\n");        // 
+			}
+
 			$printer->text("Cliente: ");
 			$printer->text($order->client->name . "\n");
 			$printer->setLineSpacing(2);
@@ -99,6 +106,27 @@ class PrintOrderController extends Controller
 				$printer->text("\n");
 				$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($change, 2, '.', ',')));
 			}
+			$printer->text("\n");
+
+			if(isset($order->bill_number)){
+				
+				$consecutiveBox = $order->consecutiveBox();
+
+
+				if($consecutiveBox)
+				{
+					$from_date = Carbon::createFromFormat('Y-m-d', $consecutiveBox->from_date);
+					$until_date = Carbon::createFromFormat('Y-m-d', $consecutiveBox->until_date);
+
+					$printer->setJustification(Printer::JUSTIFY_CENTER);
+					$printer->text("VENCE: ".$until_date->toDateString()." MESES VIG. :  ".($until_date->month - $from_date->month)."\n");
+					$printer->text("PREFIJO: ".$order->box->prefix."\n");
+					
+					$printer->text("DE No. ".$consecutiveBox->from_nro." AL ".$consecutiveBox->until_nro." AUTORIZA\n");
+				}
+			}
+
+
 			$printer->text("\n");
 			$printer->setJustification(Printer::JUSTIFY_CENTER);
 			$printer->setLineSpacing(2);

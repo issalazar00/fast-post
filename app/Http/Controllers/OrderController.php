@@ -6,7 +6,6 @@ use App\Models\Box;
 use App\Models\Configuration;
 use App\Models\DetailOrder;
 use App\Models\Order;
-use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -267,14 +266,23 @@ class OrderController extends Controller
 
 	public function generatePdf(Order $order)
 	{
-		$details  = $order;
 		$data = [
-			'orderInformation' => $details,
-			'orderDetails' => $details->detailOrders()->get(),
-			'user' => $details->user()->first(),
+			'orderInformation' => $order,
+			'orderDetails' => $order->detailOrders()->get(),
+			'user' => $order->user()->first(),
 			'configuration' => Configuration::first(),
-			'url' => URL::to('/')
+			'url' => URL::to('/'),
+			'consecutiveBox' => $order->consecutiveBox()
 		];
+
+		if($data['consecutiveBox']){
+			
+			$from_date = Carbon::createFromFormat('Y-m-d', $data['consecutiveBox']->from_date);
+			$until_date = Carbon::createFromFormat('Y-m-d', $data['consecutiveBox']->until_date);
+			
+			$data['consecutive_expires'] = "Vence: ".$until_date->toDateString()." Meses Vig. :  ".($until_date->month - $from_date->month);
+
+		}
 
 		$pdf = PDF::loadView('templates.order', $data);
 
