@@ -120,7 +120,7 @@ class CreditController extends Controller
 
 			if ($request->state == 4) {
 				$print = new PrintOrderController();
-				$print = $print->printTicket($credit->id, $request->cash, $request->change, 'App\Models\Credit');
+				$print = $print->printTicket($credit->id, $request->cash, $request->change);
 			}
 		}
 	}
@@ -202,7 +202,7 @@ class CreditController extends Controller
 
 		if ($request->state == 4) {
 			$print = new PrintOrderController();
-			$print = $print->printTicket($credit->id, $request->cash, $request->change, 'App\Models\Credit');
+			$print = $print->printTicket($credit->id, $request->cash, $request->change);
 		}
 	}
 

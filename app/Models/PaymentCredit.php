@@ -15,7 +15,7 @@ class PaymentCredit extends Model
     
     protected $fillable = [
         'user_id', 
-        'credit_id',
+        'order_id',
         'pay'
     ];
     

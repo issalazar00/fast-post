@@ -257,6 +257,14 @@ class ProductController extends Controller
 		return response()->json($data, $data['code']);
 	}
 
+	/*
+	* @param mixed $type
+	* 1 : resta a stock
+	* 2: suma a stock
+	* @param mixed $barcode
+
+	* @param mixed $quantity
+	*/
 	public function updateStockByBarcode($type, $barcode, $quantity)
 	{
 		$product = Product::select('id', 'barcode', 'quantity')->where('barcode', $barcode)->first();
