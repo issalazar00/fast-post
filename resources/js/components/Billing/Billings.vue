@@ -14,6 +14,7 @@
 			</router-link>
 		</header>
 		<section>
+			<load-pdf :loading="load_pdf" />
 			<div class="card-body">
 				<div class="form-row">
 					<h6 class="w-100">Buscar...</h6>
@@ -138,22 +139,15 @@
 				<span slot="next-nav"><i class="bi bi-chevron-double-right"></i></span>
 			</pagination>
 		</section>
-		<div class="footer">
-			<moon-loader
-				:loading="isLoading"
-				class="m-auto"
-				:color="'#032F6C'"
-				:size="100"
-			/>
-		</div>
 	</div>
 </template>
 <script>
+import LoadPdf from './../Order/LoadPdf.vue';
 export default {
-	components: {},
+	components: {LoadPdf},
 	data() {
 		return {
-			isLoading: false,
+			load_pdf:false,
 			BillingList: {},
 			filter: {
 				supplier: "",
@@ -185,7 +179,8 @@ export default {
 				.then(() => this.getBillings(1));
 		},
 		generatePdf(id) {
-			this.isLoading = true;
+			this.load_pdf = true;
+			console.log(this.load_pdf);
 			axios
 				.get("api/billings/generatePdf/" + id, this.$root.config)
 				.then(response => {
@@ -195,7 +190,9 @@ export default {
 					a.download = `Billing-${id}.pdf`;
 					a.click();
 				})
-				.finally((this.isLoading = false));
+				.finally(() => {
+					this.load_pdf = false
+				});
 		}
 	}
 };

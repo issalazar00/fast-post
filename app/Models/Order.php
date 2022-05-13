@@ -40,4 +40,25 @@ class Order extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function box()
+    {
+        return $this->belongsTo(Box::class);
+    }
+
+    public function consecutiveBox()
+    {
+
+        $consecutive = str_replace($this->box->prefix, '', $this->bill_number);
+        $consecutive = intval($consecutive);
+
+        $consecutiveBox = $this->box->consecutiveBox()->where([
+            ['from_nro', '<=', $consecutive],
+            ['until_nro', '>=', $consecutive]
+        ])
+            ->orderBy('from_nro')
+            ->first();
+
+        return $consecutiveBox;    
+    }
 }

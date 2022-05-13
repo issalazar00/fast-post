@@ -14,6 +14,7 @@
       </router-link>
     </header>
     <section>
+      <load-pdf  :loading="load_pdf" />
       <div class="card-body">
         <div class="form-row">
           <h6 class="w-100">Buscar...</h6>
@@ -81,7 +82,7 @@
           </thead>
           <tbody>
             <tr v-for="o in OrderList.data" :key="o.id">
-              <th scope="row">{{ o.id }} - {{ o.no_invoice }}</th>
+              <th scope="row">{{ o.id }} - {{ o.bill_number }}</th>
               <td>{{ o.total_paid }}</td>
               <td>{{ o.total_iva_exc }}</td>
               <td>{{ o.total_discount }}</td>
@@ -144,10 +145,12 @@
   </div>
 </template>
 <script>
+import LoadPdf from './LoadPdf.vue';
 export default {
-  components: {},
+  components: {LoadPdf},
   data() {
     return {
+      load_pdf:false,
       OrderList: {},
       filter: {
         client: "",
@@ -179,6 +182,7 @@ export default {
         .then(() => this.getOrders(1));
     },
     generatePdf(id) {
+      this.load_pdf = true;
       axios
         .get("api/orders/generatePdf/" + id, this.$root.config)
         .then((response) => {
@@ -189,6 +193,9 @@ export default {
           a.href = "data:application/pdf;base64," + pdf;
           a.download = `Order-${id}.pdf`;
           a.click();
+        })
+        .finally(()=>{
+          this.load_pdf = false;
         });
     },
   },

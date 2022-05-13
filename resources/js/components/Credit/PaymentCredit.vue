@@ -115,6 +115,7 @@
                       value="0"
                       step="any"
                       v-model="paymentCredit.pay_payment"
+                      :max="totalBalancePending"
                     />
                   </th>
                 </tr>
@@ -168,6 +169,9 @@ export default {
       listPending: [],
     };
   },
+  watch:{
+    
+  },
   computed: {
     totalBalancePending() {
       let balance = 0;
@@ -184,10 +188,14 @@ export default {
       let total_pending = this.totalBalancePending;
       if (this.cash > 0) {
         if (this.paymentCredit.pay_payment > total_pending) {
-          this.paymentCredit.pay_payment = 0;
-          alert("No puedes abonar una cantidad superior a la deuda");
-        } else {
-          value = (this.cash - this.paymentCredit.pay_payment).toFixed(0);
+          this.paymentCredit.pay_payment = total_pending;
+        }
+
+        value = (this.cash - this.paymentCredit.pay_payment).toFixed(0);
+
+        if(value < 0){
+          this.paymentCredit.pay_payment = this.cash;
+          value = 0;
         }
       }
       return value;
