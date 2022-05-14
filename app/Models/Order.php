@@ -22,6 +22,10 @@ class Order extends Model
         'state'
     ];
 
+    protected $appends = [
+        'paid_payment'
+    ];
+
     protected $with = [
         'client'
     ];
@@ -60,5 +64,15 @@ class Order extends Model
             ->first();
 
         return $consecutiveBox;    
+    }
+
+    public function paymentCredits()
+    {
+        return $this->hasMany(PaymentCredit::class);
+    }
+
+    public function getPaidPaymentAttribute()
+    {
+        return $this->paymentCredits->sum('pay');
     }
 }

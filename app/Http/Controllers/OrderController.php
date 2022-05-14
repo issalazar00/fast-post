@@ -6,11 +6,14 @@ use App\Models\Box;
 use App\Models\Configuration;
 use App\Models\DetailOrder;
 use App\Models\Order;
+use App\Models\PaymentCredit;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use PDF;
 
@@ -20,7 +23,7 @@ class OrderController extends Controller
 	public function __construct()
 	{
 		$this->middleware('can:order.index')->only('index', 'generatePdf');
-		$this->middleware('can:order.store')->only('store');
+		$this->middleware('can:order.store')->only('store', 'creditByClient', 'payCreditByClient');
 		$this->middleware('can:order.update')->only('update');
 		$this->middleware('can:order.delete')->only('destroy');
 	}
@@ -45,6 +48,7 @@ class OrderController extends Controller
 		$today = date('Y-m-d');
 		$from = $request->from;
 		$to = $request->to;
+		$status = $request->status ?? $request->status;
 
 		if ($from != '') {
 			$orders = $orders
@@ -59,6 +63,11 @@ class OrderController extends Controller
 		if ($from == '' && $to == '') {
 			$orders = $orders
 				->where('created_at', '>=', $today);
+		}
+
+		if ($status != '') {
+			$orders = $orders
+				->whereIn('state', [$status]);
 		}
 
 		$orders = $orders
@@ -155,13 +164,26 @@ class OrderController extends Controller
 		if ($request->state == 4) {
 			$order->state = 2;
 			$order->payment_date = date('Y-m-d');
-		} else {
+		}
+		if ($request->state == 6) {
+			$order->state = 5;
+		}
+		if ($request->state != 4 && $request->state != 6) {
 			$order->state = $request->state;
 			if ($request->state == 2) {
 				$order->payment_date = date('Y-m-d');
 			}
 		}
 		$order->save();
+		if ($order->state == 5) {
+			if ($request->pay_payment > 0) {
+				PaymentCredit::create([
+					'user_id' => $user_id,
+					'order_id' => $order->id,
+					'pay' => $request->pay_payment
+				]);
+			}
+		}
 
 		foreach ($request->productsOrder as $details_order) {
 			$new_detail = new DetailOrderController;
@@ -170,10 +192,12 @@ class OrderController extends Controller
 			$update_stock = new ProductController;
 			$update_stock = $update_stock->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity']);
 		}
-		if ($request->state == 4) {
+		if ($request->state == 4 || $request->state == 6) {
 			$print = new PrintOrderController();
-			$print = $print->printTicket($order->id, $request->cash, $request->change, 'App\Models\Order');
+			$print = $print->printTicket($order->id, $request->cash, $request->change);
 		}
+
+		return $order->id;
 	}
 
 	/**
@@ -208,6 +232,7 @@ class OrderController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
+		$user_id =  Auth::user()->id;
 
 		$order = Order::find($id);
 		$order->client_id = $request->id_client;
@@ -219,7 +244,11 @@ class OrderController extends Controller
 		if ($request->state == 4) {
 			$order->state = 2;
 			$order->payment_date = date('Y-m-d');
-		} else {
+		}
+		if ($request->state == 6) {
+			$order->state = 5;
+		}
+		if ($request->state != 4 && $request->state != 6) {
 			$order->state = $request->state;
 			if ($request->state == 2) {
 				$order->payment_date = date('Y-m-d');
@@ -227,6 +256,22 @@ class OrderController extends Controller
 		}
 
 		$order->update();
+
+		if ($order->state == 5) {
+			if ($request->pay_payment > 0) {
+				$paymentCredit = $order->paymentCredits->first();
+				if ($paymentCredit) {
+					$paymentCredit->pay = $request->pay_payment;
+					$paymentCredit->update();
+				} else {
+					PaymentCredit::create([
+						'user_id' => $user_id,
+						'order_id' => $order->id,
+						'pay' => $request->pay_payment
+					]);
+				}
+			}
+		}
 
 		foreach ($request->productsOrder as $details_order) {
 
@@ -247,9 +292,9 @@ class OrderController extends Controller
 			);
 		}
 
-		if ($request->state == 4) {
+		if ($request->state == 4 || $request->state == 6) {
 			$print = new PrintOrderController();
-			$print = $print->printTicket($order->id, $request->cash, $request->change, 'App\Models\Order');
+			$print = $print->printTicket($order->id, $request->cash, $request->change);
 		}
 	}
 
@@ -275,13 +320,12 @@ class OrderController extends Controller
 			'consecutiveBox' => $order->consecutiveBox()
 		];
 
-		if($data['consecutiveBox']){
-			
+		if ($data['consecutiveBox']) {
+
 			$from_date = Carbon::createFromFormat('Y-m-d', $data['consecutiveBox']->from_date);
 			$until_date = Carbon::createFromFormat('Y-m-d', $data['consecutiveBox']->until_date);
-			
-			$data['consecutive_expires'] = "Vence: ".$until_date->toDateString()." Meses Vig. :  ".($until_date->month - $from_date->month);
 
+			$data['consecutive_expires'] = "Vence: " . $until_date->toDateString() . " Meses Vig. :  " . ($until_date->month - $from_date->month);
 		}
 
 		$pdf = PDF::loadView('templates.order', $data);
@@ -295,5 +339,85 @@ class OrderController extends Controller
 		];
 
 		return response()->json($data);
+	}
+
+	public function creditByClient($clientId)
+	{
+		$orders = Order::where('client_id', $clientId)->where('state', 5)->get();
+
+		return response()->json([
+			'status' => 'success',
+			'code' => 200,
+			'orders' => $orders,
+		]);
+	}
+
+	public function payCreditByClient(Request $request)
+	{
+		$validate = Validator::make($request->all(), [
+			'id_client' => 'required|integer|exists:clients,id',
+			'pay_payment' =>  'required|numeric|min:1'
+		]);
+
+		if ($validate->fails()) {
+			return response()->json([
+				'status' => 'error',
+				'code' => 404,
+				'message' => 'Validación de datos incorrecta',
+				'errors' => $validate->errors(),
+			]);
+		}
+		$orders = DB::table('orders as o')
+			->leftJoin('payment_credits as pc', 'pc.credit_id', '=', 'o.id')
+			->select('o.id', 'o.total_paid', DB::raw('SUM(pc.pay) as  paid_payment'))
+			->where('o.client_id', $request->id_client)
+			->where('o.state', 2)
+			->groupByRaw('id, total_paid')
+			->orderBy('o.created_at')
+			->get();
+
+		if ($request->pay_payment > $orders->sum('total_paid')) {
+			return response()->json([
+				'status' => 'error',
+				'code' => 400,
+				'message' => 'Validación de pago incorrecta',
+			]);
+		}
+
+		$user_id =  Auth::user()->id;
+
+		foreach ($orders as $order) {
+			if ($request->pay_payment > 0) {
+
+				$pending = $order->total_paid - $order->paid_payment;
+
+				if ($pending > $request->pay_payment) {
+					PaymentCredit::create([
+						'user_id' => $user_id,
+						'credit_id' => $order->id,
+						'pay' => $request->pay_payment
+					]);
+					$request->pay_payment = 0;
+				} else {
+					PaymentCredit::create([
+						'user_id' => $user_id,
+						'credit_id' => $order->id,
+						'pay' => $pending
+					]);
+
+					Order::where('id', $order->id)->update([
+						'state' => 2
+					]);
+
+					$request->pay_payment = $request->pay_payment - $pending;
+				}
+			}
+		}
+
+		return response()->json([
+			'status' => 'success',
+			'code' => 200,
+			'message' => 'Abonos realizados correctamente',
+		]);
 	}
 }

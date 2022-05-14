@@ -13,11 +13,10 @@ use Mike42\Escpos\Printer;
 
 class PrintOrderController extends Controller
 {
-	public function printTicket($order_id, $cash = null, $change = null, $model)
+	public function printTicket($order_id, $cash = null, $change = null)
 	{
 		// Orden
-
-		$order = $model::find($order_id);
+		$order = Order::find($order_id);
 		$order_details = $order->detailOrders()->get();
 		$system_user = $order->user()->first();
 
@@ -26,7 +25,7 @@ class PrintOrderController extends Controller
 		$company =  $configuration->select()->first();
 
 		if (!$company->printer || $company->printer == '') {
-			return false;
+			 throw new Exception("Error, no hay impresoras configuradas", 400);
 		}
 
 		// Config de impresora
@@ -43,8 +42,9 @@ class PrintOrderController extends Controller
 			} catch (Exception $e) {
 				/* Images not supported on your PHP, or image file not found */
 				//$printer->text($e->getMessage() . "\n");
+				$logo = EscposImage::load('logo.jpeg', false);
 			}
-			
+
 			$printer->setTextSize(1, 2);
 			$printer->setEmphasis(true);
 			$printer->text($company->name . "\n");
@@ -64,9 +64,9 @@ class PrintOrderController extends Controller
 			$printer->text(date('Y-m-d h:i:s A') .  "\n");
 			$printer->text("N° Factura: ");
 
-			if(isset($order->bill_number)){
+			if (isset($order->bill_number)) {
 				$printer->text($order->bill_number . "\n");        // 
-			}else{
+			} else {
 				$printer->text($order->no_invoice . "\n");        // 
 			}
 
@@ -83,7 +83,7 @@ class PrintOrderController extends Controller
 			$printer->text("\n");
 			$total = 0;
 			foreach ($order_details as $df) {
-				$line = sprintf('%-22s %8.2f %10.2f ', '-' . mb_strimwidth($df->product, 0, 21, '') , $df->quantity, $df->price_tax_inc_total);
+				$line = sprintf('%-22s %8.2f %10.2f ', '-' . mb_strimwidth($df->product, 0, 21, ''), $df->quantity, $df->price_tax_inc_total);
 				$total +=  $df->price_tax_inc_total;
 				$printer->text($line);
 				$printer->text("\n");
@@ -108,21 +108,20 @@ class PrintOrderController extends Controller
 			}
 			$printer->text("\n");
 
-			if(isset($order->bill_number)){
-				
+			if (isset($order->bill_number)) {
+
 				$consecutiveBox = $order->consecutiveBox();
 
 
-				if($consecutiveBox)
-				{
+				if ($consecutiveBox) {
 					$from_date = Carbon::createFromFormat('Y-m-d', $consecutiveBox->from_date);
 					$until_date = Carbon::createFromFormat('Y-m-d', $consecutiveBox->until_date);
 
 					$printer->setJustification(Printer::JUSTIFY_CENTER);
-					$printer->text("VENCE: ".$until_date->toDateString()." MESES VIG. :  ".($until_date->month - $from_date->month)."\n");
-					$printer->text("PREFIJO: ".$order->box->prefix."\n");
-					
-					$printer->text("DE No. ".$consecutiveBox->from_nro." AL ".$consecutiveBox->until_nro." AUTORIZA\n");
+					$printer->text("VENCE: " . $until_date->toDateString() . " MESES VIG. :  " . ($until_date->month - $from_date->month) . "\n");
+					$printer->text("PREFIJO: " . $order->box->prefix . "\n");
+
+					$printer->text("DE No. " . $consecutiveBox->from_nro . " AL " . $consecutiveBox->until_nro . " AUTORIZA\n");
 				}
 			}
 
@@ -132,7 +131,7 @@ class PrintOrderController extends Controller
 			$printer->setLineSpacing(2);
 			$printer->setEmphasis(false);
 			$printer->setFont(Printer::MODE_FONT_B);
-			$printer->text($company->condition_order."\n");
+			$printer->text($company->condition_order . "\n");
 			$printer->text("Tecnoplus");
 			$printer->text("\nwww.tecnoplus.com\n");
 			$printer->cut();
@@ -141,7 +140,10 @@ class PrintOrderController extends Controller
 
 			return redirect()->back()->with("mensaje", "Ticket impreso");
 		} catch (\Throwable $th) {
-			return false;
+			throw new Exception("Error, no se pudo completar el proceso", 400);
+			return [
+				'code' => $th->getCode()
+			];
 		}
 	}
 }

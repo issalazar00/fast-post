@@ -50,6 +50,7 @@
         .text-right {
             text-align: right !important;
         }
+
         tfoot tr {
             background-color: #E4E4E4;
         }
@@ -57,12 +58,12 @@
         .icon {
             width: 17px;
         }
+
         footer {
             color: white;
             background-color: #19AC0D;
             padding: 5px auto;
         }
-
     </style>
 </head>
 
@@ -200,6 +201,18 @@
             {!! $configuration->condition_quotation !!}
         </p>
     </div>
+    <div class="text-center">
+        @if ($consecutiveBox)
+
+        <p>Prefijo: {{ $orderInformation->box->prefix}}</p>
+        <p>
+            {{
+            "De No. ".$consecutiveBox->from_nro." AL ".$consecutiveBox->until_nro." Autoriza"
+            }}
+        </p>
+        <p>{{ $consecutive_expires }}</p>
+        @endif
+    </div>
     <footer class="text-center">
         <h3>Informacion de contacto</h3>
 
@@ -208,24 +221,16 @@
             {{$configuration->email}}
         </p>
         <p>
-        <img class="icon" src="{{ $url.'/images/'.'phone.png'}}">
+            <img class="icon" src="{{ $url.'/images/'.'phone.png'}}">
             {{$configuration->telephone.' - '.$configuration->mobile}}
         </p>
         <p>
             <img class="icon" src="{{ $url.'/images/'.'location-pin.png'}}">
             {{$configuration->address}}
         </p>
-        @if ($consecutiveBox)
 
-            <p>{{ $consecutive_expires }}</p>
-            <p>Prefijo: {{ $orderInformation->box->prefix}}</p>
-            <p>
-                {{
-                    "De No. ".$consecutiveBox->from_nro." AL ".$consecutiveBox->until_nro." Autoriza"
-                }}
-            </p>
-        @endif
     </footer>
+
     @endif
 </body>
 
