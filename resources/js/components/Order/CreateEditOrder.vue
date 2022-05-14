@@ -301,7 +301,7 @@
 						@click="createOrUpdateOrder(2)"
 					>
 						<!-- Facturar -->
-						<i class="bi bi-receipt"></i> Guardar
+						<i class="bi bi-receipt"></i> Facturar
 					</button>
 					<button
 						type="button"
@@ -309,14 +309,22 @@
 						@click="createOrUpdateOrder(4)"
 					>
 						<!-- Facturar -->
-						<i class="bi bi-receipt"></i> Guardar e imprimir
+						<i class="bi bi-receipt"></i> Facturar e imprimir
+					</button>
+					<button
+						type="button"
+						class="btn btn-outline-primary btn-block"
+						@click="createOrUpdateOrder(5)"
+					>
+						<!-- Credito -->
+						<i class="bi bi-wallet2"></i> Pasar a crédito
 					</button>
 					<button
 						type="button"
 						class="btn btn-outline-primary btn-block"
 						@click="createOrUpdateOrder(1)"
 					>
-						<i class="bi bi-receipt"></i> Suspender
+						<i class="bi bi-clock-fill"></i> Suspender
 					</button>
 
 					<button
@@ -324,7 +332,7 @@
 						class="btn btn-outline-primary btn-block"
 						@click="createOrUpdateOrder(3)"
 					>
-						<i class="bi bi-receipt"></i> Cotizar
+						<i class="bi bi-list-check"></i> Cotizar
 					</button>
 					<router-link
 						to="/orders"
@@ -332,7 +340,7 @@
 						class="btn btn-outline-secondary btn-block"
 						v-if="order_id != 0"
 					>
-						<i class="bi bi-receipt"></i> Cancelar
+						<i class="bi bi-cart-x"></i> Cancelar
 					</router-link>
 				</div>
 			</div>
@@ -526,6 +534,11 @@ export default {
 
 		createOrUpdateOrder(state_order) {
 			this.order.state = state_order;
+
+			if (this.order.id_client == 1 && state_order == 5) {
+				alert("Debe seleccionar un cliente válido");
+				return false;
+			}
 			if (this.productsOrderList.length > 0) {
 				this.order.productsOrder = this.productsOrderList;
 				if (this.order_id != 0 && this.order_id != null) {
@@ -540,7 +553,13 @@ export default {
 				} else {
 					axios
 						.post(`api/orders`, this.order, this.$root.config)
-						.then(() => this.$router.go(0));
+						.then(response => {
+							// const order_id = response.data;
+							// this.printTicket(order_id);
+						})
+						.finally(setTimeout(() => {
+							this.$router.go(0)
+						}, 5000));
 				}
 			} else {
 				alert("No hay productos en la orden");
@@ -574,6 +593,12 @@ export default {
 			} else {
 				alert("No hay productos en la orden");
 			}
+		},
+		printTicket(order_id) {
+			axios.get(
+				`api/print-order/${order_id}/${this.order.cash}/${this.payment_return}`,
+				this.$root.config
+			);
 		},
 		commands() {
 			let me = this;

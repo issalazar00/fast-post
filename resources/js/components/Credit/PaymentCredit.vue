@@ -103,6 +103,7 @@
                       value="0"
                       step="any"
                       v-model="cash"
+                      
                     />
                   </th>
                 </tr>
@@ -232,11 +233,11 @@ export default {
 
     creditPendingByClient(clientId) {
       let me = this;
-      let url = "api/credits/byClient/" + clientId;
+      let url = "api/orders/byClient/" + clientId;
       axios
         .get(url, me.$root.config)
         .then(function (response) {
-          me.listPending = response.data.credits;
+          me.listPending = response.data.orders;
           console.log(typeof me.listPending);
           console.log(me.listPending.length);
         })
@@ -255,12 +256,11 @@ export default {
     payCredit() {
       let me = this;
       axios
-        .post('api/credits/payCreditByClient', this.paymentCredit, me.$root.config)
+        .post('api/orders/payCreditByClient', this.paymentCredit, me.$root.config)
         .then(function (response) {
           me.resetData();
           $('#modalPaymentCredit').modal('hide');
           me.$emit('get-credits');
-          console.log(response.data);
         })
         .catch(function (error) {
           console.log(error);

@@ -162,10 +162,10 @@ export default {
     getDetailsCredit() {
       let me = this;
       axios
-        .get(`api/credits/${this.credit_id}`, this.$root.config)
+        .get(`api/orders/${this.credit_id}`, this.$root.config)
         .then(function (response) {
-          me.creditInformation = response.data.credit_information;
-          me.ItemList = response.data.credit_details;
+          me.creditInformation = response.data.order_information;
+          me.ItemList = response.data.order_details;
         });
     },
   },

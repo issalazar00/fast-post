@@ -43,13 +43,5 @@ class Credit extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function paymentCredits()
-    {
-        return $this->hasMany(PaymentCredit::class);
-    }
-
-    public function getPaidPaymentAttribute()
-    {
-        return $this->paymentCredits->sum('pay');
-    }
+    
 }

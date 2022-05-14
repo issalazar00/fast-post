@@ -18,7 +18,7 @@ use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BoxController;
 use App\Http\Controllers\CreditController;
 use App\Http\Controllers\DetailBillingController;
-use App\Http\Controllers\DetailCreditController;
+use App\Http\Controllers\PrintOrderController;
 use App\Http\Controllers\ReportController;
 use App\Models\Configuration;
 use Illuminate\Http\Request;
@@ -55,6 +55,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/brands/brand-list', [BrandController::class, 'brandList']);
 	Route::resource('/brands', BrandController::class);
 
+	Route::get('/print-order/{id}', [PrintOrderController::class, 'printTicket'])->middleware('can:order.index');
 	Route::get('/orders/generatePdf/{order}', [OrderController::class, 'generatePdf']);
 	Route::resource('/orders',  OrderController::class);
 	Route::resource('/order-details', DetailOrderController::class);
@@ -64,11 +65,11 @@ Route::middleware('auth:api')->group(function () {
 	Route::resource('/billing-details', DetailBillingController::class);
 
 
-	Route::get('/credits/byClient/{client_id}', [CreditController::class, 'creditByClient']);
-	Route::get('/credits/generatePdf/{credit}', [CreditController::class, 'generatePdf']);
-	Route::post('/credits/payCreditByClient', [CreditController::class, 'payCreditByClient']);
-	Route::resource('/credits',  CreditController::class);
-	Route::resource('/credit-details', DetailCreditController::class);
+	Route::get('/orders/byClient/{client_id}', [OrderController::class, 'creditByClient']);
+	//Route::get('/credits/generatePdf/{credit}', [OrderController::class, 'generatePdf']);
+	Route::post('/orders/payCreditByClient', [CreditController::class, 'payCreditByClient']);
+	//Route::resource('/credits',  CreditController::class);
+	//Route::resource('/credit-details', DetailCreditController::class);
 
 
 	Route::resource('/products',  ProductController::class);
@@ -114,6 +115,4 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/boxes/{box}/consecutiveAll', [BoxController::class, 'consecutiveAllByBox'])->middleware('can:box.index');
 	Route::get('/boxes/{box}/getAssignUserByBox', [BoxController::class, 'getAssignUserByBox'])->middleware('can:box.index');
 	Route::post('/boxes/{box}/toAssignUserByBox', [BoxController::class, 'toAssignUserByBox'])->middleware('can:box.store');
-	
-	
 });

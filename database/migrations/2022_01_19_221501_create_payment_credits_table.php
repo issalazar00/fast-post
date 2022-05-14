@@ -16,7 +16,7 @@ class CreatePaymentCreditsTable extends Migration
         Schema::create('payment_credits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('credit_id');
+            $table->foreignId('order_id');
             $table->double('pay');
             $table->timestamps();
 
@@ -24,7 +24,7 @@ class CreatePaymentCreditsTable extends Migration
                 ->references('id')
                 ->on('users')
                 ->delete('cascade');
-            $table->foreign('credit_id')
+            $table->foreign('order_id')
                 ->references('id')
                 ->on('credits')
                 ->delete('cascade');
