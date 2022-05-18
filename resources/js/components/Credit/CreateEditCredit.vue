@@ -6,7 +6,7 @@
 				style="z-index: 1022; left: 100%"
 			>
 				<table class="table table-borderless">
-					<tr class="h1 text-white bg-primary">
+					<tr class="h1 text-white bg-success">
 						<td class="text-right">Total</td>
 						<td>
 							$
@@ -269,7 +269,7 @@
 									{{ (credit.total_discount = total_discount).toFixed(0) }}
 								</th>
 							</tr>
-							<tr class="bg-primary h5 text-white">
+							<tr class="bg-success h5 text-white">
 								<th colspan="7">Total:</th>
 								<th>
 									$
@@ -339,7 +339,7 @@
 						@click="createOrUpdateCredit(5)"
 					>
 						<!-- Facturar -->
-						<i class="bi bi-receipt"></i> Guardar
+						<i class="bi bi-receipt"></i> Guardar Crédito
 					</button>
 					<button
 						type="button"

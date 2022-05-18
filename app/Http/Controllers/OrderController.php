@@ -72,6 +72,7 @@ class OrderController extends Controller
 
 		$orders = $orders
 			->where('user_id', $user_id)
+			->orderByDesc('id')
 			->paginate(10);
 
 		return response()->json([
@@ -101,58 +102,62 @@ class OrderController extends Controller
 	{
 		$user_id =  Auth::user()->id;
 
-		$latestOrder = Order::where('box_id', $request->box_id)->orderByDesc('id')->first();
+		$latestOrder = Order::where('box_id', $request->box_id)->where('state', '<>', ['3','5'])->orderByDesc('id')->first();
 		$box = Box::find($request->box_id);
 		$dateValidate = Carbon::now()->toDateString();
 
-		if ($latestOrder) {
+		if ($request->state != 6 && $request->state != 5  && $request->state != 3) {
+			if ($latestOrder) {
 
-			$lastConsecutive = str_replace($box->prefix, '', $latestOrder->bill_number);
-			$lastConsecutive = intval($lastConsecutive);
+				$lastConsecutive = str_replace($box->prefix, '', $latestOrder->bill_number);
+				$lastConsecutive = intval($lastConsecutive);
 
 
-			$consecutiveBox = $box->consecutiveBox()->where([
-				['from_nro', '<=', $lastConsecutive],
-				['until_nro', '>=', $lastConsecutive]
-			])
-				->where('until_date', '>=', $dateValidate)
-				->orderBy('from_nro')
-				->first();
+				$consecutiveBox = $box->consecutiveBox()->where([
+					['from_nro', '<=', $lastConsecutive],
+					['until_nro', '>=', $lastConsecutive]
+				])
+					->where('until_date', '>=', $dateValidate)
+					->orderBy('from_nro')
+					->first();
 
-			if ($consecutiveBox && $consecutiveBox->until_nro > $lastConsecutive) {
-				$bill_number = $box->prefix . ($lastConsecutive + 1);
+				if ($consecutiveBox && $consecutiveBox->until_nro > $lastConsecutive) {
+					$bill_number = $box->prefix . ($lastConsecutive + 1);
+				} else {
+					$continue = $box->consecutiveBox()
+						->where('until_nro', '>', $lastConsecutive)
+						->where('from_date', '<=', $dateValidate)
+						->where('until_date', '>=', $dateValidate)
+						->where('id', '!=', isset($consecutiveBox->id) ? $consecutiveBox->id : null)
+						->orderBy('from_nro')
+						->first();
+
+					if (!$continue) {
+						return abort(500);
+					}
+
+					$bill_number = $box->prefix . $continue->from_nro;
+				}
 			} else {
 				$continue = $box->consecutiveBox()
-					->where('until_nro', '>', $lastConsecutive)
 					->where('from_date', '<=', $dateValidate)
 					->where('until_date', '>=', $dateValidate)
-					->where('id', '!=', isset($consecutiveBox->id) ? $consecutiveBox->id : null)
 					->orderBy('from_nro')
 					->first();
 
 				if (!$continue) {
 					return abort(500);
 				}
-
 				$bill_number = $box->prefix . $continue->from_nro;
 			}
 		} else {
-			$continue = $box->consecutiveBox()
-				->where('from_date', '<=', $dateValidate)
-				->where('until_date', '>=', $dateValidate)
-				->orderBy('from_nro')
-				->first();
-
-			if (!$continue) {
-				return abort(500);
-			}
-			$bill_number = $box->prefix . $continue->from_nro;
+			$bill_number = strtoupper(Str::random(10));
 		}
 
 		$order = new Order;
 		$order->client_id = $request->id_client;
 		$order->user_id = $user_id;
-		$order->no_invoice = strtoupper(Str::random(10));
+		$order->no_invoice = $bill_number;
 		$order->total_paid = $request->total_tax_inc;
 		$order->total_iva_inc = $request->total_tax_inc;
 		$order->total_iva_exc = $request->total_tax_exc;
@@ -165,7 +170,7 @@ class OrderController extends Controller
 			$order->state = 2;
 			$order->payment_date = date('Y-m-d');
 		}
-		if ($request->state == 6) {
+		if ($request->state == 6 || $request->state == 5) {
 			$order->state = 5;
 		}
 		if ($request->state != 4 && $request->state != 6) {
@@ -371,7 +376,7 @@ class OrderController extends Controller
 			->leftJoin('payment_credits as pc', 'pc.credit_id', '=', 'o.id')
 			->select('o.id', 'o.total_paid', DB::raw('SUM(pc.pay) as  paid_payment'))
 			->where('o.client_id', $request->id_client)
-			->where('o.state', 2)
+			->where('o.state', 5)
 			->groupByRaw('id, total_paid')
 			->orderBy('o.created_at')
 			->get();

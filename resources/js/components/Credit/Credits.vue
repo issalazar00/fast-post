@@ -1,7 +1,7 @@
 <template>
 	<div class="w-100">
 		<header class="page-header justify-content-between row px-4">
-			<h3>Compras</h3>
+			<h3>Créditos</h3>
 			<router-link
 				class="btn btn-outline-primary"
 				:to="{
@@ -10,7 +10,7 @@
 				}"
 				v-if="$root.validatePermission('credit.store')"
 			>
-				Nueva ordern
+				Nuevo crédito
 			</router-link>
 		</header>
 		<section>
@@ -96,7 +96,7 @@
 					</thead>
 					<tbody>
 						<tr v-for="o in creditList.data" :key="o.id">
-							<th scope="row">{{ o.id }} - {{ o.no_invoice }}</th>
+							<th scope="row">{{ o.id }} - {{ o.bill_number }}</th>
 							<td>{{ o.total_paid | currency }}</td>
 							<td class="bg-success">{{ o.paid_payment | currency }}</td>
 							<td :class="{ 'bg-danger': o.total_paid - o.paid_payment > 0 }">
@@ -120,7 +120,7 @@
 								</router-link>
 							</td>
 							<td>
-								<button @click="printTicket(o.id)">Ticket </button>
+								<button class="btn " @click="printTicket(o.id)"><i class="bi bi-receipt-cutoff"></i> </button>
 							</td>
 							<td>
 								<button class="btn" @click="generatePdf(o.id)">
