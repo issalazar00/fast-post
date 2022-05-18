@@ -102,11 +102,11 @@ class OrderController extends Controller
 	{
 		$user_id =  Auth::user()->id;
 
-		$latestOrder = Order::where('box_id', $request->box_id)->where('state', '<>', ['3','5'])->orderByDesc('id')->first();
+		$latestOrder = Order::where('box_id', $request->box_id)->where('state', '<>', '3')->orderByDesc('id')->first();
 		$box = Box::find($request->box_id);
 		$dateValidate = Carbon::now()->toDateString();
 
-		if ($request->state != 6 && $request->state != 5  && $request->state != 3) {
+		if ($request->state != 3) {
 			if ($latestOrder) {
 
 				$lastConsecutive = str_replace($box->prefix, '', $latestOrder->bill_number);
