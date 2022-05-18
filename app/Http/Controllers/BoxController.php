@@ -37,14 +37,15 @@ class BoxController extends Controller
         ]);
     }
 
-    public function getBoxesByUser(){
+    public function getBoxesByUser()
+    {
         return response()->json([
             'status' => 'success',
             'code' =>  200,
             'boxes' =>  Box::select('boxes.*')
-                            ->join('box_users as bx', 'bx.box_id', '=', 'boxes.id')
-                            ->where('bx.user_id', Auth::id())
-                            ->get()
+                ->join('box_users as bx', 'bx.box_id', '=', 'boxes.id')
+                ->where('bx.user_id', Auth::id())
+                ->get()
         ], 200);
     }
 
@@ -91,13 +92,13 @@ class BoxController extends Controller
             'prefix' => $request->prefix
         ]);
 
-        foreach($request->consecutive_box as $item){
+        foreach ($request->consecutive_box as $item) {
             ConsecutiveBox::create([
                 'box_id' => $box->id,
-                'from_nro'=> $item['from_nro'], 
-                'until_nro'=> $item['until_nro'], 
-                'from_date'=> $item['from_date'], 
-                'until_date'=> $item['until_date']
+                'from_nro' => $item['from_nro'],
+                'until_nro' => $item['until_nro'],
+                'from_date' => $item['from_date'],
+                'until_date' => $item['until_date']
             ]);
         }
 
@@ -175,7 +176,7 @@ class BoxController extends Controller
             'consecutive_load.*.from_date' => 'date',
             'consecutive_load.*.until_date' => 'date'
         ]);
-        
+
         if ($validate->fails()) {
             return response()->json([
                 'status' => 'error',
@@ -188,30 +189,30 @@ class BoxController extends Controller
         $box = Box::find($id);
 
         if ($box) {
-            
-            if(!$box->process){
-                $box->prefix =  $request->prefix ;
+
+            if (!$box->process) {
+                $box->prefix =  $request->prefix;
             }
             $box->name = $request->name;
             $box->update();
 
             $used = [];
-            foreach($request->consecutive_load as $item){
-                if($item['process']){
+            foreach ($request->consecutive_load as $item) {
+                if ($item['process']) {
                     $used[] = $item['id'];
                 }
             }
-    
+
             ConsecutiveBox::whereNotIn('id', $used)->where('box_id', $box->id)->delete();
             //return response()->json($used,400);
-            foreach($request->consecutive_box as $item){
-                if(!isset($item['id']) || !in_array($item['id'], $used)){
+            foreach ($request->consecutive_box as $item) {
+                if (!isset($item['id']) || !in_array($item['id'], $used)) {
                     ConsecutiveBox::create([
                         'box_id' => $box->id,
-                        'from_nro'=> $item['from_nro'], 
-                        'until_nro'=> $item['until_nro'], 
-                        'from_date'=> $item['from_date'], 
-                        'until_date'=> $item['until_date']
+                        'from_nro' => $item['from_nro'],
+                        'until_nro' => $item['until_nro'],
+                        'from_date' => $item['from_date'],
+                        'until_date' => $item['until_date']
                     ]);
                 }
             }
@@ -273,20 +274,21 @@ class BoxController extends Controller
         $box->save();
     }
 
-    public function consecutiveAllByBox(Box $box){
-        
+    public function consecutiveAllByBox(Box $box)
+    {
+
         $consecutive = ConsecutiveBox::where('box_id', $box->id)->get();
         $consecutive = collect($consecutive);
 
-        $consecutive->map(function($item) use ($box){
-            $bill_number = $box->prefix.$item->from_nro;
+        $consecutive->map(function ($item) use ($box) {
+            $bill_number = $box->prefix . $item->from_nro;
             $orders = Order::where('bill_number', $bill_number)->where('box_id', $box->id)->count();
 
             $item->process = $orders > 0 ?  true : false;
-            
+
             return $item;
         });
-        
+
         return response()->json([
             'status' => 'success',
             'code' => 200,
@@ -294,14 +296,15 @@ class BoxController extends Controller
         ], 200);
     }
 
-    public function getAssignUserByBox($id){
+    public function getAssignUserByBox($id)
+    {
         $box = Box::find($id);
 
         if ($box) {
-            $assignments = User::select('users.id','users.name')->get();
+            $assignments = User::select('users.id', 'users.name')->get();
 
-            $assignments->map(function($item) use ($box){
-                $item->assign = $item->boxUser()->where('box_id',$box->id)->count();
+            $assignments->map(function ($item) use ($box) {
+                $item->assign = $item->boxUser()->where('box_id', $box->id)->count();
             });
 
             $data = [
@@ -320,27 +323,28 @@ class BoxController extends Controller
         return response()->json($data, $data['code']);
     }
 
-    public function toAssignUserByBox(Request $request, $id){
+    public function toAssignUserByBox(Request $request, $id)
+    {
         $box = Box::find($id);
         if ($box) {
 
-            $validate = Validator::make($request->all(),[
+            $validate = Validator::make($request->all(), [
                 'assignments' => 'required|array',
-                'assignments.*'=> 'integer|exists:users,id'
+                'assignments.*' => 'integer|exists:users,id'
             ]);
 
             if ($validate->fails()) {
-                $data =[
+                $data = [
                     'status' => 'error',
                     'code' =>  400,
                     'message' => 'Validación de datos incorrecta',
                     'errors' =>  $validate->errors()
                 ];
-            }else{
+            } else {
 
                 BoxUser::where('box_id', $box->id)->delete();
 
-                foreach($request->assignments as $user){
+                foreach ($request->assignments as $user) {
                     BoxUser::create([
                         'box_id' =>  $box->id,
                         'user_id' => $user
@@ -353,8 +357,27 @@ class BoxController extends Controller
                     'message' => 'Registro exitoso',
                 ];
             }
-            
+        } else {
+            $data = [
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Registro no encontrado'
+            ];
+        }
 
+        return response()->json($data, $data['code']);
+    }
+
+    public function boxList()
+    {
+        $boxes = Box::where('active', 1)->get();
+
+        if ($boxes) {
+            $data = [
+                'status' => 'success',
+                'code' => 200,
+                'boxes' => $boxes
+            ];
         } else {
             $data = [
                 'status' => 'error',

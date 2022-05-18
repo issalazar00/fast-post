@@ -38,7 +38,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
-	
+
 	Route::put('/users/changePassword',  [UserController::class, 'changePassword']);
 	Route::resource('/users', UserController::class);
 	Route::post('/users/{user}/activate',  [UserController::class, 'activate']);
@@ -59,18 +59,14 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/orders/generatePdf/{order}', [OrderController::class, 'generatePdf']);
 	Route::resource('/orders',  OrderController::class);
 	Route::resource('/order-details', DetailOrderController::class);
-	
+
 	Route::get('/billings/generatePdf/{billing}', [BillingController::class, 'generatePdf']);
 	Route::resource('/billings',  BillingController::class);
 	Route::resource('/billing-details', DetailBillingController::class);
 
 
 	Route::get('/orders/byClient/{client_id}', [OrderController::class, 'creditByClient']);
-	//Route::get('/credits/generatePdf/{credit}', [OrderController::class, 'generatePdf']);
 	Route::post('/orders/payCreditByClient', [CreditController::class, 'payCreditByClient']);
-	//Route::resource('/credits',  CreditController::class);
-	//Route::resource('/credit-details', DetailCreditController::class);
-
 
 	Route::resource('/products',  ProductController::class);
 	Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);
@@ -106,12 +102,16 @@ Route::middleware('auth:api')->group(function () {
 	});
 	Route::post('/import/upload-file-import', [ImportProductController::class, 'uploadFile'])->middleware('can:product.store');
 
-	Route::get('/reports/report-sales', [ReportController::class, 'reportSales']);
+	Route::get('/reports/sales-report', [ReportController::class, 'reportSales']);
+	Route::get('/reports/general-sales-report', [ReportController::class, 'reportGeneralSales']);
+	Route::get('/reports/product-sales-report', [ReportController::class, 'reportProductSales']);
+	Route::get('/reports/total-products-report', [ReportController::class, 'reportTotalProducts']);
 
+	Route::get('/boxes/box-list', [BoxController::class, 'boxList']);
 	Route::get('/boxes/byUser', [BoxController::class, 'getBoxesByUser']);
 	Route::resource('/boxes', BoxController::class);
-	Route::post('/boxes/{box}/activate', [BoxController::class,'activate']);
-	
+	Route::post('/boxes/{box}/activate', [BoxController::class, 'activate']);
+
 	Route::get('/boxes/{box}/consecutiveAll', [BoxController::class, 'consecutiveAllByBox'])->middleware('can:box.index');
 	Route::get('/boxes/{box}/getAssignUserByBox', [BoxController::class, 'getAssignUserByBox'])->middleware('can:box.index');
 	Route::post('/boxes/{box}/toAssignUserByBox', [BoxController::class, 'toAssignUserByBox'])->middleware('can:box.store');

@@ -3,42 +3,37 @@
 		<div class="page-header text-center mb-2">
 			<h3 class="">Stock</h3>
 		</div>
-		<moon-loader
-			class="m-auto"
-			:loading="isLoading"
-			:color="'#032F6C'"
-			:size="100"
-		/>
+		<moon-loader class="m-auto" :loading="isLoading" :color="'#032F6C'" :size="100" />
 		<div class="page-search mx-2" v-if="!isLoading">
 			<div class="form-row">
-				<div class="col my-4">
-					<input
-						type="text"
-						class="form-control"
-						id="search_product"
-						placeholder="Nombre | Código de barras"
-						v-model="search_product"
-						autofocus
-						@keyup="listProducts(1)"
-					/>
+				<div class="form-group col-md-3">
+					<label for="search_product">Nombre o código de producto</label>
+					<input type="text" class="form-control" id="search_product" placeholder="Nombre | Código de barras"
+						v-model="search_product" autofocus @keyup="listProducts(1)" />
 				</div>
-				<div class="col my-4">
-					<v-select
-						:options="categoryList"
-						label="name"
-						:reduce="category => category.id"
-						v-model="search_category"
-					/>
+				<div class="form-group col-md-3">
+					<label for="category">Categoría</label>
+					<v-select :options="categoryList" label="name" :reduce="category => category.id" v-model="search_category" />
 				</div>
-				<div class="col my-4">
-					<v-select
-						:options="brandList"
-						label="name"
-						:reduce="brand => brand.id"
-						v-model="search_brand"
-					/>
+				<div class="form-group col-md-3">
+					<label for="brand">Marca</label>
+					<v-select :options="brandList" label="name" :reduce="brand => brand.id" v-model="search_brand" />
 				</div>
-				<div class="col my-4">
+				<div class="form-group col-3">
+					<label for="search_quantity_sign">Cantidad:</label>
+					<select name="search_quantity_sign" class="custom-select" v-model="search_quantity_sign"
+						id="search_quantity_sign">
+						<option value=">"> Mayor que</option>
+						<option value="<">Menor que</option>
+						<option value="=">Igual a</option>
+					</select>
+				</div>
+				<div class="form-group col-3">
+					<label for="quantity">Valor de Cantidad:</label>
+					<input type="quantity" step="any" class="form-control" id="search_quantity" placeholder="Cantidad"
+						v-model="search_quantity" />
+				</div>
+				<div class="col-3 offset-6">
 					<button class="btn btn-success btn-block" @click="listProducts(1)">
 						Buscar <i class="bi bi-search"></i>
 					</button>
@@ -71,23 +66,11 @@
 							<td>{{ product.quantity }}</td>
 							<td v-if="$root.validatePermission('product.update')">
 								<div class="input-group mb-3">
-									<input
-										type="number"
-										class="form-control"
-										placeholder="Cantidad de productos"
-										aria-label="Product quantity"
-										aria-describedby="button-qty"
-										value="0"
-										v-model="product.qty"
-									/>
+									<input type="number" class="form-control" placeholder="Cantidad de productos"
+										aria-label="Product quantity" aria-describedby="button-qty" value="0" v-model="product.qty" />
 									<div class="input-group-append">
-										<button
-											class="btn btn-outline-success"
-											type="button"
-											id="button-qty"
-											v-if="product.qty && product.qty != 0"
-											@click="updateStock(product.id, product.qty)"
-										>
+										<button class="btn btn-outline-success" type="button" id="button-qty"
+											v-if="product.qty && product.qty != 0" @click="updateStock(product.id, product.qty)">
 											<i class="bi bi-check2-circle"></i>
 										</button>
 									</div>
@@ -96,16 +79,9 @@
 						</tr>
 					</tbody>
 				</table>
-				<pagination
-					:align="'center'"
-					:data="ProductList"
-					:limit="8"
-					@pagination-change-page="listProducts"
-				>
+				<pagination :align="'center'" :data="ProductList" :limit="8" @pagination-change-page="listProducts">
 					<span slot="prev-nav"><i class="bi bi-chevron-double-left"></i></span>
-					<span slot="next-nav"
-						><i class="bi bi-chevron-double-right"></i
-					></span>
+					<span slot="next-nav"><i class="bi bi-chevron-double-right"></i></span>
 				</pagination>
 			</section>
 		</div>
@@ -119,6 +95,8 @@ export default {
 			search_product: "",
 			search_category: 0,
 			search_brand: 0,
+			search_quantity_sign: '>',
+			search_quantity: 0,
 			isLoading: false,
 			ProductList: {},
 			categoryList: [],
@@ -130,7 +108,7 @@ export default {
 		let me = this;
 		axios
 			.get(`api/products?page=1`, this.$root.config)
-			.then(function(response) {
+			.then(function (response) {
 				me.ProductList = response.data.products;
 			})
 			.finally(() => (this.isLoading = false));
@@ -140,10 +118,10 @@ export default {
 			let me = this;
 			axios
 				.get(
-					`api/products?page=${page}&product=${me.search_product}&category_id=${me.search_category}&brand_id=${me.search_brand}`,
+					`api/products?page=${page}&product=${me.search_product}&category_id=${me.search_category}&brand_id=${me.search_brand}&quantity_sign=${me.search_quantity_sign}&quantity=${me.search_quantity}`,
 					this.$root.config
 				)
-				.then(function(response) {
+				.then(function (response) {
 					me.ProductList = response.data.products;
 				});
 		},
@@ -151,7 +129,7 @@ export default {
 			let me = this;
 			axios
 				.get(`api/categories/category-list`, this.$root.config)
-				.then(function(response) {
+				.then(function (response) {
 					me.categoryList = response.data.categories;
 				});
 		},
@@ -159,7 +137,7 @@ export default {
 			let me = this;
 			axios
 				.get(`api/brands/brand-list`, this.$root.config)
-				.then(function(response) {
+				.then(function (response) {
 					me.brandList = response.data.brands;
 				});
 		},
@@ -171,7 +149,7 @@ export default {
 					{ quantity: quantity },
 					this.$root.config
 				)
-				.then(function(response) {
+				.then(function (response) {
 					me.listProducts(1);
 				});
 		}
@@ -183,4 +161,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>
