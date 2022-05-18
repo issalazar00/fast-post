@@ -54790,7 +54790,7 @@ var render = function() {
                           attrs: {
                             type: "text",
                             id: "address",
-                            placeholder: "Ingrear dirección",
+                            placeholder: "Ingresar dirección",
                             name: "address"
                           },
                           domProps: { value: _vm.formClient.address },
@@ -54903,7 +54903,7 @@ var render = function() {
                           attrs: {
                             type: "enail",
                             id: "email",
-                            placeholder: "Ingrear email",
+                            placeholder: "Ingresar email",
                             name: "email"
                           },
                           domProps: { value: _vm.formClient.email },

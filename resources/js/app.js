@@ -49,6 +49,8 @@ import DetailsCredit from './components/Credit/DetailsCredit.vue'
 import CreateEditCredit from './components/Credit/CreateEditCredit.vue'
 
 import ReportSale from './components/Report/ReportSale'
+import ReportProductSales from './components/Report/ReportProductSales'
+import ReportGeneralSales from './components/Report/ReportGeneralSales'
 
 import Boxes from './components/Box/Boxes.vue'
 
@@ -125,6 +127,8 @@ const routes = [
   { path: '/create-edit-billing/:billing_id', component: CreateEditBilling, props: true, name: 'create-edit-billing', alias: "billing.store" },
 
   { path: '/reports/report-sale', component: ReportSale, props: true, name: 'report-sale' },
+  { path: '/reports/report-general-sales', component: ReportGeneralSales, props: true, name: 'report-general-sales' },
+  { path: '/reports/report-product-sales', component: ReportProductSales, props: true, name: 'report-product-sales' },
 
   { path: '/boxes', component: Boxes, alias: 'category.index' },
 

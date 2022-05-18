@@ -89,7 +89,7 @@ export default {
 			let me = this;
 			axios
 				.get(
-					`api/reports/report-sales?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}&from=${me.filter.from}&to=${me.filter.to}`,
+					`api/reports/sales-report?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}&from=${me.filter.from}&to=${me.filter.to}`,
 					this.$root.config
 				)
 				.then(function(response) {

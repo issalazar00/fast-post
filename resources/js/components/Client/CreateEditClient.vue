@@ -67,7 +67,7 @@
                       type="text"
                       class="form-control"
                       id="address"
-                      placeholder="Ingrear dirección"
+                      placeholder="Ingresar dirección"
                       name="address"
                       v-model="formClient.address"
                     />
@@ -103,7 +103,7 @@
                       type="enail"
                       class="form-control"
                       id="email"
-                      placeholder="Ingrear email"
+                      placeholder="Ingresar email"
                       name="email"
                       v-model="formClient.email"
                     />

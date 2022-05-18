@@ -104,6 +104,14 @@
 				<router-link class="collapse-item " to="/reports/report-sale" v-if="validatePermission('product.index')">Informe
 					de ventas diarias
 				</router-link>
+				<router-link class="collapse-item " to="/reports/report-general-sales"
+					v-if="validatePermission('product.index')">Informe
+					general de ventas
+				</router-link>
+				<router-link class="collapse-item " to="/reports/report-product-sales"
+					v-if="validatePermission('product.index')">Informe
+					de ventas de productos
+				</router-link>
 
 			</div>
 		</div>
