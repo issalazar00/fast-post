@@ -43,14 +43,21 @@ class ProductController extends Controller
 			$products = $products
 				->where('brand_id', "$request->brand_id");
 		}
+		if ($request->quantity_sign) {
+			$products = $products
+				->where('quantity', "$request->quantity_sign", "$request->quantity");
+		}
 
 		$products = $products->orderBy('product', 'asc')->paginate(10);
 
+		$total_products = new ReportController();
+		$total_products = $total_products->reportTotalProducts($request);
 
 		return response()->json([
 			'status' => 'success',
 			'code' => 200,
 			'products' => $products,
+			'total_products' => $total_products
 		]);
 	}
 

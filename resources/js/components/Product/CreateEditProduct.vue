@@ -54,7 +54,7 @@
 										class="form-control"
 										id="product"
 										v-model="formProduct.product"
-										placeholder="Nombre o descripción de product"
+										placeholder="Nombre o descripción del producto"
 										required
 									/>
 									<small id="productHelp" class="form-text text-danger">{{

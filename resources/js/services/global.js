@@ -1,4 +1,4 @@
-const api = 'http://fast-post.com.devel/api';
+const api = 'http://localhost/tecnoplus/public/api';
 
 
 export default {
