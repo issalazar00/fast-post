@@ -319,7 +319,7 @@ class ProductController extends Controller
 	public function searchProduct(Request $request)
 	{
 		$products = Product::select()
-			->where('barcode', 'LIKE', "$request->product%")
+			->where('barcode', 'LIKE', "$request->product")
 			->orWhere('product', 'LIKE', "%$request->product%")
 			->where('state', 1)
 			->first();

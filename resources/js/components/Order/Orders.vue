@@ -74,7 +74,7 @@
 							<th>Cliente</th>
 							<th>Estado</th>
 							<th>Ver</th>
-							<th>Facturar</th>
+							<th>Ticket</th>
 							<th>Imprimir</th>
 							<th v-if="$root.validatePermission('order.update')">Editar</th>
 							<th v-if="$root.validatePermission('order.delete')">Eliminar</th>
