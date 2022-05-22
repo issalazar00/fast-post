@@ -44,7 +44,7 @@ class BrandController extends Controller
       $data = [
         'status' => 'error',
         'code' => 400,
-        'message' => 'Registro no encontradox'
+        'message' => 'Registro no encontrado'
       ];
     }
 

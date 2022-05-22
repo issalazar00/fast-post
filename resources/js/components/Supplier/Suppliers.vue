@@ -1,19 +1,13 @@
 <template>
   <div class="w-100">
-    <header  class="page-header">
+    <header class="page-header">
       <h3>Proveedores</h3>
     </header>
-    
+
     <moon-loader :loading="isLoading" :color="'#032F6C'" :size="100" />
     <div class="row justify-content-end mx-4">
-      <button
-        type="reset"
-        class="btn btn-primary"
-        data-toggle="modal"
-        data-target="#supplierModal"
-        @click="edit = false"
-        v-if="$root.validatePermission('supplier.store')"
-      >
+      <button type="reset" class="btn btn-primary" data-toggle="modal" data-target="#supplierModal"
+        @click="edit = false" v-if="$root.validatePermission('supplier.store')">
         Crear Proveedor
       </button>
     </div>
@@ -45,44 +39,27 @@
               {{ supplier.contact }}
             </td>
             <td v-if="$root.validatePermission('supplier.active')">
-              <button
-                class="btn"
-                :class="supplier.active == 1 ? ' btn-success' : 'btn-danger'"
-                @click="changeState(supplier.id)"
-              >
-                <i
-                  class="bi bi-check-circle-fill"
-                  v-if="supplier.active == 1"
-                ></i>
+              <button class="btn" :class="supplier.active == 1 ? ' btn-success' : 'btn-danger'"
+                @click="changeState(supplier.id)">
+                <i class="bi bi-check-circle-fill" v-if="supplier.active == 1"></i>
                 <i class="bi bi-x-circle" v-else></i>
               </button>
             </td>
             <td v-if="$root.validatePermission('supplier.update')">
-              <button
-                class="btn btn-outline-success"
-                @click="ShowData(supplier)"
-              >
+              <button class="btn btn-outline-success" @click="ShowData(supplier)">
                 <i class="bi bi-pen"></i>
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <pagination
-        :align="'center'"
-        :data="supplierList"
-        :limit="10"
-        @pagination-change-page="listSuppliers"
-      >
+      <pagination :align="'center'" :data="supplierList" :limit="10" @pagination-change-page="listSuppliers">
         <span slot="prev-nav">&lt; Previous</span>
         <span slot="next-nav">Next &gt;</span>
       </pagination>
     </section>
 
-    <create-edit-supplier
-      ref="CreateEditSupplier"
-      @list-suppliers="listSuppliers(1)"
-    />
+    <create-edit-supplier ref="CreateEditSupplier" @list-suppliers="listSuppliers(1)" />
   </div>
 </template>
 
@@ -109,7 +86,7 @@ export default {
         .get("api/suppliers?page=" + page, this.$root.config)
         .then(function (response) {
           me.supplierList = response.data.suppliers;
-        }).finally(()=>{
+        }).finally(() => {
           me.isLoading = false;
         });
     },
@@ -126,6 +103,6 @@ export default {
     },
   },
 
-  mounted() {},
+  mounted() { },
 };
 </script>

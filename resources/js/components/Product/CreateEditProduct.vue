@@ -18,6 +18,7 @@
 										<span class="text-danger">(*)</span></label>
 									<input type="text" step="any" class="form-control" id="barcode" v-model="formProduct.barcode"
 										placeholder="Código de barras" required />
+									<span class="barcode">{{ formProduct.barcode }}</span>
 									<small id="barcodeHelp" class="form-text text-danger">{{
 											formErrors.barcode
 									}}</small>
@@ -71,7 +72,9 @@
 											<td>{{ index }}</td>
 											<td>{{ item.barcode }}</td>
 											<td>{{ item.product }}</td>
-											<td>{{ item.quantity }}</td>
+											<td>
+												<input type="number" step="any" v-model="item.quantity">
+											</td>
 											<td>
 												<button class="btn btn-danger btn-sm" @click="removeProduct(index, item.id)">
 													<i class="bi bi-trash"></i>
@@ -94,13 +97,8 @@
 										v-if="$root.validatePermission('category.store')">
 										Crear Categoria
 									</button>
-									<select class="form-control" id="category_id" v-model="formProduct.category_id">
-										<option value="0">--Select--</option>
-										<option v-for="category in categoryList.data" :key="category.id" :value="category.id">
-											{{ category.name }}
-										</option>
-									</select>
-
+									<v-select :options="categoryList" label="name" :reduce="category => category.id"
+										v-model="formProduct.category_id" />
 									<small id="category_idHelp" class="form-text text-danger">{{
 											formErrors.category_id
 									}}</small>
@@ -351,7 +349,7 @@ export default {
 			},
 			listItemsKit: [],
 			taxList: [],
-			categoryList: {},
+			categoryList: [],
 			brandList: [],
 			formErrors: {
 				barcode: "",
@@ -455,7 +453,7 @@ export default {
 		listCategories() {
 			let me = this;
 			axios
-				.get("api/categories?page=1", me.$root.config)
+				.get("api/categories/category-list?page=1", me.$root.config)
 				.then(function (response) {
 					me.categoryList = response.data.categories;
 				});
