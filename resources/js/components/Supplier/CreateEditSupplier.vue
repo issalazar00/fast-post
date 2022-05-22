@@ -1,22 +1,11 @@
 <template>
   <div class="container">
-    <div
-      class="modal fade"
-      id="supplierModal"
-      tabindex="-1"
-      aria-labelledby="supplierModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="supplierModal" tabindex="-1" aria-labelledby="supplierModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="supplierModalLabel">Proveedor</h5>
-            <button
-              type="reset"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Cerrar"
-            >
+            <button type="reset" class="close" @click="closeModal()">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -25,97 +14,54 @@
               <div class="form-row">
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
-                    <select
-                      class="custom-select"
-                      id="type_documento"
-                      v-model="formSupplier.type_document"
-                    >
+                    <select class="custom-select" id="type_documento" v-model="formSupplier.type_document">
                       <option selected disabled value="">Documento...</option>
                       <option value="1">Cédula de ciudadania</option>
                       <option value="2">Cédula de extranjería</option>
                       <option value="3">NIT</option>
                     </select>
                   </div>
-                  <input
-                    type="text"
-                    class="form-control"
-                    aria-label="Text input with dropdown button"
-                    v-model="formSupplier.document"
-                    placeholder="Ingresar documento de identificación"
-                  />
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button"
+                    v-model="formSupplier.document" placeholder="Ingresar documento de identificación" />
                 </div>
 
                 <div class="form-group col-6">
                   <label for="name">Nombre / Razon social</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    placeholder="Ingresar nombre o razón social"
-                    name="name"
-                    v-model="formSupplier.name"
-                  />
+                  <input type="text" class="form-control" id="name" placeholder="Ingresar nombre o razón social"
+                    name="name" v-model="formSupplier.name" />
                 </div>
               </div>
               <div class="form-row">
                 <div class="col-md-7 border-right border-gray">
                   <div class="form-group">
                     <label for="address">Direccion</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="address"
-                      placeholder="Ingresar dirección"
-                      name="address"
-                      v-model="formSupplier.address"
-                    />
+                    <input type="text" class="form-control" id="address" placeholder="Ingresar dirección" name="address"
+                      v-model="formSupplier.address" />
                   </div>
 
                   <div class="form-group">
                     <label for="mobile">Celular</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="mobile"
-                      placeholder="Ingresar celular"
-                      name="mobile"
-                      v-model="formSupplier.mobile"
-                    />
+                    <input type="text" class="form-control" id="mobile" placeholder="Ingresar celular" name="mobile"
+                      v-model="formSupplier.mobile" />
                   </div>
                   <div class="form-row">
                     <span class="col-12">Contacto</span>
                     <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="contact"
-                        placeholder="Ingresar contacto"
-                        name="contact"
-                        v-model="formSupplier.contact"
-                      />
+                      <input type="text" class="form-control" id="contact" placeholder="Ingresar contacto"
+                        name="contact" v-model="formSupplier.contact" />
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="email">Correo electronico</label>
-                    <input
-                      type="enail"
-                      class="form-control"
-                      id="email"
-                      placeholder="Ingresar email"
-                      name="email"
-                      v-model="formSupplier.email"
-                    />
+                    <input type="enail" class="form-control" id="email" placeholder="Ingresar email" name="email"
+                      v-model="formSupplier.email" />
                   </div>
 
                   <div class="form-row">
                     <div class="form-group">
                       <label for="type_person">Tipo</label>
-                      <select
-                        class="form-control"
-                        id="type_person"
-                        name="type_person"
-                        v-model="formSupplier.type_person"
-                      >
+                      <select class="form-control" id="type_person" name="type_person"
+                        v-model="formSupplier.type_person">
                         <option value="" disabled>Seleccionar tipo</option>
                         <option>Juridica</option>
                         <option>Natural</option>
@@ -126,51 +72,35 @@
                 <div class="col-md-5">
                   <div class="form-group">
                     <label for="departament">Departamento</label>
-                    <select
-                      class="form-control"
-                      id="departament"
-                      name="departament"
-                      v-model="formSupplier.departament"
-                      @change="getMunicipalities(formSupplier.departament)"
-                    >
+                    <select class="form-control" id="departament" name="departament" v-model="formSupplier.departament"
+                      @change="getMunicipalities(formSupplier.departament)">
                       <option value="" disabled> Selecciona un departamento</option>
-                      <option v-for="department in departments" :value="department.id" :key="department.id"> {{ department.name }} </option>
+                      <option v-for="department in departments" :value="department.id" :key="department.id"> {{
+                          department.name
+                      }} </option>
                     </select>
                   </div>
                   <div class="form-group">
                     <label for="city">Municipio</label>
-                    <select
-                      class="form-control"
-                      id="city"
-                      name="city"
-                      v-model="formSupplier.municipality_id"
-                    >
+                    <select class="form-control" id="city" name="city" v-model="formSupplier.municipality_id">
                       <option value="" disabled> Selecciona un municipio</option>
-                      <option v-for="municipality in municipalities" :value="municipality.id" :key="municipality.id"> {{ municipality.name }} </option>
+                      <option v-for="municipality in municipalities" :value="municipality.id" :key="municipality.id"> {{
+                          municipality.name
+                      }} </option>
                     </select>
                   </div>
 
                   <div class="form-group">
                     <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value="1"
-                        id="active"
-                        v-model="formSupplier.active"
-                      />
+                      <input class="form-check-input" type="checkbox" value="1" id="active"
+                        v-model="formSupplier.active" />
                       <label class="form-check-label" for="active">
                         Cliente está activo?
                       </label>
                     </div>
                     <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value="1"
-                        id="impuesto_incluido"
-                        v-model="formSupplier.tax"
-                      />
+                      <input class="form-check-input" type="checkbox" value="1" id="impuesto_incluido"
+                        v-model="formSupplier.tax" />
                       <label class="form-check-label" for="impuesto_incluido">
                         Impuesto Incluido
                       </label>
@@ -181,18 +111,10 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button
-              class="btn btn-secondary"
-              type="reset"
-              @click="closeModal()"
-            >
+            <button class="btn btn-secondary" type="reset" @click="closeModal()">
               Cerrar
             </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="formSupplier.id ? EditSupplier() : CreateSupplier()"
-            >
+            <button type="button" class="btn btn-primary" @click="formSupplier.id ? EditSupplier() : CreateSupplier()">
               Guardar
             </button>
           </div>
@@ -225,7 +147,7 @@ export default {
       municipalities: []
     };
   },
-  created(){
+  created() {
     this.getDepartments();
   },
   methods: {
@@ -243,14 +165,14 @@ export default {
       $("#supplierModal").modal("show");
       me.formSupplier = supplier;
 
-      if(supplier.municipality){
+      if (supplier.municipality) {
         me.formSupplier.departament = supplier.municipality.department_id;
         this.getMunicipalities(me.formSupplier.departament);
-      }else{
+      } else {
         me.formSupplier.departament = "";
         me.formSupplier.municipality_id = "";
       }
-      
+
     },
 
     EditSupplier() {
@@ -281,17 +203,17 @@ export default {
       this.ResetData();
     },
 
-    getDepartments(){
-      axios.get('api/departments', this.$root.config).then((response) =>{
+    getDepartments() {
+      axios.get('api/departments', this.$root.config).then((response) => {
         this.departments = response.data.departments;
       });
     },
-    getMunicipalities(department){
-      axios.get('api/departments/'+department+'/getMunicipalities', this.$root.config).then((response) =>{
+    getMunicipalities(department) {
+      axios.get('api/departments/' + department + '/getMunicipalities', this.$root.config).then((response) => {
         this.municipalities = response.data.municipalities;
       });
     }
   },
-  mounted() {},
+  mounted() { },
 };
 </script>

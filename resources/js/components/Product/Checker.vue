@@ -8,6 +8,7 @@
         <input id="filter" type="text" class="form-control form-control-lg p-5" placeholder="Código de barras"
           aria-label=" with two button addons" aria-describedby="button-add-product" v-model="filters.product" autofocus
           @keyup="searchProduct()" />
+        <span class="barcode display-1">{{ product.barcode }}</span>
         <h1 v-if="!not_found">{{ product.product }}</h1>
         <br />
         <h1 class="my-3" v-if="product.sale_price_tax_inc && !not_found">
@@ -57,7 +58,7 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-        
+
     },
   },
 };

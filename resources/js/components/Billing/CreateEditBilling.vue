@@ -139,7 +139,7 @@
 									</button>
 								</td>
 
-								<td>{{ p.barcode }}</td>
+								<td class="barcode">{{ p.barcode }}</td>
 								<td>{{ p.product }}</td>
 								<td>
 									<input

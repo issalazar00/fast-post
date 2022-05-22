@@ -1,41 +1,29 @@
 <template>
-  <div
-    class="modal fade"
-    id="addSupplierModal"
-    tabindex="-1"
-    aria-labelledby="addSupplierModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addSupplierModalLabel">Proveedores</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Cerrar"
-          >
+          <div class="row w-100">
+            <h5 class="modal-title col-8" id="addSupplierModalLabel">Proveedores</h5>
+            <div class="col-3">
+              <button type="reset" class="btn btn-primary" data-toggle="modal" data-target="#supplierModal"
+                @click="edit = false" v-if="$root.validatePermission('supplier.store')">
+                Crear Proveedor
+              </button>
+            </div>
+          </div>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <div class="input-group">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Documento | Nombre de proveedor"
-              aria-label=" with two button addons"
-              aria-describedby="button-addon4"
-              v-model="filters.supplier"
-              @keyup="searchSupplier()"
-            />
+            <input type="text" class="form-control" placeholder="Documento | Nombre de proveedor"
+              aria-label=" with two button addons" aria-describedby="button-addon4" v-model="filters.supplier"
+              @keyup="searchSupplier()" />
             <div class="input-group-append" id="button-addon4">
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                @click="searchSupplier()"
-              >
+              <button class="btn btn-outline-secondary" type="button" @click="searchSupplier()">
                 Buscar Suppliere
               </button>
             </div>
@@ -66,11 +54,8 @@
                 </td>
 
                 <td>
-                  <button
-                    class="btn btn-outline-secondary"
-                    @click="$emit('add-supplier', supplier)"
-                    data-dismiss="modal"
-                  >
+                  <button class="btn btn-outline-secondary" @click="$emit('add-supplier', supplier)"
+                    data-dismiss="modal">
                     <i class="bi bi-plus-circle"></i>
                   </button>
                 </td>
@@ -85,11 +70,18 @@
         </div>
       </div>
     </div>
+     <create-edit-supplier
+      ref="CreateEditSupplier"
+      @list-suppliers="listSuppliers(1)"
+    />
   </div>
 </template>
 
 <script>
+import CreateEditSupplier from "../Supplier/CreateEditSupplier.vue";
+
 export default {
+  components: { CreateEditSupplier },
   name: "add-supplier",
   data() {
     return {

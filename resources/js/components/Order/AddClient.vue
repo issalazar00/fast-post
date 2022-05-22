@@ -1,41 +1,26 @@
 <template>
-  <div
-    class="modal fade"
-    id="addClientModal"
-    tabindex="-1"
-    aria-labelledby="addClientModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addClientModalLabel">Clientes</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Cerrar"
-          >
+          <div class="row w-100">
+            <h5 class="modal-title col-8" id="addClientModalLabel">Clientes</h5>
+            <button type="button" class="btn btn-primary col-3" data-toggle="modal" data-target="#clientModal"
+              @click="$refs.CreateEditClient.ResetData()" v-if="$root.validatePermission('client.store')">
+              Crear Cliente
+            </button>
+          </div>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <div class="input-group">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Documento | Nombre de cliente"
-              aria-label=" with two button addons"
-              aria-describedby="button-addon4"
-              v-model="filters.client"
-              @keyup="searchClient()"
-            />
+            <input type="text" class="form-control" placeholder="Documento | Nombre de cliente"
+              aria-label=" with two button addons" aria-describedby="button-addon4" v-model="filters.client"
+              @keyup="searchClient()" />
             <div class="input-group-append" id="button-addon4">
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                @click="searchClient()"
-              >
+              <button class="btn btn-outline-secondary" type="button" @click="searchClient()">
                 Buscar Cliente
               </button>
             </div>
@@ -66,11 +51,7 @@
                 </td>
 
                 <td>
-                  <button
-                    class="btn btn-outline-secondary"
-                    @click="$emit('add-client', client)"
-                    data-dismiss="modal"
-                  >
+                  <button class="btn btn-outline-secondary" @click="$emit('add-client', client)" data-dismiss="modal">
                     <i class="bi bi-plus-circle"></i>
                   </button>
                 </td>
@@ -85,12 +66,15 @@
         </div>
       </div>
     </div>
+    <create-edit-client ref="CreateEditClient" @list-clients="listClients(1)" />
   </div>
 </template>
 
 <script>
+import CreateEditClient from "../Client/CreateEditClient.vue";
 export default {
   name: "add-client",
+  components: { CreateEditClient },
   data() {
     return {
       ClientList: {},
