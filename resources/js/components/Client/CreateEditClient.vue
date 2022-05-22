@@ -14,8 +14,7 @@
             <button
               type="button"
               class="close"
-              data-dismiss="modal"
-              aria-label="Cerrar"
+              @click="closeModal()"
             >
               <span aria-hidden="true">&times;</span>
             </button>

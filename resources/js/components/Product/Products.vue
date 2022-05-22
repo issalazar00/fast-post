@@ -105,7 +105,7 @@
             </thead>
             <tbody>
               <tr v-for="product in ProductList.data" v-bind:key="product.id">
-                <td>{{ product.barcode }}</td>
+                <td class="barcode">{{ product.barcode }}</td>
                 <td>{{ product.product }}</td>
                 <td>{{ product.category.name }}</td>
                 <td class="text-right">

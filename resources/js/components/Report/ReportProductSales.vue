@@ -6,6 +6,10 @@
     <div class="page-search mx-2 my-2 border p-2">
       <div class="form-row">
         <div class="form-group col-md-3">
+          <label for="filter_product">Producto</label>
+          <input type="text" class="form-control" id="filter_product" v-model="filter.product" />
+        </div>
+        <div class="form-group col-md-3">
           <label for="from_date">Desde</label>
           <input type="date" class="form-control" id="from_date" v-model="filter.from" />
         </div>
@@ -36,7 +40,7 @@
                 {{ l.product }}
               </td>
               <td>
-                {{ l.barcode }}
+                <span class="barcode">{{ l.barcode }}</span>
               </td>
               <td>
                 {{ l.quantity_of_products }}
@@ -63,7 +67,8 @@ export default {
       List: {},
       filter: {
         from: "",
-        to: ""
+        to: "",
+        product: ''
       }
     };
   },
@@ -72,7 +77,7 @@ export default {
       let me = this;
       axios
         .get(
-          `api/reports/product-sales-report?page=${page}&from=${me.filter.from}&to=${me.filter.to}`,
+          `api/reports/product-sales-report?page=${page}&from=${me.filter.from}&to=${me.filter.to}&product=${me.filter.product}`,
           this.$root.config
         )
         .then(function (response) {

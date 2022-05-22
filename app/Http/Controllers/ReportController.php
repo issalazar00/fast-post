@@ -84,6 +84,8 @@ class ReportController extends Controller
 	{
 		$from = $request->from;
 		$to = $request->to;
+		$product = $request->product;
+
 		$detail_order = DetailOrder::select('product', 'barcode')
 			->selectRaw('count(quantity) as quantity_of_products')
 			->groupBy('barcode', 'product')
@@ -95,6 +97,12 @@ class ReportController extends Controller
 					$query->whereDate('created_at', '<=', $to);
 				}
 			})
+			->where(function ($query) use ($product) {
+				if ($product != '' && $product != 'undefined' && $product != null) {
+					$query->where('barcode', 'LIKE', "%$product%")
+						->orWhere('product', 'LIKE', "%$product%");
+				}
+			})
 			->get();
 
 		return $detail_order;
@@ -104,8 +112,10 @@ class ReportController extends Controller
 	{
 		$total_products = Product::selectRaw('count(id) as number_of_products')
 			->selectRaw('SUM(quantity) as quantity_of_products')
-			->selectRaw('SUM(quantity * sale_price_tax_exc ) as cost_stock')
+			->selectRaw('SUM(quantity * cost_price_tax_inc ) as cost_stock')
 			->selectRaw('SUM(quantity * sale_price_tax_inc ) as cost_sale');
+
+
 
 		if ($request->category_id != '' && $request->category_id  != null && $request->category_id  != 0) {
 			$total_products = $total_products

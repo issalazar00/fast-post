@@ -168,7 +168,7 @@ class OrderController extends Controller
 
 		if ($request->state == 4) {
 			$order->state = 2;
-			$order->payment_date = date('Y-m-d');
+			$order->payment_date = $request->payment_date ?: date('Y-m-d');
 		}
 		if ($request->state == 6 || $request->state == 5) {
 			$order->state = 5;
@@ -176,7 +176,7 @@ class OrderController extends Controller
 		if ($request->state != 4 && $request->state != 6) {
 			$order->state = $request->state;
 			if ($request->state == 2) {
-				$order->payment_date = date('Y-m-d');
+				$order->payment_date = $request->payment_date ?: date('Y-m-d');
 			}
 		}
 		$order->save();
