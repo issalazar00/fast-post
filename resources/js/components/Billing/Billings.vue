@@ -3,7 +3,7 @@
 		<header class="page-header justify-content-between row px-4">
 			<h3>Compras</h3>
 			<router-link
-				class="btn btn-outline-primary"
+				class="btn btn-primary"
 				:to="{
 					name: 'create-edit-billing',
 					params: { billing_id: 0 }

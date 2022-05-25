@@ -172,7 +172,7 @@
 							<tr class="">
 								<th colspan="7">Fecha de pago:</th>
 								<th>
-									<input type="date" v-model="order.payment_date" autocomplete=""/>
+									<input type="date" v-model="order.payment_date" autocomplete="" />
 								</th>
 							</tr>
 						</table>
@@ -190,11 +190,11 @@
 					</div>
 					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(2)">
 						<!-- Facturar -->
-						<i class="bi bi-receipt"></i> Facturar
+						<i class="bi bi-receipt"></i> <b>F1</b> Facturar
 					</button>
 					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(4)">
 						<!-- Facturar -->
-						<i class="bi bi-receipt"></i> Facturar e imprimir
+						<i class="bi bi-receipt"></i> <b>F2</b> Facturar e imprimir
 					</button>
 					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(5)">
 						<!-- Credito -->
@@ -249,7 +249,7 @@ export default {
 				productsOrder: [],
 				cash: 0,
 				change: 0,
-				payment_date: new Date()
+				payment_date: new Date().toISOString().slice(0, 10),
 			}
 		};
 	},

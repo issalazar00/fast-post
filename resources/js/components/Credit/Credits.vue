@@ -3,7 +3,7 @@
 		<header class="page-header justify-content-between row px-4">
 			<h3>Créditos</h3>
 			<router-link
-				class="btn btn-outline-primary"
+				class="btn btn-primary"
 				:to="{
 					name: 'create-edit-credit',
 					params: { credit_id: 0 }

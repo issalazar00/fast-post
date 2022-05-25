@@ -71,25 +71,14 @@
     @if ($configuration)
     <header>
 
-        <table>
-
-            <tr>
-                <td rowspan="3">
-                    <img class="logo" src="{{ $url.'/'.$configuration->logo}}" alt="logo">
+        <table width="100%">
+            <tr align="center">
+                <td colspan="5" align="center">
+                    <img class="logo" src="{{ $url.'/'.$configuration->logo}}" alt="logo" width="150">
+                    <p style="padding: 0; margin:0">{{ $configuration->name}}</p>
+                    <p style="padding: 0; margin:0">Representante: {{$configuration->legal_representative}}</p>
+                    <p style="padding: 0; margin:0">Nit: {{$configuration->nit}}</p>
                 </td>
-
-                <th>Entidad</th>
-                <td>{{ $configuration->name}}</td>
-            </tr>
-            <tr>
-
-                <th>Representante</th>
-                <td>{{$configuration->legal_representative}}</td>
-            </tr>
-            <tr>
-
-                <th>Nit</th>
-                <td>{{$configuration->nit}}</td>
             </tr>
         </table>
 
@@ -97,26 +86,17 @@
     @endif
     <section>
         <div>
-            <h4 class="text-center">Detalles de Orden</h4>
+            <h4 class="text-center">Factura   {{ $orderInformation->bill_number }}</h4>
             <table class="table">
                 <tbody>
                     <tr>
-                        <td>No. Factura</td>
-                        <th>
-                            {{ $orderInformation->bill_number }}
-                        </th>
-                    </tr>
-                    <tr>
                         <td>Fecha</td>
                         <th>
-                            {{ $orderInformation->updated_at }}
+                            {{ $orderInformation->payment_date }}
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="2" class="text-center">Cliente</th>
-                    </tr>
-                    <tr>
-                        <td>Nombres:</td>
+                        <td>Cliente:</td>
                         <th>
                             {{ $orderInformation->client->name }}
                         </th>

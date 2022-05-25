@@ -1,10 +1,7 @@
 <template>
 	<div class="row px-2">
 		<div class="col-9 justify-content-center p-2">
-			<div
-				class="sticky-top mb-2 text-uppercase w-50"
-				style="z-index: 1022; left: 100%"
-			>
+			<div class="sticky-top mb-2 text-uppercase w-50" style="z-index: 1022; left: 100%">
 				<table class="table table-borderless">
 					<tr class="h1 text-white bg-success">
 						<td class="text-right">Total</td>
@@ -18,23 +15,11 @@
 				<!-- </div> -->
 			</div>
 			<div class="position-fixed top-0 right-0 w-50" style="z-index: 3000">
-				<div
-					class="toast fade hide border border-danger w-100 m-3"
-					style="max-width: 90%"
-					role="alert"
-					id="no-results"
-					aria-live="assertive"
-					aria-atomic="true"
-					data-delay="3000"
-				>
+				<div class="toast fade hide border border-danger w-100 m-3" style="max-width: 90%" role="alert" id="no-results"
+					aria-live="assertive" aria-atomic="true" data-delay="3000">
 					<div class="toast-header">
 						<strong class="mr-auto h3 text-danger">Advertencia</strong>
-						<button
-							type="button"
-							class="ml-2 mb-1 close"
-							data-dismiss="toast"
-							aria-label="Close"
-						>
+						<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
@@ -43,63 +28,28 @@
 					</div>
 				</div>
 			</div>
-			<div
-				class="row position-sticky sticky-top mb-2 bg-light p-1"
-				style="top: 0.5rem"
-			>
+			<div class="row position-sticky sticky-top mb-2 bg-light p-1" style="top: 0.5rem">
 				<div class="input-group col-6">
-					<input
-						type="text"
-						class="form-control"
-						placeholder="Código de barras"
-						aria-label=" with two button addons"
-						aria-describedby="button-add-product"
-						v-model="filters.product"
-						autofocus
-						@keypress.enter="searchProduct()"
-					/>
+					<input type="text" class="form-control" placeholder="Código de barras" aria-label=" with two button addons"
+						aria-describedby="button-add-product" v-model="filters.product" autofocus
+						@keypress.enter="searchProduct()" />
 					<div class="input-group-append" id="button-add-product">
-						<button
-							class="btn btn-outline-secondary"
-							type="button"
-							@click="searchProduct()"
-						>
+						<button class="btn btn-outline-secondary" type="button" @click="searchProduct()">
 							Añadir Producto
 						</button>
-						<button
-							class="btn btn-outline-secondary"
-							type="button"
-							data-toggle="modal"
-							data-target="#addProductModal"
-						>
+						<button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#addProductModal">
 							<i class="bi bi-card-checklist"></i>
 						</button>
 					</div>
 				</div>
 				<div class="input-group col-6">
-					<input
-						type="text"
-						class="form-control"
-						:placeholder="credit.client"
-						aria-label=" with two button addons"
-						aria-describedby="button-addon4"
-						v-model="filters.client"
-						@keypress.enter="searchClient()"
-					/>
+					<input type="text" class="form-control" :placeholder="credit.client" aria-label=" with two button addons"
+						aria-describedby="button-addon4" v-model="filters.client" @keypress.enter="searchClient()" />
 					<div class="input-group-append" id="button-addon4">
-						<button
-							class="btn btn-outline-secondary"
-							type="button"
-							@click="searchClient()"
-						>
+						<button class="btn btn-outline-secondary" type="button" @click="searchClient()">
 							Añadir Cliente
 						</button>
-						<button
-							class="btn btn-outline-secondary"
-							type="button"
-							data-toggle="modal"
-							data-target="#addClientModal"
-						>
+						<button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#addClientModal">
 							<i class="bi bi-person-lines-fill"></i>
 						</button>
 					</div>
@@ -108,15 +58,10 @@
 
 			<section>
 				<div>
-					<table
-						class="
+					<table class="
               table table-sm table-responsive-sm table-bordered table-hover
-            "
-					>
-						<thead
-							class="bg-secondary text-white position-sticky sticky-top"
-							style="top: 4rem"
-						>
+            ">
+						<thead class="bg-secondary text-white position-sticky sticky-top" style="top: 4rem">
 							<tr>
 								<th></th>
 								<th>Código</th>
@@ -131,10 +76,7 @@
 						<tbody v-if="productsOrderList.length > 0">
 							<tr v-for="(p, index) in productsOrderList" :key="p.id">
 								<td>
-									<button
-										class="btn text-danger"
-										@click="removeProduct(index, p.id)"
-									>
+									<button class="btn text-danger" @click="removeProduct(index, p.id)">
 										<i class="bi bi-trash"></i>
 									</button>
 								</td>
@@ -142,83 +84,43 @@
 								<td class="barcode">{{ p.barcode }}</td>
 								<td>{{ p.product }}</td>
 								<td>
-									<input
-										type="number"
-										name="quantity"
-										id="quantity"
-										step="2"
-										placeholder="Cantidad"
-										class="form-control form-control-sm"
-										v-model="p.quantity"
-										style="max-width: 60px"
-									/>
+									<input type="number" name="quantity" id="quantity" step="2" placeholder="Cantidad"
+										class="form-control form-control-sm" v-model="p.quantity" style="max-width: 60px" />
 									<span class="hidden d-none">
 										{{
-											(p.cost_price_tax_inc_total =
-												p.cost_price_tax_inc * p.quantity)
+												(p.cost_price_tax_inc_total =
+													p.cost_price_tax_inc * p.quantity)
 										}}
 									</span>
 								</td>
 								<td>
-									<input
-										type="number"
-										name="price"
-										id="price"
-										step="any"
-										placeholder="Cantidad"
-										v-model="p.price_tax_inc"
-										class="form-control form-control-sm"
-										style="max-width: 100px"
-									/>
+									<input type="number" name="price" id="price" step="any" placeholder="Cantidad"
+										v-model="p.price_tax_inc" class="form-control form-control-sm" style="max-width: 100px" />
 								</td>
 								<td>
-									<input
-										type="number"
-										name="discount_percentage"
-										id="discount_percentage"
-										step="any"
-										placeholder="Descuento"
-										class="form-control form-control-sm"
-										v-model="p.discount_percentage"
-										style="max-width: 60px"
-									/>
+									<input type="number" name="discount_percentage" id="discount_percentage" step="any"
+										placeholder="Descuento" class="form-control form-control-sm" v-model="p.discount_percentage"
+										style="max-width: 60px" />
 								</td>
 								<td>
-									<input
-										v-if="p.discount_percentage != 0"
-										type="number"
-										class="form-control form-control-sm"
-										name="discount_price"
-										id="discount_price"
-										step="2"
-										placeholder="Descuento"
-										:value="
+									<input v-if="p.discount_percentage != 0" type="number" class="form-control form-control-sm"
+										name="discount_price" id="discount_price" step="2" placeholder="Descuento" :value="
 											(p.discount_price = (
 												p.quantity *
 												p.price_tax_inc *
 												(p.discount_percentage / 100)
 											).toFixed(0))
-										"
-										style="max-width: 100px"
-									/>
-									<input
-										v-else
-										type="number"
-										class="form-control form-control-sm"
-										name="discount_price"
-										id="discount_price"
-										step="2"
-										v-model="p.discount_price"
-										style="max-width: 100px"
-									/>
+										" style="max-width: 100px" />
+									<input v-else type="number" class="form-control form-control-sm" name="discount_price"
+										id="discount_price" step="2" v-model="p.discount_price" style="max-width: 100px" />
 								</td>
 								<td>
 									<span v-if="p.discount_percentage != 0">
 										$
 										{{
-											(p.price_tax_inc_total =
-												p.quantity * p.price_tax_inc -
-												p.quantity *
+												(p.price_tax_inc_total =
+													p.quantity * p.price_tax_inc -
+													p.quantity *
 													p.price_tax_inc *
 													(p.discount_percentage / 100))
 										}}
@@ -226,9 +128,9 @@
 									<span v-else>
 										$
 										{{
-											(p.price_tax_inc_total =
-												p.quantity * p.price_tax_inc -
-												p.discount_price).toFixed(2)
+												(p.price_tax_inc_total =
+													p.quantity * p.price_tax_inc -
+													p.discount_price).toFixed(2)
 										}}
 									</span>
 								</td>
@@ -279,34 +181,25 @@
 							<tr class="">
 								<th colspan="7">Efectivo:</th>
 								<th>
-									<input
-										type="number"
-										value="0"
-										step="any"
-										v-model="credit.cash"
-									/>
+									<input type="number" value="0" step="any" v-model="credit.cash" />
 								</th>
 							</tr>
 							<tr class="">
 								<th colspan="7">Abono</th>
 								<th>
-									<input
-										type="number"
-										value="0"
-										step="any"
-										v-model="credit.pay_payment"
-									/>
+									<input type="number" value="0" step="any" v-model="credit.pay_payment" />
 								</th>
 							</tr>
 							<tr class="">
 								<th colspan="7">Cambio:</th>
 								<th>
-									<input
-										type="text"
-										:value="payment_return"
-										readonly
-										disabled
-									/>
+									<input type="text" :value="payment_return" readonly disabled />
+								</th>
+							</tr>
+							<tr class="">
+								<th colspan="7">Fecha de pago:</th>
+								<th>
+									<input type="date" v-model="credit.payment_date" autocomplete="" />
 								</th>
 							</tr>
 						</table>
@@ -314,47 +207,23 @@
 				</section>
 				<div class="">
 					<div class="my-2">
-						<label for="selected_box_user" class="font-weight-bold"
-							>Caja <i class="bi bi-box"></i
-						></label>
-						<select
-							name="selected_box_user"
-							id="selected_box_user"
-							class="form-control"
-							v-model="$root.box"
-						>
+						<label for="selected_box_user" class="font-weight-bold">Caja <i class="bi bi-box"></i></label>
+						<select name="selected_box_user" id="selected_box_user" class="form-control" v-model="$root.box">
 							<option value="" disabled>Seleccione una caja</option>
-							<option
-								v-for="item in $root.listBoxes"
-								:value="item.id"
-								:key="item.id"
-							>
+							<option v-for="item in $root.listBoxes" :value="item.id" :key="item.id">
 								{{ item.name + " " + item.prefix }}
 							</option>
 						</select>
 					</div>
-					<button
-						type="button"
-						class="btn btn-outline-primary btn-block"
-						@click="createOrUpdateCredit(5)"
-					>
+					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateCredit(5)">
 						<!-- Facturar -->
 						<i class="bi bi-receipt"></i> Guardar Crédito
 					</button>
-					<button
-						type="button"
-						class="btn btn-outline-primary btn-block"
-						@click="createOrUpdateCredit(6)"
-					>
+					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateCredit(6)">
 						<!-- Facturar -->
 						<i class="bi bi-receipt"></i> Guardar e imprimir
 					</button>
-					<router-link
-						to="/credits"
-						type="button"
-						class="btn btn-outline-secondary btn-block"
-						v-if="credit_id != 0"
-					>
+					<router-link to="/credits" type="button" class="btn btn-outline-secondary btn-block" v-if="credit_id != 0">
 						<i class="bi bi-receipt"></i> Cancelar
 					</router-link>
 				</div>
@@ -396,12 +265,13 @@ export default {
 				productsOrder: [],
 				cash: 0,
 				change: 0,
-				pay_payment: 0
+				pay_payment: 0,
+				payment_date: new Date().toISOString().slice(0, 10),
 			}
 		};
 	},
 	computed: {
-		total_tax_exc: function() {
+		total_tax_exc: function () {
 			var total = 0.0;
 			this.productsOrderList.forEach(
 				product =>
@@ -409,33 +279,33 @@ export default {
 			);
 			return total;
 		},
-		total_discount: function() {
+		total_discount: function () {
 			var total = 0.0;
 			this.productsOrderList.forEach(product => {
 				total += parseFloat(product.discount_price);
 			});
 			return total;
 		},
-		total_cost_price_tax_inc: function() {
+		total_cost_price_tax_inc: function () {
 			var total = 0.0;
 			this.productsOrderList.forEach(product => {
 				total += parseFloat(product.cost_price_tax_inc_total);
 			});
 			return total;
 		},
-		total_tax_inc: function() {
+		total_tax_inc: function () {
 			var total = 0.0;
 			this.productsOrderList.forEach(product => {
 				total += parseFloat(
 					product.quantity * product.price_tax_inc -
-						product.quantity *
-							product.price_tax_inc *
-							(product.discount_percentage / 100)
+					product.quantity *
+					product.price_tax_inc *
+					(product.discount_percentage / 100)
 				);
 			});
 			return total;
 		},
-		payment_return: function() {
+		payment_return: function () {
 			var value = 0.0;
 			if (this.credit.cash > 0) {
 				if (this.credit.pay_payment > this.credit.total_tax_inc) {
@@ -459,7 +329,7 @@ export default {
 
 			axios
 				.get(`api/orders/${me.credit_id}`, this.$root.config)
-				.then(function(response) {
+				.then(function (response) {
 					me.credit.id_client = response.data.order_information.client_id;
 					me.credit.client = response.data.order_information.client.name;
 
@@ -474,7 +344,7 @@ export default {
 			var url = "api/products/search-product?product=" + me.filters.product;
 			axios
 				.post(url, null, this.$root.config)
-				.then(function(response) {
+				.then(function (response) {
 					var new_product = response.data.products;
 					if (!new_product) {
 						$("#no-results").toast("show");
@@ -482,7 +352,7 @@ export default {
 						me.addProduct(new_product);
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 			me.filters.product = "";
@@ -535,7 +405,7 @@ export default {
 			var url = "api/clients/search-client?client=" + me.filters.client;
 			axios
 				.post(url, null, me.$root.config)
-				.then(function(response) {
+				.then(function (response) {
 					var new_client = response.data;
 					if (!new_client) {
 						$("#no-results").toast("show");
@@ -543,7 +413,7 @@ export default {
 						me.addClient(new_client);
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 		},
@@ -587,15 +457,15 @@ export default {
 		},
 		commands() {
 			let me = this;
-			shortcut.add("F1", function() {
+			shortcut.add("F1", function () {
 				me.createOrUpdateCredit(5);
 			});
 
-			shortcut.add("F2", function() {
+			shortcut.add("F2", function () {
 				me.createOrUpdateCredit(6);
 			});
 
-			shortcut.add("F10", function() {
+			shortcut.add("F10", function () {
 				$("#addProductModal").modal("show");
 			});
 		}
