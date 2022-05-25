@@ -3,7 +3,7 @@
 		<header class="page-header justify-content-between row px-4">
 			<h3>Ordenes</h3>
 			<router-link
-				class="btn btn-outline-primary"
+				class="btn btn-primary"
 				:to="{
 					name: 'create-edit-order',
 					params: { order_id: 0 }
@@ -100,6 +100,9 @@
 							</td>
 							<td>
 								<button class="btn" v-if="o.state != 0 && o.state != 2" @click="printTicket(o.id)">
+									<i class="bi bi-receipt"></i>
+								</button>
+								<button class="btn" v-else disabled>
 									<i class="bi bi-receipt"></i>
 								</button>
 							</td>

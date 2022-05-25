@@ -1,5 +1,5 @@
 <ul v-if="token && user"
-	class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion toggledx border-right-secondary"
+	class="navbar-nav bg-dark sidebar sidebar-dark accordion toggledx border-right-secondary"
 	id="accordionSidebar">
 
 	<a class="sidebar-brand d-flex align-items-center justify-content-center p-0" href="{{ url('/') }}">
@@ -26,6 +26,11 @@
 	<div class="sidebar-heading">
 		Tecnoplus
 	</div>
+	<li class="nav-item bg-primary">
+		<router-link class="nav-link " active-class="active" to="/"><i
+				class="bi bi-receipt"></i><span>Facturar</span>
+		</router-link>
+	</li>
 	<li class="nav-item">
 		<router-link class="nav-link " active-class="active" to="/checker"><i
 				class="bi bi-receipt"></i><span>Verificador</span>

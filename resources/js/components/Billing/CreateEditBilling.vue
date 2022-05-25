@@ -301,7 +301,8 @@
 						@click="createOrUpdateBilling(2)"
 					>
 						<!-- Facturar -->
-						<i class="bi bi-receipt"></i> Guardar
+
+						<i class="bi bi-receipt"></i> <b>F1</b> Guardar
 					</button>
 					<router-link
 						to="/billings"
