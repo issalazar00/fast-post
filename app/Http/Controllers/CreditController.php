@@ -105,7 +105,7 @@ class CreditController extends Controller
 		if ($request->pay_payment > 0) {
 			PaymentCredit::create([
 				'user_id' => $user_id,
-				'credit_id' => $credit->id,
+				'order_id' => $credit->id,
 				'pay' => $request->pay_payment
 			]);
 		}
@@ -177,7 +177,7 @@ class CreditController extends Controller
 			} else {
 				PaymentCredit::create([
 					'user_id' => $user_id,
-					'credit_id' => $credit->id,
+					'order_id' => $credit->id,
 					'pay' => $request->pay_payment
 				]);
 			}
@@ -186,7 +186,7 @@ class CreditController extends Controller
 		foreach ($request->productsCredit as $details_credit) {
 
 			DetailCredit::updateOrCreate(
-				['credit_id' => $id, 'product_id' => $details_credit['product_id']],
+				['order_id' => $id, 'product_id' => $details_credit['product_id']],
 				[
 					'discount_percentage' => $details_credit['discount_percentage'],
 					'discount_price' => $details_credit['discount_price'],
@@ -268,7 +268,7 @@ class CreditController extends Controller
 			]);
 		}
 		$credits = DB::table('credits as c')
-			->leftJoin('payment_credits as pc', 'pc.credit_id', '=', 'c.id')
+			->leftJoin('payment_credits as pc', 'pc.order_id', '=', 'c.id')
 			->select('c.id', 'c.total_paid', DB::raw('SUM(pc.pay) as  paid_payment'))
 			->where('c.client_id', $request->id_client)
 			->where('c.state', 2)
@@ -295,14 +295,14 @@ class CreditController extends Controller
 				{
 					PaymentCredit::create([
 						'user_id' => $user_id,
-						'credit_id' => $credit->id,
+						'order_id' => $credit->id,
 						'pay' => $request->pay_payment
 					]);
 					$request->pay_payment = 0;
 				}else{
 					PaymentCredit::create([
 						'user_id' => $user_id,
-						'credit_id' => $credit->id,
+						'order_id' => $credit->id,
 						'pay' => $pending
 					]);
 

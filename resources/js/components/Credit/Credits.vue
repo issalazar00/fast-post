@@ -6,7 +6,7 @@
 				class="btn btn-primary"
 				:to="{
 					name: 'create-edit-credit',
-					params: { credit_id: 0 }
+					params: { order_id: 0 }
 				}"
 				v-if="$root.validatePermission('credit.store')"
 			>
@@ -113,7 +113,7 @@
 									class="btn"
 									:to="{
 										name: 'details-credit',
-										params: { credit_id: o.id }
+										params: { order_id: o.id }
 									}"
 								>
 									<i class="bi bi-eye"></i>
@@ -133,7 +133,7 @@
 									class="btn"
 									:to="{
 										name: 'create-edit-credit',
-										params: { credit_id: o.id }
+										params: { order_id: o.id }
 									}"
 								>
 									<i class="bi bi-pencil-square"></i>
@@ -203,9 +203,9 @@ export default {
 					me.creditList = response.data.orders;
 				});
 		},
-		deleteCredit(credit_id) {
+		deleteCredit(order_id) {
 			axios
-				.delete(`api/orders/${credit_id}`, this.$root.config)
+				.delete(`api/orders/${order_id}`, this.$root.config)
 				.then(() => this.getCredits(1));
 		},
 		generatePdf(id) {

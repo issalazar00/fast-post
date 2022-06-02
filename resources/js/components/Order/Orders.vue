@@ -99,7 +99,7 @@
 								</router-link>
 							</td>
 							<td>
-								<button class="btn" v-if="o.state != 0 && o.state != 2" @click="printTicket(o.id)">
+								<button class="btn" v-if="o.state == 5 || o.state ==2" @click="printTicket(o.id)">
 									<i class="bi bi-receipt"></i>
 								</button>
 								<button class="btn" v-else disabled>
