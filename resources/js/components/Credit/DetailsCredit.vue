@@ -128,7 +128,7 @@
 
 <script>
 export default {
-  props: ["credit_id"],
+  props: ["order_id"],
   filters: {
     showDate(value){
       let date = "";
@@ -162,7 +162,7 @@ export default {
     getDetailsCredit() {
       let me = this;
       axios
-        .get(`api/orders/${this.credit_id}`, this.$root.config)
+        .get(`api/orders/${this.order_id}`, this.$root.config)
         .then(function (response) {
           me.creditInformation = response.data.order_information;
           me.ItemList = response.data.order_details;

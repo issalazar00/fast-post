@@ -1,5 +1,5 @@
 <template>
-	<div class="row px-2">
+	<div class="row px-2" id="create-edit-order">
 		<div class="col-9 justify-content-center p-2">
 			<div class="sticky-top mb-2 text-uppercase w-50" style="z-index: 1022; left: 100%">
 				<table class="table table-borderless">
@@ -77,7 +77,7 @@
 									</button>
 								</td>
 
-								<td class="barcode">{{ p.barcode }}</td>
+								<td>{{ p.barcode }}</td>
 								<td>{{ p.product }}</td>
 								<td>
 									<input type="number" name="quantity" id="quantity" step="2" placeholder="Cantidad"
@@ -172,7 +172,7 @@
 							<tr class="">
 								<th colspan="7">Fecha de pago:</th>
 								<th>
-									<input type="date" v-model="order.payment_date" autocomplete="" />
+									<input type="datetime-local" v-model="order.payment_date" autocomplete="" />
 								</th>
 							</tr>
 						</table>
@@ -228,6 +228,7 @@ import ModalBox from "./../ModalBox.vue";
 export default {
 	components: { AddProduct, AddClient, ModalBox },
 	props: ["order_id"],
+	name: 'create-edit-order',
 
 	data() {
 		return {
@@ -493,3 +494,9 @@ export default {
 	}
 };
 </script>
+
+<style scoped>
+	#create-edit-order {
+		font-size: 1.1rem;
+	}
+</style>

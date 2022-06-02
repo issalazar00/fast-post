@@ -199,7 +199,7 @@
 							<tr class="">
 								<th colspan="7">Fecha de pago:</th>
 								<th>
-									<input type="date" v-model="credit.payment_date" autocomplete="" />
+									<input type="datetime-local" v-model="credit.payment_date" autocomplete="" />
 								</th>
 							</tr>
 						</table>
@@ -223,7 +223,7 @@
 						<!-- Facturar -->
 						<i class="bi bi-receipt"></i> Guardar e imprimir
 					</button>
-					<router-link to="/credits" type="button" class="btn btn-outline-secondary btn-block" v-if="credit_id != 0">
+					<router-link to="/credits" type="button" class="btn btn-outline-secondary btn-block" v-if="order_id != 0">
 						<i class="bi bi-receipt"></i> Cancelar
 					</router-link>
 				</div>
@@ -243,7 +243,7 @@ import ModalBox from "./../ModalBox.vue";
 
 export default {
 	components: { AddProduct, AddClient, ModalBox },
-	props: ["credit_id"],
+	props: ["order_id"],
 
 	data() {
 		return {
@@ -322,13 +322,13 @@ export default {
 	},
 	methods: {
 		listItemsCredit() {
-			if (this.credit_id == 0) {
+			if (this.order_id == 0) {
 				return false;
 			}
 			let me = this;
 
 			axios
-				.get(`api/orders/${me.credit_id}`, this.$root.config)
+				.get(`api/orders/${me.order_id}`, this.$root.config)
 				.then(function (response) {
 					me.credit.id_client = response.data.order_information.client_id;
 					me.credit.client = response.data.order_information.client.name;
@@ -437,9 +437,9 @@ export default {
 				this.credit.productsOrder = this.productsOrderList;
 				this.credit.box_id = this.$root.box;
 
-				if (this.credit_id != 0 && this.credit_id != null) {
+				if (this.order_id != 0 && this.order_id != null) {
 					axios
-						.put(`api/orders/${this.credit_id}`, this.credit, this.$root.config)
+						.put(`api/orders/${this.order_id}`, this.credit, this.$root.config)
 						.then(() => this.$router.push("/credits"));
 				} else {
 					if (this.credit.box_id > 0) {
@@ -472,7 +472,7 @@ export default {
 	},
 	mounted() {
 		$("#no-results").toast("hide");
-		if (this.credit_id != null || this.credit_id != 0) {
+		if (this.order_id != null || this.order_id != 0) {
 			this.listItemsCredit();
 		}
 		this.commands();

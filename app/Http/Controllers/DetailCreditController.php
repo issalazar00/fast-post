@@ -40,10 +40,10 @@ class DetailCreditController extends Controller
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function store($request, $credit_id)
+	public function store($request, $order_id)
 	{
 			$detail = new DetailCredit;
-			$detail->credit_id = $credit_id;
+			$detail->order_id = $order_id;
 			$detail->product_id = $request['product_id'];
 			$detail->barcode = $request['barcode'];
 			$detail->discount_percentage = $request['discount_percentage'];

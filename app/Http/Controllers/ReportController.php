@@ -87,7 +87,7 @@ class ReportController extends Controller
 		$product = $request->product;
 
 		$detail_order = DetailOrder::select('product', 'barcode')
-			->selectRaw('count(quantity) as quantity_of_products')
+			->selectRaw('SUM(quantity) as quantity_of_products')
 			->groupBy('barcode', 'product')
 			->where(function ($query) use ($from, $to) {
 				if ($from != '' && $from != 'undefined' && $from != null) {
