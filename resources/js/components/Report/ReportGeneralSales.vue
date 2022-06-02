@@ -38,8 +38,8 @@
               <th>Total IVA excluido</th>
               <th>Total IVA incluido</th>
               <th>Total Descuento</th>
-              <th>Total Pago</th>
-              <th>Total Ganancia</th>
+              <th>Total facturado</th>
+              <th>Ganancia del día</th>
             </tr>
           </thead>
           <tbody v-if="List.length > 0">

@@ -15,7 +15,7 @@ class CreateDetailCreditsTable extends Migration
     {
         Schema::create('detail_credits', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('credit_id');
+            $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('product_id');
             $table->string('barcode');
             $table->float('discount_percentage', 20, 4);
@@ -26,9 +26,9 @@ class CreateDetailCreditsTable extends Migration
             $table->float('quantity', 20, 4);
             $table->string('product');
 
-            $table->foreign('credit_id')
+            $table->foreign('order_id')
                 ->references('id')
-                ->on('credits')
+                ->on('orders')
                 ->onDelete('cascade');
 
             $table->foreign('product_id')

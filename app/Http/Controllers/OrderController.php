@@ -168,7 +168,7 @@ class OrderController extends Controller
 
 		if ($request->state == 4) {
 			$order->state = 2;
-			$order->payment_date = $request->payment_date ? $request->payment_date : date('Y-m-d');
+			$order->payment_date = $request->payment_date ? $request->payment_date : date('Y-m-d h:i:s');
 		}
 		if ($request->state == 6 || $request->state == 5) {
 			$order->state = 5;
@@ -176,7 +176,7 @@ class OrderController extends Controller
 		if ($request->state != 4 && $request->state != 6) {
 			$order->state = $request->state;
 			if ($request->state == 2) {
-				$order->payment_date = $request->payment_date  ? $request->payment_date :  date('Y-m-d');
+				$order->payment_date = $request->payment_date  ? $request->payment_date :  date('Y-m-d h:i:s');
 			}
 		}
 		$order->save();
@@ -190,12 +190,15 @@ class OrderController extends Controller
 			}
 		}
 
+
 		foreach ($request->productsOrder as $details_order) {
 			$new_detail = new DetailOrderController;
 			$new_detail = $new_detail->store($details_order, $order->id);
 
-			$update_stock = new ProductController;
-			$update_stock = $update_stock->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity']);
+			if ($order->state == 2 ||   $order->state == 5) {
+				$update_stock = new ProductController;
+				$update_stock = $update_stock->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity']);
+			}
 		}
 		if ($request->state == 4 || $request->state == 6) {
 			$print = new PrintOrderController();
@@ -248,7 +251,7 @@ class OrderController extends Controller
 		$order->total_discount = $request->total_discount;
 		if ($request->state == 4) {
 			$order->state = 2;
-			$order->payment_date = date('Y-m-d');
+			$order->payment_date = date('Y-m-d h:i:s');
 		}
 		if ($request->state == 6) {
 			$order->state = 5;
@@ -256,7 +259,7 @@ class OrderController extends Controller
 		if ($request->state != 4 && $request->state != 6) {
 			$order->state = $request->state;
 			if ($request->state == 2) {
-				$order->payment_date = date('Y-m-d');
+				$order->payment_date = date('Y-m-d h:i:s');
 			}
 		}
 
@@ -309,8 +312,15 @@ class OrderController extends Controller
 	 * @param  \App\Models\Order  $order
 	 * @return \Illuminate\Http\Response
 	 */
-	public function destroy(Order  $order)
+	public function destroy(Order $order)
 	{
+		$details_order = $order->detailOrders()->get();
+		if ($order->state == 2 ||   $order->state == 5) {
+			foreach ($details_order as $detail_order) {
+				$update_stock = new ProductController;
+				$update_stock = $update_stock->updateStockByBarcode(2, $detail_order['barcode'], $detail_order['quantity']);
+			}
+		}
 		$order->delete();
 	}
 
@@ -373,7 +383,7 @@ class OrderController extends Controller
 			]);
 		}
 		$orders = DB::table('orders as o')
-			->leftJoin('payment_credits as pc', 'pc.credit_id', '=', 'o.id')
+			->leftJoin('payment_credits as pc', 'pc.order_id', '=', 'o.id')
 			->select('o.id', 'o.total_paid', DB::raw('SUM(pc.pay) as  paid_payment'))
 			->where('o.client_id', $request->id_client)
 			->where('o.state', 5)
@@ -399,14 +409,14 @@ class OrderController extends Controller
 				if ($pending > $request->pay_payment) {
 					PaymentCredit::create([
 						'user_id' => $user_id,
-						'credit_id' => $order->id,
+						'order_id' => $order->id,
 						'pay' => $request->pay_payment
 					]);
 					$request->pay_payment = 0;
 				} else {
 					PaymentCredit::create([
 						'user_id' => $user_id,
-						'credit_id' => $order->id,
+						'order_id' => $order->id,
 						'pay' => $pending
 					]);
 

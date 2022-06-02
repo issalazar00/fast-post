@@ -133,8 +133,8 @@ const routes = [
   { path: '/boxes', component: Boxes, alias: 'category.index' },
 
   { path: '/credits', component: Credits, alias: "credit.index" },
-  { path: '/credits/:credit_id/details-credit', component: DetailsCredit, props: true, name: 'details-credit', alias: "credit.index" },
-  { path: '/create-edit-credit/:credit_id', component: CreateEditCredit, props: true, name: 'create-edit-credit', alias: "credit.store" },
+  { path: '/credits/:order_id/details-credit', component: DetailsCredit, props: true, name: 'details-credit', alias: "credit.index" },
+  { path: '/create-edit-credit/:order_id', component: CreateEditCredit, props: true, name: 'create-edit-credit', alias: "credit.store" },
 
   { path: '/login', name: 'Login', component: Login },
   { path: '/roles', name: 'Roles', component: Roles, alias: "rol.index" },

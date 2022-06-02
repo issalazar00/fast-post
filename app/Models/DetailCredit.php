@@ -22,9 +22,9 @@ class DetailCredit extends Model
         'product',
     ];
 
-    public function credit()
+    public function order()
     {
-        return $this->belongsTo(Billing::class, 'credit_id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
 
     public function product()
