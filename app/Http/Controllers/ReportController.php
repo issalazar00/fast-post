@@ -51,7 +51,7 @@ class ReportController extends Controller
 	{
 		$from = $request->from;
 		$to = $request->to;
-		$box_id = $request->box_id;
+		$box_id = $request->box;
 
 		$orders = Order::selectRaw('SUM(total_paid) as total_paid')
 			->selectRaw('SUM(total_discount) as total_discount')
@@ -72,7 +72,7 @@ class ReportController extends Controller
 				}
 			})
 			->where(function ($query) use ($box_id) {
-				if ($box_id != '' && $box_id != 'undefined' && $box_id != null) {
+				if ($box_id != '' && $box_id != 0 && $box_id != null) {
 					$query->where('box_id', $box_id);
 				}
 			})
