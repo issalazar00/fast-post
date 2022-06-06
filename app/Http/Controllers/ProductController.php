@@ -400,4 +400,62 @@ class ProductController extends Controller
 		$product->cost_price_tax_inc  =  $cost_price_tax_inc;
 		$product->save();
 	}
+
+	public function gain()
+	{
+		$result = 0.0;
+		if (
+			this . formProduct . sale_price_tax_inc != 0 &&
+			this . formProduct . tax_id != 0
+		) {
+			$result = parseFloat(
+				this . formProduct . sale_price_tax_exc -
+					this . formProduct . cost_price_tax_inc
+			);
+			return $result;
+		} else {
+			$result = parseFloat(
+				this . formProduct . sale_price_tax_exc -
+					this . formProduct . cost_price_tax_inc
+			);
+			return $result;
+		}
+	}
+	public function sale_price_tax_exc()
+	{
+		$result = 0.0;
+		if (this . formProduct . tax_id != 0) {
+			$percentage = this . tax . percentage / 100;
+			$result = Math . round(
+				parseFloat(this . formProduct . sale_price_tax_inc) / (1 + percentage)
+			) . toFixed(2);
+			return $result;
+		} else {
+			$percentage = this . tax . percentage / 100;
+			$result = Math . round(
+				parseFloat(this . formProduct . sale_price_tax_inc) / (1 + percentage)
+			) . toFixed(2);
+			return $result;
+		}
+	}
+	public function	wholesale_price_tax_exc()
+	{
+		$result = 0.0;
+		if (this . formProduct . tax_id != 0) {
+			percentage = this . tax . percentage / 100;
+			result = Math . round(
+				parseFloat(this . formProduct . wholesale_price_tax_inc) /
+					(1 + percentage)
+			) . toFixed(2);
+
+			return result;
+		} else {
+			percentage = this . tax . percentage / 100;
+			result = Math . round(
+				parseFloat(this . formProduct . wholesale_price_tax_inc) /
+					(1 + percentage)
+			) . toFixed(2);
+			return result;
+		}
+	}
 }

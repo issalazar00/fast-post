@@ -32,9 +32,10 @@
                       autocomplete="address"
                     >
                       <option selected disabled value="">Documento...</option>
-                      <option value="1">Cédula de ciudadania</option>
-                      <option value="2">Cédula de extranjería</option>
-                      <option value="3">NIT</option>
+                      <option value="TI">Tarjeta de identidad</option>
+                      <option value="CC">Cédula de ciudadania</option>
+                      <option value="CE">Cédula de extranjería</option>
+                      <option value="NIT">NIT</option>
                     </select>
                   </div>
                   <input
@@ -118,8 +119,8 @@
                         v-model="formClient.type_person"
                       >
                         <option value="" disabled>Seleccionar tipo</option>
-                        <option>Juridica</option>
-                        <option>Natural</option>
+                        <option value="Juridica">Juridica</option>
+                        <option value="Natural">Natural</option>
                       </select>
                     </div>
                   </div>
