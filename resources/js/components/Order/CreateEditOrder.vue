@@ -142,7 +142,7 @@
 							</tr>
 							<tr>
 								<th colspan="7">IVA:</th>
-								<th>$ {{ (total_tax_inc - total_tax_exc).toFixed(0) }}</th>
+								<th>$ {{ (total_tax_inc_without_discount - total_tax_exc).toFixed(0) }}</th>
 							</tr>
 							<tr>
 								<th colspan="7">Descuento:</th>
@@ -160,7 +160,25 @@
 							<tr class="">
 								<th colspan="7">Efectivo:</th>
 								<th>
-									<input type="number" value="0" step="any" v-model="order.cash" required />
+									<input type="number" value="0" step="any" v-model="order.payment_methods.cash" required />
+								</th>
+							</tr>
+							<tr class="">
+								<th colspan="7">Nequi:</th>
+								<th>
+									<input type="number" value="0" step="any" v-model="order.payment_methods.nequi" />
+								</th>
+							</tr>
+							<tr class="">
+								<th colspan="7">Tarjeta:</th>
+								<th>
+									<input type="number" value="0" step="any" v-model="order.payment_methods.card" />
+								</th>
+							</tr>
+							<tr class="">
+								<th colspan="7">Otros:</th>
+								<th>
+									<input type="number" value="0" step="any" v-model="order.payment_methods.others" />
 								</th>
 							</tr>
 							<tr class="">
@@ -251,6 +269,7 @@ export default {
 				cash: 0,
 				change: 0,
 				payment_date: new Date().toISOString().slice(0, 10),
+				payment_methods: {}
 			}
 		};
 	},
@@ -289,10 +308,19 @@ export default {
 			});
 			return total;
 		},
+		total_tax_inc_without_discount: function () {
+			var total = 0.0;
+			this.productsOrderList.forEach(product => {
+				total += parseFloat(
+					product.quantity * product.price_tax_inc
+				);
+			});
+			return total;
+		},
 		payment_return: function () {
 			var value = 0.0;
-			if (this.order.cash > 0) {
-				value = (this.order.cash - this.total_tax_inc).toFixed(0);
+			if (this.order.payment_methods.cash > 0) {
+				value = ((this.order.payment_methods.cash + this.order.payment_methods.nequi + this.order.payment_methods.card + this.order.payment_methods.others) - this.total_tax_inc).toFixed(0);
 			}
 			return value;
 		}
@@ -402,6 +430,7 @@ export default {
 
 		createOrUpdateOrder(state_order) {
 			this.order.state = state_order;
+			this.order.box_id = this.$root.box;
 
 			if (this.order.id_client == 1 && state_order == 5) {
 				alert("Debe seleccionar un cliente válido");
@@ -419,41 +448,16 @@ export default {
 							)
 						);
 				} else {
-					axios
-						.post(`api/orders`, this.order, this.$root.config)
-						.then(response => {
-							// const order_id = response.data;
-							// this.printTicket(order_id);
-						})
-						.finally(setTimeout(() => {
-							this.$router.go(0)
-						}, 5000));
-				}
-			} else {
-				alert("No hay productos en la orden");
-			}
-		},
-
-		createOrUpdateOrder(state_order) {
-			this.order.state = state_order;
-			if (this.productsOrderList.length > 0) {
-				this.order.total_cost_price_tax_inc = this.total_cost_price_tax_inc;
-				this.order.productsOrder = this.productsOrderList;
-				this.order.box_id = this.$root.box;
-				if (this.order_id != 0 && this.order_id != null) {
-					axios
-						.put(`api/orders/${this.order_id}`, this.order, this.$root.config)
-						.then(
-							() => (
-								this.$router.push({ name: "main", params: { order_id: 0 } }),
-								this.$router.go(0)
-							)
-						);
-				} else {
 					if (this.order.box_id > 0) {
 						axios
 							.post(`api/orders`, this.order, this.$root.config)
-							.then(() => this.$router.go(0));
+							.then(response => {
+								// const order_id = response.data;
+								// this.printTicket(order_id);
+							})
+							.finally(setTimeout(() => {
+								this.$router.go(0)
+							}, 5000));
 					} else {
 						alert("Selecciona una caja");
 					}
@@ -462,9 +466,10 @@ export default {
 				alert("No hay productos en la orden");
 			}
 		},
+
 		printTicket(order_id) {
 			axios.get(
-				`api/print-order/${order_id}/${this.order.cash}/${this.payment_return}`,
+				`api/print-order/${order_id}/${this.order.payment_methods.cash}/${this.payment_return}`,
 				this.$root.config
 			);
 		},
@@ -496,7 +501,7 @@ export default {
 </script>
 
 <style scoped>
-	#create-edit-order {
-		font-size: 1.1rem;
-	}
+#create-edit-order {
+	font-size: 1.1rem;
+}
 </style>

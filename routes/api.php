@@ -66,7 +66,7 @@ Route::middleware('auth:api')->group(function () {
 
 
 	Route::get('/orders/byClient/{client_id}', [OrderController::class, 'creditByClient']);
-	Route::post('/orders/payCreditByClient', [CreditController::class, 'payCreditByClient']);
+	Route::post('/orders/payCreditByClient', [OrderController::class, 'payCreditByClient']);
 
 	Route::resource('/products',  ProductController::class);
 	Route::post('/products/{product}/activate',  [ProductController::class, 'activate']);

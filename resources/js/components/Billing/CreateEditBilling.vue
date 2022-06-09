@@ -448,10 +448,10 @@ export default {
 					discount_percentage: 0,
 					discount_price: 0,
 					quantity: 1,
-					price_tax_inc: new_product.sale_price_tax_inc,
-					price_tax_exc: new_product.sale_price_tax_exc,
+					price_tax_inc: new_product.cost_price_tax_inc,
+					price_tax_exc: new_product.cost_price_tax_exc,
 					product: new_product.product,
-					price_tax_inc_total: new_product.sale_price_tax_inc
+					price_tax_inc_total: new_product.cost_price_tax_inc
 				});
 			}
 		},

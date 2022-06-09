@@ -264,7 +264,7 @@
 		</div>
 		<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true"
 			data-backdrop="static">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-dialog-scrollable">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="categoryModalLabel">Categoria</h5>
@@ -391,13 +391,8 @@ export default {
 					this.formProduct.cost_price_tax_inc
 				);
 				return result;
-			} else {
-				result = parseFloat(
-					this.formProduct.sale_price_tax_exc -
-					this.formProduct.cost_price_tax_inc
-				);
-				return result;
 			}
+			return result;
 		},
 		sale_price_tax_exc: function () {
 			var result = 0.0;
@@ -407,13 +402,8 @@ export default {
 					parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)
 				).toFixed(2);
 				return result;
-			} else {
-				let percentage = this.tax.percentage / 100;
-				result = Math.round(
-					parseFloat(this.formProduct.sale_price_tax_inc) / (1 + percentage)
-				).toFixed(2);
-				return result;
 			}
+			return result;
 		},
 		wholesale_price_tax_exc() {
 			var result = 0.0;
@@ -425,14 +415,9 @@ export default {
 				).toFixed(2);
 
 				return result;
-			} else {
-				let percentage = this.tax.percentage / 100;
-				result = Math.round(
-					parseFloat(this.formProduct.wholesale_price_tax_inc) /
-					(1 + percentage)
-				).toFixed(2);
-				return result;
 			}
+			return result;
+
 		}
 	},
 	methods: {

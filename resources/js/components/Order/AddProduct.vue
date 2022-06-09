@@ -1,35 +1,18 @@
 <template>
-  <div
-    class="modal fade"
-    id="addProductModal"
-    tabindex="-1"
-    aria-labelledby="addProductModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="addProductModalLabel">Productos</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Cerrar"
-          >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <div class="input-group">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Código de barras | Nombre de product"
-              aria-label=" with two button addons"
-              aria-describedby="button-addon4"
-              v-model="filters.product"
-              @keyup="searchProduct()"
-            />
+            <input type="text" class="form-control" placeholder="Código de barras | Nombre de product"
+              aria-label=" with two button addons" aria-describedby="button-addon4" v-model="filters.product"
+              @keyup="searchProduct()" />
             <div class="input-group-append" id="button-addon4">
               <button class="btn btn-outline-secondary" type="button" @click="searchProduct()">
                 Buscar Producto
@@ -60,10 +43,7 @@
                 <td>{{ product.quantity }}</td>
 
                 <td>
-                  <button
-                    class="btn btn-success"
-                    @click="$emit('add-product', product)"
-                  >
+                  <button class="btn btn-success" @click="$emit('add-product', product)">
                     <i class="bi bi-plus-circle"></i>
                   </button>
                 </td>
@@ -84,6 +64,7 @@
 <script>
 export default {
   name: "add-product",
+  props: { 'is_order': 0 },
   data() {
     return {
       // Filter modal
@@ -102,7 +83,7 @@ export default {
       let me = this;
       axios
         .post(
-          `api/products/filter-product-list?product=${me.filters.product}`,
+          `api/products/filter-product-list?product=${me.filters.product}&is_order=${this.is_order}`,
           null,
           this.$root.config
         )

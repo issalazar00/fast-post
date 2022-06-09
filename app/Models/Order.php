@@ -20,7 +20,8 @@ class Order extends Model
         'total_discount',
         'payment_date',
         'state',
-        'box_id'
+        'box_id',
+        'payment_methods'
     ];
 
     protected $appends = [

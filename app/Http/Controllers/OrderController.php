@@ -163,6 +163,7 @@ class OrderController extends Controller
 		$order->total_iva_exc = $request->total_tax_exc;
 		$order->total_discount = $request->total_discount;
 		$order->total_cost_price_tax_inc = $request->total_cost_price_tax_inc;
+		$order->payment_methods = json_encode($request->payment_methods);
 		$order->box_id = $box->id;
 		$order->bill_number = $bill_number;
 
@@ -249,6 +250,8 @@ class OrderController extends Controller
 		$order->total_iva_exc = $request->total_tax_exc;
 		$order->total_cost_price_tax_inc = $request->total_cost_price_tax_inc;
 		$order->total_discount = $request->total_discount;
+		$order->payment_methods = json_encode($request->payment_methods);
+		
 		if ($request->state == 4) {
 			$order->state = 2;
 			$order->payment_date = date('Y-m-d h:i:s');

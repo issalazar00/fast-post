@@ -74,7 +74,7 @@ class PrintOrderController extends Controller
 			$printer->text("Cliente: ");
 			$printer->text($order->client->name . $order->client->last_name . "\n");
 			if ($order->client->type_person) {
-				$printer->text('Tipo de persona: ' . $order->client->type_type_person . "\n");
+				$printer->text('Tipo de persona: ' . $order->client->type_person . "\n");
 			}
 			if ($order->client->document) {
 				$printer->text('Documento: ' . $order->client->type_document . ' '  . $order->client->document . "\n");
@@ -201,8 +201,7 @@ class PrintOrderController extends Controller
 			$printer->text($company->address . "\n");
 
 			$printer->setEmphasis(true);
-			$printer->text("Cajero(a): ");
-			$printer->text($system_user->name . "\n");
+			$printer->text("Cajero(a): ". $system_user->name . "\n");
 			$printer->setEmphasis(false);
 			$printer->text("Fecha: ");
 			$printer->text(date('Y-m-d h:i:s A') .  "\n");
