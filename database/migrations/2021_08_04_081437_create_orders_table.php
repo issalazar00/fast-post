@@ -26,6 +26,7 @@ class CreateOrdersTable extends Migration
       $table->float('total_cost_price_tax_inc', 20, 2);
       $table->tinyInteger('state')->default('1');
       $table->dateTime('payment_date')->nullable();
+      $table->text('payment_methods')->nullable();
 
       $table->foreign('user_id')
         ->references('id')

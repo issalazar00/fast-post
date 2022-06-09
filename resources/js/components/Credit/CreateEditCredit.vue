@@ -230,7 +230,7 @@
 			</div>
 		</div>
 
-		<add-product @add-product="addProduct($event)" />
+		<add-product @add-product="addProduct($event)" is_order="1" />
 		<add-client @add-client="addClient($event)" />
 		<modal-box ref="ModalBox"></modal-box>
 	</div>
@@ -435,15 +435,13 @@ export default {
 			if (this.productsOrderList.length > 0) {
 				this.credit.total_cost_price_tax_inc = this.total_cost_price_tax_inc;
 				this.credit.productsOrder = this.productsOrderList;
-				this.credit.box_id = this.$root.box;
-
+				
 				if (this.order_id != 0 && this.order_id != null) {
 					axios
 						.put(`api/orders/${this.order_id}`, this.credit, this.$root.config)
 						.then(() => this.$router.push("/credits"));
 				} else {
 					if (this.credit.box_id > 0) {
-						axios;
 						axios
 							.post(`api/orders`, this.credit, this.$root.config)
 							.then(() => this.$router.go(0));

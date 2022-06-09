@@ -330,132 +330,33 @@ class ProductController extends Controller
 	public function filterProductList(Request $request)
 	{
 
+		$products = Product::select();
 		if (!$request->product || $request->product == '' || $request->product == NULL) {
-			$products = Product::select()
-				->where('state', 1)
-				->limit(5)
-				->get();
+			$products = $products->where('state', 1)
+				->limit(5);
 		} else {
-			$products = Product::select()
+			$products = $products
 				->where('state', 1)
 				->where('barcode', 'LIKE', "%$request->product%")
-				->orWhere('product', 'LIKE', "%$request->product%")
-				// ->limit(5)
-				->get();
+				->orWhere('product', 'LIKE', "%$request->product%");
+			// ->limit(5)
 		}
-
-
+		if ($request->is_order) {
+			$products = $products->where('quantity', '>', 0);
+		}
+		$products = $products->get();
 		return $products;
 	}
-	public function ajaxProcessuploadCsv()
+
+	public function updatePriceById($id, $cost_price_tax_inc, $quantity)
 	{
-		$filename_prefix = date('YmdHis') . '-';
-
-		if (isset($_FILES['file']) && !empty($_FILES['file']['error'])) {
-			switch ($_FILES['file']['error']) {
-				case UPLOAD_ERR_INI_SIZE:
-					$_FILES['file']['error'] = $this->trans('The uploaded file exceeds the upload_max_filesize directive in php.ini. If your server configuration allows it, you may add a directive in your .htaccess.', [], 'Admin.Advparameters.Notification');
-
-					break;
-				case UPLOAD_ERR_FORM_SIZE:
-					$_FILES['file']['error'] = $this->trans('The uploaded file exceeds the post_max_size directive in php.ini. If your server configuration allows it, you may add a directive in your .htaccess, for example:', [], 'Admin.Advparameters.Notification')
-						. '<br/><a href="' . $this->context->link->getAdminLink('AdminMeta') . '" >
-					<code>php_value post_max_size 20M</code> ' .
-						$this->trans('(click to open "Generators" page)', [], 'Admin.Advparameters.Notification') . '</a>';
-
-					break;
-
-					break;
-				case UPLOAD_ERR_PARTIAL:
-					$_FILES['file']['error'] = $this->trans('The uploaded file was only partially uploaded.', [], 'Admin.Advparameters.Notification');
-
-					break;
-
-					break;
-				case UPLOAD_ERR_NO_FILE:
-					$_FILES['file']['error'] = $this->trans('No file was uploaded.', [], 'Admin.Advparameters.Notification');
-
-					break;
-
-					break;
-			}
-		} elseif (!preg_match('#([^\.]*?)\.(csv|xls[xt]?|o[dt]s)$#is', $_FILES['file']['name'])) {
-			$_FILES['file']['error'] = $this->trans('The extension of your file should be .csv.', [], 'Admin.Advparameters.Notification');
-		} elseif (
-			!@filemtime($_FILES['file']['tmp_name'])
-			// || !@move_uploaded_file($_FILES['file']['tmp_name'], AdminImportController::getPath() . $filename_prefix . str_replace("\0", '', $_FILES['file']['name']))
-		) {
-			$_FILES['file']['error'] = $this->trans('An error occurred while uploading / copying the file.', [], 'Admin.Advparameters.Notification');
-		} else {
-			// @chmod(AdminImportController::getPath() . $filename_prefix . $_FILES['file']['name'], 0664);
-			$_FILES['file']['filename'] = $filename_prefix . str_replace('\0', '', $_FILES['file']['name']);
-		}
-
-		die(json_encode($_FILES));
-	}
-
-	public function updatePriceById($id, $cost_price_tax_inc)
-	{
-		$product = Product::select('id', 'cost_price_tax_inc')->where('id', $id)->first();
+		$product = Product::find($id);
+		$percentage = $product->tax->percentage / 100;
+	
+		$product->cost_price_tax_exc  = ($cost_price_tax_inc) /	(1 + $percentage);
 		$product->cost_price_tax_inc  =  $cost_price_tax_inc;
+		$product->gain = 	$product->sale_price_tax_exc - $cost_price_tax_inc;
+		$product->quantity += $quantity;
 		$product->save();
-	}
-
-	public function gain()
-	{
-		$result = 0.0;
-		if (
-			this . formProduct . sale_price_tax_inc != 0 &&
-			this . formProduct . tax_id != 0
-		) {
-			$result = parseFloat(
-				this . formProduct . sale_price_tax_exc -
-					this . formProduct . cost_price_tax_inc
-			);
-			return $result;
-		} else {
-			$result = parseFloat(
-				this . formProduct . sale_price_tax_exc -
-					this . formProduct . cost_price_tax_inc
-			);
-			return $result;
-		}
-	}
-	public function sale_price_tax_exc()
-	{
-		$result = 0.0;
-		if (this . formProduct . tax_id != 0) {
-			$percentage = this . tax . percentage / 100;
-			$result = Math . round(
-				parseFloat(this . formProduct . sale_price_tax_inc) / (1 + percentage)
-			) . toFixed(2);
-			return $result;
-		} else {
-			$percentage = this . tax . percentage / 100;
-			$result = Math . round(
-				parseFloat(this . formProduct . sale_price_tax_inc) / (1 + percentage)
-			) . toFixed(2);
-			return $result;
-		}
-	}
-	public function	wholesale_price_tax_exc()
-	{
-		$result = 0.0;
-		if (this . formProduct . tax_id != 0) {
-			percentage = this . tax . percentage / 100;
-			result = Math . round(
-				parseFloat(this . formProduct . wholesale_price_tax_inc) /
-					(1 + percentage)
-			) . toFixed(2);
-
-			return result;
-		} else {
-			percentage = this . tax . percentage / 100;
-			result = Math . round(
-				parseFloat(this . formProduct . wholesale_price_tax_inc) /
-					(1 + percentage)
-			) . toFixed(2);
-			return result;
-		}
 	}
 }
