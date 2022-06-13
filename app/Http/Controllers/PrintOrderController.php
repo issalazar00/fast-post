@@ -20,6 +20,7 @@ class PrintOrderController extends Controller
 		$order = Order::find($order_id);
 		$order_details = $order->detailOrders()->get();
 		$system_user = $order->user()->first();
+		$payment_methods = json_decode($order->payment_methods);
 
 		// Información empresarial
 		$configuration = new Configuration();
@@ -114,9 +115,13 @@ class PrintOrderController extends Controller
 			$printer->text(sprintf('%-25s %+15.15s', 'TOTAL', number_format($total, 2, '.', ',')));
 			$printer->setTextSize(1, 1);
 			$printer->setEmphasis(false);
-			if ($cash != null && $change != null) {
-				$printer->text("\n");
-				$printer->text(sprintf('%-25s %+15.15s', 'Efectivo', number_format($cash, 2, '.', ',')));
+			if ($payment_methods != null) {
+				isset($payment_methods->cash)  ??		$printer->text(sprintf('%-25s %+15.15s', 'Efectivo', number_format($payment_methods->cash, 2, '.', ',') . "\n"));
+				isset($payment_methods->card)  ??		$printer->text(sprintf('%-25s %+15.15s', 'Tarjeta', number_format($payment_methods->card, 2, '.', ',') . "\n"));
+				isset($payment_methods->nequi)  ??		$printer->text(sprintf('%-25s %+15.15s', 'Nequi', number_format($payment_methods->nequi, 2, '.', ',') . "\n"));
+				isset($payment_methods->others)  ??		$printer->text(sprintf('%-25s %+15.15s', 'Otros', number_format($payment_methods->others, 2, '.', ',') . "\n"));
+			}
+			if ($change != null) {
 				$printer->text("\n");
 				$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($change, 2, '.', ',')));
 			}
@@ -201,7 +206,7 @@ class PrintOrderController extends Controller
 			$printer->text($company->address . "\n");
 
 			$printer->setEmphasis(true);
-			$printer->text("Cajero(a): ". $system_user->name . "\n");
+			$printer->text("Cajero(a): " . $system_user->name . "\n");
 			$printer->setEmphasis(false);
 			$printer->text("Fecha: ");
 			$printer->text(date('Y-m-d h:i:s A') .  "\n");

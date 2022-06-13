@@ -207,7 +207,7 @@
 
 							<div class="form-group">
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" value="1" id="stock" v-model="formProduct.stock" />
+									<input class="form-check-input" type="checkbox" value="0" id="stock" v-model="formProduct.stock" />
 									<label class="form-check-label" for="stock">
 										¿Usa Inventario?
 									</label>

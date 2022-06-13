@@ -1,10 +1,7 @@
 <template>
 	<div class="row px-2">
 		<div class="col-9 justify-content-center p-2">
-			<div
-				class="sticky-top mb-2 text-uppercase w-50"
-				style="z-index: 1022; left: 100%"
-			>
+			<div class="sticky-top mb-2 text-uppercase w-50" style="z-index: 1022; left: 100%">
 				<table class="table table-borderless">
 					<tr class="h1 text-white bg-primary">
 						<td class="text-right">Total</td>
@@ -18,23 +15,11 @@
 				<!-- </div> -->
 			</div>
 			<div class="position-fixed top-0 right-0 w-50" style="z-index: 3000">
-				<div
-					class="toast fade hide border border-danger w-100 m-3"
-					style="max-width: 90%"
-					role="alert"
-					id="no-results"
-					aria-live="assertive"
-					aria-atomic="true"
-					data-delay="3000"
-				>
+				<div class="toast fade hide border border-danger w-100 m-3" style="max-width: 90%" role="alert" id="no-results"
+					aria-live="assertive" aria-atomic="true" data-delay="3000">
 					<div class="toast-header">
 						<strong class="mr-auto h3 text-danger">Advertencia</strong>
-						<button
-							type="button"
-							class="ml-2 mb-1 close"
-							data-dismiss="toast"
-							aria-label="Close"
-						>
+						<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
@@ -43,63 +28,28 @@
 					</div>
 				</div>
 			</div>
-			<div
-				class="row position-sticky sticky-top mb-2 bg-light p-1"
-				style="top: 0.5rem"
-			>
+			<div class="row position-sticky sticky-top mb-2 bg-light p-1" style="top: 0.5rem">
 				<div class="input-group col-6">
-					<input
-						type="text"
-						class="form-control"
-						placeholder="Código de barras"
-						aria-label=" with two button addons"
-						aria-describedby="button-add-product"
-						v-model="filters.product"
-						autofocus
-						@keypress.enter="searchProduct()"
-					/>
+					<input type="text" class="form-control" placeholder="Código de barras" aria-label=" with two button addons"
+						aria-describedby="button-add-product" v-model="filters.product" autofocus
+						@keypress.enter="searchProduct()" />
 					<div class="input-group-append" id="button-add-product">
-						<button
-							class="btn btn-outline-secondary"
-							type="button"
-							@click="searchProduct()"
-						>
+						<button class="btn btn-outline-secondary" type="button" @click="searchProduct()">
 							Añadir Producto
 						</button>
-						<button
-							class="btn btn-outline-secondary"
-							type="button"
-							data-toggle="modal"
-							data-target="#addProductModal"
-						>
+						<button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#addProductModal">
 							<i class="bi bi-card-checklist"></i>
 						</button>
 					</div>
 				</div>
 				<div class="input-group col-6">
-					<input
-						type="text"
-						class="form-control"
-						:placeholder="billing.supplier"
-						aria-label=" with two button addons"
-						aria-describedby="button-addon4"
-						v-model="filters.supplier"
-						@keypress.enter="searchSupplier()"
-					/>
+					<input type="text" class="form-control" :placeholder="billing.supplier" aria-label=" with two button addons"
+						aria-describedby="button-addon4" v-model="filters.supplier" @keypress.enter="searchSupplier()" />
 					<div class="input-group-append" id="button-addon4">
-						<button
-							class="btn btn-outline-secondary"
-							type="button"
-							@click="searchSupplier()"
-						>
+						<button class="btn btn-outline-secondary" type="button" @click="searchSupplier()">
 							Añadir Proveedor
 						</button>
-						<button
-							class="btn btn-outline-secondary"
-							type="button"
-							data-toggle="modal"
-							data-target="#addSupplierModal"
-						>
+						<button class="btn btn-outline-secondary" type="button" data-toggle="modal" data-target="#addSupplierModal">
 							<i class="bi bi-person-lines-fill"></i>
 						</button>
 					</div>
@@ -108,33 +58,27 @@
 
 			<section>
 				<div>
-					<table
-						class="
+					<table class="
               table table-sm table-responsive-sm table-bordered table-hover
-            "
-					>
-						<thead
-							class="bg-secondary text-white position-sticky sticky-top"
-							style="top: 4rem"
-						>
+            ">
+						<thead class="bg-secondary text-white position-sticky sticky-top" style="top: 4rem">
 							<tr>
 								<th></th>
 								<th>Código</th>
 								<th>Producto</th>
 								<th>Cantidad</th>
-								<th>Precio</th>
+								<th>Precio de costo</th>
 								<th>Descuento %</th>
 								<th>Descuento $</th>
+								<th>Precio de venta <br> <small>IVA inc</small>
+								</th>
 								<th>Total</th>
 							</tr>
 						</thead>
 						<tbody v-if="productsBillingList.length > 0">
 							<tr v-for="(p, index) in productsBillingList" :key="p.id">
 								<td>
-									<button
-										class="btn text-danger"
-										@click="removeProduct(index, p.id)"
-									>
+									<button class="btn text-danger" @click="removeProduct(index, p.id)">
 										<i class="bi bi-trash"></i>
 									</button>
 								</td>
@@ -142,86 +86,51 @@
 								<td class="barcode">{{ p.barcode }}</td>
 								<td>{{ p.product }}</td>
 								<td>
-									<input
-										type="number"
-										name="quantity"
-										id="quantity"
-										step="2"
-										placeholder="Cantidad"
-										class="form-control form-control-sm"
-										v-model="p.quantity"
-										style="max-width: 60px"
-									/>
+									<input type="number" name="quantity" id="quantity" step="2" placeholder="Cantidad"
+										class="form-control form-control-sm" v-model="p.quantity" style="max-width: 60px" />
 								</td>
 								<td>
-									<input
-										type="number"
-										name="price"
-										id="price"
-										step="any"
-										placeholder="Cantidad"
-										v-model="p.price_tax_inc"
-										class="form-control form-control-sm"
-										style="max-width: 100px"
-									/>
+									<input type="number" name="price" id="price" step="any" placeholder="Precio"
+										v-model="p.cost_price_tax_inc" class="form-control form-control-sm" style="max-width: 100px" />
 								</td>
 								<td>
-									<input
-										type="number"
-										name="discount_percentage"
-										id="discount_percentage"
-										step="any"
-										placeholder="Descuento"
-										class="form-control form-control-sm"
-										v-model="p.discount_percentage"
-										style="max-width: 60px"
-									/>
+									<input type="number" name="discount_percentage" id="discount_percentage" step="any"
+										placeholder="Descuento" class="form-control form-control-sm" v-model="p.discount_percentage"
+										style="max-width: 60px" />
 								</td>
 								<td>
-									<input
-										v-if="p.discount_percentage != 0"
-										type="number"
-										class="form-control form-control-sm"
-										name="discount_price"
-										id="discount_price"
-										step="2"
-										placeholder="Descuento"
-										:value="
+									<input v-if="p.discount_percentage != 0" type="number" class="form-control form-control-sm"
+										name="discount_price" id="discount_price" step="2" placeholder="Descuento" :value="
 											(p.discount_price = (
 												p.quantity *
-												p.price_tax_inc *
+												p.cost_price_tax_inc *
 												(p.discount_percentage / 100)
 											).toFixed(0))
-										"
-										style="max-width: 100px"
-									/>
-									<input
-										v-else
-										type="number"
-										class="form-control form-control-sm"
-										name="discount_price"
-										id="discount_price"
-										step="2"
-										v-model="p.discount_price"
-										style="max-width: 100px"
-									/>
+										" style="max-width: 100px" />
+									<input v-else type="number" class="form-control form-control-sm" name="discount_price"
+										id="discount_price" step="2" v-model="p.discount_price" style="max-width: 100px" />
+								</td>
+								<td>
+									<input type="number" name="sale_price_tax_inc" id="sale_price_tax_inc" step="any"
+										placeholder="Precio de venta" v-model="p.sale_price_tax_inc" class="form-control form-control-sm"
+										style="max-width: 100px" />
 								</td>
 								<td>
 									<span v-if="p.discount_percentage != 0">
 										$
 										{{
-											(p.price_tax_inc_total =
-												p.quantity * p.price_tax_inc -
-												p.quantity *
-													p.price_tax_inc *
+												(p.cost_price_tax_inc_total =
+													p.quantity * p.cost_price_tax_inc -
+													p.quantity *
+													p.cost_price_tax_inc *
 													(p.discount_percentage / 100))
 										}}
 									</span>
 									<span v-else>
 										$
 										{{
-											(p.price_tax_inc_total =
-												p.quantity * p.price_tax_inc - p.discount_price).toFixed(2)
+												(p.cost_price_tax_inc_total =
+													p.quantity * p.cost_price_tax_inc - p.discount_price).toFixed(2)
 										}}
 									</span>
 								</td>
@@ -272,44 +181,25 @@
 							<tr class="">
 								<th colspan="7">Efectivo:</th>
 								<th>
-									<input
-										type="number"
-										value="0"
-										step="any"
-										v-model="billing.cash"
-									/>
+									<input type="number" value="0" step="any" v-model="billing.cash" />
 								</th>
 							</tr>
 							<tr class="">
 								<th colspan="7">Cambio:</th>
 								<th>
-									<input
-										type="text"
-										:value="payment_return"
-										readonly
-										disabled
-									/>
+									<input type="text" :value="payment_return" readonly disabled />
 								</th>
 							</tr>
 						</table>
 					</div>
 				</section>
 				<div class="">
-					<button
-						type="button"
-						class="btn btn-outline-primary btn-block"
-						@click="createOrUpdateBilling(2)"
-					>
+					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateBilling(2)">
 						<!-- Facturar -->
 
 						<i class="bi bi-receipt"></i> <b>F1</b> Guardar
 					</button>
-					<router-link
-						to="/billings"
-						type="button"
-						class="btn btn-outline-secondary btn-block"
-						v-if="billing_id != 0"
-					>
+					<router-link to="/billings" type="button" class="btn btn-outline-secondary btn-block" v-if="billing_id != 0">
 						<i class="bi bi-receipt"></i> Cancelar
 					</router-link>
 				</div>
@@ -352,34 +242,34 @@ export default {
 		};
 	},
 	computed: {
-		total_tax_exc: function() {
+		total_tax_exc: function () {
 			var total = 0.0;
 			this.productsBillingList.forEach(
 				product =>
-					(total += parseFloat(product.price_tax_exc * product.quantity))
+					(total += parseFloat(product.cost_price_tax_exc * product.quantity))
 			);
 			return total;
 		},
-		total_discount: function() {
+		total_discount: function () {
 			var total = 0.0;
 			this.productsBillingList.forEach(product => {
 				total += parseFloat(product.discount_price);
 			});
 			return total;
 		},
-		total_tax_inc: function() {
+		total_tax_inc: function () {
 			var total = 0.0;
 			this.productsBillingList.forEach(product => {
 				total += parseFloat(
-					product.quantity * product.price_tax_inc -
-						product.quantity *
-							product.price_tax_inc *
-							(product.discount_percentage / 100)
+					product.quantity * product.cost_price_tax_inc -
+					product.quantity *
+					product.cost_price_tax_inc *
+					(product.discount_percentage / 100)
 				);
 			});
 			return total;
 		},
-		payment_return: function() {
+		payment_return: function () {
 			var value = 0.0;
 			if (this.billing.cash > 0) {
 				value = (this.billing.cash - this.total_tax_inc).toFixed(0);
@@ -397,10 +287,9 @@ export default {
 
 			axios
 				.get(`api/billings/${me.billing_id}`, this.$root.config)
-				.then(function(response) {
+				.then(function (response) {
 					me.billing.id_supplier = response.data.billing_information.supplier_id;
 					me.billing.supplier = response.data.billing_information.supplier.name;
-
 					me.productsBillingList = response.data.billing_details;
 				});
 		},
@@ -412,7 +301,7 @@ export default {
 			var url = "api/products/search-product?product=" + me.filters.product;
 			axios
 				.post(url, null, this.$root.config)
-				.then(function(response) {
+				.then(function (response) {
 					var new_product = response.data.products;
 					if (!new_product) {
 						$("#no-results").toast("show");
@@ -420,7 +309,7 @@ export default {
 						me.addProduct(new_product);
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 			me.filters.product = "";
@@ -435,7 +324,7 @@ export default {
 					if (result) {
 						// Añade cantidad
 						prod.quantity += 1;
-						prod.price_tax_inc_total = prod.price_tax_inc * prod.quantity;
+						prod.cost_price_tax_inc_total = prod.cost_price_tax_inc * prod.quantity;
 					}
 				}
 			});
@@ -448,10 +337,12 @@ export default {
 					discount_percentage: 0,
 					discount_price: 0,
 					quantity: 1,
-					price_tax_inc: new_product.cost_price_tax_inc,
-					price_tax_exc: new_product.cost_price_tax_exc,
+					cost_price_tax_inc: new_product.cost_price_tax_inc,
+					cost_price_tax_exc: new_product.cost_price_tax_exc,
+					sale_price_tax_exc: new_product.sale_price_tax_exc,
+					sale_price_tax_inc: new_product.sale_price_tax_inc,
 					product: new_product.product,
-					price_tax_inc_total: new_product.cost_price_tax_inc
+					cost_price_tax_inc_total: new_product.cost_price_tax_inc
 				});
 			}
 		},
@@ -469,7 +360,7 @@ export default {
 			var url = "api/clients/search-supplier?supplier=" + me.filters.supplier;
 			axios
 				.post(url, null, me.$root.config)
-				.then(function(response) {
+				.then(function (response) {
 					var new_client = response.data;
 					if (!new_client) {
 						$("#no-results").toast("show");
@@ -477,7 +368,7 @@ export default {
 						me.addSupplier(new_client);
 					}
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.log(error);
 				});
 		},
@@ -515,15 +406,15 @@ export default {
 		},
 		commands() {
 			let me = this;
-			shortcut.add("F1", function() {
+			shortcut.add("F1", function () {
 				me.createOrUpdateBilling(2);
 			});
 
-			shortcut.add("F2", function() {
+			shortcut.add("F2", function () {
 				me.createOrUpdateBilling(4);
 			});
 
-			shortcut.add("F10", function() {
+			shortcut.add("F10", function () {
 				$("#addProductModal").modal("show");
 			});
 		}

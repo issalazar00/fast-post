@@ -191,14 +191,17 @@ class OrderController extends Controller
 			}
 		}
 
-
 		foreach ($request->productsOrder as $details_order) {
 			$new_detail = new DetailOrderController;
 			$new_detail = $new_detail->store($details_order, $order->id);
 
+			$product_controller = new ProductController;
 			if ($order->state == 2 ||   $order->state == 5) {
-				$update_stock = new ProductController;
-				$update_stock = $update_stock->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity']);
+				if ($details_order['type'] == 3) {
+					$product_controller->searchKitById($details_order['product_id'], $details_order['quantity'], 1);
+				} else {
+					$product_controller->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity']);
+				}
 			}
 		}
 		if ($request->state == 4 || $request->state == 6) {
@@ -251,7 +254,7 @@ class OrderController extends Controller
 		$order->total_cost_price_tax_inc = $request->total_cost_price_tax_inc;
 		$order->total_discount = $request->total_discount;
 		$order->payment_methods = json_encode($request->payment_methods);
-		
+
 		if ($request->state == 4) {
 			$order->state = 2;
 			$order->payment_date = date('Y-m-d h:i:s');
@@ -320,8 +323,12 @@ class OrderController extends Controller
 		$details_order = $order->detailOrders()->get();
 		if ($order->state == 2 ||   $order->state == 5) {
 			foreach ($details_order as $detail_order) {
-				$update_stock = new ProductController;
-				$update_stock = $update_stock->updateStockByBarcode(2, $detail_order['barcode'], $detail_order['quantity']);
+				$product_controller = new ProductController;
+				if ($details_order->type == 3) {
+					$search_kit = $product_controller->searchKitById($details_order['product_id'], $details_order['quantity']);
+				} else {
+					$product_controller->updateStockByBarcode(2, $detail_order['barcode'], $detail_order['quantity']);
+				}
 			}
 		}
 		$order->delete();

@@ -94,9 +94,9 @@ class ProductController extends Controller
 			'gain' => 'required|numeric',
 			'sale_price_tax_exc' => 'required|numeric',
 			'sale_price_tax_inc' => 'required|numeric',
-			'wholesale_price_tax_exc' => 'required|numeric',
-			'wholesale_price_tax_inc' => 'required|numeric',
-			'stock' => 'required|boolean',
+			'wholesale_price_tax_exc' => 'nullable|numeric',
+			'wholesale_price_tax_inc' => 'nullable|numeric',
+			'stock' => 'boolean',
 			'quantity' => 'nullable|numeric',
 			'minimum' => 'nullable|numeric',
 			'maximum' => 'nullable|numeric'
@@ -265,7 +265,23 @@ class ProductController extends Controller
 	}
 
 	/*
-	* @param mixed $type
+	* @param integer $type
+	* 1 : resta a stock
+	* 2: suma a stock
+	* @param string $product_parent_id
+	* @param mixed $quantity
+	*/
+
+	public function searchKitById($product_parent_id, $quantity, $type)
+	{
+		$products = KitProduct::where('product_parent_id', $product_parent_id)->get();
+		foreach ($products as $product) {
+			$this->updateStockByBarcode($type, $product['barcode'], $product['quantity'] * $quantity);
+		}
+	}
+
+	/*
+	* @param integer $type
 	* 1 : resta a stock
 	* 2: suma a stock
 	* @param mixed $barcode
@@ -348,15 +364,17 @@ class ProductController extends Controller
 		return $products;
 	}
 
-	public function updatePriceById($id, $cost_price_tax_inc, $quantity)
+	public function updatePriceById($purchased_product)
 	{
-		$product = Product::find($id);
+		$product = Product::find($purchased_product->product_id);
 		$percentage = $product->tax->percentage / 100;
-	
-		$product->cost_price_tax_exc  = ($cost_price_tax_inc) /	(1 + $percentage);
-		$product->cost_price_tax_inc  =  $cost_price_tax_inc;
-		$product->gain = 	$product->sale_price_tax_exc - $cost_price_tax_inc;
-		$product->quantity += $quantity;
+
+		$product->cost_price_tax_exc  = ($purchased_product->cost_price_tax_inc) /	(1 + $percentage);
+		$product->cost_price_tax_inc  =  $purchased_product->cost_price_tax_inc;
+		$product->sale_price_tax_exc = ($purchased_product->sale_price_tax_inc) /	(1 + $percentage);
+		$product->sale_price_tax_inc = $purchased_product->sale_price_tax_inc;
+		$product->gain = 	$product->sale_price_tax_exc - $purchased_product->sale_price_tax_inc;
+		$product->quantity += $purchased_product->quantity;
 		$product->save();
 	}
 }

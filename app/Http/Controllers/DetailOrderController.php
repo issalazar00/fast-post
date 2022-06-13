@@ -44,7 +44,7 @@ class DetailOrderController extends Controller
 	{
 		$detail = new DetailOrder;
 		$detail->order_id = $order_id;
-		$detail->product_id = $request['product_id'];
+		$detail->product_id = $request['product_id'] ?? $request['id'];
 		$detail->barcode = $request['barcode'];
 		$detail->discount_percentage = $request['discount_percentage'];
 		$detail->discount_price = $request['discount_price'];

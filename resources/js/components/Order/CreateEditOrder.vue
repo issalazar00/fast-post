@@ -381,7 +381,7 @@ export default {
 			if (!result) {
 				// Sino, lo añade al array
 				me.productsOrderList.push({
-					product_id: new_product.id,
+					id: new_product.id,
 					barcode: new_product.barcode,
 					discount_percentage: 0,
 					discount_price: 0,
@@ -391,7 +391,8 @@ export default {
 					product: new_product.product,
 					price_tax_inc_total: new_product.sale_price_tax_inc,
 					cost_price_tax_inc: new_product.cost_price_tax_inc,
-					cost_price_tax_inc_total: new_product.cost_price_tax_inc
+					cost_price_tax_inc_total: new_product.cost_price_tax_inc,
+					type: new_product.type
 				});
 			}
 		},
