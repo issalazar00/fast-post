@@ -29,6 +29,10 @@ class ReportController extends Controller
 			->selectRaw("count(case when state = '2' then 1 end) as registered")
 			->selectRaw("count(case when state = '3' then 1 end) as quoted")
 			->selectRaw("count(case when state = '5' then 1 end) as credit")
+			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.nequi')) as nequi")
+			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.card')) as card")
+			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.cash')) as cash")
+			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.others')) as others")
 			->orderBy('payment_date', 'desc')
 			->where(function ($query) use ($from, $to) {
 				if ($from != '' && $from != 'undefined' && $from != null) {
@@ -63,6 +67,10 @@ class ReportController extends Controller
 			->selectRaw("count(case when state = '2' then 1 end) as registered")
 			->selectRaw("count(case when state = '3' then 1 end) as quoted")
 			->selectRaw("count(case when state = '5' then 1 end) as credit")
+			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.nequi')) as nequi")
+			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.card')) as card")
+			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.cash')) as cash")
+			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.others')) as others")
 			->where(function ($query) use ($from, $to) {
 				if ($from != '' && $from != 'undefined' && $from != null) {
 					$query->whereDate('payment_date', '>=', $from);

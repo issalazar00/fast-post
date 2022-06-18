@@ -18,6 +18,7 @@
 							<th>Total IVA incluido</th>
 							<th>Total Descuento</th>
 							<th>Total Pago</th>
+							<th>Pagos recibidos</th>
 							<th>Total Ganancia</th>
 						</tr>
 					</thead>
@@ -42,19 +43,25 @@
 								{{ l.total_cost_price_tax_inc.toFixed(2) | currency }}
 							</td>
 							<td>
-								{{ l.total_iva_exc.toFixed(2)  | currency}}
+								{{ l.total_iva_exc.toFixed(2) | currency }}
 							</td>
 							<td>
-								{{ l.total_iva_inc.toFixed(2)  | currency}}
+								{{ l.total_iva_inc.toFixed(2) | currency }}
 							</td>
 							<td>
-								{{ l.total_discount.toFixed(2)  | currency}}
+								{{ l.total_discount.toFixed(2) | currency }}
 							</td>
 							<td>
 								{{ l.total_paid.toFixed(2) | currency }}
 							</td>
 							<td>
-								{{(l.total_iva_exc - l.total_cost_price_tax_inc).toFixed(2)  | currency}}
+								<span v-if="l.cash != null">Efectivo: {{ l.cash }} </span> <br />
+								<span v-if="l.nequi != null">Nequi: {{ l.nequi }} </span> <br />
+								<span v-if="l.card != null">Tarjeta : {{ l.card }}</span> <br />
+								<span v-if="l.others != null"> Otros medios de pago: {{ l.others }} </span>
+							</td>
+							<td>
+								{{ (l.total_iva_exc - l.total_cost_price_tax_inc).toFixed(2) | currency }}
 							</td>
 						</tr>
 					</tbody>
@@ -92,7 +99,7 @@ export default {
 					`api/reports/sales-report?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}&from=${me.filter.from}&to=${me.filter.to}`,
 					this.$root.config
 				)
-				.then(function(response) {
+				.then(function (response) {
 					me.List = response.data;
 				});
 		}
