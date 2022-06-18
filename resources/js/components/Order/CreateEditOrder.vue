@@ -166,19 +166,19 @@
 							<tr class="">
 								<th colspan="7">Nequi:</th>
 								<th>
-									<input type="number" value="0" step="any" v-model="order.payment_methods.nequi" />
+									<input type="number" value=0 step="any" v-model="order.payment_methods.nequi" />
 								</th>
 							</tr>
 							<tr class="">
 								<th colspan="7">Tarjeta:</th>
 								<th>
-									<input type="number" value="0" step="any" v-model="order.payment_methods.card" />
+									<input type="number" value=0 step="any" v-model="order.payment_methods.card" />
 								</th>
 							</tr>
 							<tr class="">
 								<th colspan="7">Otros:</th>
 								<th>
-									<input type="number" value="0" step="any" v-model="order.payment_methods.others" />
+									<input type="number" value=0 step="any" v-model="order.payment_methods.others" />
 								</th>
 							</tr>
 							<tr class="">
@@ -266,8 +266,6 @@ export default {
 				total_discount: 0.0,
 				total_cost_price_tax_inc: 0.0,
 				productsOrder: [],
-				cash: 0,
-				change: 0,
 				payment_date: new Date().toISOString().slice(0, 10),
 				payment_methods: {}
 			}
@@ -318,10 +316,15 @@ export default {
 			return total;
 		},
 		payment_return: function () {
-			var value = 0.0;
-			if (this.order.payment_methods.cash > 0) {
-				value = ((this.order.payment_methods.cash + this.order.payment_methods.nequi + this.order.payment_methods.card + this.order.payment_methods.others) - this.total_tax_inc).toFixed(0);
-			}
+			var cash = this.order.payment_methods.cash ? Number(this.order.payment_methods.cash) : 0;
+			var card = this.order.payment_methods.card ? Number(this.order.payment_methods.card) : 0;
+			var nequi = this.order.payment_methods.nequi ? Number(this.order.payment_methods.nequi) : 0;
+			var others = this.order.payment_methods.others ? Number(this.order.payment_methods.others) : 0;
+
+			var value = (
+				((cash) + (nequi) + (card) + (others)) -
+				(this.total_tax_inc).toFixed(0));
+
 			return value;
 		}
 	},
@@ -432,6 +435,7 @@ export default {
 		createOrUpdateOrder(state_order) {
 			this.order.state = state_order;
 			this.order.box_id = this.$root.box;
+			this.order.total_cost_price_tax_inc = this.total_cost_price_tax_inc;
 
 			if (this.order.id_client == 1 && state_order == 5) {
 				alert("Debe seleccionar un cliente válido");

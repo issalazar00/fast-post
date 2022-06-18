@@ -427,6 +427,7 @@ export default {
 		createOrUpdateCredit(state_credit) {
 			this.credit.state = state_credit;
 			this.credit.box_id = this.$root.box;
+
 			if (this.credit.id_client == 1) {
 				alert("Debe seleccionar un cliente válido");
 				return false;
@@ -435,7 +436,7 @@ export default {
 			if (this.productsOrderList.length > 0) {
 				this.credit.total_cost_price_tax_inc = this.total_cost_price_tax_inc;
 				this.credit.productsOrder = this.productsOrderList;
-				
+
 				if (this.order_id != 0 && this.order_id != null) {
 					axios
 						.put(`api/orders/${this.order_id}`, this.credit, this.$root.config)

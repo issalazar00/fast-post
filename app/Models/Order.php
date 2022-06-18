@@ -24,6 +24,10 @@ class Order extends Model
         'payment_methods'
     ];
 
+    protected $casts = [
+        'payment_methods' => 'array'
+    ];
+
     protected $appends = [
         'paid_payment'
     ];
