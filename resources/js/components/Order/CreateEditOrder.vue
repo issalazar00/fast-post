@@ -91,7 +91,7 @@
 								</td>
 								<td>
 									<input type="number" name="price" id="price" step="any" placeholder="Cantidad"
-										v-model="p.price_tax_inc" readonly class="form-control form-control-sm" style="max-width: 100px" />
+										v-model="p.price_tax_inc" class="form-control form-control-sm" style="max-width: 100px" />
 								</td>
 								<td>
 									<input type="number" name="discount_percentage" id="discount_percentage" step="any"
@@ -449,16 +449,43 @@ export default {
 						.then(
 							() => (
 								this.$router.push({ name: "main", params: { order_id: 0 } }),
-								this.$router.go(0)
+								this.$router.go(0),
+								Swal.fire({
+									icon: 'success',
+									title: 'Excelente',
+									text: 'Los datos se han guardado correctamente',
+								})
 							)
-						);
+						).catch(function (error) {
+							// handle error
+							if (error) {
+								Swal.fire({
+									icon: 'error',
+									title: 'Oops...',
+									text: 'Hubo un error al guardar los datos',
+								})
+							}
+						});
 				} else {
 					if (this.order.box_id > 0) {
 						axios
 							.post(`api/orders`, this.order, this.$root.config)
 							.then(response => {
-								// const order_id = response.data;
-								// this.printTicket(order_id);
+								Swal.fire({
+									icon: 'success',
+									title: 'Excelente',
+									text: 'Los datos se han guardado correctamente',
+								})
+							})
+							.catch(function (error) {
+								// handle error
+								if (error) {
+									Swal.fire({
+										icon: 'error',
+										title: 'Oops...',
+										text: 'Hubo un error al guardar los datos',
+									})
+								}
 							})
 							.finally(setTimeout(() => {
 								this.$router.go(0)

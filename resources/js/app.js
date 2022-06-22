@@ -64,6 +64,7 @@ import global from './services/global.js';
 import axios from 'axios';
 
 import CKEditor from '@ckeditor/ckeditor5-vue2';
+import Swal from "sweetalert2";
 
 
 Vue.use(VueRouter)
@@ -74,6 +75,7 @@ Vue.filter('currency', dollarFilter)
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('v-select', vSelect)
+window.Swal = Swal;
 
 /**
  * The following block of code may be used to automatically register your
