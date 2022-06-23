@@ -267,7 +267,13 @@ export default {
 				total_cost_price_tax_inc: 0.0,
 				productsOrder: [],
 				payment_date: new Date().toISOString().slice(0, 10),
-				payment_methods: {}
+				payment_methods: {
+					cash: 0.0,
+					card: 0.0,
+					nequi: 0.0,
+					others: 0.0,
+					change: 0.0
+				}
 			}
 		};
 	},
@@ -323,7 +329,11 @@ export default {
 
 			var value = (
 				((cash) + (nequi) + (card) + (others)) -
-				(this.total_tax_inc).toFixed(0));
+				(this.total_tax_inc));
+			console.log(cash)
+			console.log(card)
+
+			console.log(nequi)
 
 			return value;
 		}
@@ -436,6 +446,7 @@ export default {
 			this.order.state = state_order;
 			this.order.box_id = this.$root.box;
 			this.order.total_cost_price_tax_inc = this.total_cost_price_tax_inc;
+			this.order.payment_methods.change = this.payment_return;
 
 			if (this.order.id_client == 1 && state_order == 5) {
 				alert("Debe seleccionar un cliente válido");

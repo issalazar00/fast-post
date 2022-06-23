@@ -14,13 +14,24 @@ use Mike42\Escpos\Printer;
 
 class PrintOrderController extends Controller
 {
+	public function openBox()
+	{
+		$configuration = new Configuration();
+		$company =  $configuration->select()->first();
+		$connector = new WindowsPrintConnector($company->printer);
+		$printer = new Printer($connector);
+		$printer->initialize();
+		$printer->pulse();
+		$printer->close();
+	}
+
 	public function printTicket($order_id, $cash = null, $change = null)
 	{
 		// Orden
 		$order = Order::find($order_id);
 		$order_details = $order->detailOrders()->get();
 		$system_user = $order->user()->first();
-		$payment_methods = json_decode($order->payment_methods);
+		$payment_methods = (object) ($order->payment_methods);
 
 		// Información empresarial
 		$configuration = new Configuration();
@@ -113,14 +124,18 @@ class PrintOrderController extends Controller
 			$printer->text("\n");
 			$printer->setTextSize(1, 2);
 			$printer->text(sprintf('%-25s %+15.15s', 'TOTAL', number_format($total, 2, '.', ',')));
+			$printer->text("\n");
 			$printer->setTextSize(1, 1);
 			$printer->setEmphasis(false);
-			if ($payment_methods != null) {
-				isset($payment_methods->cash)  ??		$printer->text(sprintf('%-25s %+15.15s', 'Efectivo', number_format($payment_methods->cash, 2, '.', ',') . "\n"));
-				isset($payment_methods->card)  ??		$printer->text(sprintf('%-25s %+15.15s', 'Tarjeta', number_format($payment_methods->card, 2, '.', ',') . "\n"));
-				isset($payment_methods->nequi)  ??		$printer->text(sprintf('%-25s %+15.15s', 'Nequi', number_format($payment_methods->nequi, 2, '.', ',') . "\n"));
-				isset($payment_methods->others)  ??		$printer->text(sprintf('%-25s %+15.15s', 'Otros', number_format($payment_methods->others, 2, '.', ',') . "\n"));
-			}
+
+			isset($payment_methods->cash)  &&  $payment_methods->cash  > 0 ?		$printer->text(sprintf('%-25s %+15.15s', 'Efectivo', number_format($payment_methods->cash, 2, '.', ',') . "\n")) : '';
+			isset($payment_methods->card)  &&  $payment_methods->card  > 0 ?		$printer->text(sprintf('%-25s %+15.15s', 'Tarjeta', number_format($payment_methods->card, 2, '.', ',') . "\n")) : '';
+			isset($payment_methods->nequi)  && $payment_methods->nequi  > 0 ?		$printer->text(sprintf('%-25s %+15.15s', 'Nequi', number_format($payment_methods->nequi, 2, '.', ',') . "\n")) : '';
+			isset($payment_methods->others)  && $payment_methods->others > 0 ?		$printer->text(sprintf('%-25s %+15.15s', 'Otros', number_format($payment_methods->others, 2, '.', ',') . "\n")) : '';
+			$printer->setEmphasis(true);
+			isset($payment_methods->change)  ?		$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($payment_methods->change, 2, '.', ',') . "\n")) : 0;
+			$printer->setEmphasis(false);
+
 			if ($change != null) {
 				$printer->text("\n");
 				$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($change, 2, '.', ',')));
