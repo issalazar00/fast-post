@@ -7,6 +7,7 @@ use App\Models\Configuration;
 use App\Models\DetailOrder;
 use App\Models\Order;
 use App\Models\PaymentCredit;
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -197,8 +198,9 @@ class OrderController extends Controller
 
 			$product_controller = new ProductController;
 			if ($order->state == 2 ||   $order->state == 5) {
-				if ($details_order['type'] == 3) {
-					$product_controller->searchKitById($details_order['product_id'], $details_order['quantity'], 1);
+				$product = Product::find($details_order['id']);
+				if ($product['type'] == 3) {
+					$product_controller->searchKitById(1, $details_order['id'], $details_order['quantity'], 1);
 				} else {
 					$product_controller->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity']);
 				}
@@ -292,7 +294,7 @@ class OrderController extends Controller
 		foreach ($request->productsOrder as $details_order) {
 
 			DetailOrder::updateOrCreate(
-				['order_id' => $id, 'product_id' => $details_order['product_id']],
+				['order_id' => $id, 'product_id' => $details_order['id']],
 				[
 					'discount_percentage' => $details_order['discount_percentage'],
 					'discount_price' => $details_order['discount_price'],
@@ -326,8 +328,10 @@ class OrderController extends Controller
 		if ($order->state == 2 ||   $order->state == 5) {
 			foreach ($details_order as $detail_order) {
 				$product_controller = new ProductController;
-				if ($details_order->type == 3) {
-					$search_kit = $product_controller->searchKitById($details_order['product_id'], $details_order['quantity']);
+				$product = Product::find($detail_order['product_id']);
+
+				if ($product->type == 3) {
+					$product_controller->searchKitById(2, $detail_order['product_id'], $detail_order['quantity']);
 				} else {
 					$product_controller->updateStockByBarcode(2, $detail_order['barcode'], $detail_order['quantity']);
 				}

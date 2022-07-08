@@ -206,23 +206,23 @@
 							</option>
 						</select>
 					</div>
-					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(2)">
+					<button type="button" :disabled="disabled" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(2)">
 						<!-- Facturar -->
 						<i class="bi bi-receipt"></i> <b>F1</b> Facturar
 					</button>
-					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(4)">
+					<button type="button" :disabled="disabled" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(4)">
 						<!-- Facturar -->
 						<i class="bi bi-receipt"></i> <b>F2</b> Facturar e imprimir
 					</button>
-					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(5)">
+					<button type="button" :disabled="disabled" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(5)">
 						<!-- Credito -->
 						<i class="bi bi-wallet2"></i> Pasar a crédito
 					</button>
-					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(1)">
+					<button type="button" :disabled="disabled" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(1)">
 						<i class="bi bi-clock-fill"></i> Suspender
 					</button>
 
-					<button type="button" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(3)">
+					<button type="button" :disabled="disabled" class="btn btn-outline-primary btn-block" @click="createOrUpdateOrder(3)">
 						<i class="bi bi-list-check"></i> Cotizar
 					</button>
 					<router-link to="/orders" type="button" class="btn btn-outline-secondary btn-block" v-if="order_id != 0">
@@ -256,7 +256,7 @@ export default {
 				client: ""
 			},
 			productsOrderList: [],
-
+			disabled: false,
 			order: {
 				id_client: 1,
 				client: "Sin Cliente",
@@ -330,11 +330,6 @@ export default {
 			var value = (
 				((cash) + (nequi) + (card) + (others)) -
 				(this.total_tax_inc));
-			console.log(cash)
-			console.log(card)
-
-			console.log(nequi)
-
 			return value;
 		}
 	},
@@ -443,6 +438,7 @@ export default {
 		},
 
 		createOrUpdateOrder(state_order) {
+			this.disabled = true;
 			this.order.state = state_order;
 			this.order.box_id = this.$root.box;
 			this.order.total_cost_price_tax_inc = this.total_cost_price_tax_inc;
@@ -455,12 +451,11 @@ export default {
 			if (this.productsOrderList.length > 0) {
 				this.order.productsOrder = this.productsOrderList;
 				if (this.order_id != 0 && this.order_id != null) {
+					console.log('roder',this.order);
 					axios
 						.put(`api/orders/${this.order_id}`, this.order, this.$root.config)
 						.then(
 							() => (
-								this.$router.push({ name: "main", params: { order_id: 0 } }),
-								this.$router.go(0),
 								Swal.fire({
 									icon: 'success',
 									title: 'Excelente',
@@ -469,6 +464,7 @@ export default {
 							)
 						).catch(function (error) {
 							// handle error
+							console.log('error',error)
 							if (error) {
 								Swal.fire({
 									icon: 'error',
@@ -476,7 +472,12 @@ export default {
 									text: 'Hubo un error al guardar los datos',
 								})
 							}
-						});
+						})
+						.finally(
+							this.$router.push({ name: "main", params: { order_id: 0 } }),
+							this.$router.go(0),
+							this.disabled = false
+						);
 				} else {
 					if (this.order.box_id > 0) {
 						axios
@@ -498,9 +499,10 @@ export default {
 									})
 								}
 							})
-							.finally(setTimeout(() => {
-								this.$router.go(0)
-							}, 5000));
+							.finally(
+								this.$router.go(0),
+								this.disabled = false
+							);
 					} else {
 						alert("Selecciona una caja");
 					}

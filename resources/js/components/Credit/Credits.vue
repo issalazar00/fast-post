@@ -2,14 +2,10 @@
 	<div class="w-100">
 		<header class="page-header justify-content-between row px-4">
 			<h3>Créditos</h3>
-			<router-link
-				class="btn btn-primary"
-				:to="{
-					name: 'create-edit-credit',
-					params: { order_id: 0 }
-				}"
-				v-if="$root.validatePermission('credit.store')"
-			>
+			<router-link class="btn btn-primary" :to="{
+				name: 'create-edit-credit',
+				params: { order_id: 0 }
+			}" v-if="$root.validatePermission('credit.store')">
 				Nuevo crédito
 			</router-link>
 		</header>
@@ -20,50 +16,24 @@
 					<h6 class="w-100">Buscar...</h6>
 					<div class="form-group col-3">
 						<label for="nro_factura">Nro Factura</label>
-						<input
-							type="text"
-							name="nro_factura"
-							id="nro_factura"
-							class="form-control"
-							placeholder="Nro Factura"
-							v-model="filter.no_invoice"
-						/>
+						<input type="text" name="nro_factura" id="nro_factura" class="form-control" placeholder="Nro Factura"
+							v-model="filter.no_invoice" />
 					</div>
 					<div class="form-group col-3">
 						<label for="name_client">Cliente</label>
-						<input
-							type="text"
-							name="name_client"
-							id="name_client"
-							class="form-control"
-							placeholder="Cliente"
-							v-model="filter.client"
-						/>
+						<input type="text" name="name_client" id="name_client" class="form-control" placeholder="Cliente"
+							v-model="filter.client" />
 					</div>
 					<div class="form-group col-md-3">
 						<label for="from_date">Desde</label>
-						<input
-							type="date"
-							class="form-control"
-							id="from_date"
-							v-model="filter.from"
-						/>
+						<input type="date" class="form-control" id="from_date" v-model="filter.from" />
 					</div>
 					<div class="form-group col-md-3">
 						<label for="to_date">Hasta</label>
-						<input
-							type="date"
-							class="form-control"
-							id="to_date"
-							v-model="filter.to"
-						/>
+						<input type="date" class="form-control" id="to_date" v-model="filter.to" />
 					</div>
 					<div class="form-group offset-8 col-md-1">
-						<button
-							class="btn btn-success btn-block"
-							data-toggle="modal"
-							data-target="#modalPaymentCredit"
-						>
+						<button class="btn btn-success btn-block" data-toggle="modal" data-target="#modalPaymentCredit">
 							Abonar
 						</button>
 					</div>
@@ -109,13 +79,10 @@
 								{{ statusOrders[o.state] }}
 							</td>
 							<td>
-								<router-link
-									class="btn"
-									:to="{
-										name: 'details-credit',
-										params: { order_id: o.id }
-									}"
-								>
+								<router-link class="btn" :to="{
+									name: 'details-credit',
+									params: { order_id: o.id }
+								}">
 									<i class="bi bi-eye"></i>
 								</router-link>
 							</td>
@@ -127,15 +94,12 @@
 									<i class="bi bi-printer"></i>
 								</button>
 							</td>
-							
+
 							<td v-if="$root.validatePermission('credit.update')">
-								<router-link
-									class="btn"
-									:to="{
-										name: 'create-edit-credit',
-										params: { order_id: o.id }
-									}"
-								>
+								<router-link class="btn" :to="{
+									name: 'create-edit-credit',
+									params: { order_id: o.id }
+								}">
 									<i class="bi bi-pencil-square"></i>
 								</router-link>
 							</td>
@@ -148,12 +112,7 @@
 					</tbody>
 				</table>
 			</div>
-			<pagination
-				:align="'center'"
-				:data="creditList"
-				:limit="8"
-				@pagination-change-page="getCredits"
-			>
+			<pagination :align="'center'" :data="creditList" :limit="8" @pagination-change-page="getCredits">
 				<span slot="prev-nav"><i class="bi bi-chevron-double-left"></i></span>
 				<span slot="next-nav"><i class="bi bi-chevron-double-right"></i></span>
 			</pagination>
@@ -199,14 +158,31 @@ export default {
 					`api/orders?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}&from=${me.filter.from}&to=${me.filter.to}&status=${me.filter.status}`,
 					this.$root.config
 				)
-				.then(function(response) {
+				.then(function (response) {
 					me.creditList = response.data.orders;
 				});
 		},
 		deleteCredit(order_id) {
 			axios
 				.delete(`api/orders/${order_id}`, this.$root.config)
-				.then(() => this.getCredits(1));
+				.then(() => {
+					this.getCredits(1)
+					Swal.fire({
+						icon: 'success',
+						title: 'Excelente',
+						text: 'Los datos se han eliminado correctamente',
+					})
+				})
+				.catch(function (error) {
+					// handle error
+					if (error) {
+						Swal.fire({
+							icon: 'error',
+							title: 'Oops...',
+							text: 'Hubo un error al eliminar la orden',
+						})
+					}
+				});
 		},
 		generatePdf(id) {
 			this.load_pdf = true;

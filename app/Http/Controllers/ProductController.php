@@ -272,7 +272,7 @@ class ProductController extends Controller
 	* @param mixed $quantity
 	*/
 
-	public function searchKitById($product_parent_id, $quantity, $type)
+	public function searchKitById($type, $product_parent_id, $quantity)
 	{
 		$products = KitProduct::where('product_parent_id', $product_parent_id)->get();
 		foreach ($products as $product) {

@@ -377,7 +377,7 @@ export default {
 			if (!result) {
 				// Sino, lo añade al array
 				me.productsOrderList.push({
-					product_id: new_product.id,
+					id: new_product.id,
 					barcode: new_product.barcode,
 					discount_percentage: 0,
 					discount_price: 0,

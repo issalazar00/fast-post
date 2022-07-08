@@ -2,14 +2,10 @@
 	<div class="w-100">
 		<header class="page-header justify-content-between row px-4">
 			<h3>Ordenes</h3>
-			<router-link
-				class="btn btn-primary"
-				:to="{
-					name: 'create-edit-order',
-					params: { order_id: 0 }
-				}"
-				v-if="$root.validatePermission('order.store')"
-			>
+			<router-link class="btn btn-primary" :to="{
+				name: 'create-edit-order',
+				params: { order_id: 0 }
+			}" v-if="$root.validatePermission('order.store')">
 				Nueva orden
 			</router-link>
 		</header>
@@ -20,43 +16,21 @@
 					<h6 class="w-100">Buscar...</h6>
 					<div class="form-group col-3">
 						<label for="nro_factura">Nro Factura</label>
-						<input
-							type="text"
-							name="nro_factura"
-							id="nro_factura"
-							class="form-control"
-							placeholder="Nro Factura"
-							v-model="filter.no_invoice"
-						/>
+						<input type="text" name="nro_factura" id="nro_factura" class="form-control" placeholder="Nro Factura"
+							v-model="filter.no_invoice" />
 					</div>
 					<div class="form-group col-3">
 						<label for="name_client">Cliente</label>
-						<input
-							type="text"
-							name="name_client"
-							id="name_client"
-							class="form-control"
-							placeholder="Cliente"
-							v-model="filter.client"
-						/>
+						<input type="text" name="name_client" id="name_client" class="form-control" placeholder="Cliente"
+							v-model="filter.client" />
 					</div>
 					<div class="form-group col-md-3">
 						<label for="from_date">Desde</label>
-						<input
-							type="date"
-							class="form-control"
-							id="from_date"
-							v-model="filter.from"
-						/>
+						<input type="date" class="form-control" id="from_date" v-model="filter.from" />
 					</div>
 					<div class="form-group col-md-3">
 						<label for="to_date">Hasta</label>
-						<input
-							type="date"
-							class="form-control"
-							id="to_date"
-							v-model="filter.to"
-						/>
+						<input type="date" class="form-control" id="to_date" v-model="filter.to" />
 					</div>
 					<div class="form-group offset-9 col-md-3">
 						<button class="btn btn-success btn-block" @click="getOrders(1)">
@@ -91,15 +65,12 @@
 								{{ statusOrders[o.state] }}
 							</td>
 							<td>
-								<router-link
-									class="btn"
-									:to="{ name: 'details-order', params: { order_id: o.id } }"
-								>
+								<router-link class="btn" :to="{ name: 'details-order', params: { order_id: o.id } }">
 									<i class="bi bi-eye"></i>
 								</router-link>
 							</td>
 							<td>
-								<button class="btn" v-if="o.state == 5 || o.state ==2" @click="printTicket(o.id)">
+								<button class="btn" v-if="o.state == 5 || o.state == 2" @click="printTicket(o.id)">
 									<i class="bi bi-receipt"></i>
 								</button>
 								<button class="btn" v-else disabled>
@@ -112,13 +83,10 @@
 								</button>
 							</td>
 							<td v-if="$root.validatePermission('order.update')">
-								<router-link
-									class="btn"
-									:to="{
-										name: 'create-edit-order',
-										params: { order_id: o.id }
-									}"
-								>
+								<router-link class="btn" :to="{
+									name: 'create-edit-order',
+									params: { order_id: o.id }
+								}">
 									<i class="bi bi-pencil-square"></i>
 								</router-link>
 							</td>
@@ -131,12 +99,7 @@
 					</tbody>
 				</table>
 			</div>
-			<pagination
-				:align="'center'"
-				:data="OrderList"
-				:limit="8"
-				@pagination-change-page="getOrders"
-			>
+			<pagination :align="'center'" :data="OrderList" :limit="8" @pagination-change-page="getOrders">
 				<span slot="prev-nav"><i class="bi bi-chevron-double-left"></i></span>
 				<span slot="next-nav"><i class="bi bi-chevron-double-right"></i></span>
 			</pagination>
@@ -181,14 +144,31 @@ export default {
 					`api/orders?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}&from=${me.filter.from}&to=${me.filter.to}`,
 					this.$root.config
 				)
-				.then(function(response) {
+				.then(function (response) {
 					me.OrderList = response.data.orders;
 				});
 		},
 		deleteOrder(order_id) {
 			axios
 				.delete(`api/orders/${order_id}`, this.$root.config)
-				.then(() => this.getOrders(1));
+				.then(() => {
+					this.getOrders(1)
+					Swal.fire({
+						icon: 'success',
+						title: 'Excelente',
+						text: 'Los datos se han eliminado correctamente',
+					})
+				})
+				.catch(function (error) {
+					// handle error
+					if (error) {
+						Swal.fire({
+							icon: 'error',
+							title: 'Oops...',
+							text: 'Hubo un error al eliminar la orden',
+						})
+					}
+				})
 		},
 		generatePdf(id) {
 			this.load_pdf = true;
