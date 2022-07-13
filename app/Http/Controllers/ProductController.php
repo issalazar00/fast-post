@@ -364,7 +364,14 @@ class ProductController extends Controller
 		return $products;
 	}
 
-	public function updatePriceById($purchased_product)
+	/*
+	* @param integer $type
+	* 1 : resta a stock
+	* 2: suma a stock
+	* @param mixed $barcode
+	*/
+
+	public function updatePriceById($type, $purchased_product)
 	{
 		$product = Product::find($purchased_product->product_id);
 		$percentage = $product->tax->percentage / 100;
@@ -374,7 +381,11 @@ class ProductController extends Controller
 		$product->sale_price_tax_exc = ($purchased_product->sale_price_tax_inc) /	(1 + $percentage);
 		$product->sale_price_tax_inc = $purchased_product->sale_price_tax_inc;
 		$product->gain = 	$product->sale_price_tax_exc - $purchased_product->sale_price_tax_inc;
-		$product->quantity += $purchased_product->quantity;
+		if ($type == 2) {
+			$product->quantity += $purchased_product->quantity;
+		} else {
+			$product->quantity -= $purchased_product->quantity;
+		}
 		$product->save();
 	}
 }
