@@ -501,8 +501,26 @@ export default {
 						)
 						.then(
 							() => (
-								this.$router.push("/billings")
+								Swal.fire({
+									icon: 'success',
+									title: 'Excelente',
+									text: 'Los datos se han guardado correctamente',
+								})
 							)
+						)
+						.catch(function (error) {
+							// handle error
+							console.log('error',error)
+							if (error) {
+								Swal.fire({
+									icon: 'error',
+									title: 'Oops...',
+									text: 'Hubo un error al guardar los datos',
+								})
+							}
+						})
+						.finally(
+							this.$router.push("/billings")
 						);
 				} else {
 					axios

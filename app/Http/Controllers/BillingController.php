@@ -107,8 +107,8 @@ class BillingController extends Controller
 			$new_detail = $new_detail->store($details_billing, $billing->id);
 
 			$productController = new ProductController;
-			$update_stock = $productController->updateStockByBarcode(2, $details_billing['barcode'], $details_billing['quantity']);
-			$update_price_cost = $productController->updatePriceById($details_billing['product_id'], $details_billing['price_tax_inc'],$details_billing['quantity'] );
+			// $productController->updateStockByBarcode(2, $details_billing['barcode'], $details_billing['quantity']);
+			$productController->updatePriceById(2, (object) $details_billing);
 		}
 	}
 
