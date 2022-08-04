@@ -339,5 +339,12 @@ class UserController extends Controller
         
     }
 
-    
+    public function listUsers()
+    {
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'users' => User::get()
+        ]);
+    }
 }

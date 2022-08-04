@@ -32,6 +32,10 @@
 						<label for="to_date">Hasta</label>
 						<input type="date" class="form-control" id="to_date" v-model="filter.to" />
 					</div>
+					<div class="form-group col-3" v-if="$root.validatePermission('order.update')">
+						<label for="category">Usuario</label>
+						<v-select :options="userList" label="name" :reduce="(user) => user.id" v-model="filter.user_id" />
+					</div>
 					<div class="form-group offset-9 col-md-3">
 						<button class="btn btn-success btn-block" @click="getOrders(1)">
 							Buscar
@@ -50,6 +54,7 @@
 							<th>Ver</th>
 							<th>Ticket</th>
 							<th>Imprimir</th>
+							<th>Responsable</th>
 							<th v-if="$root.validatePermission('order.update')">Editar</th>
 							<th v-if="$root.validatePermission('order.delete')">Eliminar</th>
 						</tr>
@@ -90,6 +95,9 @@
 									<i class="bi bi-pencil-square"></i>
 								</router-link>
 							</td>
+							<td>
+								{{ o.user.name }}
+							</td>
 							<td v-if="$root.validatePermission('order.delete')">
 								<button class="btn" @click="deleteOrder(o.id)">
 									<i class="bi bi-trash"></i>
@@ -115,11 +123,13 @@ export default {
 		return {
 			load_pdf: false,
 			OrderList: {},
+			userList: [],
 			filter: {
 				client: "",
 				no_invoice: "",
 				from: "",
-				to: ""
+				to: "",
+				user_id: ""
 			},
 			statusOrders: {
 				0: "Desechada",
@@ -134,15 +144,26 @@ export default {
 	},
 	created() {
 		this.$root.validateToken();
+		this.listUsers();
 		this.getOrders(1);
 	},
 	methods: {
 		getOrders(page = 1) {
 			let me = this;
+
+			let data = {
+				'page': page,
+				'client': me.filter.client,
+				'no_invoice': me.filter.no_invoice,
+				'from': me.filter.from,
+				'to': me.filter.to,
+				'user_id': me.filter.user_id
+			}
+
+
 			axios
 				.get(
-					`api/orders?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}&from=${me.filter.from}&to=${me.filter.to}`,
-					this.$root.config
+					`api/orders`, { params: data, headers: this.$root.config.headers }
 				)
 				.then(function (response) {
 					me.OrderList = response.data.orders;
@@ -189,7 +210,15 @@ export default {
 		},
 		printTicket(order_id) {
 			axios.get(`api/print-order/${order_id}`, this.$root.config);
-		}
+		},
+		listUsers() {
+			let me = this;
+			axios
+				.get(`api/users/user-list`, this.$root.config)
+				.then(function (response) {
+					me.userList = response.data.users;
+				});
+		},
 	}
 };
 </script>

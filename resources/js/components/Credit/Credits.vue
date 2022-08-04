@@ -58,6 +58,7 @@
 							<th>Ver</th>
 							<th>Ticket</th>
 							<th>Imprimir</th>
+							<th>Responsable</th>
 							<th v-if="$root.validatePermission('credit.update')">Editar</th>
 							<th v-if="$root.validatePermission('credit.delete')">
 								Eliminar
@@ -103,6 +104,7 @@
 									<i class="bi bi-pencil-square"></i>
 								</router-link>
 							</td>
+							<td>{{o.user.name}}</td>
 							<td v-if="$root.validatePermission('credit.delete')">
 								<button class="btn" @click="deleteCredit(o.id)">
 									<i class="bi bi-trash"></i>

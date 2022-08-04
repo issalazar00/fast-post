@@ -16,12 +16,10 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BoxController;
-use App\Http\Controllers\CreditController;
 use App\Http\Controllers\DetailBillingController;
 use App\Http\Controllers\PrintOrderController;
 use App\Http\Controllers\ReportController;
 use App\Models\Configuration;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,6 +38,7 @@ Route::post('/login', [UserController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
 
 	Route::put('/users/changePassword',  [UserController::class, 'changePassword']);
+	Route::get('/users/user-list', [UserController::class, 'listUsers'])->middleware('can:user.index');
 	Route::resource('/users', UserController::class);
 	Route::post('/users/{user}/activate',  [UserController::class, 'activate']);
 	Route::post('/register', [UserController::class, 'register']);

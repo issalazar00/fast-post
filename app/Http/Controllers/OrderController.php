@@ -36,7 +36,11 @@ class OrderController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		$user_id =  Auth::user()->id;
+		if ($request->user_id) {
+			$user_id =  $request->user_id;
+		} else {
+			$user_id =  Auth::user()->id;
+		}
 
 		$orders = Order::whereHas('client', function (Builder $query) use ($request) {
 			if ($request->client != '') {
@@ -73,6 +77,7 @@ class OrderController extends Controller
 
 		$orders = $orders
 			->where('user_id', $user_id)
+			->with('user:id,name')
 			->orderByDesc('id')
 			->paginate(10);
 
