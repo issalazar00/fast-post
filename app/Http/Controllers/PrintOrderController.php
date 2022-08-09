@@ -18,6 +18,9 @@ class PrintOrderController extends Controller
 	{
 		$configuration = new Configuration();
 		$company =  $configuration->select()->first();
+		if (!$company->printer || $company->printer == '') {
+			throw new Exception("Error, no hay impresoras configuradas", 400);
+		}
 		$connector = new WindowsPrintConnector($company->printer);
 		$printer = new Printer($connector);
 		$printer->initialize();
@@ -80,7 +83,7 @@ class PrintOrderController extends Controller
 			if (isset($order->bill_number)) {
 				$printer->text($order->bill_number . "\n");        // 
 			} else {
-				$printer->text($order->no_invoice . "\n");        // 
+				$printer->text($order->id . "\n");        // 
 			}
 			$printer->text("\n-----------------------------------------" . "\n");
 			$printer->text("Cliente: ");
@@ -133,12 +136,12 @@ class PrintOrderController extends Controller
 			isset($payment_methods->nequi)  && $payment_methods->nequi  > 0 ?		$printer->text(sprintf('%-25s %+15.15s', 'Nequi', number_format($payment_methods->nequi, 2, '.', ',') . "\n")) : '';
 			isset($payment_methods->others)  && $payment_methods->others > 0 ?		$printer->text(sprintf('%-25s %+15.15s', 'Otros', number_format($payment_methods->others, 2, '.', ',') . "\n")) : '';
 			$printer->setEmphasis(true);
-			isset($payment_methods->change)  ?		$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($payment_methods->change, 2, '.', ',') . "\n")) : 0;
+			isset($payment_methods->change)  ?	$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($payment_methods->change, 2, '.', ',') . "\n")) : 0;
 			$printer->setEmphasis(false);
 
 			if ($change != null) {
 				$printer->text("\n");
-				$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($change, 2, '.', ',')));
+				$change > 0 ?	$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($change, 2, '.', ','))) : $printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format(0, 2, '.', ',')));
 			}
 			$printer->text("\n");
 

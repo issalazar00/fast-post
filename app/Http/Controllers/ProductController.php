@@ -28,6 +28,9 @@ class ProductController extends Controller
 	public function index(Request $request)
 	{
 		$products = Product::select()
+			// ->selectRaw("DATE_ADD(`expiration_date`, INTERVAL 3 MONTH) as alert_expiration_date")
+			->selectRaw("DATE_ADD(NOW(), INTERVAL 3 MONTH) as alert_expiration_date")
+
 			->where('state', 1);
 
 		if ($request->product != '') {
@@ -46,6 +49,16 @@ class ProductController extends Controller
 		if ($request->quantity_sign) {
 			$products = $products
 				->where('quantity', "$request->quantity_sign", "$request->quantity");
+		}
+
+		if ($request->expiration_date_from != '' && $request->expiration_date_from  != null && $request->expiration_date_from  != 0) {
+			$products = $products
+				->where('expiration_date', '>=', "$request->expiration_date_from");
+		}
+
+		if ($request->expiration_date_to != '' && $request->expiration_date_to  != null && $request->expiration_date_to  != 0) {
+			$products = $products
+				->where('expiration_date', '<=', "$request->expiration_date_to");
 		}
 
 		$products = $products->orderBy('product', 'asc')->paginate(10);
@@ -99,7 +112,8 @@ class ProductController extends Controller
 			'stock' => 'boolean',
 			'quantity' => 'nullable|numeric',
 			'minimum' => 'nullable|numeric',
-			'maximum' => 'nullable|numeric'
+			'maximum' => 'nullable|numeric',
+			'expiration_date' => 'nullable|date'
 		]);
 
 		if (!$validate->fails()) {
@@ -121,6 +135,8 @@ class ProductController extends Controller
 			$product->category_id = $new_product['category_id'];
 			$product->tax_id = $new_product['tax_id'];
 			$product->brand_id = $new_product['brand_id'];
+			
+			$product->expiration_date = $new_product['expiration_date'];
 			$product->save();
 
 			if ($new_product['type'] == 3) {
@@ -228,6 +244,7 @@ class ProductController extends Controller
 			$product->category_id = $p['category_id'];
 			$product->tax_id = $p['tax_id'];
 			$product->brand_id = $p['brand_id'];
+			$product->expiration_date = $p['expiration_date'];
 			$product->save();
 
 			if ($p['type'] == 3) {

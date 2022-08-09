@@ -203,9 +203,9 @@ class OrderController extends Controller
 
 			$product_controller = new ProductController;
 			if ($order->state == 2 ||   $order->state == 5) {
-				$product = Product::find($details_order['id']);
+				$product = Product::find($details_order['product_id']);
 				if ($product['type'] == 3) {
-					$product_controller->searchKitById(1, $details_order['id'], $details_order['quantity'], 1);
+					$product_controller->searchKitById(1, $details_order['product_id'], $details_order['quantity'], 1);
 				} else {
 					$product_controller->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity']);
 				}
@@ -215,7 +215,7 @@ class OrderController extends Controller
 		if ($request->state == 4 || $request->state == 6) {
 			$print->printTicket($order->id, $request->cash, $request->change);
 		} else {
-			$print->openBox();
+			// $print->openBox();
 		}
 
 		return $order->id;
@@ -299,7 +299,9 @@ class OrderController extends Controller
 		foreach ($request->productsOrder as $details_order) {
 
 			DetailOrder::updateOrCreate(
-				['order_id' => $id, 'product_id' => $details_order['id']],
+				[
+					'order_id' => $id, 'product_id' => $details_order['product_id'], 'barcode' => $details_order['barcode']
+				],
 				[
 					'discount_percentage' => $details_order['discount_percentage'],
 					'discount_price' => $details_order['discount_price'],
@@ -309,8 +311,7 @@ class OrderController extends Controller
 					'cost_price_tax_inc' => $details_order['cost_price_tax_inc'],
 					'cost_price_tax_inc_total' => $details_order['cost_price_tax_inc_total'],
 					'quantity' => $details_order['quantity'],
-					'barcode' => $details_order['barcode'],
-					'product' => $details_order['product'],
+					'product' => $details_order['product']
 				]
 			);
 		}
