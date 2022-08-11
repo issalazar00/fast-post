@@ -35,8 +35,8 @@ class ProductController extends Controller
 
 		if ($request->product != '') {
 			$products = $products
-				->where('barcode', 'LIKE', "%$request->product%")
-				->orWhere('product', 'LIKE', "%$request->product%");
+				->where('barcode', 'LIKE', "$request->product")
+				->orWhere('product', 'LIKE', "%$request->product");
 		}
 		if ($request->category_id != '' && $request->category_id  != null && $request->category_id  != 0) {
 			$products = $products
@@ -135,7 +135,7 @@ class ProductController extends Controller
 			$product->category_id = $new_product['category_id'];
 			$product->tax_id = $new_product['tax_id'];
 			$product->brand_id = $new_product['brand_id'];
-			
+
 			$product->expiration_date = $new_product['expiration_date'];
 			$product->save();
 
