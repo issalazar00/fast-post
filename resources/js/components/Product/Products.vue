@@ -34,14 +34,8 @@
           </div>
         </div>
       </div>
-      <moon-loader
-        :loading="isLoading"
-        class="m-auto"
-        :color="'#032F6C'"
-        :size="100"
-      />
 
-      <div class="card-body" v-if="!isLoading">
+      <div class="card-body">
         <div class="form-row">
           <div class="form-group col-3">
             <label for="product">Código o nombre de producto</label>
@@ -150,8 +144,15 @@
             Crear Producto
           </button>
         </div>
+        
+        <moon-loader
+          :loading="isLoading"
+          class="m-auto"
+          :color="'#032F6C'"
+          :size="100"
+        />
 
-        <section class="mt-4">
+        <section class="mt-4" v-if="!isLoading">
           <table class="table table-sm table-bordered table-responsive-sm">
             <thead class="thead-primary">
               <tr>
