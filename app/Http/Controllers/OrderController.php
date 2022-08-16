@@ -107,58 +107,8 @@ class OrderController extends Controller
 	public function store(Request $request)
 	{
 		$user_id =  Auth::user()->id;
-
-		$latestOrder = Order::where('box_id', $request->box_id)->where('state', '<>', '3')->orderByDesc('id')->first();
 		$box = Box::find($request->box_id);
-		$dateValidate = Carbon::now()->toDateString();
-
-		if ($request->state != 3) {
-			if ($latestOrder) {
-
-				$lastConsecutive = str_replace($box->prefix, '', $latestOrder->bill_number);
-				$lastConsecutive = intval($lastConsecutive);
-
-
-				$consecutiveBox = $box->consecutiveBox()->where([
-					['from_nro', '<=', $lastConsecutive],
-					['until_nro', '>=', $lastConsecutive]
-				])
-					->where('until_date', '>=', $dateValidate)
-					->orderBy('from_nro')
-					->first();
-
-				if ($consecutiveBox && $consecutiveBox->until_nro > $lastConsecutive) {
-					$bill_number = $box->prefix . ($lastConsecutive + 1);
-				} else {
-					$continue = $box->consecutiveBox()
-						->where('until_nro', '>', $lastConsecutive)
-						->where('from_date', '<=', $dateValidate)
-						->where('until_date', '>=', $dateValidate)
-						->where('id', '!=', isset($consecutiveBox->id) ? $consecutiveBox->id : null)
-						->orderBy('from_nro')
-						->first();
-
-					if (!$continue) {
-						return abort(500);
-					}
-
-					$bill_number = $box->prefix . $continue->from_nro;
-				}
-			} else {
-				$continue = $box->consecutiveBox()
-					->where('from_date', '<=', $dateValidate)
-					->where('until_date', '>=', $dateValidate)
-					->orderBy('from_nro')
-					->first();
-
-				if (!$continue) {
-					return abort(500);
-				}
-				$bill_number = $box->prefix . $continue->from_nro;
-			}
-		} else {
-			$bill_number = strtoupper(Str::random(10));
-		}
+		$bill_number = $this->generateBillNumber($request);
 
 		$order = new Order;
 		$order->client_id = $request->id_client;
@@ -254,6 +204,8 @@ class OrderController extends Controller
 	public function update(Request $request, $id)
 	{
 		$user_id =  Auth::user()->id;
+		$box = Box::find($request->box_id);
+		$bill_number = $this->generateBillNumber($request);
 
 		$order = Order::find($id);
 		$order->client_id = $request->id_client;
@@ -263,6 +215,9 @@ class OrderController extends Controller
 		$order->total_cost_price_tax_inc = $request->total_cost_price_tax_inc;
 		$order->total_discount = $request->total_discount;
 		$order->payment_methods = ($request->payment_methods);
+		if($order->state == 3) {
+			$order->bill_number = $bill_number;
+		}
 
 		if ($request->state == 4) {
 			$order->state = 2;
@@ -344,6 +299,63 @@ class OrderController extends Controller
 			}
 		}
 		$order->delete();
+	}
+
+	public function generateBillNumber(Request $request)
+	{
+		$latestOrder = Order::where('box_id', $request->box_id)->where('state', '<>', '3')->orderByDesc('id')->first();
+		$box = Box::find($request->box_id);
+		$dateValidate = Carbon::now()->toDateString();
+
+		if ($request->state != 3) {
+			if ($latestOrder) {
+
+				$lastConsecutive = str_replace($box->prefix, '', $latestOrder->bill_number);
+				$lastConsecutive = intval($lastConsecutive);
+
+
+				$consecutiveBox = $box->consecutiveBox()->where([
+					['from_nro', '<=', $lastConsecutive],
+					['until_nro', '>=', $lastConsecutive]
+				])
+					->where('until_date', '>=', $dateValidate)
+					->orderBy('from_nro')
+					->first();
+
+				if ($consecutiveBox && $consecutiveBox->until_nro > $lastConsecutive) {
+					$bill_number = $box->prefix . ($lastConsecutive + 1);
+				} else {
+					$continue = $box->consecutiveBox()
+						->where('until_nro', '>', $lastConsecutive)
+						->where('from_date', '<=', $dateValidate)
+						->where('until_date', '>=', $dateValidate)
+						->where('id', '!=', isset($consecutiveBox->id) ? $consecutiveBox->id : null)
+						->orderBy('from_nro')
+						->first();
+
+					if (!$continue) {
+						return abort(500);
+					}
+
+					$bill_number = $box->prefix . $continue->from_nro;
+				}
+			} else {
+				$continue = $box->consecutiveBox()
+					->where('from_date', '<=', $dateValidate)
+					->where('until_date', '>=', $dateValidate)
+					->orderBy('from_nro')
+					->first();
+
+				if (!$continue) {
+					return abort(500);
+				}
+				$bill_number = $box->prefix . $continue->from_nro;
+			}
+		} else {
+			$bill_number = strtoupper(Str::random(10));
+		}
+
+		return $bill_number;
 	}
 
 	public function generatePdf(Order $order)

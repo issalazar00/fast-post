@@ -95,13 +95,13 @@
                       <input class="form-check-input" type="checkbox" value="1" id="active"
                         v-model="formSupplier.active" />
                       <label class="form-check-label" for="active">
-                        Cliente está activo?
+                        ¿Proveedor está activo?
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="1" id="impuesto_incluido"
+                      <input class="form-check-input" type="checkbox" value="0" id="tax"
                         v-model="formSupplier.tax" />
-                      <label class="form-check-label" for="impuesto_incluido">
+                      <label class="form-check-label" for="tax">
                         Impuesto Incluido
                       </label>
                     </div>
@@ -140,8 +140,8 @@ export default {
         municipality_id: "",
         type_document: "",
         document: "",
-        active: "",
-        tax: "",
+        active: "1",
+        tax: false,
       },
       departments: [],
       municipalities: []

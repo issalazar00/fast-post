@@ -643,11 +643,7 @@ export default {
                 });
               }
             })
-            .finally(
-              this.$router.push({ name: "main", params: { order_id: 0 } }),
-              this.$router.go(0),
-              (this.disabled = false)
-            );
+            .finally(this.$router.go(0), (this.disabled = false));
         } else {
           if (this.order.box_id > 0) {
             axios
@@ -675,7 +671,7 @@ export default {
           }
         }
       } else {
-				this.disabled = false
+        this.disabled = false;
         Swal.fire({
           icon: "error",
           title: "Oops...",
