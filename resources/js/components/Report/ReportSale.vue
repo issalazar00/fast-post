@@ -25,7 +25,7 @@
 					<tbody v-if="List.length > 0">
 						<tr v-for="(l, index) in List" :key="index">
 							<td>
-								{{ l.payment_date }}
+								{{ l.date_paid }}
 							</td>
 							<td>
 								{{ l.number_of_orders }}

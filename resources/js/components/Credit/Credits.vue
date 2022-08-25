@@ -104,7 +104,7 @@
 									<i class="bi bi-pencil-square"></i>
 								</router-link>
 							</td>
-							<td>{{o.user.name}}</td>
+							<td>{{ o.user.name }}</td>
 							<td v-if="$root.validatePermission('credit.delete')">
 								<button class="btn" @click="deleteCredit(o.id)">
 									<i class="bi bi-trash"></i>
@@ -155,10 +155,18 @@ export default {
 	methods: {
 		getCredits(page = 1) {
 			let me = this;
+			let data = {
+				'page': page,
+				'client': me.filter.client,
+				'no_invoice': me.filter.no_invoice,
+				'from': me.filter.from,
+				'to': me.filter.to,
+				'status': me.filter.status
+			}
 			axios
 				.get(
-					`api/orders?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}&from=${me.filter.from}&to=${me.filter.to}&status=${me.filter.status}`,
-					this.$root.config
+					`api/orders`,
+					 { params: data, headers: this.$root.config.headers }
 				)
 				.then(function (response) {
 					me.creditList = response.data.orders;

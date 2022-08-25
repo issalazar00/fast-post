@@ -433,7 +433,8 @@ export default {
         total_discount: 0.0,
         total_cost_price_tax_inc: 0.0,
         productsOrder: [],
-        payment_date: new Date().toISOString().slice(0, 10),
+        payment_date: '',
+        // payment_date: new Date().toISOString().slice(0, 10),
         payment_methods: {
           cash: 0.0,
           card: 0.0,

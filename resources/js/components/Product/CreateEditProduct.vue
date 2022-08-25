@@ -65,8 +65,7 @@
                 <div class="form-group col-5">
                   <label for="expiration_date"
                     >Fecha de vencimiento
-                    <span class="text-danger">(*)</span></label
-                  >
+                  </label>
                   <input
                     type="date"
                     step="any"
@@ -74,7 +73,6 @@
                     id="expiration_date"
                     v-model="formProduct.expiration_date"
                     placeholder="Código de barras"
-                    required
                   />
                   <span class="expiration_date">{{
                     formProduct.expiration_date

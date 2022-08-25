@@ -36,11 +36,11 @@ class OrderController extends Controller
 	 */
 	public function index(Request $request)
 	{
-		if ($request->user_id) {
-			$user_id =  $request->user_id;
-		} else {
-			$user_id =  Auth::user()->id;
-		}
+		$user_id =  $request->user_id ? $request->user_id  :  Auth::user()->id;
+		$today = date('Y-m-d');
+		$from = $request->from;
+		$to = $request->to;
+		$status = $request->status ?? $request->status;
 
 		$orders = Order::whereHas('client', function (Builder $query) use ($request) {
 			if ($request->client != '') {
@@ -50,10 +50,6 @@ class OrderController extends Controller
 		if ($request->no_invoice != '') {
 			$orders = $orders->where('no_invoice', 'like', "%$request->no_invoice");
 		}
-		$today = date('Y-m-d');
-		$from = $request->from;
-		$to = $request->to;
-		$status = $request->status ?? $request->status;
 
 		if ($from != '') {
 			$orders = $orders
@@ -81,10 +77,13 @@ class OrderController extends Controller
 			->orderByDesc('id')
 			->paginate(10);
 
+		$totalOrders = $this->getTotalOrders($request);
+
 		return response()->json([
 			'status' => 'success',
 			'code' => 200,
 			'orders' => $orders,
+			'totalOrders' => $totalOrders->orders
 		]);
 	}
 
@@ -215,13 +214,13 @@ class OrderController extends Controller
 		$order->total_cost_price_tax_inc = $request->total_cost_price_tax_inc;
 		$order->total_discount = $request->total_discount;
 		$order->payment_methods = ($request->payment_methods);
-		if($order->state == 3) {
+		if ($order->state == 3) {
 			$order->bill_number = $bill_number;
 		}
 
 		if ($request->state == 4) {
 			$order->state = 2;
-			$order->payment_date = date('Y-m-d h:i:s');
+			$order->payment_date = $request->payment_date  ? $request->payment_date : date('Y-m-d h:i:s');
 		}
 		if ($request->state == 6) {
 			$order->state = 5;
@@ -229,7 +228,7 @@ class OrderController extends Controller
 		if ($request->state != 4 && $request->state != 6) {
 			$order->state = $request->state;
 			if ($request->state == 2) {
-				$order->payment_date = date('Y-m-d h:i:s');
+				$order->payment_date = $request->payment_date  ? $request->payment_date : date('Y-m-d h:i:s');
 			}
 		}
 
@@ -299,6 +298,54 @@ class OrderController extends Controller
 			}
 		}
 		$order->delete();
+	}
+
+	public function getTotalOrders(Request $request)
+	{
+		$user_id =  $request->user_id ? $request->user_id  :  Auth::user()->id;
+		$today = date('Y-m-d');
+		$from = $request->from;
+		$to = $request->to;
+		$status = $request->status ?? $request->status;
+
+		$orders = Order::whereHas('client', function (Builder $query) use ($request) {
+			if ($request->client != '') {
+				$query->where('name', 'like', "%$request->client%");
+			}
+		});
+		if ($request->no_invoice != '') {
+			$orders = $orders->where('no_invoice', 'like', "%$request->no_invoice");
+		}
+
+		if ($from != '') {
+			$orders = $orders
+				->where('created_at', '>=', $from);
+		}
+
+		if ($to != '') {
+			$orders = $orders
+				->where('created_at', '<=', $to);
+		}
+
+		if ($from == '' && $to == '') {
+			$orders = $orders
+				->where('created_at', '>=', $today);
+		}
+
+		if ($status != '') {
+			$orders = $orders
+				->whereIn('state', [$status]);
+		}
+
+		$orders = $orders
+			->selectRaw('SUM(total_paid) as total_paid')
+			->selectRaw('SUM(total_discount) as total_discount')
+			->selectRaw('SUM(total_iva_exc) as total_iva_exc')
+			->where('user_id', $user_id)
+			->first();
+
+		return (object)['orders' => $orders];
+		
 	}
 
 	public function generateBillNumber(Request $request)

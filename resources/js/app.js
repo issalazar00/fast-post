@@ -75,29 +75,9 @@ Vue.filter('currency', dollarFilter)
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('v-select', vSelect)
+Vue.use(require('vue-moment'));
 window.Swal = Swal;
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-// Vue.component('productos', require('./components/Products.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-// { path: '', component: require('./components/ExampleComponent.vue').default },
 const routes = [
 
   { path: '', component: CreateEditOrder, props: { order_id: 0 }, name: 'main' },

@@ -233,6 +233,15 @@ class BoxController extends Controller
         return response()->json($data, $data['code']);
     }
 
+    public function updateBase(Request $request, $id)
+    {
+        $box = Box::find($id);
+        if ($box) {
+            $box->base = $request->base;
+            $box->update();
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *

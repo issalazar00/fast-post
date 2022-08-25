@@ -55,6 +55,7 @@
 							<th>Ticket</th>
 							<th>Imprimir</th>
 							<th>Responsable</th>
+							<th>Fecha</th>
 							<th v-if="$root.validatePermission('order.update')">Editar</th>
 							<th v-if="$root.validatePermission('order.delete')">Eliminar</th>
 						</tr>
@@ -62,9 +63,9 @@
 					<tbody>
 						<tr v-for="o in OrderList.data" :key="o.id">
 							<th scope="row">{{ o.id }} - {{ o.bill_number }}</th>
-							<td>{{ o.total_paid }}</td>
-							<td>{{ o.total_iva_exc }}</td>
-							<td>{{ o.total_discount }}</td>
+							<td>{{ o.total_paid | currency }}</td>
+							<td>{{ o.total_iva_exc | currency }}</td>
+							<td>{{ o.total_discount | currency }}</td>
 							<td>{{ o.client.name }}</td>
 							<td>
 								{{ statusOrders[o.state] }}
@@ -87,6 +88,18 @@
 									<i class="bi bi-printer"></i>
 								</button>
 							</td>
+
+							<td>
+								{{ o.user.name }}
+							</td>
+							<td>
+								<span>
+									<b>Fecha de creación:</b> {{ o.created_at | moment("DD-MM-YYYY h:mm:ss a") }}
+								</span> <br>
+								<span v-if="o.payment_date">
+									<b>Fecha de facturación:</b> {{ o.payment_date | moment("DD-MM-YYYY h:mm:ss a") }}
+								</span>
+							</td>
 							<td v-if="$root.validatePermission('order.update')">
 								<router-link class="btn" :to="{
 									name: 'create-edit-order',
@@ -95,9 +108,6 @@
 									<i class="bi bi-pencil-square"></i>
 								</router-link>
 							</td>
-							<td>
-								{{ o.user.name }}
-							</td>
 							<td v-if="$root.validatePermission('order.delete')">
 								<button class="btn" @click="deleteOrder(o.id)">
 									<i class="bi bi-trash"></i>
@@ -105,6 +115,14 @@
 							</td>
 						</tr>
 					</tbody>
+					<tfoot>
+						<tr class="text-bold">
+							<th class="border-0"></th>
+							<th>{{ TotalOrderList.total_paid | currency }}</th>
+							<th>{{ TotalOrderList.total_iva_exc | currency }}</th>
+							<th>{{ TotalOrderList.total_discount | currency }}</th>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 			<pagination :align="'center'" :data="OrderList" :limit="8" @pagination-change-page="getOrders">
@@ -123,6 +141,7 @@ export default {
 		return {
 			load_pdf: false,
 			OrderList: {},
+			TotalOrderList: [],
 			userList: [],
 			filter: {
 				client: "",
@@ -160,13 +179,13 @@ export default {
 				'user_id': me.filter.user_id
 			}
 
-
 			axios
 				.get(
 					`api/orders`, { params: data, headers: this.$root.config.headers }
 				)
 				.then(function (response) {
 					me.OrderList = response.data.orders;
+					me.TotalOrderList = response.data.totalOrders;
 				});
 		},
 		deleteOrder(order_id) {

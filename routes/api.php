@@ -110,6 +110,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/boxes/byUser', [BoxController::class, 'getBoxesByUser']);
 	Route::resource('/boxes', BoxController::class);
 	Route::post('/boxes/{box}/activate', [BoxController::class, 'activate']);
+	Route::post('/boxes/base/{box}', [BoxController::class, 'updateBase']);
 
 	Route::get('/boxes/{box}/consecutiveAll', [BoxController::class, 'consecutiveAllByBox'])->middleware('can:box.index');
 	Route::get('/boxes/{box}/getAssignUserByBox', [BoxController::class, 'getAssignUserByBox'])->middleware('can:box.index');

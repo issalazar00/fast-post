@@ -7,7 +7,7 @@
       <div class="form-row">
         <div class="form-group col-md-3">
           <label for="box">Caja</label>
-          <v-select :options="boxList" label="name" :reduce="box => box.id" v-model="filter.box" />
+          <v-select :options="boxList" label="name" :reduce="box => box.id" v-model="filter.box_id" />
         </div>
         <div class="form-group col-md-3">
           <label for="from_date">Desde</label>
@@ -16,6 +16,10 @@
         <div class="form-group col-md-3">
           <label for="to_date">Hasta</label>
           <input type="date" class="form-control" id="to_date" v-model="filter.to" />
+        </div>
+        <div class="form-group col-3">
+          <label for="category">Usuario</label>
+          <v-select :options="userList" label="name" :reduce="(user) => user.id" v-model="filter.user_id" />
         </div>
         <div class="col my-4">
           <button class="btn btn-success btn-block" @click="getOrders(1)">
@@ -97,21 +101,32 @@ export default {
   data() {
     return {
       List: {},
+      boxList: [],
+      userList: [],
       filter: {
         from: "",
         to: "",
-        box: 0
-      },
-      boxList: []
+        box_id: 0,
+        user_id: ""
+      }
     };
   },
   methods: {
     getOrders(page = 1) {
       let me = this;
+
+      let data = {
+        'page': page,
+        'from': me.filter.from,
+        'to': me.filter.to,
+        'box': me.filter.box_id,
+        'user_id': me.filter.user_id
+      }
+
       axios
         .get(
-          `api/reports/general-sales-report?page=${page}&from=${me.filter.from}&to=${me.filter.to}&box=${me.filter.box}`,
-          this.$root.config
+          `api/reports/general-sales-report`,
+          { params: data, headers: this.$root.config.headers }
         )
         .then(function (response) {
           me.List = response.data;
@@ -128,10 +143,19 @@ export default {
           me.boxList = response.data.boxes;
         });
     },
+    listUsers() {
+      let me = this;
+      axios
+        .get(`api/users/user-list`, this.$root.config)
+        .then(function (response) {
+          me.userList = response.data.users;
+        });
+    },
   },
   mounted() {
     this.getOrders(1);
     this.listBoxes()
+    this.listUsers()
   }
 };
 </script>

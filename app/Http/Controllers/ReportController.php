@@ -22,7 +22,7 @@ class ReportController extends Controller
 			DB::raw('SUM(total_cost_price_tax_inc) as total_cost_price_tax_inc'),
 			DB::raw('SUM(total_iva_inc) as total_iva_inc'),
 			DB::raw('SUM(total_iva_exc) as total_iva_exc'),
-			'payment_date'
+			DB::raw("DATE_FORMAT(created_at,'%Y-%m-%d') as date_paid")
 		)
 			->selectRaw('count(id) as number_of_orders')
 			->selectRaw("count(case when state = '1' then 1 end) as suspended")
@@ -33,7 +33,7 @@ class ReportController extends Controller
 			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.card')) as card")
 			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.cash')) as cash")
 			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.others')) as others")
-			->orderBy('payment_date', 'desc')
+			->orderBy('created_at', 'desc')
 			->where(function ($query) use ($from, $to) {
 				if ($from != '' && $from != 'undefined' && $from != null) {
 					$query->whereDate('payment_date', '>=', $from);
@@ -47,7 +47,7 @@ class ReportController extends Controller
 					$query->where('box_id', $box_id);
 				}
 			})
-			->groupBy('payment_date')->get();
+			->groupBy('date_paid')->get();
 		return $orders;
 	}
 
@@ -55,7 +55,8 @@ class ReportController extends Controller
 	{
 		$from = $request->from;
 		$to = $request->to;
-		$box_id = $request->box;
+		$box_id = $request->box_id;
+		$user_id = $request->user_id;
 
 		$orders = Order::selectRaw('SUM(total_paid) as total_paid')
 			->selectRaw('SUM(total_discount) as total_discount')
@@ -73,15 +74,20 @@ class ReportController extends Controller
 			->selectRaw("SUM(JSON_EXTRACT(`payment_methods`,'$.others')) as others")
 			->where(function ($query) use ($from, $to) {
 				if ($from != '' && $from != 'undefined' && $from != null) {
-					$query->whereDate('payment_date', '>=', $from);
+					$query->whereDate('created_at', '>=', $from);
 				}
 				if ($to != '' && $to != 'undefined' && $to != null) {
-					$query->whereDate('payment_date', '<=', $to);
+					$query->whereDate('created_at', '<=', $to);
 				}
 			})
 			->where(function ($query) use ($box_id) {
 				if ($box_id != '' && $box_id != 0 && $box_id != null) {
 					$query->where('box_id', $box_id);
+				}
+			})
+			->where(function ($query) use ($user_id) {
+				if ($user_id != '' && $user_id != 0 && $user_id != null) {
+					$query->where('user_id', $user_id);
 				}
 			})
 			->get();
