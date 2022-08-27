@@ -34,7 +34,7 @@
 					</div>
 					<div class="form-group col-3" v-if="$root.validatePermission('order.update')">
 						<label for="category">Usuario</label>
-						<v-select :options="userList" label="name" :reduce="(user) => user.id" v-model="filter.user_id" />
+						<v-select :options="userList"  label="name" :reduce="(user) => user.id" v-model="filter.user_id" />
 					</div>
 					<div class="form-group offset-9 col-md-3">
 						<button class="btn btn-success btn-block" @click="getOrders(1)">
@@ -76,7 +76,7 @@
 								</router-link>
 							</td>
 							<td>
-								<button class="btn" v-if="o.state == 5 || o.state == 2" @click="printTicket(o.id)">
+								<button class="btn" v-if="o.state == 5 || o.state == 2 || o.state == 3" @click="printTicket(o.id)">
 									<i class="bi bi-receipt"></i>
 								</button>
 								<button class="btn" v-else disabled>
@@ -94,10 +94,10 @@
 							</td>
 							<td>
 								<span>
-									<b>Fecha de creación:</b> {{ o.created_at | moment("DD-MM-YYYY h:mm:ss a") }}
+									<b>Creación:</b> {{ o.created_at | moment("DD-MM-YYYY h:mm:ss a") }}
 								</span> <br>
 								<span v-if="o.payment_date">
-									<b>Fecha de facturación:</b> {{ o.payment_date | moment("DD-MM-YYYY h:mm:ss a") }}
+									<b>Facturación:</b> {{ o.payment_date | moment("DD-MM-YYYY h:mm:ss a") }}
 								</span>
 							</td>
 							<td v-if="$root.validatePermission('order.update')">
@@ -109,7 +109,7 @@
 								</router-link>
 							</td>
 							<td v-if="$root.validatePermission('order.delete')">
-								<button class="btn" @click="deleteOrder(o.id)">
+								<button class="btn text-danger" @click="deleteOrder(o.id)">
 									<i class="bi bi-trash"></i>
 								</button>
 							</td>

@@ -37,6 +37,8 @@ class OrderController extends Controller
 	public function index(Request $request)
 	{
 		$user_id =  $request->user_id ? $request->user_id  :  Auth::user()->id;
+		$sign_user_id =  $user_id == '-1' ? '<>' : '=';
+
 		$today = date('Y-m-d');
 		$from = $request->from;
 		$to = $request->to;
@@ -72,7 +74,7 @@ class OrderController extends Controller
 		}
 
 		$orders = $orders
-			->where('user_id', $user_id)
+			->where('user_id', $sign_user_id, $user_id)
 			->with('user:id,name')
 			->orderByDesc('id')
 			->paginate(10);
@@ -303,6 +305,8 @@ class OrderController extends Controller
 	public function getTotalOrders(Request $request)
 	{
 		$user_id =  $request->user_id ? $request->user_id  :  Auth::user()->id;
+		$sign_user_id =  $user_id == '-1' ? '<>' : '=';
+
 		$today = date('Y-m-d');
 		$from = $request->from;
 		$to = $request->to;
@@ -341,11 +345,10 @@ class OrderController extends Controller
 			->selectRaw('SUM(total_paid) as total_paid')
 			->selectRaw('SUM(total_discount) as total_discount')
 			->selectRaw('SUM(total_iva_exc) as total_iva_exc')
-			->where('user_id', $user_id)
+			->where('user_id', $sign_user_id, $user_id)
 			->first();
 
 		return (object)['orders' => $orders];
-		
 	}
 
 	public function generateBillNumber(Request $request)

@@ -235,8 +235,25 @@ class BoxController extends Controller
 
     public function updateBase(Request $request, $id)
     {
+        $user = Auth::user();
         $box = Box::find($id);
-        if ($box) {
+
+        if ($box && ($box->base != $request->base)) {
+            
+            $data = ([
+                'user' => "$user->name $user->last_name",
+                'date' => date('Y-m-d'),
+                'value' => $request->base
+            ]);
+
+            if ($box->history != null) {
+                $history = (array) json_decode($box->history);
+            } else {
+                $history = array();
+            }
+            array_push($history, $data);
+
+            $box->history = json_encode($history);
             $box->base = $request->base;
             $box->update();
         }

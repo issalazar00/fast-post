@@ -341,10 +341,12 @@ class UserController extends Controller
 
     public function listUsers()
     {
+        $users = User::get()->prepend( ['id'=> -1, 'name' => '-- Seleccionar todos --']);
+
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'users' => User::get()
+            'users' => $users
         ]);
     }
 }

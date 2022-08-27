@@ -6,26 +6,15 @@
           <h3 class="page-title">Cajas</h3>
         </div>
         <div class="col text-right">
-          <button
-            type="button"
-            class="btn btn-outline-primary"
-            data-toggle="modal"
-            data-target="#boxModal"
-            v-if="$root.validatePermission('box.store')"
-            @click="$refs.CreateEditBox.ResetData()"
-          >
+          <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#boxModal"
+            v-if="$root.validatePermission('box.store')" @click="$refs.CreateEditBox.ResetData()">
             Crear Cajas
           </button>
         </div>
       </div>
     </div>
     <div class="page-content">
-      <moon-loader
-        class="m-auto"
-        :loading="isLoading"
-        :color="'#032F6C'"
-        :size="100"
-      />
+      <moon-loader class="m-auto" :loading="isLoading" :color="'#032F6C'" :size="100" />
       <div v-show="!isLoading">
         <section class="my-4">
           <table class="table table-sm table-bordered table-responsive-sm">
@@ -36,6 +25,8 @@
                 <th scope="col">Prefijo</th>
                 <td scope="col" v-if="$root.validatePermission('box.store')">Asignar usuarios</td>
                 <th scope="col" v-if="$root.validatePermission('box.active')">Estado</th>
+                <th>Base</th>
+                <th>Historial Base</th>
                 <th v-if="$root.validatePermission('box.update')">Opciones</th>
               </tr>
             </thead>
@@ -50,24 +41,24 @@
                   </button>
                 </th>
                 <td v-if="$root.validatePermission('box.active')">
-                  <button
-                    class="btn"
-                    :class="
-                      box.active == 1
-                        ? 'btn-outline-danger'
-                        : 'btn-outline-success'
-                    "
-                    @click="changeState(box.id)"
-                  >
+                  <button class="btn" :class="
+                    box.active == 1
+                      ? 'btn-outline-danger'
+                      : 'btn-outline-success'
+                  " @click="changeState(box.id)">
                     <i v-if="box.active == 1" class="bi bi-x-circle"></i>
                     <i v-if="box.active == 0" class="bi bi-check-circle"></i>
                   </button>
                 </td>
+                <td>{{ box.base | currency }}</td>
+                <td class="text-right">
+                  <button class="btn btn-primary" data-toggle="modal" data-target="#historyBoxModal"
+                    @click="showHistoryBox(box.history)">
+                    <i class="bi bi-clock-history"></i>
+                  </button>
+                </td>
                 <td v-if="$root.validatePermission('box.update')">
-                  <button
-                    class="btn btn-outline-success"
-                    @click="ShowData(box)"
-                  >
+                  <button class="btn btn-outline-success" @click="ShowData(box)">
                     <i class="bi bi-pen"></i>
                   </button>
                 </td>
@@ -79,11 +70,15 @@
     </div>
     <create-edit-box ref="CreateEditBox" @list-boxes="listBoxes(1)" />
     <assign-user ref="AssignUser"> </assign-user>
+    <show-history-box ref="ShowHistoryBox"></show-history-box>
   </div>
 </template>
+
 <script>
 import CreateEditBox from "./CreateEditBox.vue";
 import AssignUser from "./AssignUser.vue";
+import ShowHistoryBox from './ShowHistoryBox.vue';
+
 export default {
   data() {
     return {
@@ -93,8 +88,8 @@ export default {
   },
   components: {
     CreateEditBox,
-    AssignUser
-
+    AssignUser,
+    ShowHistoryBox
   },
   created() {
     this.$root.validateToken();
@@ -113,6 +108,9 @@ export default {
     },
     ShowData: function (box) {
       this.$refs.CreateEditBox.OpenEditBox(box);
+    },
+    showHistoryBox(history) {
+      this.$refs.ShowHistoryBox.convertStringToJson(history);
     },
     changeState: function (id) {
       let me = this;
