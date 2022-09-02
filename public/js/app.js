@@ -11355,17 +11355,31 @@ __webpack_require__.r(__webpack_exports__);
         no_invoice: "",
         from: "",
         to: "",
-        user_id: ""
+        user_id: "",
+        status: ""
       },
-      statusOrders: {
-        0: "Desechada",
-        1: "Suspender",
-        2: "Facturado",
-        3: "Cotizar",
-        4: "Facturar e imprimir",
-        5: "Credito",
-        6: "Credito e imprimir"
-      }
+      statusOrders: [{
+        id: 0,
+        status: "Desechada"
+      }, {
+        id: 1,
+        status: "Suspender"
+      }, {
+        id: 2,
+        status: "Facturado"
+      }, {
+        id: 3,
+        status: "Cotizado"
+      }, {
+        id: 4,
+        status: "Facturar e imprimir"
+      }, {
+        id: 5,
+        status: "Credito"
+      }, {
+        id: 6,
+        status: "Credito e imprimir"
+      }]
     };
   },
   created: function created() {
@@ -11378,12 +11392,13 @@ __webpack_require__.r(__webpack_exports__);
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var me = this;
       var data = {
-        'page': page,
-        'client': me.filter.client,
-        'no_invoice': me.filter.no_invoice,
-        'from': me.filter.from,
-        'to': me.filter.to,
-        'user_id': me.filter.user_id
+        page: page,
+        client: me.filter.client,
+        no_invoice: me.filter.no_invoice,
+        from: me.filter.from,
+        to: me.filter.to,
+        user_id: me.filter.user_id,
+        status: me.filter.status
       };
       axios.get("api/orders", {
         params: data,
@@ -11400,17 +11415,17 @@ __webpack_require__.r(__webpack_exports__);
         _this.getOrders(1);
 
         Swal.fire({
-          icon: 'success',
-          title: 'Excelente',
-          text: 'Los datos se han eliminado correctamente'
+          icon: "success",
+          title: "Excelente",
+          text: "Los datos se han eliminado correctamente"
         });
       })["catch"](function (error) {
         // handle error
         if (error) {
           Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Hubo un error al eliminar la orden'
+            icon: "error",
+            title: "Oops...",
+            text: "Hubo un error al eliminar la orden"
           });
         }
       });
@@ -12191,8 +12206,31 @@ __webpack_require__.r(__webpack_exports__);
         from: "",
         to: "",
         box_id: 0,
-        user_id: ""
-      }
+        user_id: "",
+        status: ""
+      },
+      statusOrders: [{
+        id: 0,
+        status: "Desechada"
+      }, {
+        id: 1,
+        status: "Suspender"
+      }, {
+        id: 2,
+        status: "Facturado"
+      }, {
+        id: 3,
+        status: "Cotizado"
+      }, {
+        id: 4,
+        status: "Facturar e imprimir"
+      }, {
+        id: 5,
+        status: "Credito"
+      }, {
+        id: 6,
+        status: "Credito e imprimir"
+      }]
     };
   },
   methods: {
@@ -12200,11 +12238,12 @@ __webpack_require__.r(__webpack_exports__);
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var me = this;
       var data = {
-        'page': page,
-        'from': me.filter.from,
-        'to': me.filter.to,
-        'box': me.filter.box_id,
-        'user_id': me.filter.user_id
+        page: page,
+        from: me.filter.from,
+        to: me.filter.to,
+        box: me.filter.box_id,
+        user_id: me.filter.user_id,
+        status: me.filter.status
       };
       axios.get("api/reports/general-sales-report", {
         params: data,
@@ -12292,15 +12331,49 @@ __webpack_require__.r(__webpack_exports__);
         client: "",
         no_invoice: "",
         from: "",
-        to: ""
-      }
+        to: "",
+        status: ""
+      },
+      statusOrders: [{
+        id: 0,
+        status: "Desechada"
+      }, {
+        id: 1,
+        status: "Suspender"
+      }, {
+        id: 2,
+        status: "Facturado"
+      }, {
+        id: 3,
+        status: "Cotizado"
+      }, {
+        id: 4,
+        status: "Facturar e imprimir"
+      }, {
+        id: 5,
+        status: "Credito"
+      }, {
+        id: 6,
+        status: "Credito e imprimir"
+      }]
     };
   },
   methods: {
     getOrders: function getOrders() {
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var me = this;
-      axios.get("api/reports/sales-report?page=".concat(page, "&client=").concat(me.filter.client, "&no_invoice=").concat(me.filter.no_invoice, "&from=").concat(me.filter.from, "&to=").concat(me.filter.to), this.$root.config).then(function (response) {
+      var data = {
+        page: page,
+        from: me.filter.from,
+        to: me.filter.to,
+        no_invoice: me.filter.no_invoice,
+        client: me.filter.client,
+        status: me.filter.status
+      };
+      axios.get("api/reports/sales-report", {
+        params: data,
+        headers: this.$root.config.headers
+      }).then(function (response) {
         me.List = response.data;
       });
     }
@@ -18844,6 +18917,27 @@ var render = function render() {
     staticClass: "form-group col-3"
   }, [_c("label", {
     attrs: {
+      "for": "category"
+    }
+  }, [_vm._v("Estado")]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      options: _vm.statusOrders,
+      label: "status",
+      reduce: function reduce(status) {
+        return status.id;
+      }
+    },
+    model: {
+      value: _vm.filter.status,
+      callback: function callback($$v) {
+        _vm.$set(_vm.filter, "status", $$v);
+      },
+      expression: "filter.status"
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "form-group col-3"
+  }, [_c("label", {
+    attrs: {
       "for": "nro_factura"
     }
   }, [_vm._v("Nro Factura")]), _vm._v(" "), _c("input", {
@@ -18995,7 +19089,7 @@ var render = function render() {
       attrs: {
         scope: "row"
       }
-    }, [_vm._v(_vm._s(o.id) + " - " + _vm._s(o.bill_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("currency")(o.total_paid)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("currency")(o.total_iva_exc)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("currency")(o.total_discount)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(o.client.name))]), _vm._v(" "), _c("td", [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(_vm.statusOrders[o.state]) + "\n\t\t\t\t\t\t")]), _vm._v(" "), _c("td", [_c("router-link", {
+    }, [_vm._v(_vm._s(o.id) + " - " + _vm._s(o.bill_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("currency")(o.total_paid)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("currency")(o.total_iva_exc)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm._f("currency")(o.total_discount)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(o.client.name))]), _vm._v(" "), _c("td", [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(_vm.statusOrders[o.state]["status"]) + "\n\t\t\t\t\t\t")]), _vm._v(" "), _c("td", [_c("router-link", {
       staticClass: "btn",
       attrs: {
         to: {
@@ -19032,7 +19126,7 @@ var render = function render() {
       }
     }, [_c("i", {
       staticClass: "bi bi-printer"
-    })])]), _vm._v(" "), _c("td", [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(o.user.name) + "\n\t\t\t\t\t\t")]), _vm._v(" "), _c("td", [_c("span", [_c("b", [_vm._v("Creación:")]), _vm._v(" " + _vm._s(_vm._f("moment")(o.created_at, "DD-MM-YYYY h:mm:ss a")) + "\n\t\t\t\t\t\t\t")]), _vm._v(" "), _c("br"), _vm._v(" "), o.payment_date ? _c("span", [_c("b", [_vm._v("Facturación:")]), _vm._v(" " + _vm._s(_vm._f("moment")(o.payment_date, "DD-MM-YYYY h:mm:ss a")) + "\n\t\t\t\t\t\t\t")]) : _vm._e()]), _vm._v(" "), _vm.$root.validatePermission("order.update") ? _c("td", [_c("router-link", {
+    })])]), _vm._v(" "), _c("td", [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(o.user.name) + "\n\t\t\t\t\t\t")]), _vm._v(" "), _c("td", [_c("span", [_c("b", [_vm._v("Creación:")]), _vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(_vm._f("moment")(o.created_at, "DD-MM-YYYY h:mm:ss a")) + "\n\t\t\t\t\t\t\t")]), _vm._v(" "), _c("br"), _vm._v(" "), o.payment_date ? _c("span", [_c("b", [_vm._v("Facturación:")]), _vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(_vm._f("moment")(o.payment_date, "DD-MM-YYYY h:mm:ss a")) + "\n\t\t\t\t\t\t\t")]) : _vm._e()]), _vm._v(" "), _vm.$root.validatePermission("order.update") ? _c("td", [_c("router-link", {
       staticClass: "btn",
       attrs: {
         to: {
@@ -21685,6 +21779,27 @@ var render = function render() {
       expression: "filter.box_id"
     }
   })], 1), _vm._v(" "), _c("div", {
+    staticClass: "form-group col-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "category"
+    }
+  }, [_vm._v("Estado")]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      options: _vm.statusOrders,
+      label: "status",
+      reduce: function reduce(status) {
+        return status.id;
+      }
+    },
+    model: {
+      value: _vm.filter.status,
+      callback: function callback($$v) {
+        _vm.$set(_vm.filter, "status", $$v);
+      },
+      expression: "filter.status"
+    }
+  })], 1), _vm._v(" "), _c("div", {
     staticClass: "form-group col-md-3"
   }, [_c("label", {
     attrs: {
@@ -21762,7 +21877,7 @@ var render = function render() {
       expression: "filter.user_id"
     }
   })], 1), _vm._v(" "), _c("div", {
-    staticClass: "col my-4"
+    staticClass: "col my-4 col-4"
   }, [_c("button", {
     staticClass: "btn btn-success btn-block",
     on: {
@@ -21807,7 +21922,7 @@ var staticRenderFns = [function () {
     attrs: {
       colspan: "3"
     }
-  }, [_vm._v("\n              No hay resultados\n            ")])]);
+  }, [_vm._v("No hay resultados")])]);
 }];
 render._withStripped = true;
 
@@ -21994,6 +22109,42 @@ var render = function render() {
   return _c("div", {
     staticClass: "page w-100"
   }, [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "page-search mx-2 my-2 border p-2"
+  }, [_c("div", {
+    staticClass: "form-row"
+  }, [_c("div", {
+    staticClass: "form-group col-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "category"
+    }
+  }, [_vm._v("Estado")]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      options: _vm.statusOrders,
+      label: "status",
+      reduce: function reduce(status) {
+        return status.id;
+      }
+    },
+    model: {
+      value: _vm.filter.status,
+      callback: function callback($$v) {
+        _vm.$set(_vm.filter, "status", $$v);
+      },
+      expression: "filter.status"
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "col my-4 col-4"
+  }, [_c("button", {
+    staticClass: "btn btn-success btn-block",
+    on: {
+      click: function click($event) {
+        return _vm.getOrders(1);
+      }
+    }
+  }, [_vm._v("\n\t\t\t\t\tBuscar "), _c("i", {
+    staticClass: "bi bi-search"
+  })])])])]), _vm._v(" "), _c("div", {
     staticClass: "page-content"
   }, [_c("section", {
     staticClass: "p-3"

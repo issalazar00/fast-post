@@ -4,7 +4,7 @@
 			<h3>Ordenes</h3>
 			<router-link class="btn btn-primary" :to="{
 				name: 'create-edit-order',
-				params: { order_id: 0 }
+				params: { order_id: 0 },
 			}" v-if="$root.validatePermission('order.store')">
 				Nueva orden
 			</router-link>
@@ -14,6 +14,10 @@
 			<div class="card-body">
 				<div class="form-row">
 					<h6 class="w-100">Buscar...</h6>
+					<div class="form-group col-3">
+						<label for="category">Estado</label>
+						<v-select :options="statusOrders" label="status" :reduce="(status) => status.id" v-model="filter.status" />
+					</div>
 					<div class="form-group col-3">
 						<label for="nro_factura">Nro Factura</label>
 						<input type="text" name="nro_factura" id="nro_factura" class="form-control" placeholder="Nro Factura"
@@ -34,7 +38,7 @@
 					</div>
 					<div class="form-group col-3" v-if="$root.validatePermission('order.update')">
 						<label for="category">Usuario</label>
-						<v-select :options="userList"  label="name" :reduce="(user) => user.id" v-model="filter.user_id" />
+						<v-select :options="userList" label="name" :reduce="(user) => user.id" v-model="filter.user_id" />
 					</div>
 					<div class="form-group offset-9 col-md-3">
 						<button class="btn btn-success btn-block" @click="getOrders(1)">
@@ -62,13 +66,13 @@
 					</thead>
 					<tbody>
 						<tr v-for="o in OrderList.data" :key="o.id">
-							<th scope="row">{{ o.id }} - {{ o.bill_number }}</th>
-							<td>{{ o.total_paid | currency }}</td>
-							<td>{{ o.total_iva_exc | currency }}</td>
-							<td>{{ o.total_discount | currency }}</td>
-							<td>{{ o.client.name }}</td>
+							<th scope="row">{{  o.id  }} - {{  o.bill_number  }}</th>
+							<td>{{  o.total_paid | currency  }}</td>
+							<td>{{  o.total_iva_exc | currency  }}</td>
+							<td>{{  o.total_discount | currency  }}</td>
+							<td>{{  o.client.name  }}</td>
 							<td>
-								{{ statusOrders[o.state] }}
+								{{  statusOrders[o.state]["status"]  }}
 							</td>
 							<td>
 								<router-link class="btn" :to="{ name: 'details-order', params: { order_id: o.id } }">
@@ -90,20 +94,23 @@
 							</td>
 
 							<td>
-								{{ o.user.name }}
+								{{  o.user.name  }}
 							</td>
 							<td>
 								<span>
-									<b>Creación:</b> {{ o.created_at | moment("DD-MM-YYYY h:mm:ss a") }}
-								</span> <br>
+									<b>Creación:</b>
+									{{  o.created_at | moment("DD-MM-YYYY h:mm:ss a")  }}
+								</span>
+								<br />
 								<span v-if="o.payment_date">
-									<b>Facturación:</b> {{ o.payment_date | moment("DD-MM-YYYY h:mm:ss a") }}
+									<b>Facturación:</b>
+									{{  o.payment_date | moment("DD-MM-YYYY h:mm:ss a")  }}
 								</span>
 							</td>
 							<td v-if="$root.validatePermission('order.update')">
 								<router-link class="btn" :to="{
 									name: 'create-edit-order',
-									params: { order_id: o.id }
+									params: { order_id: o.id },
 								}">
 									<i class="bi bi-pencil-square"></i>
 								</router-link>
@@ -118,9 +125,9 @@
 					<tfoot>
 						<tr class="text-bold">
 							<th class="border-0"></th>
-							<th>{{ TotalOrderList.total_paid | currency }}</th>
-							<th>{{ TotalOrderList.total_iva_exc | currency }}</th>
-							<th>{{ TotalOrderList.total_discount | currency }}</th>
+							<th>{{  TotalOrderList.total_paid | currency  }}</th>
+							<th>{{  TotalOrderList.total_iva_exc | currency  }}</th>
+							<th>{{  TotalOrderList.total_discount | currency  }}</th>
 						</tr>
 					</tfoot>
 				</table>
@@ -148,17 +155,18 @@ export default {
 				no_invoice: "",
 				from: "",
 				to: "",
-				user_id: ""
+				user_id: "",
+				status: "",
 			},
-			statusOrders: {
-				0: "Desechada",
-				1: "Suspender",
-				2: "Facturado",
-				3: "Cotizar",
-				4: "Facturar e imprimir",
-				5: "Credito",
-				6: "Credito e imprimir"
-			}
+			statusOrders: [
+				{ id: 0, status: "Desechada" },
+				{ id: 1, status: "Suspender" },
+				{ id: 2, status: "Facturado" },
+				{ id: 3, status: "Cotizado" },
+				{ id: 4, status: "Facturar e imprimir" },
+				{ id: 5, status: "Credito" },
+				{ id: 6, status: "Credito e imprimir" },
+			],
 		};
 	},
 	created() {
@@ -171,18 +179,17 @@ export default {
 			let me = this;
 
 			let data = {
-				'page': page,
-				'client': me.filter.client,
-				'no_invoice': me.filter.no_invoice,
-				'from': me.filter.from,
-				'to': me.filter.to,
-				'user_id': me.filter.user_id
-			}
+				page: page,
+				client: me.filter.client,
+				no_invoice: me.filter.no_invoice,
+				from: me.filter.from,
+				to: me.filter.to,
+				user_id: me.filter.user_id,
+				status: me.filter.status,
+			};
 
 			axios
-				.get(
-					`api/orders`, { params: data, headers: this.$root.config.headers }
-				)
+				.get(`api/orders`, { params: data, headers: this.$root.config.headers })
 				.then(function (response) {
 					me.OrderList = response.data.orders;
 					me.TotalOrderList = response.data.totalOrders;
@@ -192,29 +199,29 @@ export default {
 			axios
 				.delete(`api/orders/${order_id}`, this.$root.config)
 				.then(() => {
-					this.getOrders(1)
+					this.getOrders(1);
 					Swal.fire({
-						icon: 'success',
-						title: 'Excelente',
-						text: 'Los datos se han eliminado correctamente',
-					})
+						icon: "success",
+						title: "Excelente",
+						text: "Los datos se han eliminado correctamente",
+					});
 				})
 				.catch(function (error) {
 					// handle error
 					if (error) {
 						Swal.fire({
-							icon: 'error',
-							title: 'Oops...',
-							text: 'Hubo un error al eliminar la orden',
-						})
+							icon: "error",
+							title: "Oops...",
+							text: "Hubo un error al eliminar la orden",
+						});
 					}
-				})
+				});
 		},
 		generatePdf(id) {
 			this.load_pdf = true;
 			axios
 				.get("api/orders/generatePdf/" + id, this.$root.config)
-				.then(response => {
+				.then((response) => {
 					console.log(response);
 
 					const pdf = response.data.pdf;
@@ -238,6 +245,6 @@ export default {
 					me.userList = response.data.users;
 				});
 		},
-	}
+	},
 };
 </script>

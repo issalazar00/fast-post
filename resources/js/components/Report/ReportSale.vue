@@ -3,6 +3,19 @@
 		<div class="page-header">
 			<h3>Reporte de venta</h3>
 		</div>
+		<div class="page-search mx-2 my-2 border p-2">
+			<div class="form-row">
+				<div class="form-group col-3">
+					<label for="category">Estado</label>
+					<v-select :options="statusOrders" label="status" :reduce="(status) => status.id" v-model="filter.status" />
+				</div>
+				<div class="col my-4 col-4">
+					<button class="btn btn-success btn-block" @click="getOrders(1)">
+						Buscar <i class="bi bi-search"></i>
+					</button>
+				</div>
+			</div>
+		</div>
 		<div class="page-content">
 			<section class="p-3">
 				<table class="table table-sm table-bordered table-hover">
@@ -25,43 +38,43 @@
 					<tbody v-if="List.length > 0">
 						<tr v-for="(l, index) in List" :key="index">
 							<td>
-								{{ l.date_paid }}
+								{{  l.date_paid  }}
 							</td>
 							<td>
-								{{ l.number_of_orders }}
+								{{  l.number_of_orders  }}
 							</td>
 							<td>
-								{{ l.registered }}
+								{{  l.registered  }}
 							</td>
 							<td>
-								{{ l.suspended }}
+								{{  l.suspended  }}
 							</td>
 							<td>
-								{{ l.quoted }}
+								{{  l.quoted  }}
 							</td>
 							<td>
-								{{ l.total_cost_price_tax_inc.toFixed(2) | currency }}
+								{{  l.total_cost_price_tax_inc.toFixed(2) | currency  }}
 							</td>
 							<td>
-								{{ l.total_iva_exc.toFixed(2) | currency }}
+								{{  l.total_iva_exc.toFixed(2) | currency  }}
 							</td>
 							<td>
-								{{ l.total_iva_inc.toFixed(2) | currency }}
+								{{  l.total_iva_inc.toFixed(2) | currency  }}
 							</td>
 							<td>
-								{{ l.total_discount.toFixed(2) | currency }}
+								{{  l.total_discount.toFixed(2) | currency  }}
 							</td>
 							<td>
-								{{ l.total_paid.toFixed(2) | currency }}
+								{{  l.total_paid.toFixed(2) | currency  }}
 							</td>
 							<td>
-								<span v-if="l.cash != null">Efectivo: {{ l.cash }} </span> <br />
-								<span v-if="l.nequi != null">Nequi: {{ l.nequi }} </span> <br />
-								<span v-if="l.card != null">Tarjeta : {{ l.card }}</span> <br />
-								<span v-if="l.others != null"> Otros medios de pago: {{ l.others }} </span>
+								<span v-if="l.cash != null">Efectivo: {{  l.cash  }} </span> <br />
+								<span v-if="l.nequi != null">Nequi: {{  l.nequi  }} </span> <br />
+								<span v-if="l.card != null">Tarjeta : {{  l.card  }}</span> <br />
+								<span v-if="l.others != null"> Otros medios de pago: {{  l.others  }} </span>
 							</td>
 							<td>
-								{{ (l.total_iva_exc - l.total_cost_price_tax_inc).toFixed(2) | currency }}
+								{{  (l.total_iva_exc - l.total_cost_price_tax_inc).toFixed(2) | currency  }}
 							</td>
 						</tr>
 					</tbody>
@@ -87,18 +100,40 @@ export default {
 				client: "",
 				no_invoice: "",
 				from: "",
-				to: ""
-			}
+				to: "",
+				status: ""
+			},
+			statusOrders: [
+				{ id: 0, status: "Desechada" },
+				{ id: 1, status: "Suspender" },
+				{ id: 2, status: "Facturado" },
+				{ id: 3, status: "Cotizado" },
+				{ id: 4, status: "Facturar e imprimir" },
+				{ id: 5, status: "Credito" },
+				{ id: 6, status: "Credito e imprimir" }
+			],
 		};
 	},
 	methods: {
 		getOrders(page = 1) {
 			let me = this;
+
+			let data = {
+				page: page,
+				from: me.filter.from,
+				to: me.filter.to,
+				no_invoice: me.filter.no_invoice,
+				client: me.filter.client,
+				status: me.filter.status
+			};
+
 			axios
 				.get(
-					`api/reports/sales-report?page=${page}&client=${me.filter.client}&no_invoice=${me.filter.no_invoice}&from=${me.filter.from}&to=${me.filter.to}`,
-					this.$root.config
-				)
+					`api/reports/sales-report`,
+					{
+						params: data,
+						headers: this.$root.config.headers,
+					})
 				.then(function (response) {
 					me.List = response.data;
 				});

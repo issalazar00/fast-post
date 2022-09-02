@@ -15,6 +15,7 @@ class ReportController extends Controller
 		$from = $request->from;
 		$to = $request->to;
 		$box_id = $request->box_id;
+		$status = $request->status ?? $request->status;
 
 		$orders = Order::select(
 			DB::raw('SUM(total_paid) as total_paid'),
@@ -47,6 +48,11 @@ class ReportController extends Controller
 					$query->where('box_id', $box_id);
 				}
 			})
+			->where(function ($query) use ($status) {
+				if ($status != '' && $status != 0 && $status != null) {
+					$query->where('state', $status);
+				}
+			})
 			->groupBy('date_paid')->get();
 		return $orders;
 	}
@@ -57,6 +63,7 @@ class ReportController extends Controller
 		$to = $request->to;
 		$box_id = $request->box_id;
 		$user_id = $request->user_id;
+		$status = $request->status ?? $request->status;
 
 		$orders = Order::selectRaw('SUM(total_paid) as total_paid')
 			->selectRaw('SUM(total_discount) as total_discount')
@@ -88,6 +95,11 @@ class ReportController extends Controller
 			->where(function ($query) use ($user_id) {
 				if ($user_id != '' && $user_id != 0 && $user_id != null) {
 					$query->where('user_id', $user_id);
+				}
+			})
+			->where(function ($query) use ($status) {
+				if ($status != '' && $status != 0 && $status != null) {
+					$query->where('state', $status);
 				}
 			})
 			->get();

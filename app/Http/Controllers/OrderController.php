@@ -42,6 +42,7 @@ class OrderController extends Controller
 		$today = date('Y-m-d');
 		$from = $request->from;
 		$to = $request->to;
+		
 		$status = $request->status ?? $request->status;
 
 		$orders = Order::whereHas('client', function (Builder $query) use ($request) {

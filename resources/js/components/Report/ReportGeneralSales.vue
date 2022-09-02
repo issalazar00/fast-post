@@ -7,7 +7,11 @@
       <div class="form-row">
         <div class="form-group col-md-3">
           <label for="box">Caja</label>
-          <v-select :options="boxList" label="name" :reduce="box => box.id" v-model="filter.box_id" />
+          <v-select :options="boxList" label="name" :reduce="(box) => box.id" v-model="filter.box_id" />
+        </div>
+        <div class="form-group col-3">
+          <label for="category">Estado</label>
+          <v-select :options="statusOrders" label="status" :reduce="(status) => status.id" v-model="filter.status" />
         </div>
         <div class="form-group col-md-3">
           <label for="from_date">Desde</label>
@@ -21,7 +25,7 @@
           <label for="category">Usuario</label>
           <v-select :options="userList" label="name" :reduce="(user) => user.id" v-model="filter.user_id" />
         </div>
-        <div class="col my-4">
+        <div class="col my-4 col-4">
           <button class="btn btn-success btn-block" @click="getOrders(1)">
             Buscar <i class="bi bi-search"></i>
           </button>
@@ -31,7 +35,7 @@
     <div class="page-content">
       <section class="p-3">
         <table class="table table-sm table-bordered table-hover">
-          <thead class=" thead-dark">
+          <thead class="thead-dark">
             <tr>
               <th>Número total de facturas</th>
               <th>Nro. facturas registradas</th>
@@ -49,45 +53,43 @@
           <tbody v-if="List.length > 0">
             <tr v-for="(l, index) in List" :key="index">
               <td>
-                {{ l.number_of_orders }}
+                {{  l.number_of_orders  }}
               </td>
               <td>
-                {{ l.registered }}
+                {{  l.registered  }}
               </td>
               <td>
-                {{ l.suspended }}
+                {{  l.suspended  }}
               </td>
               <td>
-                {{ l.quoted }}
+                {{  l.quoted  }}
               </td>
               <td>
-                {{ l.credit }}
+                {{  l.credit  }}
               </td>
               <td>
-                {{ l.total_cost_price_tax_inc | currency }}
+                {{  l.total_cost_price_tax_inc | currency  }}
               </td>
               <td>
-                {{ l.total_iva_exc | currency }}
+                {{  l.total_iva_exc | currency  }}
               </td>
               <td>
-                {{ l.total_iva_inc | currency }}
+                {{  l.total_iva_inc | currency  }}
               </td>
               <td>
-                {{ l.total_discount | currency }}
+                {{  l.total_discount | currency  }}
               </td>
               <td>
-                {{ l.total_paid | currency }}
+                {{  l.total_paid | currency  }}
               </td>
               <td>
-                {{ (l.total_iva_exc - l.total_cost_price_tax_inc) | currency }}
+                {{  (l.total_iva_exc - l.total_cost_price_tax_inc) | currency  }}
               </td>
             </tr>
           </tbody>
           <tbody v-else>
             <tr>
-              <td colspan="3">
-                No hay resultados
-              </td>
+              <td colspan="3">No hay resultados</td>
             </tr>
           </tbody>
         </table>
@@ -107,8 +109,18 @@ export default {
         from: "",
         to: "",
         box_id: 0,
-        user_id: ""
-      }
+        user_id: "",
+        status: "",
+      },
+      statusOrders: [
+        { id: 0, status: "Desechada" },
+        { id: 1, status: "Suspender" },
+        { id: 2, status: "Facturado" },
+        { id: 3, status: "Cotizado" },
+        { id: 4, status: "Facturar e imprimir" },
+        { id: 5, status: "Credito" },
+        { id: 6, status: "Credito e imprimir" }
+      ],
     };
   },
   methods: {
@@ -116,24 +128,23 @@ export default {
       let me = this;
 
       let data = {
-        'page': page,
-        'from': me.filter.from,
-        'to': me.filter.to,
-        'box': me.filter.box_id,
-        'user_id': me.filter.user_id
-      }
+        page: page,
+        from: me.filter.from,
+        to: me.filter.to,
+        box: me.filter.box_id,
+        user_id: me.filter.user_id,
+        status: me.filter.status
+      };
 
       axios
-        .get(
-          `api/reports/general-sales-report`,
-          { params: data, headers: this.$root.config.headers }
-        )
+        .get(`api/reports/general-sales-report`, {
+          params: data,
+          headers: this.$root.config.headers,
+        })
         .then(function (response) {
           me.List = response.data;
-        }).
-        catch(
-          me.List = {}
-        );
+        })
+        .catch((me.List = {}));
     },
     listBoxes() {
       let me = this;
@@ -154,8 +165,8 @@ export default {
   },
   mounted() {
     this.getOrders(1);
-    this.listBoxes()
-    this.listUsers()
-  }
+    this.listBoxes();
+    this.listUsers();
+  },
 };
 </script>
