@@ -27,7 +27,7 @@ class CreatePaymentCreditsTable extends Migration
                     ->delete('cascade');
                 $table->foreign('order_id')
                     ->references('id')
-                    ->on('credits')
+                    ->on('orders')
                     ->delete('cascade');
             });
         }
