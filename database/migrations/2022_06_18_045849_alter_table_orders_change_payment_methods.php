@@ -14,7 +14,11 @@ class AlterTableOrdersChangePaymentMethods extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->json('payment_methods')->nullable()->change();
+            if (Schema::hasColumn('orders', 'payment_methods')) {
+                $table->json('payment_methods')->nullable()->change();
+            } else {
+                $table->json('payment_methods')->nullable();
+            }
         });
     }
 

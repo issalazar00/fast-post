@@ -13,22 +13,24 @@ class CreatePaymentCreditsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payment_credits', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('order_id');
-            $table->double('pay');
-            $table->timestamps();
+        if (!Schema::hasTable('payment_credits')) {
+            Schema::create('payment_credits', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id');
+                $table->foreignId('order_id');
+                $table->double('pay');
+                $table->timestamps();
 
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->delete('cascade');
-            $table->foreign('order_id')
-                ->references('id')
-                ->on('credits')
-                ->delete('cascade');
-        });
+                $table->foreign('user_id')
+                    ->references('id')
+                    ->on('users')
+                    ->delete('cascade');
+                $table->foreign('order_id')
+                    ->references('id')
+                    ->on('credits')
+                    ->delete('cascade');
+            });
+        }
     }
 
     /**

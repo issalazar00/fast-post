@@ -13,6 +13,7 @@ class CreateCreditsTable extends Migration
      */
     public function up()
     {
+        $this->down();
         Schema::create('credits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
@@ -43,6 +44,6 @@ class CreateCreditsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('credits');
+      Schema::dropIfExists('credits');
     }
 }

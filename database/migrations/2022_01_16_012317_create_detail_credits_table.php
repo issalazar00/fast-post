@@ -13,6 +13,7 @@ class CreateDetailCreditsTable extends Migration
      */
     public function up()
     {
+        $this->down();
         Schema::create('detail_credits', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
