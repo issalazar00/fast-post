@@ -13,30 +13,31 @@ class CreateDetailCreditsTable extends Migration
      */
     public function up()
     {
-        $this->down();
-        Schema::create('detail_credits', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('product_id');
-            $table->string('barcode');
-            $table->float('discount_percentage', 20, 4);
-            $table->float('discount_price', 20, 4);
-            $table->float('price_tax_exc', 20, 4);
-            $table->float('price_tax_inc', 20, 4);
-            $table->float('price_tax_inc_total', 20, 4);
-            $table->float('quantity', 20, 4);
-            $table->string('product');
+        if (!Schema::hasTable('detail_credits')) {
+            Schema::create('detail_credits', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('order_id');
+                $table->unsignedBigInteger('product_id');
+                $table->string('barcode');
+                $table->float('discount_percentage', 20, 4);
+                $table->float('discount_price', 20, 4);
+                $table->float('price_tax_exc', 20, 4);
+                $table->float('price_tax_inc', 20, 4);
+                $table->float('price_tax_inc_total', 20, 4);
+                $table->float('quantity', 20, 4);
+                $table->string('product');
 
-            $table->foreign('order_id')
-                ->references('id')
-                ->on('orders')
-                ->onDelete('cascade');
+                $table->foreign('order_id')
+                    ->references('id')
+                    ->on('orders')
+                    ->onDelete('cascade');
 
-            $table->foreign('product_id')
-                ->references('id')
-                ->on('products');
-            $table->timestamps();
-        });
+                $table->foreign('product_id')
+                    ->references('id')
+                    ->on('products');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
