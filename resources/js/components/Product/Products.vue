@@ -113,6 +113,14 @@
               v-model="search_expiration_date_to"
             />
           </div>
+          <div class="form-group col-3">
+            <label for="state">Estado:</label>
+            <select class="custom-select" name="state" id="state" v-model="search_state">
+              <option value="all">Todos</option>
+              <option value="0">Inactivos</option>
+              <option value="1">Activos</option>
+            </select>
+          </div>
           <div class="form-group col-3 offset-6">
             <button class="btn btn-success btn-block" @click="listProducts(1)">
               Buscar <i class="bi bi-search"></i>
@@ -175,7 +183,7 @@
             <tbody>
               <tr v-for="product in ProductList.data" v-bind:key="product.id">
                 <td class="barcode">{{ product.barcode }}</td>
-                <td>{{ product.product }}</td>
+                <td>{{ product.product }}</td>                 
                 <td>{{ product.category.name }}</td>
                 <td class="text-right">
                   {{ product.sale_price_tax_inc | currency }}
@@ -274,6 +282,7 @@ export default {
       search_quantity: 0,
       search_expiration_date_from: "",
       search_expiration_date_to: "",
+      search_state: 1,
       isLoading: false,
       ProductList: {},
       TotalProductsList: {},
@@ -290,10 +299,22 @@ export default {
       this.isLoading = true;
 
       let me = this;
+      let data = {
+        page: page,
+        product: me.search_product,
+        category_id: me.search_category,
+        brand_id: me.search_brand,
+        quantity_sign: me.search_quantity_sign,
+        quantity: me.search_quantity,
+        expiration_date_from: me.search_expiration_date_from,
+        expiration_date_to: me.search_expiration_date_to,
+        state: me.search_state
+      }
       axios
         .get(
-          `api/products?page=${page}&product=${me.search_product}&category_id=${me.search_category}&brand_id=${me.search_brand}&quantity_sign=${me.search_quantity_sign}&quantity=${me.search_quantity}&expiration_date_from=${me.search_expiration_date_from}&expiration_date_to=${me.search_expiration_date_to}`,
-          this.$root.config
+          `api/products`,
+          {params: data,
+            headers:this.$root.config.headers}
         )
         .then(function (response) {
           me.ProductList = response.data.products;

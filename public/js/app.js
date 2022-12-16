@@ -11926,6 +11926,7 @@ __webpack_require__.r(__webpack_exports__);
       search_quantity: 0,
       search_expiration_date_from: "",
       search_expiration_date_to: "",
+      search_state: 1,
       isLoading: false,
       ProductList: {},
       TotalProductsList: {},
@@ -11944,7 +11945,21 @@ __webpack_require__.r(__webpack_exports__);
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.isLoading = true;
       var me = this;
-      axios.get("api/products?page=".concat(page, "&product=").concat(me.search_product, "&category_id=").concat(me.search_category, "&brand_id=").concat(me.search_brand, "&quantity_sign=").concat(me.search_quantity_sign, "&quantity=").concat(me.search_quantity, "&expiration_date_from=").concat(me.search_expiration_date_from, "&expiration_date_to=").concat(me.search_expiration_date_to), this.$root.config).then(function (response) {
+      var data = {
+        page: page,
+        product: me.search_product,
+        category_id: me.search_category,
+        brand_id: me.search_brand,
+        quantity_sign: me.search_quantity_sign,
+        quantity: me.search_quantity,
+        expiration_date_from: me.search_expiration_date_from,
+        expiration_date_to: me.search_expiration_date_to,
+        state: me.search_state
+      };
+      axios.get("api/products", {
+        params: data,
+        headers: this.$root.config.headers
+      }).then(function (response) {
         me.ProductList = response.data.products;
         me.TotalProductsList = response.data.total_products;
       })["finally"](function () {
@@ -20841,6 +20856,47 @@ var render = function render() {
       }
     }
   })]), _vm._v(" "), _c("div", {
+    staticClass: "form-group col-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "state"
+    }
+  }, [_vm._v("Estado:")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_state,
+      expression: "search_state"
+    }],
+    staticClass: "custom-select",
+    attrs: {
+      name: "state",
+      id: "state"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.search_state = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "all"
+    }
+  }, [_vm._v("Todos")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "0"
+    }
+  }, [_vm._v("Inactivos")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "1"
+    }
+  }, [_vm._v("Activos")])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group col-3 offset-6"
   }, [_c("button", {
     staticClass: "btn btn-success btn-block",

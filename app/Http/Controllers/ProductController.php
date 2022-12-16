@@ -29,9 +29,7 @@ class ProductController extends Controller
 	{
 		$products = Product::select()
 			// ->selectRaw("DATE_ADD(`expiration_date`, INTERVAL 3 MONTH) as alert_expiration_date")
-			->selectRaw("DATE_ADD(NOW(), INTERVAL 3 MONTH) as alert_expiration_date")
-
-			->where('state', 1);
+			->selectRaw("DATE_ADD(NOW(), INTERVAL 3 MONTH) as alert_expiration_date");
 
 		if ($request->product != '') {
 			$products = $products
@@ -59,6 +57,11 @@ class ProductController extends Controller
 		if ($request->expiration_date_to != '' && $request->expiration_date_to  != null && $request->expiration_date_to  != 0) {
 			$products = $products
 				->where('expiration_date', '<=', "$request->expiration_date_to");
+		}
+
+		if ($request->state != '' && $request->state  != null && $request->state  != 'all') {
+			$products = $products
+				->where('state', "$request->state");
 		}
 
 		$products = $products->orderBy('product', 'asc')->paginate(10);

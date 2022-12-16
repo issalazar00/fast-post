@@ -58,8 +58,6 @@ class PrintOrderController extends Controller
 			} catch (Exception $e) {
 				/* Images not supported on your PHP, or image file not found */
 				//$printer->text($e->getMessage() . "\n");
-				$logo = EscposImage::load('images/logo.jpeg', false);
-				$printer->bitImage($logo);
 			}
 
 			$printer->setTextSize(1, 2);
@@ -86,21 +84,42 @@ class PrintOrderController extends Controller
 			} else {
 				$printer->text($order->id . "\n");        // 
 			}
+			if ($order->state) {
+				$printer->setJustification(Printer::JUSTIFY_CENTER);
+				switch ($order->state) {
+					case '1':
+						$printer->text("Factura suspendida");
+						break;
+					case '2':
+						$printer->text("Facturada");
+						break;
+					case '3':
+						$printer->text("Cotizacion");
+						break;
+					case '5':
+						$printer->text("Credito");
+						break;
+					default:
+					case '1':
+						$printer->text("Factura");
+						break;
+				}
+			}
 			$printer->text("\n-----------------------------------------" . "\n");
-			$printer->text("Cliente: ");
-			$printer->text($order->client->name . $order->client->last_name . "\n");
+			$printer->text(sprintf('%-12s %-28s', 'Cliente', $order->client->name . $order->client->last_nam) . "\n");
 			if ($order->client->type_person) {
-				$printer->text('Tipo de persona: ' . $order->client->type_person . "\n");
+				$printer->text(sprintf('%-12s %-28s', 'Tipo de persona', $order->client->type_person) . "\n");
 			}
 			if ($order->client->document) {
-				$printer->text('Documento: ' . $order->client->type_document . ' '  . $order->client->document . "\n");
+				$printer->text(sprintf('%-12s %-28s', 'Documento', $order->client->type_document = 1 ?? 'CC' . ' '  . $order->client->documen) . "\n");
 			}
 			if ($order->client->address) {
-				$printer->text('Dirección: ' . $order->client->address . "\n");
+				$printer->text(sprintf('%-12s %-28s', 'Dirección',  $order->client->address) . "\n");
 			}
 			if ($order->client->contact) {
-				$printer->text('Contacto: ' . $order->client->contact . "\n");
+				$printer->text(sprintf('%-12s %-28s', 'Contacto', $order->client->contact) . "\n");
 			}
+
 			$printer->text("\n");
 			$printer->setLineSpacing(2);
 			$printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -232,6 +251,31 @@ class PrintOrderController extends Controller
 			$printer->text("Fecha: ");
 			$printer->text(date('Y-m-d h:i:s A') .  "\n");
 			$printer->text("N° compra: " . $billing->id . "\n");
+
+			if ($billing->state) {
+				$printer->setJustification(Printer::JUSTIFY_CENTER);
+
+				switch ($billing->state) {
+					case '1':
+						$printer->text("Factura suspendida \n");
+						break;
+					case '2':
+						$printer->text("Facturada \n");
+						break;
+					case '3':
+						$printer->text("Cotizacion \n");
+						break;
+					case '5':
+						$printer->text("Credito \n");
+						break;
+					default:
+					case '1':
+						$printer->text("Factura \n");
+						break;
+				}
+				$printer->setJustification(Printer::JUSTIFY_LEFT);
+			}
+
 			$printer->text("\n-----------------------------------------" . "\n");
 			$printer->text("Cliente: ");
 			$printer->text($billing->supplier->name . "\n");
