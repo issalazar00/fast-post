@@ -16,7 +16,7 @@ class ClientSeeder extends Seeder
     {
         //
 
-        Client::create(['id' => 1, 'name' => 'Sin cliente', 'type_document' => 1, 'document' => '00000000', 'active' => 1, 'tax' => 1]);
+        Client::create(['id' => 1, 'name' => 'Sin cliente', 'type_document' => 'CC', 'document' => '00000000', 'active' => 1, 'tax' => 1]);
 
         // Client::factory()
         //     ->count(10)

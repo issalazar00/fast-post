@@ -12,13 +12,25 @@
     <div class="page-search mx-2" v-if="!isLoading">
       <div class="form-row">
         <div class="form-group col-md-3">
-          <label for="search_product">Nombre o código de producto</label>
+          <label for="search_product">Nombre de producto</label>
           <input
             type="text"
             class="form-control"
             id="search_product"
-            placeholder="Nombre | Código de barras"
+            placeholder="Nombre  de producto"
             v-model="search_product"
+            autofocus
+            @keyup="listProducts(1)"
+          />
+        </div>
+        <div class="form-group col-md-3">
+          <label for="search_barcode">Código de producto</label>
+          <input
+            type="text"
+            class="form-control"
+            id="search_barcode"
+            placeholder="Código de barras"
+            v-model="search_barcode"
             autofocus
             @keyup="listProducts(1)"
           />
@@ -190,6 +202,7 @@ export default {
   data() {
     return {
       search_product: "",
+      search_barcode : "",
       search_category: 0,
       search_brand: 0,
       search_quantity_sign: ">",
@@ -216,10 +229,25 @@ export default {
   methods: {
     listProducts(page = 1) {
       let me = this;
+
+      let data = {
+        page: page,
+        product: me.search_product,
+        barcode: me.search_barcode,
+        category_id: me.search_category,
+        brand_id: me.search_brand,
+        quantity_sign: me.search_quantity_sign,
+        quantity: me.search_quantity,
+        expiration_date_from: me.search_expiration_date_from,
+        expiration_date_to: me.search_expiration_date_to,
+      }
       axios
         .get(
-          `api/products?page=${page}&product=${me.search_product}&category_id=${me.search_category}&brand_id=${me.search_brand}&quantity_sign=${me.search_quantity_sign}&quantity=${me.search_quantity}&expiration_date_from=${me.search_expiration_date_from}&expiration_date_to=${me.search_expiration_date_to}`,
-          this.$root.config
+          `api/products`,
+          {
+            params: data,
+            headers: this.$root.config.headers
+          }
         )
         .then(function (response) {
           me.ProductList = response.data.products;

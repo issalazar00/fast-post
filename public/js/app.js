@@ -10427,7 +10427,7 @@ __webpack_require__.r(__webpack_exports__);
         no_invoice: "",
         from: "",
         to: "",
-        status: [5, 6]
+        status: "5,6"
       },
       statusOrders: {
         0: "Desechada",
@@ -11920,6 +11920,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       search_product: "",
+      search_barcode: "",
       search_category: 0,
       search_brand: 0,
       search_quantity_sign: ">",
@@ -11948,6 +11949,7 @@ __webpack_require__.r(__webpack_exports__);
       var data = {
         page: page,
         product: me.search_product,
+        barcode: me.search_barcode,
         category_id: me.search_category,
         brand_id: me.search_brand,
         quantity_sign: me.search_quantity_sign,
@@ -12012,6 +12014,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       search_product: "",
+      search_barcode: "",
       search_category: 0,
       search_brand: 0,
       search_quantity_sign: ">",
@@ -12040,7 +12043,21 @@ __webpack_require__.r(__webpack_exports__);
     listProducts: function listProducts() {
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var me = this;
-      axios.get("api/products?page=".concat(page, "&product=").concat(me.search_product, "&category_id=").concat(me.search_category, "&brand_id=").concat(me.search_brand, "&quantity_sign=").concat(me.search_quantity_sign, "&quantity=").concat(me.search_quantity, "&expiration_date_from=").concat(me.search_expiration_date_from, "&expiration_date_to=").concat(me.search_expiration_date_to), this.$root.config).then(function (response) {
+      var data = {
+        page: page,
+        product: me.search_product,
+        barcode: me.search_barcode,
+        category_id: me.search_category,
+        brand_id: me.search_brand,
+        quantity_sign: me.search_quantity_sign,
+        quantity: me.search_quantity,
+        expiration_date_from: me.search_expiration_date_from,
+        expiration_date_to: me.search_expiration_date_to
+      };
+      axios.get("api/products", {
+        params: data,
+        headers: this.$root.config.headers
+      }).then(function (response) {
         me.ProductList = response.data.products;
       });
     },
@@ -20659,7 +20676,7 @@ var render = function render() {
     attrs: {
       "for": "product"
     }
-  }, [_vm._v("Código o nombre de producto")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Nombre de producto")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -20670,7 +20687,7 @@ var render = function render() {
     attrs: {
       type: "text",
       id: "search_product",
-      placeholder: "Nombre | Código de barras",
+      placeholder: "Nombre de producto",
       autofocus: ""
     },
     domProps: {
@@ -20683,6 +20700,38 @@ var render = function render() {
       input: function input($event) {
         if ($event.target.composing) return;
         _vm.search_product = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "form-group col-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "barcode"
+    }
+  }, [_vm._v("Código de barras")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_barcode,
+      expression: "search_barcode"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "search_barcode",
+      placeholder: "Código de barras",
+      autofocus: ""
+    },
+    domProps: {
+      value: _vm.search_barcode
+    },
+    on: {
+      keyup: function keyup($event) {
+        return _vm.listProducts(1);
+      },
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.search_barcode = $event.target.value;
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -21082,7 +21131,7 @@ var render = function render() {
     attrs: {
       "for": "search_product"
     }
-  }, [_vm._v("Nombre o código de producto")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Nombre de producto")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -21093,7 +21142,7 @@ var render = function render() {
     attrs: {
       type: "text",
       id: "search_product",
-      placeholder: "Nombre | Código de barras",
+      placeholder: "Nombre  de producto",
       autofocus: ""
     },
     domProps: {
@@ -21106,6 +21155,38 @@ var render = function render() {
       input: function input($event) {
         if ($event.target.composing) return;
         _vm.search_product = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "form-group col-md-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "search_barcode"
+    }
+  }, [_vm._v("Código de producto")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search_barcode,
+      expression: "search_barcode"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "search_barcode",
+      placeholder: "Código de barras",
+      autofocus: ""
+    },
+    domProps: {
+      value: _vm.search_barcode
+    },
+    on: {
+      keyup: function keyup($event) {
+        return _vm.listProducts(1);
+      },
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.search_barcode = $event.target.value;
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -22604,15 +22685,15 @@ var render = function render() {
     }
   }, [_vm._v("Documento...")]), _vm._v(" "), _c("option", {
     attrs: {
-      value: "1"
+      value: "CC"
     }
   }, [_vm._v("Cédula de ciudadania")]), _vm._v(" "), _c("option", {
     attrs: {
-      value: "2"
+      value: "CE"
     }
   }, [_vm._v("Cédula de extranjería")]), _vm._v(" "), _c("option", {
     attrs: {
-      value: "3"
+      value: "NIT"
     }
   }, [_vm._v("NIT")])])]), _vm._v(" "), _c("input", {
     directives: [{

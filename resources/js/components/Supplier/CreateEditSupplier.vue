@@ -16,9 +16,9 @@
                   <div class="input-group-prepend">
                     <select class="custom-select" id="type_documento" v-model="formSupplier.type_document">
                       <option selected disabled value="">Documento...</option>
-                      <option value="1">Cédula de ciudadania</option>
-                      <option value="2">Cédula de extranjería</option>
-                      <option value="3">NIT</option>
+                      <option value="CC">Cédula de ciudadania</option>
+                      <option value="CE">Cédula de extranjería</option>
+                      <option value="NIT">NIT</option>
                     </select>
                   </div>
                   <input type="text" class="form-control" aria-label="Text input with dropdown button"

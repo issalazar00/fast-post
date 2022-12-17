@@ -105,19 +105,25 @@ class PrintOrderController extends Controller
 						break;
 				}
 			}
+
+			if ($order->client->type_document = 1 || $order->client->type_document = 'CC') {$type_document = 'CC';}
+			if ($order->client->type_document = 2 || $order->client->type_document = 'TI') {$type_document = 'TI';}
+			if ($order->client->type_document = 3 || $order->client->type_document = 'NIT') {$type_document = 'NIT';}
+			if ($order->client->type_document = 4 || $order->client->type_document = 'CE') {$type_document = 'CE';}
+			
 			$printer->text("\n-----------------------------------------" . "\n");
-			$printer->text(sprintf('%-12s %-28s', 'Cliente', $order->client->name . $order->client->last_nam) . "\n");
+			$printer->text(sprintf('%-16s %-25s', 'Cliente:', $order->client->name . $order->client->last_name) . "\n");
 			if ($order->client->type_person) {
-				$printer->text(sprintf('%-12s %-28s', 'Tipo de persona', $order->client->type_person) . "\n");
+				$printer->text(sprintf('%-16s %-25s', 'Tipo de persona:', $order->client->type_person) . "\n");
 			}
 			if ($order->client->document) {
-				$printer->text(sprintf('%-12s %-28s', 'Documento', $order->client->type_document = 1 ?? 'CC' . ' '  . $order->client->documen) . "\n");
+				$printer->text(sprintf('%-16s %-25s', 'Documento:', $type_document . '. '  . $order->client->document) . "\n");
 			}
 			if ($order->client->address) {
-				$printer->text(sprintf('%-12s %-28s', 'Dirección',  $order->client->address) . "\n");
+				$printer->text(sprintf('%-16s %-25s', 'Dirección:',  $order->client->address) . "\n");
 			}
 			if ($order->client->contact) {
-				$printer->text(sprintf('%-12s %-28s', 'Contacto', $order->client->contact) . "\n");
+				$printer->text(sprintf('%-16s %-25s', 'Contacto:', $order->client->contact) . "\n");
 			}
 
 			$printer->text("\n");

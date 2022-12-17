@@ -38,13 +38,25 @@
       <div class="card-body">
         <div class="form-row">
           <div class="form-group col-3">
-            <label for="product">Código o nombre de producto</label>
+            <label for="product">Nombre de producto</label>
             <input
               type="text"
               class="form-control"
               id="search_product"
-              placeholder="Nombre | Código de barras"
+              placeholder="Nombre de producto"
               v-model="search_product"
+              autofocus
+              @keyup="listProducts(1)"
+            />
+          </div>
+          <div class="form-group col-3">
+            <label for="barcode">Código de barras</label>
+            <input
+              type="text"
+              class="form-control"
+              id="search_barcode"
+              placeholder="Código de barras"
+              v-model="search_barcode"
               autofocus
               @keyup="listProducts(1)"
             />
@@ -276,6 +288,7 @@ export default {
   data() {
     return {
       search_product: "",
+      search_barcode: "",
       search_category: 0,
       search_brand: 0,
       search_quantity_sign: ">",
@@ -302,6 +315,7 @@ export default {
       let data = {
         page: page,
         product: me.search_product,
+        barcode: me.search_barcode,
         category_id: me.search_category,
         brand_id: me.search_brand,
         quantity_sign: me.search_quantity_sign,
@@ -313,8 +327,10 @@ export default {
       axios
         .get(
           `api/products`,
-          {params: data,
-            headers:this.$root.config.headers}
+          {
+            params: data,
+            headers: this.$root.config.headers
+          }
         )
         .then(function (response) {
           me.ProductList = response.data.products;

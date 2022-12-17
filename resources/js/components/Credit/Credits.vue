@@ -135,7 +135,7 @@ export default {
 				no_invoice: "",
 				from: "",
 				to: "",
-				status: [5, 6]
+				status: `5,6`
 			},
 			statusOrders: {
 				0: "Desechada",
