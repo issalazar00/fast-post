@@ -10500,8 +10500,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     printTicket: function printTicket(order_id) {
-      var cash = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-      var change = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
       axios.get("api/print-order/".concat(order_id), this.$root.config);
     }
   }
@@ -10520,7 +10518,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _Order_LoadPdf_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Order/LoadPdf.vue */ "./resources/js/components/Order/LoadPdf.vue");
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    LoadPdf: _Order_LoadPdf_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   props: ["order_id"],
   filters: {
     showDate: function showDate(value) {
@@ -10537,6 +10540,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      load_pdf: false,
       creditInformation: {
         client: "",
         payment_credits: []
@@ -10553,6 +10557,44 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("api/orders/".concat(this.order_id), this.$root.config).then(function (response) {
         me.creditInformation = response.data.order_information;
         me.ItemList = response.data.order_details;
+      });
+    },
+    generatePaymentPdf: function generatePaymentPdf() {
+      var _this = this;
+
+      var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      this.load_pdf = true;
+      var data = {
+        payment_id: id
+      };
+      axios.get("api/orders/generatePaymentPdf/".concat(this.order_id), {
+        params: data,
+        headers: this.$root.config.headers
+      }).then(function (response) {
+        var pdf = response.data.pdf;
+        var a = document.createElement("a");
+        a.href = "data:application/pdf;base64," + pdf;
+        a.download = "Credit-".concat(_this.order_id, ".pdf");
+        a.click();
+      })["finally"](function () {
+        _this.load_pdf = false;
+      });
+    },
+    generatePaymentTicket: function generatePaymentTicket() {
+      var _this2 = this;
+
+      var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      this.load_pdf = true;
+      var data = {
+        payment_id: id
+      };
+      axios.get("api/print-payment-ticket/".concat(this.order_id), {
+        params: data,
+        headers: this.$root.config.headers
+      }).then(function (response) {
+        console.log(response);
+      })["finally"](function () {
+        _this2.load_pdf = false;
       });
     }
   }
@@ -11356,7 +11398,7 @@ __webpack_require__.r(__webpack_exports__);
         from: "",
         to: "",
         user_id: "",
-        status: ""
+        status: "1,2"
       },
       statusOrders: [{
         id: 0,
@@ -13425,14 +13467,14 @@ var render = function render() {
     }, [_c("i", {
       staticClass: "bi bi-eye"
     })])], 1), _vm._v(" "), _c("td", [_c("button", {
-      staticClass: "btn",
+      staticClass: "btn text-danger",
       on: {
         click: function click($event) {
           return _vm.generatePdf(o.id);
         }
       }
     }, [_c("i", {
-      staticClass: "bi bi-printer"
+      staticClass: "bi bi-file-earmark-pdf-fill"
     })])]), _vm._v(" "), _vm.$root.validatePermission("billing.update") ? _c("td", [_c("router-link", {
       staticClass: "btn",
       attrs: {
@@ -17010,14 +17052,14 @@ var render = function render() {
     }, [_c("i", {
       staticClass: "bi bi-receipt-cutoff"
     })])]), _vm._v(" "), _c("td", [_c("button", {
-      staticClass: "btn",
+      staticClass: "btn text-danger",
       on: {
         click: function click($event) {
           return _vm.generatePdf(o.id);
         }
       }
     }, [_c("i", {
-      staticClass: "bi bi-printer"
+      staticClass: "bi bi-file-earmark-pdf-fill"
     })])]), _vm._v(" "), _vm.$root.validatePermission("credit.update") ? _c("td", [_c("router-link", {
       staticClass: "btn",
       attrs: {
@@ -17105,17 +17147,63 @@ var render = function render() {
     staticClass: "page-header"
   }, [_c("h4", {
     staticClass: "w-100 text-center"
-  }, [_vm._v("Detalles de Factura")]), _vm._v(" "), _c("table", {
+  }, [_vm._v("Detalles de Factura")]), _vm._v(" "), _c("load-pdf", {
+    attrs: {
+      loading: _vm.load_pdf
+    }
+  }), _vm._v(" "), _c("table", {
     staticClass: "table table-bordered w-100 table-sm"
-  }, [_c("tbody", [_c("tr", [_c("td", [_vm._v("No. Factura")]), _vm._v(" "), _c("th", [_vm._v("\n            " + _vm._s(_vm.creditInformation.no_invoice) + "\n          ")])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Fecha")]), _vm._v(" "), _c("th", [_vm._v("\n            " + _vm._s(_vm.creditInformation.updated_at) + "\n          ")])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Nombres:")]), _vm._v(" "), _c("th", [_vm._v("\n            " + _vm._s(_vm.creditInformation.client.name) + "\n          ")])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Documento / Nit:")]), _vm._v(" "), _c("th", [_vm._v("\n            " + _vm._s(_vm.creditInformation.client.document) + "\n          ")])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Direccion")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.creditInformation.client.address))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Email")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.creditInformation.client.email))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Celular / Télefono")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.creditInformation.client.mobile))])])])]), _vm._v(" "), _c("br"), _vm._v(" "), _c("h4", {
+  }, [_c("tbody", [_c("tr", [_c("td", [_vm._v("No. Factura")]), _vm._v(" "), _c("th", [_vm._v("\n            " + _vm._s(_vm.creditInformation.no_invoice) + "\n          ")])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Fecha")]), _vm._v(" "), _c("th", [_vm._v("\n            " + _vm._s(_vm.creditInformation.updated_at) + "\n          ")])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Nombres:")]), _vm._v(" "), _c("th", [_vm._v("\n            " + _vm._s(_vm.creditInformation.client.name) + "\n          ")])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Documento / Nit:")]), _vm._v(" "), _c("th", [_vm._v("\n            " + _vm._s(_vm.creditInformation.client.document) + "\n          ")])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Direccion")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.creditInformation.client.address))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Email")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.creditInformation.client.email))])]), _vm._v(" "), _c("tr", [_c("td", [_vm._v("Celular / Télefono")]), _vm._v(" "), _c("td", [_vm._v(_vm._s(_vm.creditInformation.client.mobile))])])])]), _vm._v(" "), _c("br"), _vm._v(" "), _c("div", [_c("h4", {
     staticClass: "w-100 text-center"
-  }, [_vm._v("Abonos")]), _vm._v(" "), _c("table", {
+  }, [_vm._v("Lista abonos")]), _vm._v(" "), _c("div", {
+    staticClass: "text-right"
+  }, [_c("button", {
+    staticClass: "btn btn-light text-danger",
+    on: {
+      click: function click($event) {
+        return _vm.generatePaymentPdf(null);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "bi bi-file-earmark-pdf-fill"
+  }), _vm._v(" Descargar PDF\n        ")]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-light",
+    on: {
+      click: function click($event) {
+        return _vm.generatePaymentTicket(null);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "bi bi-receipt-cutoff"
+  }), _vm._v(" Descargar Ticket\n        ")])])]), _vm._v(" "), _c("table", {
     staticClass: "table table-bordered w-100 table-sm"
   }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.creditInformation.payment_credits, function (paidCredit) {
     return _c("tr", {
       key: paidCredit.id
-    }, [_c("td", [_vm._v("$ " + _vm._s(paidCredit.pay))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(paidCredit.created_at))])]);
-  }), 0)])]), _vm._v(" "), _c("section", {
+    }, [_c("td", [_vm._v("$ " + _vm._s(paidCredit.pay))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(paidCredit.created_at))]), _vm._v(" "), _c("td", {
+      staticClass: "text-right"
+    }, [_c("button", {
+      staticClass: "btn text-danger",
+      on: {
+        click: function click($event) {
+          return _vm.generatePaymentPdf(paidCredit.id);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "bi bi-file-earmark-pdf-fill"
+    }), _vm._v(" PDF\n            ")])]), _vm._v(" "), _c("td", {
+      staticClass: "text-right"
+    }, [_c("button", {
+      staticClass: "btn",
+      on: {
+        click: function click($event) {
+          return _vm.generatePaymentTicket(paidCredit.id);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "bi bi-receipt-cutoff"
+    }), _vm._v(" Ticket\n            ")])])]);
+  }), 0)])], 1), _vm._v(" "), _c("section", {
     staticClass: "mt-5"
   }, [_c("h5", {
     staticClass: "text-center"
@@ -17176,7 +17264,7 @@ var staticRenderFns = [function () {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("thead", [_c("tr", [_c("th", [_vm._v("Abono")]), _vm._v(" "), _c("th", [_vm._v("Fecha")])])]);
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Abono")]), _vm._v(" "), _c("th", [_vm._v("Fecha")]), _vm._v(" "), _c("th", [_vm._v("Imprimir PDF")]), _vm._v(" "), _c("th", [_vm._v("Imprimir Ticket")])])]);
 }, function () {
   var _vm = this,
       _c = _vm._self._c;
@@ -19150,14 +19238,14 @@ var render = function render() {
     }, [_c("i", {
       staticClass: "bi bi-receipt"
     })])]), _vm._v(" "), _c("td", [_c("button", {
-      staticClass: "btn",
+      staticClass: "btn text-danger",
       on: {
         click: function click($event) {
           return _vm.generatePdf(o.id);
         }
       }
     }, [_c("i", {
-      staticClass: "bi bi-printer"
+      staticClass: "bi bi-file-earmark-pdf-fill"
     })])]), _vm._v(" "), _c("td", [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(o.user.name) + "\n\t\t\t\t\t\t")]), _vm._v(" "), _c("td", [_c("span", [_c("b", [_vm._v("Creación:")]), _vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(_vm._f("moment")(o.created_at, "DD-MM-YYYY h:mm:ss a")) + "\n\t\t\t\t\t\t\t")]), _vm._v(" "), _c("br"), _vm._v(" "), o.payment_date ? _c("span", [_c("b", [_vm._v("Facturación:")]), _vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(_vm._f("moment")(o.payment_date, "DD-MM-YYYY h:mm:ss a")) + "\n\t\t\t\t\t\t\t")]) : _vm._e()]), _vm._v(" "), _vm.$root.validatePermission("order.update") ? _c("td", [_c("router-link", {
       staticClass: "btn",
       attrs: {
@@ -20643,25 +20731,25 @@ var render = function render() {
   }, [_vm._m(0), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
-    staticClass: "col-md-3"
+    staticClass: "col-sm-6 col-md-4 col-lg-3"
   }, [_c("div", {
     staticClass: "card border border-primary p-2"
   }, [_c("h6", {
     staticClass: "text-uppercase text-secondary"
   }, [_vm._v("Nro. de Productos")]), _vm._v(" "), _c("h2", [_vm._v(_vm._s(_vm.TotalProductsList.number_of_products))])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
+    staticClass: "col-sm-6 col-md-4 col-lg-3"
   }, [_c("div", {
     staticClass: "card border border-primary p-2"
   }, [_c("h6", {
     staticClass: "text-uppercase text-secondary"
   }, [_vm._v("\n              Cant. total de Productos\n            ")]), _vm._v(" "), _c("h2", [_vm._v(_vm._s(_vm.TotalProductsList.quantity_of_products))])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
+    staticClass: "col-sm-6 col-md-4 col-lg-3"
   }, [_c("div", {
     staticClass: "card border border-primary p-2"
   }, [_c("h6", {
     staticClass: "text-uppercase text-secondary"
   }, [_vm._v("Valor de stock")]), _vm._v(" "), _c("h2", [_vm._v(_vm._s(_vm._f("currency")(_vm.TotalProductsList.cost_stock)))])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
+    staticClass: "col-sm-6 col-md-4 col-lg-3"
   }, [_c("div", {
     staticClass: "card border border-primary p-2"
   }, [_c("h6", {

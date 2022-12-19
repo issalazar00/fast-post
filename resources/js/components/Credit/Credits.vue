@@ -91,8 +91,8 @@
 								<button class="btn " @click="printTicket(o.id)"><i class="bi bi-receipt-cutoff"></i> </button>
 							</td>
 							<td>
-								<button class="btn" @click="generatePdf(o.id)">
-									<i class="bi bi-printer"></i>
+								<button class="btn text-danger" @click="generatePdf(o.id)">
+									<i class="bi bi-file-earmark-pdf-fill"></i>
 								</button>
 							</td>
 
@@ -209,7 +209,7 @@ export default {
 					this.load_pdf = false;
 				});
 		},
-		printTicket(order_id, cash = null, change = null) {
+		printTicket(order_id) {
 			axios.get(`api/print-order/${order_id}`, this.$root.config);
 		}
 	}

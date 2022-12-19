@@ -2,6 +2,7 @@
   <div>
     <section class="page-header">
       <h4 class="w-100 text-center">Detalles de Factura</h4>
+      <load-pdf :loading="load_pdf"></load-pdf>
       <table class="table table-bordered w-100 table-sm">
         <tbody>
           <tr>
@@ -46,18 +47,42 @@
         </tbody>
       </table>
       <br>
-      <h4 class="w-100 text-center">Abonos</h4>
+
+      <div>
+        <h4 class="w-100 text-center">Lista abonos</h4>
+        <div class="text-right">
+          <button class="btn btn-light text-danger" @click="generatePaymentPdf(null)">
+            <i class="bi bi-file-earmark-pdf-fill"></i> Descargar PDF
+          </button>
+          <button class="btn btn-light" @click="generatePaymentTicket(null)">
+            <i class="bi bi-receipt-cutoff"></i> Descargar Ticket
+          </button>
+        </div>
+      </div>
+
       <table class="table table-bordered w-100 table-sm">
         <thead>
           <tr>
             <th>Abono</th>
             <th>Fecha</th>
+            <th>Imprimir PDF</th>
+            <th>Imprimir Ticket</th>
           </tr>
         </thead>
         <tbody>
-          <tr  v-for="paidCredit in creditInformation.payment_credits" :key="paidCredit.id">
+          <tr v-for="paidCredit in creditInformation.payment_credits" :key="paidCredit.id">
             <td>$ {{ paidCredit.pay }}</td>
             <td>{{ paidCredit.created_at }}</td>
+            <td class="text-right">
+              <button class="btn text-danger" @click="generatePaymentPdf(paidCredit.id)">
+                <i class="bi bi-file-earmark-pdf-fill"></i> PDF
+              </button>
+            </td>
+            <td class="text-right">
+              <button class="btn" @click="generatePaymentTicket(paidCredit.id)">
+                <i class="bi bi-receipt-cutoff"></i> Ticket
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -127,20 +152,22 @@
 </template>
 
 <script>
+import LoadPdf from '../Order/LoadPdf.vue';
 export default {
+  components: { LoadPdf },
   props: ["order_id"],
   filters: {
-    showDate(value){
+    showDate(value) {
       let date = "";
       let dateText = ""
-      try{
+      try {
         date = new Date(value);
         dateText = value.split('T')[0]
-      }catch(error){
-        
+      } catch (error) {
+
       }
-      
-      return  [
+
+      return [
         dateText,
         `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
       ].join(" ");
@@ -148,6 +175,7 @@ export default {
   },
   data() {
     return {
+      load_pdf: false,
       creditInformation: {
         client: "",
         payment_credits: []
@@ -166,6 +194,46 @@ export default {
         .then(function (response) {
           me.creditInformation = response.data.order_information;
           me.ItemList = response.data.order_details;
+        });
+    },
+    generatePaymentPdf(id = null) {
+      this.load_pdf = true;
+
+      let data = {
+        payment_id: id
+      }
+      axios
+        .get(`api/orders/generatePaymentPdf/${this.order_id}`, {
+          params: data,
+          headers: this.$root.config.headers
+        })
+        .then(response => {
+          const pdf = response.data.pdf;
+          var a = document.createElement("a");
+          a.href = "data:application/pdf;base64," + pdf;
+          a.download = `Credit-${this.order_id}.pdf`;
+          a.click();
+        })
+        .finally(() => {
+          this.load_pdf = false;
+        });
+    },
+    generatePaymentTicket(id = null) {
+      this.load_pdf = true;
+
+      let data = {
+        payment_id: id
+      }
+      axios
+        .get(`api/print-payment-ticket/${this.order_id}`, {
+          params: data,
+          headers: this.$root.config.headers
+        })
+        .then(response => {
+          console.log(response);
+        })
+        .finally(() => {
+          this.load_pdf = false;
         });
     },
   },

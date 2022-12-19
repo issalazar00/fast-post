@@ -23,7 +23,7 @@ class OrderController extends Controller
 
 	public function __construct()
 	{
-		$this->middleware('can:order.index')->only('index', 'generatePdf');
+		$this->middleware('can:order.index')->only('index', 'generatePdf','generatePaymentPdf');
 		$this->middleware('can:order.store')->only('store', 'creditByClient', 'payCreditByClient');
 		$this->middleware('can:order.update')->only('update');
 		$this->middleware('can:order.delete')->only('destroy');
@@ -42,7 +42,7 @@ class OrderController extends Controller
 		$today = date('Y-m-d');
 		$from = $request->from;
 		$to = $request->to;
-		
+
 		$status = $request->status ?? $request->status;
 
 		$orders = Order::whereHas('client', function (Builder $query) use ($request) {
@@ -429,6 +429,42 @@ class OrderController extends Controller
 		}
 
 		$pdf = PDF::loadView('templates.order', $data);
+
+		$pdf = $pdf->download('prueba.pdf');
+
+		$data = [
+			'status' => 200,
+			'pdf' => base64_encode($pdf),
+			'message' => 'Orden generada en pdf'
+		];
+
+		return response()->json($data);
+	}
+
+	public function generatePaymentPdf(Order $order, Request $request)
+	{
+
+		$payment_id = $request->payment_id;
+
+		$data = [
+			'creditInformation' => $order,
+			'orderDetails' => $order->detailOrders()->get(),
+			'user' => $order->user()->first(),
+			'configuration' => Configuration::first(),
+			'payment_id' => $payment_id,
+			'url' => URL::to('/'),
+			'consecutiveBox' => $order->consecutiveBox()
+		];
+
+		if ($data['consecutiveBox']) {
+
+			$from_date = Carbon::createFromFormat('Y-m-d', $data['consecutiveBox']->from_date);
+			$until_date = Carbon::createFromFormat('Y-m-d', $data['consecutiveBox']->until_date);
+
+			$data['consecutive_expires'] = "Vence: " . $until_date->toDateString() . " Meses Vig. :  " . ($until_date->month - $from_date->month);
+		}
+
+		$pdf = PDF::loadView('templates.payments-credit', $data);
 
 		$pdf = $pdf->download('prueba.pdf');
 

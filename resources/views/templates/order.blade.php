@@ -86,7 +86,7 @@
     @endif
     <section>
         <div>
-            <h4 class="text-center">Factura   {{ $orderInformation->bill_number }}</h4>
+            <h4 class="text-center">Factura {{ $orderInformation->bill_number }}</h4>
             <table class="table">
                 <tbody>
                     <tr>
@@ -122,6 +122,31 @@
                 </tbody>
             </table>
         </div>
+
+        @if ( count($orderInformation->paymentCredits) )
+
+        <div class="detail">
+            <h4 class="text-center">Abonos</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Abono</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    @foreach ( $orderInformation->paymentCredits as $key => $i)
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td>$ {{ $i->pay }}</td>
+                        <td>{{ $i->created_at }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @endif
         <div class="detail">
             <h4 class="text-center">Detalles</h4>
             <table class="table">
@@ -168,6 +193,20 @@
                             $ {{ $orderInformation->total_iva_inc }}
                         </th>
                     </tr>
+                    @if ( count($orderInformation->paymentCredits) )
+                    <tr>
+                        <td colspan="6">Abono</td>
+                        <th class="text-right">
+                            $ {{ $creditInformation->paid_payment }}
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="6">Saldo</td>
+                        <th class="text-right">
+                            $ {{ $creditInformation->total_iva_inc - $creditInformation->paid_payment}}
+                        </th>
+                    </tr>
+                    @endif
                 </tfoot>
             </table>
         </div>

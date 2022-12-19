@@ -105,8 +105,8 @@
 								</router-link>
 							</td>
 							<td>
-								<button class="btn" @click="generatePdf(o.id)">
-									<i class="bi bi-printer"></i>
+								<button class="btn text-danger" @click="generatePdf(o.id)">
+									<i class="bi bi-file-earmark-pdf-fill"></i>
 								</button>
 							</td>
 							<td v-if="$root.validatePermission('billing.update')">

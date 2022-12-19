@@ -55,7 +55,9 @@ Route::middleware('auth:api')->group(function () {
 	Route::resource('/brands', BrandController::class);
 
 	Route::get('/print-order/{id}', [PrintOrderController::class, 'printTicket'])->middleware('can:order.index');
+	Route::get('/print-payment-ticket/{order}', [PrintOrderController::class, 'printPaymentTicket'])->middleware('can:order.index');
 	Route::get('/orders/generatePdf/{order}', [OrderController::class, 'generatePdf']);
+	Route::get('/orders/generatePaymentPdf/{order}', [OrderController::class, 'generatePaymentPdf']);
 	Route::resource('/orders',  OrderController::class);
 	Route::resource('/order-details', DetailOrderController::class);
 

@@ -6,13 +6,13 @@
           <h3>Productos</h3>
         </div>
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="card border border-primary p-2">
               <h6 class="text-uppercase text-secondary">Nro. de Productos</h6>
               <h2>{{ TotalProductsList.number_of_products }}</h2>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="card border border-primary p-2">
               <h6 class="text-uppercase text-secondary">
                 Cant. total de Productos
@@ -20,13 +20,13 @@
               <h2>{{ TotalProductsList.quantity_of_products }}</h2>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="card border border-primary p-2">
               <h6 class="text-uppercase text-secondary">Valor de stock</h6>
               <h2>{{ TotalProductsList.cost_stock | currency }}</h2>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="card border border-primary p-2">
               <h6 class="text-uppercase text-secondary">Valor de venta</h6>
               <h2>{{ TotalProductsList.cost_sale | currency }}</h2>

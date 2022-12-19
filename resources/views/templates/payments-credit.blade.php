@@ -138,59 +138,6 @@
                         <td>Celular / Télefono</td>
                         <td>{{ $creditInformation->client->mobile }}</td>
                     </tr>
-                </tbody>
-            </table>
-        </div>
-        <br>
-        <div class="detail">
-            <h4 class="text-center">Abonos</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Abono</th>
-                        <th>Fecha</th>
-                    </tr>
-                </thead>
-                <tbody class="">
-                    @foreach ( $creditInformation->paymentCredits as $key => $i)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>$ {{ $i->pay }}</td>
-                        <td>{{ $i->created_at }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div class="detail">
-            <h4 class="text-center">Detalles</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Código de barras</th>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio con IVA</th>
-                        <th>Descuento $</th>
-                        <th>Precio Total</th>
-                    </tr>
-                </thead>
-                <tbody class="">
-                    @foreach ( $creditDetails as $key => $i)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $i->barcode }}</td>
-                        <td>{{ $i->product }}</td>
-                        <td>{{ $i->quantity }}</td>
-                        <td>$ {{ $i->price_tax_inc }}</td>
-                        <td>$ {{ $i->discount_price }}</td>
-                        <td class="text-right">$ {{ $i->price_tax_inc_total }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                <tfoot class="table-secondary">
                     <tr>
                         <td colspan="6">Subtotal</td>
                         <td class="text-right">
@@ -221,9 +168,40 @@
                             $ {{ $creditInformation->total_iva_inc - $creditInformation->paid_payment}}
                         </th>
                     </tr>
-                </tfoot>
+                </tbody>
             </table>
         </div>
+        <br>
+        <div class="detail">
+            <h4 class="text-center">Abonos</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Abono</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    @foreach ( $creditInformation->paymentCredits as $key => $i)
+                    <tr>
+                        @if (!$payment_id)
+                        <td>{{ $key + 1 }}</td>
+                        <td>$ {{ $i->pay }}</td>
+                        <td>{{ $i->created_at }}</td>
+                        @endif
+                        @if ($payment_id && $payment_id == $i->id)
+                        <td>{{ $key + 1 }}</td>
+                        <td>$ {{ $i->pay }}</td>
+                        <td>{{ $i->created_at }}</td>
+                        @endif
+
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
     </section>
     @if ($configuration)
     <br>

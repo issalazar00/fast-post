@@ -88,8 +88,8 @@
 								</button>
 							</td>
 							<td>
-								<button class="btn" @click="generatePdf(o.id)">
-									<i class="bi bi-printer"></i>
+								<button class="btn text-danger" @click="generatePdf(o.id)">
+									<i class="bi bi-file-earmark-pdf-fill"></i>
 								</button>
 							</td>
 
@@ -156,7 +156,7 @@ export default {
 				from: "",
 				to: "",
 				user_id: "",
-				status: "",
+				status: `1,2`,
 			},
 			statusOrders: [
 				{ id: 0, status: "Desechada" },
