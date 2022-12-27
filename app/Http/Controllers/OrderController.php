@@ -167,7 +167,7 @@ class OrderController extends Controller
 		if ($request->state == 4 || $request->state == 6) {
 			$print->printTicket($order->id, $request->cash, $request->change);
 		} else {
-			// $print->openBox();
+			$print->openBox();
 		}
 
 		return $order->id;
