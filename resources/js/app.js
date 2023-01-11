@@ -10,6 +10,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { VueSpinners } from '@saeris/vue-spinners'
 import vSelect from 'vue-select'
+import JsonExcel from "vue-json-excel";
 import 'vue-select/dist/vue-select.css';
 import { dollarFilter } from './filters';
 
@@ -70,12 +71,14 @@ import Swal from "sweetalert2";
 Vue.use(VueRouter)
 Vue.use(VueSpinners)
 Vue.use(CKEditor)
+Vue.use(require('vue-moment'));
 
 Vue.filter('currency', dollarFilter)
 
 Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component("downloadExcel", JsonExcel);
 Vue.component('v-select', vSelect)
-Vue.use(require('vue-moment'));
+
 window.Swal = Swal;
 
 const routes = [
