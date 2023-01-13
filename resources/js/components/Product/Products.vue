@@ -133,6 +133,17 @@
               <option value="1">Activos</option>
             </select>
           </div>
+          <div class="form-group col-3">
+            <label for="no_results">Valor de Cantidad:</label>
+            <input
+              type="number"
+              step="any"
+              class="form-control"
+              id="search_no_results"
+              placeholder="Cantidad"
+              v-model="search_no_results"
+            />
+          </div>
           <div class="form-group col-3 offset-6">
             <button class="btn btn-success btn-block" @click="listProducts(1)">
               Buscar <i class="bi bi-search"></i>
@@ -143,6 +154,10 @@
           class="row justify-content-end"
           v-if="$root.validatePermission('product.store')"
         >
+        <download-excel class="btn btn-outline-success mr-2" :fields="json_fields" :data="ProductList.data"
+						name="product-list.xls" type="xls">
+						<i class="bi bi-file-earmark-arrow-down-fill"></i> Exportar selección
+					</download-excel>
           <button
             type="button"
             class="btn btn-outline-primary mr-2"
@@ -296,12 +311,92 @@ export default {
       search_expiration_date_from: "",
       search_expiration_date_to: "",
       search_state: 1,
+      search_no_results:20,
       isLoading: false,
       ProductList: {},
       TotalProductsList: {},
       categoryList: [],
       brandList: [],
       now: new Date().toISOString().slice(0, 10),
+      json_fields: {
+				'Código': {
+					field: 'barcode',
+					callback: (value) => {
+						return value;
+					}
+				},
+				'Producto': {
+					field: 'product',
+					callback: (value) => {
+						return value;
+					}
+				},
+				'P. Costo': {
+					field: 'cost_price_tax_inc',
+					callback: (value) => {
+						return value;
+					}
+				},
+				'P. Venta': {
+					field: 'sale_price_tax_inc',
+					callback: (value) => {
+						return value;
+					}
+				},
+				'P. Mayoreo': {
+					field: 'wholesale_price_tax_inc',
+					callback: (value) => {
+						return value;
+					}
+				},
+				'Existencia': {
+					field: 'quantity',
+					callback: (value) => {
+						return value;
+					}
+				},
+				'Inventario Mínimo': {
+					field: 'minimum',
+					callback: (value) => {
+						return value;
+					}
+				},
+        'Inventario Máximo': {
+					field: 'maximum',
+					callback: (value) => {
+						return value;
+					}
+				},
+				'Tipo venta': {
+					field: 'type',
+					callback: (value) => {
+						if (value ==1) {
+              return 'UNIDAD'
+            }
+            if (value ==2) {
+              return 'GRANEL'
+            }
+					}
+				},
+				'IVA': {
+					field: 'tax.percentage',
+					callback: (value) => {
+						return value;
+					}
+				},
+				'Departamento': {
+					field: 'category.name',
+					callback: (value) => {
+						return value;
+					}
+				},
+        'Marca': {
+					field: 'brand.name',
+					callback: (value) => {
+						return value;
+					}
+				},
+			}
     };
   },
   created() {
@@ -322,7 +417,8 @@ export default {
         quantity: me.search_quantity,
         expiration_date_from: me.search_expiration_date_from,
         expiration_date_to: me.search_expiration_date_to,
-        state: me.search_state
+        state: me.search_state,
+        no_results: me.search_no_results,
       }
       axios
         .get(

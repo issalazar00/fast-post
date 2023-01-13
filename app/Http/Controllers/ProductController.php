@@ -27,6 +27,7 @@ class ProductController extends Controller
 	 */
 	public function index(Request $request)
 	{
+		$no_results = $request->no_results ?? 10;
 		$products = Product::select()
 			// ->selectRaw("DATE_ADD(`expiration_date`, INTERVAL 3 MONTH) as alert_expiration_date")
 			->selectRaw("DATE_ADD(NOW(), INTERVAL 3 MONTH) as alert_expiration_date");
@@ -67,7 +68,7 @@ class ProductController extends Controller
 				->where('state', "$request->state");
 		}
 
-		$products = $products->orderBy('product', 'asc')->paginate(10);
+		$products = $products->orderBy('product', 'asc')->paginate($no_results);
 
 		$total_products = new ReportController();
 		$total_products = $total_products->reportTotalProducts($request);
