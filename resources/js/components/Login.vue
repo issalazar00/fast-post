@@ -1,50 +1,115 @@
-<template>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-8 col-lg-6">
-        <h2 class="text-center py-2">¡INICIAR SESION!</h2>
-        <div class="row">
-          <div class="d-none d-md-block col-6 text-center">
-            <img class="img-fluid" src="https://picsum.photos/200/300" alt="" />
+<template >
+  <div id="login">
+    <div id="logo">
+      <h1> BIENVENIDOS A TECNOPLUS</h1>
+    </div>
+    <div class="stark-login">
+      <form id="form_login" autocomplete="off" @submit.prevent="login">
+        <div id="fade-box" class="px-5">
+          <div class="form-group">
+            <label class="w-100 text-left" for="exampleInputUsername1">Usuario o email</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              aria-describedby="usernameHelp"
+              name="username"
+              placeholder="Ingresar username"
+              required
+              v-model="formValues.username"
+            />
+            <small id="usernameHelp" class="form-text text-danger">{{
+              formErrors.username
+            }}</small>
           </div>
-          <div class="col-6">
-            <form id="form_login" autocomplete="off" @submit.prevent="login">
-              <div class="form-group">
-                <label for="exampleInputUsername1">Usuario o email</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="username"
-                  aria-describedby="usernameHelp"
-                  name="username"
-                  placeholder="Ingresar username"
-                  required
-                  v-model="formValues.username"
-                />
-                <small id="usernameHelp" class="form-text text-danger">{{
-                  formErrors.username
-                }}</small>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Contraseña</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  aria-describedby="passwordHelp"
-                  name="password"
-                  placeholder="Ingresar contraseña"
-                  required
-                  v-model="formValues.password"
-                />
-                <small id="passwordHelp" class="form-text text-danger">{{
-                  formErrors.password
-                }}</small>
-              </div>
-              <button type="submit" class="btn btn-primary">Acceder</button>
-            </form>
+          <div class="form-group">
+            <label class="w-100 text-left" for="exampleInputPassword1">Contraseña</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              aria-describedby="passwordHelp"
+              name="password"
+              placeholder="Ingresar contraseña"
+              required
+              v-model="formValues.password"
+            />
+            <small id="passwordHelp" class="form-text text-danger">{{
+              formErrors.password
+            }}</small>
           </div>
+          <button type="submit" class="btn btn-primary">Acceder</button>
         </div>
+      </form>
+      <div class="hexagons">
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <br />
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <br />
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+
+        <br />
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <br />
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+        <span>&#x2B22;</span>
+      </div>
+    </div>
+    <div id="circle1">
+      <div id="inner-cirlce1">
+        <h2></h2>
       </div>
     </div>
   </div>
@@ -53,6 +118,7 @@
 <script>
 //Services
 import global from "./../services/global.js";
+// import "./../../sass/_login.scss";
 
 export default {
   name: "Login",
@@ -119,3 +185,6 @@ export default {
   },
 };
 </script>
+
+<style src="./../../sass/_login.scss" scoped lang="scss">
+</style>
