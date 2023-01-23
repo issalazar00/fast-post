@@ -309,13 +309,23 @@
                   />
                 </th>
               </tr>
-              <tr class="">
+              <!-- <tr class="">
                 <th colspan="7">Fecha de pago:</th>
                 <th>
                   <input
                     type="datetime-local"
                     v-model="order.payment_date"
                     autocomplete=""
+                  />
+                </th>
+              </tr> -->
+               <tr class="">
+                <th colspan="7">Observaciones:</th>
+                <th>
+                  <input
+                    type="text"
+                    v-model="order.observations"
+                    autocomplete="on"
                   />
                 </th>
               </tr>

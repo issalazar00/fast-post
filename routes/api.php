@@ -19,6 +19,7 @@ use App\Http\Controllers\BoxController;
 use App\Http\Controllers\DetailBillingController;
 use App\Http\Controllers\PrintOrderController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ZoneController;
 use App\Models\Configuration;
 use Illuminate\Support\Facades\Route;
 
@@ -117,4 +118,6 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/boxes/{box}/consecutiveAll', [BoxController::class, 'consecutiveAllByBox'])->middleware('can:box.index');
 	Route::get('/boxes/{box}/getAssignUserByBox', [BoxController::class, 'getAssignUserByBox'])->middleware('can:box.index');
 	Route::post('/boxes/{box}/toAssignUserByBox', [BoxController::class, 'toAssignUserByBox'])->middleware('can:box.store');
+
+	Route::resource('/zones', ZoneController::class);
 });

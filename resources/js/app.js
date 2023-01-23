@@ -40,6 +40,7 @@ import CreateEditSupplier from './components/Supplier/CreateEditSupplier.vue'
 import Orders from './components/Order/Orders.vue'
 import DetailsOrder from './components/Order/DetailsOrder.vue'
 import CreateEditOrder from './components/Order/CreateEditOrder.vue'
+import CreateEditOrderMobile from './components/Order/CreateEditOrderMobile.vue'
 
 import Billings from './components/Billing/Billings.vue'
 import DetailsBilling from './components/Billing/DetailsBilling.vue'
@@ -59,6 +60,7 @@ import Roles from './components/Rol/Roles.vue';
 import Users from './components/User/Users.vue';
 import Configuration from './components/Configuration.vue';
 import Profile from './components/Profile.vue';
+import Zones from './components/Zone/Zones.vue'
 
 //Services
 import global from './services/global.js';
@@ -106,6 +108,7 @@ const routes = [
   { path: '/orders', component: Orders, alias: "order.index" },
   { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order', alias: "order.index" },
   { path: '/create-edit-order/:order_id', component: CreateEditOrder, props: true, name: 'create-edit-order', alias: "order.store" },
+  { path: '/create-edit-order-mobile/:order_id', component: CreateEditOrderMobile, props: true, name: 'create-edit-order-mobile', alias: "order.store" },
 
   { path: '/billings', component: Billings, alias: "billing.index" },
   { path: '/billings/:billing_id/details-billing', component: DetailsBilling, props: true, name: 'details-billing', alias: "billing.index" },
@@ -115,7 +118,7 @@ const routes = [
   { path: '/reports/report-general-sales', component: ReportGeneralSales, props: true, name: 'report-general-sales' },
   { path: '/reports/report-product-sales', component: ReportProductSales, props: true, name: 'report-product-sales' },
 
-  { path: '/boxes', component: Boxes, alias: 'category.index' },
+  { path: '/boxes', component: Boxes, alias: 'box.index' },
 
   { path: '/credits', component: Credits, alias: "credit.index" },
   { path: '/credits/:order_id/details-credit', component: DetailsCredit, props: true, name: 'details-credit', alias: "credit.index" },
@@ -126,6 +129,7 @@ const routes = [
   { path: '/users', name: 'Users', component: Users, alias: "user.index" },
   { path: '/configuration', name: 'Configuration', component: Configuration, alias: "configuration" },
   { path: '/profile', name: 'Profile', component: Profile },
+  { path: '/zones', component: Zones, name: 'Zone', alias: 'category.index' },
 
   { path: '**', name: 'NoFound', component: NoFound },
 

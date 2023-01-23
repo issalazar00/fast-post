@@ -207,6 +207,30 @@
                   }}</small>
                 </div>
                 <div class="form-group col-6">
+                  <label for="zone_id">Zona</label>
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary ml-3"
+                    data-toggle="modal"
+                    data-target="#zoneModal"
+                    @click="
+                      $refs.CreateEditCategory.ResetData(), (edit = false)
+                    "
+                    v-if="$root.validatePermission('zone.store')"
+                  >
+                    Crear Categoria
+                  </button>
+                  <v-select
+                    :options="zoneList"
+                    label="name"
+                    :reduce="(zone) => zone.id"
+                    v-model="formProduct.zone_id"
+                  />
+                  <small id="zone_idHelp" class="form-text text-danger">{{
+                    formErrors.zone_id
+                  }}</small>
+                </div>
+                <div class="form-group col-6">
                   <label for="brand_id">Marca</label>
                   <button
                     type="button"
@@ -584,6 +608,53 @@
         </div>
       </div>
     </div>
+
+    <div
+      class="modal fade"
+      id="zoneModal"
+      tabindex="-1"
+      aria-labelledby="zoneModalLabel"
+      aria-hidden="true"
+      data-backdrop="static"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="zoneModalLabel">Zona</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <create-edit-zone
+              ref="CreateEditZone"
+              @list-categories="listZones(1)"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="closeModal()"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="SaveZone()"
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -593,6 +664,7 @@ import AddProductKit from "./AddProductKit.vue";
 import CreateEditCategory from "../Category/CreateEditCategory.vue";
 import CreateEditBrand from "../Brand/CreateEditBrand.vue";
 import CreateEditTax from "../Tax/CreateEditTax.vue";
+import CreateEditZone from "../Zone/CreateEditZone.vue";
 
 export default {
   data() {
@@ -615,6 +687,7 @@ export default {
         wholesale_price_tax_inc: 0.0,
         category_id: 0,
         brand_id: 0,
+        zone_id: 0,
         stock: 0,
         minimum: 0.0,
         quantity: 0.0,
@@ -625,6 +698,7 @@ export default {
       taxList: [],
       categoryList: [],
       brandList: [],
+      zoneList: [],
       formErrors: {
         barcode: "",
         product: "",
@@ -643,6 +717,7 @@ export default {
         state: 1,
         category_id: "",
         tax_id: "",
+        zone_id: "",
         brand_id: "",
         expiration_date: "",
       },
@@ -653,6 +728,7 @@ export default {
     CreateEditCategory,
     CreateEditBrand,
     CreateEditTax,
+    CreateEditZone
   },
   computed: {
     gain: function () {
@@ -715,6 +791,14 @@ export default {
         .get("api/categories/category-list?page=1", me.$root.config)
         .then(function (response) {
           me.categoryList = response.data.categories;
+        });
+    },
+    listZones() {
+      let me = this;
+      axios
+        .get("api/zones/zone-list?page=1", me.$root.config)
+        .then(function (response) {
+          me.zoneList = response.data.zones;
         });
     },
     OpenEditProduct(product) {
@@ -786,6 +870,9 @@ export default {
     SaveTax: function () {
       this.$refs.CreateEditTax.CreateTax();
     },
+    SaveZone: function () {
+      this.$refs.CreateEditZone.CreateZone();
+    },
     uploadTax(tax_id) {
       let result = 0.0;
       if (tax_id > 0) {
@@ -849,6 +936,7 @@ export default {
         "maximum",
         "state",
         "category_id",
+        "zone_id",
         "tax_id",
         "brand_id",
         "expiration_date",
@@ -874,6 +962,7 @@ export default {
     this.listTaxes();
     this.listCategories();
     this.listBrands();
+    this.listZones();
   },
 
   mounted() {},

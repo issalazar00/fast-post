@@ -56,4 +56,9 @@ class Product extends Model
     {
         return $this->belongsTo(Tax::class, 'tax_id');
     }
+
+    public function zone()
+    {
+        return $this->belongsTo(Zone::class, 'zone_id');
+    }
 }

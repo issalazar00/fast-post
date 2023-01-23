@@ -48,6 +48,10 @@ class ProductController extends Controller
 			$products = $products
 				->where('brand_id', "$request->brand_id");
 		}
+		if ($request->zone_id != '' && $request->zone_id  != null && $request->zone_id  != 0) {
+			$products = $products
+				->where('zone_id', "$request->zone_id");
+		}
 		if ($request->quantity_sign) {
 			$products = $products
 				->where('quantity', "$request->quantity_sign", "$request->quantity");
@@ -106,6 +110,7 @@ class ProductController extends Controller
 			'category_id' => 'required|integer|exists:categories,id',
 			'tax_id' => 'required|integer|exists:taxes,id',
 			'brand_id' => 'nullable|integer|exists:brands,id',
+			'zone_id' => 'nullable|integer|exists:zones,id',
 			'product' => 'required|string|min:3|max:100',
 			'barcode' => 'required|string|unique:products',
 			'type' => 'required|integer',
@@ -216,6 +221,7 @@ class ProductController extends Controller
 			'category_id' => 'required|integer|exists:categories,id',
 			'tax_id' => 'required|integer|exists:taxes,id',
 			'brand_id' => 'nullable|integer|exists:brands,id',
+			'zone_id' => 'nullable|integer|exists:zones,id',
 			'product' => 'required|string|min:3|max:100',
 			'barcode' => ['required', 'string', Rule::unique('products')->ignore($product->barcode, 'barcode')],
 			'type' => 'required|integer',
@@ -251,6 +257,7 @@ class ProductController extends Controller
 			$product->category_id = $p['category_id'];
 			$product->tax_id = $p['tax_id'];
 			$product->brand_id = $p['brand_id'];
+			$product->zone_id = $p['zone_id'];
 			$product->expiration_date = $p['expiration_date'];
 			$product->save();
 

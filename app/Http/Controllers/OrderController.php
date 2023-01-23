@@ -121,6 +121,7 @@ class OrderController extends Controller
 		$order->total_iva_exc = $request->total_tax_exc;
 		$order->total_discount = $request->total_discount;
 		$order->total_cost_price_tax_inc = $request->total_cost_price_tax_inc;
+		$order->observations = $request->observations;
 		$order->payment_methods = ($request->payment_methods);
 		$order->box_id = $box->id;
 		$order->bill_number = $bill_number;
@@ -166,7 +167,10 @@ class OrderController extends Controller
 		$print = new PrintOrderController();
 		if ($request->state == 4 || $request->state == 6) {
 			$print->printTicket($order->id, $request->cash, $request->change);
-		} else {
+		} else if($request->state == 6 ){
+			$print->printTicketRecently($order->id);
+
+		} else{
 			$print->openBox();
 		}
 
@@ -216,6 +220,7 @@ class OrderController extends Controller
 		$order->total_iva_exc = $request->total_tax_exc;
 		$order->total_cost_price_tax_inc = $request->total_cost_price_tax_inc;
 		$order->total_discount = $request->total_discount;
+		$order->observations = $request->observations;
 		$order->payment_methods = ($request->payment_methods);
 		if ($order->state == 3) {
 			$order->bill_number = $bill_number;

@@ -66,6 +66,10 @@
 		<router-link class="nav-link " active-class="active" to="/orders"><i class="bi bi-receipt"></i><span>Ordenes</span>
 		</router-link>
 	</li>
+	<li class="nav-item" v-if="validatePermission('order.index')">
+		<router-link class="nav-link " active-class="active" to="/create-edit-order-mobile/0"><i class="bi bi-receipt"></i><span>Crear orden </span>
+		</router-link>
+	</li>
 	<li class="nav-item" v-if="validatePermission('credit.index')">
 		<router-link class="nav-link " active-class="active" to="/credits"><i
 				class="bi bi-receipt"></i><span>Créditos</span>
@@ -138,6 +142,7 @@
 				<router-link class="collapse-item" v-if="validatePermission('user.index')" to="/users">Usuarios
 				</router-link>
 				<router-link class="collapse-item" v-if="validatePermission('box.index')" to="/boxes">Cajas</router-link>
+				<router-link class="collapse-item" v-if="validatePermission('category.index')" to="/zones">Zonas</router-link>
 			</div>
 		</div>
 	</li>
