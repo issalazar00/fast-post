@@ -86,7 +86,7 @@
 								<td class="barcode">{{ p.barcode }}</td>
 								<td>{{ p.product }}</td>
 								<td>
-									<input type="number" name="quantity" id="quantity" step="2" placeholder="Cantidad"
+									<input type="number" name="quantity" id="quantity" step="any" placeholder="Cantidad"
 										class="form-control form-control-sm" v-model="p.quantity" style="max-width: 60px" />
 								</td>
 								<td>

@@ -2,7 +2,7 @@
   <div class="row px-2" id="create-edit-order">
     <div class="col-12 justify-content-center p-2">
       <div
-        class="sticky-top mb-2 text-uppercase w-50"
+        class="sticky-top mb-2 text-uppercase w-md-50 w-100"
         style="z-index: 1022; left: 100%"
       >
         <table class="table table-borderless">
@@ -109,18 +109,13 @@
               table table-sm table-responsive-sm table-bordered table-hover
             "
           >
-            <thead
-              class="bg-secondary text-white position-sticky sticky-top"
-              style="top: 4rem"
-            >
+            <thead class="bg-secondary text-white" style="top: 4rem">
               <tr>
                 <th></th>
                 <th>Código</th>
                 <th>Producto</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
-                <th>Descuento %</th>
-                <th>Descuento $</th>
                 <th>Total</th>
               </tr>
             </thead>
@@ -138,16 +133,42 @@
                 <td>{{ p.barcode }}</td>
                 <td>{{ p.product }}</td>
                 <td>
-                  <input
-                    type="number"
-                    name="quantity"
-                    id="quantity"
-                    step="2"
-                    placeholder="Cantidad"
-                    class="form-control form-control-sm"
-                    v-model="p.quantity"
-                    style="max-width: 60px"
-                  />
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <button
+                        class="btn btn-danger"
+                        type="button"
+                        id="button-addon1"
+                        @click="p.quantity -= 1"
+                      >
+                        -
+                      </button>
+                    </div>
+
+                    <input
+                      type="number"
+                      name="quantity"
+                      id="quantity"
+                      step="any"
+                      placeholder="Cantidad"
+                      class="form-control"
+                      v-model="p.quantity"
+                      size="6"
+                      pattern="[0-9]+"
+                      style="min-width: 60px"
+                    />
+                    <div class="input-group-prepend">
+                      <button
+                        class="btn btn-success"
+                        type="button"
+                        id="button-addon1"
+                        @click="p.quantity += 1"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
                   <span class="hidden d-none">
                     {{
                       (p.cost_price_tax_inc_total =
@@ -161,44 +182,14 @@
                     name="price"
                     id="price"
                     step="any"
+                    disabled
                     placeholder="Cantidad"
                     v-model="p.price_tax_inc"
-                    class="form-control form-control-sm"
+                    class="form-control"
                     style="max-width: 100px"
                   />
                 </td>
-                <td>
-                  <input
-                    type="number"
-                    name="discount_percentage"
-                    id="discount_percentage"
-                    step="any"
-                    placeholder="Descuento"
-                    class="form-control form-control-sm"
-                    v-model="p.discount_percentage"
-                    style="max-width: 60px"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    class="form-control form-control-sm"
-                    name="discount_price"
-                    id="discount_price"
-                    step="2"
-                    placeholder="Descuento"
-                    disabled
-                    :value="
-                      (p.discount_price = (
-                        p.quantity *
-                        p.price_tax_inc *
-                        (p.discount_percentage / 100)
-                      ).toFixed(0))
-                    "
-                    readonly
-                    style="max-width: 100px"
-                  />
-                </td>
+
                 <td>
                   $
                   {{
@@ -369,8 +360,6 @@
           >
             <i class="bi bi-clock-fill"></i> Suspender
           </button>
-
-
         </div>
       </div>
     </div>
@@ -693,5 +682,16 @@ export default {
 <style scoped>
 #create-edit-order {
   font-size: 1rem;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>

@@ -134,7 +134,7 @@
             </select>
           </div>
           <div class="form-group col-3">
-            <label for="no_results">Valor de Cantidad:</label>
+            <label for="no_results">Mostrar {{search_no_results }} resultados por página:</label>
             <input
               type="number"
               step="any"

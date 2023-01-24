@@ -378,18 +378,23 @@ class ProductController extends Controller
 	{
 
 		$products = Product::select();
-		if (!$request->product || $request->product == '' || $request->product == NULL) {
-			$products = $products->where('state', 1)
-				->limit(5);
-		} else {
+
+		if ($request->product) {
 			$products = $products
 				->where('state', 1)
 				->where('barcode', 'LIKE', "%$request->product%")
 				->orWhere('product', 'LIKE', "%$request->product%");
-			// ->limit(5)
 		}
+
+		if ($request->category_id) {
+			$products = $products
+				->where('category_id', $request->category_id);
+		}
+		
 		if ($request->is_order) {
-			$products = $products->where('quantity', '>', 0);
+			$products = $products->where('state', 1)
+				->where('quantity', '>', 0)
+				->limit(5);
 		}
 		$products = $products->get();
 		return $products;

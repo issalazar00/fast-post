@@ -20,36 +20,50 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="input-group">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Código de barras | Nombre de product"
-              aria-label=" with two button addons"
-              aria-describedby="button-addon4"
-              v-model="filters.product"
-              @keyup="searchProduct()"
-            />
-            <div class="input-group-append" id="button-addon4">
+          <div class="row">
+            <div class="form-group col-12 col-md-4 col-sm-6">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Código de barras | Nombre de product"
+                aria-label=" with two button addons"
+                aria-describedby="button-addon4"
+                v-model="filters.product"
+                @keyup="listProducts()"
+              />
+            </div>
+            <div class="form-group col-12 col-md-4 col-sm-6">
+              <v-select
+                :options="categoryList"
+                label="name"
+                :reduce="(category) => category.id"
+                v-model="filters.category_id"
+                @input="listProducts"
+
+              />
+            </div>
+            <div class="form-group col-12 col-md-4 col-sm-6">
               <button
-                class="btn btn-outline-secondary"
+                class="btn btn-primary w-100"
                 type="button"
-                @click="searchProduct()"
+                @click="listProducts()"
               >
                 Buscar Producto
               </button>
             </div>
           </div>
 
-          <div class="row  card-group">
+          <div class="row card-group">
             <div
               class="col-6 col-sm-6 col-md-4 col-lg-3"
               v-for="product in ProductList.data"
               v-bind:key="product.id"
             >
-              <div class="card">
+              <div class="card shadow mb-5">
                 <div class="card-header bg-transparent border-success">
-                  <h5><b>{{ product.product }}</b></h5>
+                  <h5>
+                    <b>{{ product.product }}</b>
+                  </h5>
                 </div>
                 <div class="card-body text-dark p-0">
                   <!-- <h5 class="card-title">Success card title</h5> -->
@@ -78,14 +92,15 @@
                     </ul>
                   </div>
                 </div>
-                <div class="card-footer bg-transparent border-success d-flex justify-content-around">
-                  <button
-                  class="btn btn-danger add_product"
-                  @click="$emit('add-product', product)"
+                <div
+                  class="
+                    card-footer
+                    bg-transparent
+                    border-success
+                    d-flex
+                    justify-content-around
+                  "
                 >
-                  <i class="bi bi-dash-circle"></i>
-                </button>
-
                   <button
                     class="btn btn-success add_product"
                     @click="$emit('add-product', product)"
@@ -116,56 +131,56 @@ export default {
       // Filter modal
       filters: {
         product: "",
+        category_id: "",
       },
       ProductList: {},
+      categoryList: [],
     };
   },
 
   created() {
     this.listProducts();
+    this.listCategories();
   },
   methods: {
     listProducts() {
       let me = this;
+
+      let data = {
+        product: me.filters.product,
+        is_order: this.is_order,
+        category_id: this.filters.category_id,
+      };
+
       axios
-        .post(
-          `api/products/filter-product-list?product=${me.filters.product}&is_order=${this.is_order}`,
-          null,
-          this.$root.config
-        )
+        .post(`api/products/filter-product-list?`, data, this.$root.config)
         .then(function (response) {
           me.ProductList = response;
+        })
+        .catch(function (error) {
+          $("#no-results").toast("show");
+
+          console.log(error);
         });
     },
-    searchProduct() {
-      let me = this;
-      if (me.filters.product == "") {
-        return false;
-      }
-      var url =
-        "api/products/filter-product-list?product=" + me.filters.product;
-      if (me.filters.product.length >= 3) {
-        axios
-          .post(url, null, me.$root.config)
-          .then(function (response) {
-            me.ProductList = response;
-          })
-          .catch(function (error) {
-            $("#no-results").toast("show");
 
-            console.log(error);
-          });
-      }
+    listCategories() {
+      let me = this;
+      axios
+        .get("api/categories/category-list?page=1", me.$root.config)
+        .then(function (response) {
+          me.categoryList = response.data.categories;
+        });
     },
   },
 };
 </script>
 
 <style scoped>
-.add_product{
+.add_product {
   font-size: 1.5rem;
 }
-.modal-dialog{
+.modal-dialog {
   min-width: 90%;
 }
 </style>
