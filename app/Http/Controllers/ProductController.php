@@ -34,7 +34,7 @@ class ProductController extends Controller
 
 		if ($request->product != '') {
 			$products = $products
-				->where('product', 'LIKE', "%$request->product");
+				->where('product', 'LIKE', "%$request->product%");
 		}
 		if ($request->barcode != '') {
 			$products = $products

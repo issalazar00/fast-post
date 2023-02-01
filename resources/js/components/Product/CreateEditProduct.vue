@@ -214,11 +214,11 @@
                     data-toggle="modal"
                     data-target="#zoneModal"
                     @click="
-                      $refs.CreateEditCategory.ResetData(), (edit = false)
+                      $refs.CreateEditZone.ResetData(), (edit = false)
                     "
-                    v-if="$root.validatePermission('zone.store')"
+                    v-if="$root.validatePermission('category.store')"
                   >
-                    Crear Categoria
+                    Crear Zona
                   </button>
                   <v-select
                     :options="zoneList"
@@ -687,7 +687,7 @@ export default {
         wholesale_price_tax_inc: 0.0,
         category_id: 0,
         brand_id: 0,
-        zone_id: 0,
+        zone_id: null,
         stock: 0,
         minimum: 0.0,
         quantity: 0.0,
