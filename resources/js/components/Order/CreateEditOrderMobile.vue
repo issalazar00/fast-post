@@ -112,7 +112,6 @@
             <thead class="bg-secondary text-white" style="top: 4rem">
               <tr>
                 <th></th>
-                <th>Código</th>
                 <th>Producto</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
@@ -130,7 +129,6 @@
                   </button>
                 </td>
 
-                <td>{{ p.barcode }}</td>
                 <td>{{ p.product }}</td>
                 <td>
                   <div class="input-group mb-3">
@@ -216,70 +214,15 @@
         <section class="card">
           <div>
             <table class="table table-sm table-primary text-right">
-              <tr>
-                <th colspan="7">Subtotal:</th>
-                <th>
-                  $ {{ (order.total_tax_exc = total_tax_exc).toFixed(0) }}
-                </th>
-              </tr>
-              <tr>
-                <th colspan="7">IVA:</th>
-                <th>
-                  $
-                  {{
-                    (total_tax_inc_without_discount - total_tax_exc).toFixed(0)
-                  }}
-                </th>
-              </tr>
-              <tr>
-                <th colspan="7">Descuento:</th>
-                <th>
-                  $
-                  {{ (order.total_discount = total_discount).toFixed(0) }}
-                </th>
-              </tr>
               <tr class="bg-success h5 text-white">
                 <th colspan="7">Total:</th>
                 <th>
                   $ {{ (order.total_tax_inc = total_tax_inc).toFixed(0) }}
                 </th>
               </tr>
+            
               <tr class="">
-                <th colspan="7">Efectivo:</th>
-                <th>
-                  <input
-                    type="number"
-                    value="0"
-                    step="any"
-                    v-model="order.payment_methods.cash"
-                    required
-                  />
-                </th>
-              </tr>
-              <tr class="">
-                <th colspan="7">Nequi:</th>
-                <th>
-                  <input
-                    type="number"
-                    value="0"
-                    step="any"
-                    v-model="order.payment_methods.nequi"
-                  />
-                </th>
-              </tr>
-              <tr class="">
-                <th colspan="7">Tarjeta:</th>
-                <th>
-                  <input
-                    type="number"
-                    value="0"
-                    step="any"
-                    v-model="order.payment_methods.card"
-                  />
-                </th>
-              </tr>
-              <tr class="">
-                <th colspan="7">Otros:</th>
+                <th colspan="7">Pagar:</th>
                 <th>
                   <input
                     type="number"
@@ -300,58 +243,10 @@
                   />
                 </th>
               </tr>
-              <tr class="">
-                <th colspan="7">Fecha de pago:</th>
-                <th>
-                  <input
-                    type="datetime-local"
-                    v-model="order.payment_date"
-                    autocomplete=""
-                  />
-                </th>
-              </tr>
             </table>
           </div>
         </section>
         <div class="">
-          <div class="my-2">
-            <label for="selected_box_user" class="font-weight-bold"
-              >Caja <i class="bi bi-box"></i
-            ></label>
-            <select
-              name="selected_box_user"
-              id="selected_box_user"
-              class="form-control"
-              v-model="$root.box"
-            >
-              <option value="" disabled>Seleccione una caja</option>
-              <option
-                v-for="item in $root.listBoxes"
-                :value="item.id"
-                :key="item.id"
-              >
-                {{ item.name + " " + item.prefix }}
-              </option>
-            </select>
-          </div>
-          <button
-            type="button"
-            :disabled="disabled"
-            class="btn btn-outline-primary btn-block"
-            @click="createOrUpdateOrder(2)"
-          >
-            <!-- Facturar -->
-            <i class="bi bi-receipt"></i> <b>F1</b> Facturar
-          </button>
-          <button
-            type="button"
-            :disabled="disabled"
-            class="btn btn-outline-primary btn-block"
-            @click="createOrUpdateOrder(4)"
-          >
-            <!-- Facturar -->
-            <i class="bi bi-receipt"></i> <b>F2</b> Facturar e imprimir
-          </button>
           <button
             type="button"
             :disabled="disabled"
@@ -360,6 +255,14 @@
           >
             <i class="bi bi-clock-fill"></i> Suspender
           </button>
+          <router-link
+            to="/orders"
+            type="button"
+            class="btn btn-outline-secondary btn-block"
+            v-if="order_id != 0"
+          >
+            <i class="bi bi-cart-x"></i> Cancelar
+          </router-link>
         </div>
       </div>
     </div>
@@ -378,7 +281,7 @@ import ModalBox from "./../ModalBox.vue";
 export default {
   components: { AddProductMobile, AddClient, ModalBox },
   props: ["order_id"],
-  name: "create-edit-order",
+  name: "create-edit-order-mobile",
 
   data() {
     return {
@@ -691,7 +594,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 </style>

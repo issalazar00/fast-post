@@ -93,7 +93,7 @@
             </select>
           </div>
           <div class="form-group col-3">
-            <label for="quantity">Valor de Cantidad:</label>
+            <label for="quantity">Cantidad:</label>
             <input
               type="number"
               step="any"
@@ -306,7 +306,7 @@ export default {
       search_barcode: "",
       search_category: 0,
       search_brand: 0,
-      search_quantity_sign: ">",
+      search_quantity_sign: ">=",
       search_quantity: 0,
       search_expiration_date_from: "",
       search_expiration_date_to: "",

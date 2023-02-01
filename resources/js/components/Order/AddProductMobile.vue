@@ -74,18 +74,12 @@
                         >:
                         {{ product.category.name ? product.category.name : "" }}
                       </li>
-                      <li class="list-group-item">
-                        <b><i>Código de barras</i></b
-                        >: {{ product.barcode }}
-                      </li>
+                    
                       <li class="list-group-item">
                         <b><i>Precio</i></b
                         >: {{ product.sale_price_tax_inc | currency }}
                       </li>
-                      <li class="list-group-item">
-                        <b><i>Inventario</i></b
-                        >: {{ product.quantity }}
-                      </li>
+                      
                       <!-- <li class="list-group-item">
                         <b><i></i></b>:
                       </li> -->
@@ -102,7 +96,7 @@
                   "
                 >
                   <button
-                    class="btn btn-success add_product"
+                    class="btn btn-success btn-block add_product"
                     @click="$emit('add-product', product)"
                   >
                     <i class="bi bi-plus-circle"></i>
