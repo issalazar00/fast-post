@@ -40,7 +40,7 @@ import CreateEditSupplier from './components/Supplier/CreateEditSupplier.vue'
 import Orders from './components/Order/Orders.vue'
 import DetailsOrder from './components/Order/DetailsOrder.vue'
 import CreateEditOrder from './components/Order/CreateEditOrder.vue'
-import CreateEditOrderMobile from './components/Order/CreateEditOrderMobile.vue'
+import CreateEditOrderMobile from './components/Mobile/CreateEditOrder.vue'
 
 import Billings from './components/Billing/Billings.vue'
 import DetailsBilling from './components/Billing/DetailsBilling.vue'

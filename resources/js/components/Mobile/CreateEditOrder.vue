@@ -42,7 +42,7 @@
         class="row position-sticky sticky-top mb-2 bg-light p-1"
         style="top: 0.5rem"
       >
-        <div class="input-group col-6">
+        <div class="input-group col-12 col-md-6">
           <input
             type="text"
             class="form-control"
@@ -72,7 +72,7 @@
             </button>
           </div>
         </div>
-        <div class="input-group col-6">
+        <div class="input-group col-12 col-md-6">
           <input
             type="text"
             class="form-control"
@@ -134,10 +134,11 @@
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <button
-                        class="btn btn-danger"
+                        class="btn btn-danger d-none d-xs-none d-sm-none d-md-block"
                         type="button"
                         id="button-addon1"
                         @click="p.quantity -= 1"
+                        :disabled="p.quantity<=1"
                       >
                         -
                       </button>
@@ -149,15 +150,26 @@
                       id="quantity"
                       step="any"
                       placeholder="Cantidad"
-                      class="form-control"
+                      class="form-control "
                       v-model="p.quantity"
                       size="6"
                       pattern="[0-9]+"
                       style="min-width: 60px"
                     />
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend w-sm-50">
                       <button
-                        class="btn btn-success"
+                        class="btn btn-danger d-sm-block d-md-none d-lg-none"
+                        type="button"
+                        id="button-addon1"
+                        @click="p.quantity -= 1"
+                        :disabled="p.quantity<=1"
+                      >
+                        -
+                      </button>
+                    </div>
+                    <div class="input-group-prepend w-sm-50">
+                      <button
+                        class="btn btn-success hidden-sm"
                         type="button"
                         id="button-addon1"
                         @click="p.quantity += 1"
@@ -274,12 +286,12 @@
 </template>
 
 <script>
-import AddProductMobile from "./AddProductMobile.vue";
-import AddClient from "./AddClient.vue";
+import AddProduct from "./AddProduct.vue";
+import AddClient from "../Order/AddClient.vue";
 import ModalBox from "./../ModalBox.vue";
 
 export default {
-  components: { AddProductMobile, AddClient, ModalBox },
+  components: { AddProduct, AddClient, ModalBox },
   props: ["order_id"],
   name: "create-edit-order-mobile",
 
