@@ -20,14 +20,14 @@
             @click="$refs.CreateEditZone.ResetData(), (edit = false)"
             v-if="$root.validatePermission('zone.store')"
           >
-            Crear Categoria
+            Crear Zona
           </button>
         </div>
         <table class="table table-sm table-bordered table-responsive-sm">
           <thead class="thead-primary">
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Categoria</th>
+              <th scope="col">Zona</th>
               <th v-if="$root.validatePermission('zone.update')">
                 Opciones
               </th>
@@ -39,7 +39,7 @@
               :key="zone.id"
             >
               <th scope="row">{{ index + 1 }}</th>
-              <td>{{ zone.name }}</td>
+              <td>{{ zone.zone }}</td>
               <td v-if="$root.validatePermission('zone.update')">
                 <button
                   class="btn btn-outline-success"

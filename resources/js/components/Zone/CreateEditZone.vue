@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <form>
         <div class="form-group">
-          <label for="zone">Nombre Impuesto</label>
+          <label for="zone">Zona</label>
           <input
             type="text"
             class="form-control"
