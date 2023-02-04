@@ -10,6 +10,13 @@
           <input type="text" class="form-control" id="filter_product" v-model="filter.product" />
         </div>
         <div class="form-group col-md-3">
+          <label for="filter_category">Categoria</label>
+          <select id="filter_category" v-model="filter.category" class="form-control">
+              <option value="">Selecciona una categoria</option>
+              <option v-for=" (item, index) in categoriesList" :key="index" :value="item.id">{{ item.name }}</option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
           <label for="from_date">Desde</label>
           <input type="date" class="form-control" id="from_date" v-model="filter.from" />
         </div>
@@ -46,6 +53,10 @@
                 {{ l.quantity_of_products }}
               </td>
             </tr>
+            <tr>
+              <th colspan="2">Total:</th>
+              <th>{{ total_products }}</th>
+            </tr>
           </tbody>
           <tbody v-else>
             <tr>
@@ -64,29 +75,46 @@
 export default {
   data() {
     return {
-      List: {},
+      List: [],
       filter: {
         from: "",
         to: "",
-        product: ''
-      }
+        product: "",
+        category: ""
+      },
+      categoriesList: []
     };
+  },
+  computed:{
+    total_products : function(){
+      return this.List.map(item => item.quantity_of_products).reduce((value1, value2) =>{
+        return value1 + value2;
+      });
+    }
   },
   methods: {
     getOrders(page = 1) {
       let me = this;
+      let params = new URLSearchParams(me.filter);
       axios
         .get(
-          `api/reports/product-sales-report?page=${page}&from=${me.filter.from}&to=${me.filter.to}&product=${me.filter.product}`,
+          `api/reports/product-sales-report?page=${page}&${params.toString()}`,
           this.$root.config
         )
         .then(function (response) {
           me.List = response.data;
         });
+    },
+    getCategories(){
+      let me = this;
+      axios.get('api/categories?paginate=0', this.$root.config).then( response =>{
+        me.categoriesList = response.data.categories;
+      });
     }
   },
   mounted() {
     this.getOrders(1);
+    this.getCategories();
   }
 }
 </script>
