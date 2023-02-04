@@ -22,12 +22,19 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        
+        if(!$request->input('paginate', true)){
+            $data = Category::all();
+        }else{
+            $data = Category::paginate(20);
+        }
+
         return response()->json([
             'status' => 'success',
             'code' => 200,
-            'categories' => Category::paginate(20),
+            'categories' => $data,
         ]);
     }
 
