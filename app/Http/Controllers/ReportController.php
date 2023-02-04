@@ -111,6 +111,7 @@ class ReportController extends Controller
 		$from = $request->from;
 		$to = $request->to;
 		$product = $request->product;
+		$category = $request->category;
 
 		$detail_order = DetailOrder::select('product', 'barcode')
 			->selectRaw('SUM(quantity) as quantity_of_products')
@@ -127,6 +128,11 @@ class ReportController extends Controller
 				if ($product != '' && $product != 'undefined' && $product != null) {
 					$query->where('barcode', 'LIKE', "%$product%")
 						->orWhere('product', 'LIKE', "%$product%");
+				}
+			})
+			->whereHas('product', function($query) use ($category, $request){
+				if($request->filled('category') && $category != 'undefined'){
+					$query->where('category_id', $category);
 				}
 			})
 			->get();
