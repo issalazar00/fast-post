@@ -18,14 +18,24 @@ class PrintOrderController extends Controller
 	{
 		$configuration = new Configuration();
 		$company =  $configuration->select()->first();
-		if (!$company->printer || $company->printer == '') {
-			throw new Exception("Error, no hay impresoras configuradas", 400);
+		try {
+			if ($company->printer) {
+				try {
+					$connector = new WindowsPrintConnector($company->printer);
+					$printer = new Printer($connector);
+					$printer->initialize();
+					$printer->pulse();
+					$printer->close();
+				} catch (\Throwable $th) {
+					return $th;
+				}
+			}
+		} catch (\Throwable $th) {
+			if (!$company->printer || $company->printer == '') {
+				// throw new Exception("Error, no hay impresoras configuradas", 200);
+				return $th;
+			}
 		}
-		$connector = new WindowsPrintConnector($company->printer);
-		$printer = new Printer($connector);
-		$printer->initialize();
-		$printer->pulse();
-		$printer->close();
 	}
 
 	public function printTicket($order_id, $cash = null, $change = null)
@@ -226,13 +236,6 @@ class PrintOrderController extends Controller
 
 		$printers =$order_details->distinct('zone_id')->get();
 
-		// $tempArray = array_unique(array_column($order_details, 'printer_id'));
-		// $moreUniqueArray = array_values(array_intersect_key($order_details, $tempArray));
-
-		// return $moreUniqueArray;
-
-		// exit;
-
 		$system_user = $order->user()->first();
 		$payment_methods = (object) ($order->payment_methods);
 
@@ -374,11 +377,6 @@ class PrintOrderController extends Controller
 				$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($payment_methods->change, 2, '.', ',') . "\n"));
 			}
 			$printer->setEmphasis(false);
-
-			if ($change != null && $change >= 0) {
-				$printer->text("\n");
-				$change > 0 ?	$printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format($change, 2, '.', ','))) : $printer->text(sprintf('%-25s %+15.15s', 'Cambio', number_format(0, 2, '.', ',')));
-			}
 			$printer->text("\n");
 
 			if (isset($order->bill_number)) {
