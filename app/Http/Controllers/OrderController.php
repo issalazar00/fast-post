@@ -23,7 +23,7 @@ class OrderController extends Controller
 
 	public function __construct()
 	{
-		$this->middleware('can:order.index')->only('index', 'generatePdf','generatePaymentPdf');
+		$this->middleware('can:order.index')->only('index', 'generatePdf', 'generatePaymentPdf');
 		$this->middleware('can:order.store')->only('store', 'creditByClient', 'payCreditByClient');
 		$this->middleware('can:order.update')->only('update');
 		$this->middleware('can:order.delete')->only('destroy');
@@ -167,11 +167,10 @@ class OrderController extends Controller
 		$print = new PrintOrderController();
 		if ($request->state == 4 || $request->state == 6) {
 			$print->printTicket($order->id, $request->cash, $request->change);
-		} else if($request->state == 6 ){
+		} else if ($request->state == 6) {
 			$print->printTicketRecently($order->id);
-
-		} else{
-			$print->openBox();
+		} else {
+			$print->openBox($order->id);
 		}
 
 		return $order->id;
@@ -282,7 +281,7 @@ class OrderController extends Controller
 		if ($request->state == 4 || $request->state == 6) {
 			$print = $print->printTicket($order->id, $request->cash, $request->change);
 		} else {
-			$print->openBox();
+			$print->openBox($order->id);
 		}
 	}
 
@@ -512,7 +511,7 @@ class OrderController extends Controller
 		}
 		$orders = DB::table('orders as o')
 			->leftJoin('payment_credits as pc', 'pc.order_id', '=', 'o.id')
-			->select('o.id', 'o.total_paid', DB::raw('SUM(pc.pay) as  paid_payment'))
+			->select('o.id', 'o.total_paid', "o.payment_methods", DB::raw('SUM(pc.pay) as  paid_payment'))
 			->where('o.client_id', $request->id_client)
 			->where('o.state', 5)
 			->groupByRaw('id, total_paid')
@@ -532,6 +531,9 @@ class OrderController extends Controller
 		foreach ($orders as $order) {
 			if ($request->pay_payment > 0) {
 
+				$payment_methods = (object)['pay_payment' => 0, 'cash' => 0];
+
+				$order->payment_methods = $order->payment_methods ? json_decode($order->payment_methods) : $payment_methods;
 				$pending = $order->total_paid - $order->paid_payment;
 
 				if ($pending > $request->pay_payment) {
@@ -540,6 +542,15 @@ class OrderController extends Controller
 						'order_id' => $order->id,
 						'pay' => $request->pay_payment
 					]);
+
+					Order::where('id', $order->id)->update([
+						'payment_methods->pay_payment' => $order->payment_methods->pay_payment += $request->pay_payment,
+						'payment_methods->cash' => $order->payment_methods->cash += $request->pay_payment
+					]);
+					echo $order->id . " ";
+
+					echo 'pago total';
+
 					$request->pay_payment = 0;
 				} else {
 					PaymentCredit::create([
@@ -547,9 +558,12 @@ class OrderController extends Controller
 						'order_id' => $order->id,
 						'pay' => $pending
 					]);
-
+					echo 'abono';
 					Order::where('id', $order->id)->update([
-						'state' => 2
+						'state' => 2,
+						'payment_methods->pay_payment' => $order->payment_methods->pay_payment += $pending,
+						'payment_methods->cash' => $order->payment_methods->cash += $pending
+
 					]);
 
 					$request->pay_payment = $request->pay_payment - $pending;
