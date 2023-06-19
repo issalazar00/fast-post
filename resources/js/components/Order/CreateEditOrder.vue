@@ -161,7 +161,17 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" @click="createOrUpdateOrder(4)">Terminar venta</button>
+                    <button type="button" :disabled="paid_value < total_tax_inc" class="btn btn-outline-primary btn-block"
+                    @click="createOrUpdateOrder(2)">
+                    <!-- Facturar -->
+                    <i class="bi bi-receipt"></i> <b>F1</b> Facturar
+                  </button>
+                  <button type="button" :disabled="paid_value < total_tax_inc" class="btn btn-outline-primary btn-block"
+                    @click="createOrUpdateOrder(4)">
+                    <!-- Facturar -->
+                    <i class="bi bi-receipt"></i> <b>F2</b> Facturar e imprimir
+                  </button>
+
                   </div>
                 </form>
               </div>
@@ -526,10 +536,12 @@ export default {
         alert("Debe seleccionar un cliente válido");
         return false;
       }
-      if (this.productsOrderList.length) {
+      if (this.productsOrderList.length) {        
+        shortcut.remove("F1")
+        shortcut.remove("F2")
         this.order.productsOrder = this.productsOrderList;
-        if (this.order_id != 0 && this.order_id != null) {
 
+        if (this.order_id != 0 && this.order_id != null) {
           axios
             .put(`api/orders/${this.order_id}`, this.order, this.$root.config)
             .then(() =>
@@ -564,7 +576,7 @@ export default {
             );
         } else {
           if (this.order.box_id > 0) {
-            axios
+              axios
               .post(`api/orders`, this.order, this.$root.config)
               .then((response) => {
                 Swal.fire({
@@ -600,6 +612,7 @@ export default {
           text: "Debes añadir productos al carrito",
         });
       }
+      return false;
     },
 
     printTicket(order_id) {
