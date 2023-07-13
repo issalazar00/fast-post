@@ -227,15 +227,15 @@ class OrderController extends Controller
 
 		if ($request->state == 4) {
 			$order->state = 2;
-			$order->payment_date = $request->payment_date  ? $request->payment_date : date('Y-m-d h:i:s');
+			$order->payment_date = $request->payment_date ? $request->payment_date : date('Y-m-d h:i:s');
 		}
-		if ($request->state == 6) {
+		if ($request->state == 6 || $request->state == 5) {
 			$order->state = 5;
 		}
 		if ($request->state != 4 && $request->state != 6) {
 			$order->state = $request->state;
 			if ($request->state == 2) {
-				$order->payment_date = $request->payment_date  ? $request->payment_date : date('Y-m-d h:i:s');
+				$order->payment_date = $request->payment_date  ? $request->payment_date :  date('Y-m-d h:i:s');
 			}
 		}
 
@@ -279,10 +279,14 @@ class OrderController extends Controller
 
 		$print = new PrintOrderController();
 		if ($request->state == 4 || $request->state == 6) {
-			$print = $print->printTicket($order->id, $request->cash, $request->change);
+			$print->printTicket($order->id, $request->cash, $request->change);
+		} else if ($request->state == 6) {
+			$print->printTicketRecently($order->id);
 		} else {
 			$print->openBox($order->id);
 		}
+
+		return $order->id;
 	}
 
 	/**
