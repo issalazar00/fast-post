@@ -303,11 +303,11 @@ class ProductController extends Controller
 	* @param mixed $quantity
 	*/
 
-	public function searchKitById($type, $product_parent_id, $quantity)
+	public function searchKitById($type, $product_parent_id, $quantity, $orderId)
 	{
 		$products = KitProduct::where('product_parent_id', $product_parent_id)->get();
 		foreach ($products as $product) {
-			$this->updateStockByBarcode($type, $product['barcode'], $product['quantity'] * $quantity);
+			$this->updateStockByBarcode($type, $product['barcode'], $product['quantity'] * $quantity, $orderId);
 		}
 	}
 
@@ -319,14 +319,17 @@ class ProductController extends Controller
 
 	* @param mixed $quantity
 	*/
-	public function updateStockByBarcode($type, $barcode, $quantity)
+	public function updateStockByBarcode($type, $barcode, $quantity, $orderId)
 	{
+		$kardexController = new KardexController();
 		$product = Product::select('id', 'barcode', 'quantity')->where('barcode', $barcode)->first();
 		if ($type == 1) {
 			$product->quantity = $product->quantity - $quantity;
+			$kardexController->storeKardex($product->id, 'VENTA', ($quantity * -1), "Factura de orden $orderId");
 		}
 		if ($type == 2) {
 			$product->quantity = $product->quantity + $quantity;
+			$kardexController->storeKardex($product->id, 'REINGRESO', $quantity, "Factura de orden $orderId");
 		}
 		$product->save();
 	}
@@ -336,6 +339,9 @@ class ProductController extends Controller
 		$product = Product::findOrFail($id);
 		$product->quantity = $product->quantity + $request->quantity;
 		$product->save();
+
+		$kardexController = new KardexController();
+		$kardexController->storeKardex($product->id, 'REINGRESO', $request->quantity, "Actualización de stock");
 	}
 
 	/**
@@ -390,7 +396,7 @@ class ProductController extends Controller
 			$products = $products
 				->where('category_id', $request->category_id);
 		}
-		
+
 		if ($request->is_order) {
 			$products = $products->where('state', 1)
 				->where('quantity', '>', 0)

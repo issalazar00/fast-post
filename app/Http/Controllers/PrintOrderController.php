@@ -91,6 +91,8 @@ class PrintOrderController extends Controller
 			$printer->setJustification(Printer::JUSTIFY_LEFT);
 			$printer->setTextSize(1, 1);
 			$printer->setEmphasis(false);
+			$printer->text("Representante legal: ");
+			$printer->text($company->legal_representative . "\n");
 			$printer->text("NIT: ");
 			$printer->text($company->nit . "\n");
 			$printer->text("Dirección: ");
@@ -213,6 +215,7 @@ class PrintOrderController extends Controller
 
 				$consecutiveBox = $order->consecutiveBox();
 				if ($consecutiveBox) {
+					$printer->text("Resolución: " . $order->box->resolution . "\n");
 					$from_date = Carbon::createFromFormat('Y-m-d', $consecutiveBox->from_date);
 					$until_date = Carbon::createFromFormat('Y-m-d', $consecutiveBox->until_date);
 
@@ -248,7 +251,6 @@ class PrintOrderController extends Controller
 	public function printTicketRecently($order_id)
 	{
 		// Orden
-
 		$order = Order::find($order_id);
 		$order_details = $order->detailOrders()->get();
 
@@ -287,6 +289,8 @@ class PrintOrderController extends Controller
 			$printer->setJustification(Printer::JUSTIFY_LEFT);
 			$printer->setTextSize(1, 1);
 			$printer->setEmphasis(false);
+			$printer->text("Representante legal: ");
+			$printer->text($company->legal_representative . "\n");
 			$printer->text("NIT: ");
 			$printer->text($company->nit . "\n");
 			$printer->text("Dirección: ");
@@ -401,6 +405,7 @@ class PrintOrderController extends Controller
 
 				$consecutiveBox = $order->consecutiveBox();
 				if ($consecutiveBox) {
+					$printer->text("Resolución: " . $order->box->resolution . "\n");
 					$from_date = Carbon::createFromFormat('Y-m-d', $consecutiveBox->from_date);
 					$until_date = Carbon::createFromFormat('Y-m-d', $consecutiveBox->until_date);
 
@@ -473,6 +478,8 @@ class PrintOrderController extends Controller
 			$printer->setJustification(Printer::JUSTIFY_LEFT);
 			$printer->setTextSize(1, 1);
 			$printer->setEmphasis(false);
+			$printer->text("Representante legal: ");
+			$printer->text($company->legal_representative . "\n");
 			$printer->text("NIT: ");
 			$printer->text($company->nit . "\n");
 			$printer->text("Dirección: ");
@@ -590,6 +597,7 @@ class PrintOrderController extends Controller
 			if (isset($order->bill_number)) {
 				$consecutiveBox = $order->consecutiveBox();
 				if ($consecutiveBox) {
+					$printer->text("Resolución: " . $order->box->resolution . "\n");
 					$from_date = Carbon::createFromFormat('Y-m-d', $consecutiveBox->from_date);
 					$until_date = Carbon::createFromFormat('Y-m-d', $consecutiveBox->until_date);
 
@@ -660,6 +668,8 @@ class PrintOrderController extends Controller
 			$printer->setJustification(Printer::JUSTIFY_LEFT);
 			$printer->setTextSize(1, 1);
 			$printer->setEmphasis(false);
+			$printer->text("Representante legal: ");
+			$printer->text($company->legal_representative . "\n");
 			$printer->text("NIT: ");
 			$printer->text($company->nit . "\n");
 			$printer->text("Dirección: ");

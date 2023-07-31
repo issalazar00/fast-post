@@ -44,7 +44,7 @@
 					</div>
 				</div>
 				<payment-credit @get-credits="getCredits()" ref="PaymentCredit" />
-				<table class="table table-sm table-bordered table-responsive-sm">
+				<table class="table table-sm table-bordered table-responsive">
 					<thead>
 						<tr>
 							<th>#</th>
@@ -58,14 +58,14 @@
 							<th>Ver</th>
 							<th>Ticket</th>
 							<th>Imprimir</th>
-							<th>Responsable</th>
 							<th v-if="$root.validatePermission('credit.update')">Editar</th>
+							<th>Responsable</th>
 							<th v-if="$root.validatePermission('credit.delete')">
 								Eliminar
 							</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody v-if="creditList.data">
 						<tr v-for="o in creditList.data" :key="o.id">
 							<th scope="row">{{ o.id }} - {{ o.bill_number }}</th>
 							<td>{{ o.total_paid | currency }}</td>
@@ -112,6 +112,7 @@
 							</td>
 						</tr>
 					</tbody>
+					<div v-else class="w-100">No hay créditos para los rangos de fecha establecidos.</div>
 				</table>
 			</div>
 			<pagination :align="'center'" :data="creditList" :limit="8" @pagination-change-page="getCredits">
@@ -197,7 +198,7 @@ export default {
 		generatePdf(id) {
 			this.load_pdf = true;
 			axios
-				.get("api/orders/generatePdf/" + id, this.$root.config)
+				.get("api/orders/generatePaymentPdf/" + id, this.$root.config)
 				.then(response => {
 					const pdf = response.data.pdf;
 					var a = document.createElement("a");

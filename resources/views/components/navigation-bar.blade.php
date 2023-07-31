@@ -43,12 +43,16 @@
 			aria-controls="collapseShop">
 			<i class="bi bi-shop"></i>
 			<span>Almacén</span>
+			<i class="bi bi-chevron-down"></i>
 		</a>
 		<div id="collapseShop" class="collapse" aria-labelledby="headingShop" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">Almacén:</h6>
 				<router-link v-if="validatePermission('product.index')" class="collapse-item " to="/products"
 					v-if="validatePermission('product.index')">Productos
+				</router-link>
+				<router-link v-if="validatePermission('product.index')" class="collapse-item " to="/kardex"
+					v-if="validatePermission('product.update')">Kardex
 				</router-link>
 				<router-link v-if="validatePermission('product.index')" class="collapse-item " to="/stock"
 					v-if="validatePermission('product.update')">Inventario
@@ -81,6 +85,12 @@
 		</router-link>
 	</li>
 
+	<li class="nav-item" v-if="validatePermission('credit.index')">
+		<router-link class="nav-link " active-class="active" to="/expenses"><i
+				class="bi bi-receipt"></i><span>Egresos</span>
+		</router-link>
+	</li>
+
 
 	<!-- Nav Item - Pages Collapse Menu -->
 	<li class="nav-item">
@@ -88,6 +98,7 @@
 			aria-controls="collapsePeople">
 			<i class="bi bi-people"></i>
 			<span>Terceros</span>
+			<i class="bi bi-chevron-down"></i>
 		</a>
 		<div id="collapsePeople" class="collapse" aria-labelledby="headingPeople" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
@@ -106,6 +117,7 @@
 			aria-controls="collapseReport">
 			<i class="bi bi-shop"></i>
 			<span>Informes</span>
+			<i class="bi bi-chevron-down"></i>
 		</a>
 		<div id="collapseReport" class="collapse" aria-labelledby="headingReport" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
@@ -124,6 +136,9 @@
 					v-if="validatePermission('product.index')">Informe
 					de ventas de productos
 				</router-link>
+				<router-link class="collapse-item " to="/reports/expenses"
+					v-if="validatePermission('product.index')">Informe de egresos
+				</router-link>
 
 			</div>
 		</div>
@@ -134,6 +149,7 @@
 			aria-controls="collapseSettings">
 			<i class="bi bi-sliders"></i>
 			<span>Configuraciones</span>
+			<i class="bi bi-chevron-down"></i>
 		</a>
 		<div id="collapseSettings" class="collapse" aria-labelledby="headingSettings" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">

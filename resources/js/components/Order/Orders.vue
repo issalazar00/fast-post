@@ -46,8 +46,8 @@
 						</button>
 					</div>
 				</div>
-				<div class="table-responsive w-100">
-					<table class="table table-sm table-bordered">
+				<div class="table-responsive ">
+					<table class="table table-sm table-bordered w-100">
 						<thead>
 							<tr>
 								<th>#</th>

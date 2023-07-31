@@ -17,8 +17,11 @@ use App\Http\Controllers\TaxController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BoxController;
 use App\Http\Controllers\DetailBillingController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\KardexController;
 use App\Http\Controllers\PrintOrderController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TypeExpenseController;
 use App\Http\Controllers\ZoneController;
 use App\Models\Configuration;
 use Illuminate\Support\Facades\Route;
@@ -75,6 +78,11 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/products/search-product',  [ProductController::class, 'searchProduct']);
 	Route::post('/products/filter-product-list',  [ProductController::class, 'filterProductList']);
 	Route::post('/products/stock-update/{id}', [ProductController::class, 'updateStockById']);
+	
+	Route::resource('/kardexes',  KardexController::class);
+
+	Route::resource('/expenses',  ExpenseController::class);
+	Route::resource('/type-expenses',  TypeExpenseController::class);
 
 	Route::resource('kit-products', KitProductController::class)->middleware('can:product.store');
 
@@ -109,6 +117,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/reports/product-sales-report', [ReportController::class, 'reportProductSales']);
 	Route::get('/reports/total-products-report', [ReportController::class, 'reportTotalProducts']);
 	Route::get('/reports/closing', [ReportController::class, 'reportClosing']);
+	Route::get('/reports/expenses', [ReportController::class, 'ReportExpenses']);
 
 	Route::get('/boxes/box-list', [BoxController::class, 'boxList']);
 	Route::get('/boxes/byUser', [BoxController::class, 'getBoxesByUser']);

@@ -80,6 +80,7 @@
                     <th>Consecutivo final</th>
                     <th>Fecha de inicio</th>
                     <th>Fecha vencimiento</th>
+                    <th>Resolución de venta</th>
                     <th>Opciones</th>
                   </thead>
                   <tbody>
@@ -111,6 +112,12 @@
                         <input type="date" class="form-control form-control-sm" placeholder="Ingresar fecha hasta" v-model="item.until_date" :disabled="item.process ">
                         <small v-if="consecutive_boxErrors['consecutive_box.'+key+'.until_date']" class="form-text text-danger">
                           {{ consecutive_boxErrors['consecutive_box.'+key+'.until_date'][0] }}
+                        </small>
+                      </td>
+                      <td>
+                        <input type="text" class="form-control form-control-sm" placeholder="Resolución de venta" v-model="item.resolution" :disabled="item.process ">
+                        <small v-if="consecutive_boxErrors['consecutive_box.'+key+'.until_date']" class="form-text text-danger">
+                          {{ consecutive_boxErrors['consecutive_box.'+key+'.resolution'][0] }}
                         </small>
                       </td>
                       <td>
@@ -222,6 +229,7 @@ export default {
           me.assignErrors(response);
         });
     },
+    
     addConsecutive(){
       this.consecutive_box.push({
         from_nro:'',

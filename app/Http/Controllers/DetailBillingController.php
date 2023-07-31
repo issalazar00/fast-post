@@ -54,6 +54,9 @@ class DetailBillingController extends Controller
 		$detail->quantity = $request['quantity'];
 		$detail->product = $request['product'];
 		$detail->save();
+
+		$kardexController = new KardexController();
+		$kardexController->storeKardex($detail->product_id, 'COMPRA', $detail->quantity, "Factura de compra $billing_id");
 	}
 
 	/**
