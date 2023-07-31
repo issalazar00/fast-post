@@ -13,6 +13,7 @@ import vSelect from 'vue-select'
 import JsonExcel from "vue-json-excel";
 import 'vue-select/dist/vue-select.css';
 import { dollarFilter } from './filters';
+import moment from 'moment'
 
 import Login from './components/Login.vue'
 import NoFound from './components/NoFound.vue';
@@ -21,18 +22,18 @@ import CreateEditClient from './components/Client/CreateEditClient.vue'
 
 import Products from './components/Product/Products.vue'
 import CreateEditProduct from './components/Product/CreateEditProduct.vue'
-import ImportProducts from './components/Product/ImportProducts'
 import Checker from './components/Product/Checker'
 import Stock from './components/Product/Stock'
 
 import Taxes from './components/Tax/Taxes.vue'
-import CreateEditTax from './components/Tax/CreateEditTax.vue'
 
 import Categories from './components/Category/Categories.vue'
 import CreateEditCategory from './components/Category/CreateEditCategory.vue'
 
 import Brands from './components/Brand/Brands.vue'
-import CreateEditBrand from './components/Brand/CreateEditBrand.vue'
+
+import Expenses from './components/Expense/Expenses.vue'
+import Kardex from './components/Product/Kardex.vue'
 
 import Suppliers from './components/Supplier/Suppliers.vue'
 import CreateEditSupplier from './components/Supplier/CreateEditSupplier.vue'
@@ -54,6 +55,7 @@ import ReportSale from './components/Report/ReportSale'
 import ReportProductSales from './components/Report/ReportProductSales'
 import ReportGeneralSales from './components/Report/ReportGeneralSales'
 import ReportClosing from './components/Report/ReportClosing'
+import ReportExpenses from './components/Report/ReportExpenses'
 
 import Boxes from './components/Box/Boxes.vue'
 
@@ -83,6 +85,7 @@ Vue.component("downloadExcel", JsonExcel);
 Vue.component('v-select', vSelect)
 
 window.Swal = Swal;
+window.moment = moment
 
 const routes = [
 
@@ -106,7 +109,10 @@ const routes = [
 
   { path: '/brands', component: Brands, alias: "brand.index" },
 
-  { path: '/orders', component: Orders, alias: "order.index" , props:{ status:1}},
+  { path: '/expenses', component: Expenses },
+  { path: '/kardex', component: Kardex },
+
+  { path: '/orders', component: Orders, alias: "order.index", props: { status: 1 } },
   { path: '/orders/:order_id/details-order', component: DetailsOrder, props: true, name: 'details-order', alias: "order.index" },
   { path: '/create-edit-order/:order_id', component: CreateEditOrder, props: true, name: 'create-edit-order', alias: "order.store" },
   { path: '/create-edit-order-mobile/:order_id', component: CreateEditOrderMobile, props: true, name: 'create-edit-order-mobile', alias: "order.store" },
@@ -115,10 +121,11 @@ const routes = [
   { path: '/billings/:billing_id/details-billing', component: DetailsBilling, props: true, name: 'details-billing', alias: "billing.index" },
   { path: '/create-edit-billing/:billing_id', component: CreateEditBilling, props: true, name: 'create-edit-billing', alias: "billing.store" },
 
-  { path: '/reports/report-sale', component: ReportSale, props: true, name: 'report-sale', alias:'report.index' },
-  { path: '/reports/report-general-sales', component: ReportGeneralSales, props: true, name: 'report-general-sales', alias:'report.index' },
-  { path: '/reports/report-product-sales', component: ReportProductSales, props: true, name: 'report-product-sales', alias:'report.index' },
-  { path: '/reports/closing', component: ReportClosing, props: true, name: 'report-closing', alias:'report.index' },
+  { path: '/reports/report-sale', component: ReportSale, props: true, name: 'report-sale', alias: 'report.index' },
+  { path: '/reports/report-general-sales', component: ReportGeneralSales, props: true, name: 'report-general-sales', alias: 'report.index' },
+  { path: '/reports/report-product-sales', component: ReportProductSales, props: true, name: 'report-product-sales', alias: 'report.index' },
+  { path: '/reports/closing', component: ReportClosing, props: true, name: 'report-closing', alias: 'report.index' },
+  { path: '/reports/expenses', component: ReportExpenses, props: true, name: 'report-expenses', alias: 'report.index' },
 
   { path: '/boxes', component: Boxes, alias: 'box.index' },
 

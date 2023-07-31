@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetailOrder;
+use App\Models\Expense;
 use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -247,5 +248,39 @@ class ReportController extends Controller
 		$totals->total_sale = $orders->sum('total_sale');
 
 		return ['orders'=>$orders, 'totals'=>$totals];
+	}
+
+	public function ReportExpenses(Request $request)
+	{
+		$this_month = Carbon::now()->month;
+		$from = $request->from;
+		$to = $request->to;
+		$type_output = $request->type_output;
+
+		$expenses = Expense::where(function ($query) use ($this_month, $from, $to) {
+
+			$query->whereMonth('date', '<=', $this_month);
+
+			if ($from != '' && $from != 'undefined' && $from != null) {
+				$query->whereDate('date', '>=', $from);
+			}
+			if ($to != '' && $to != 'undefined' && $to != null) {
+				$query->whereDate('date', '<=', $to);
+			}
+			
+		})->where(function ($query) use ($type_output) {
+			if ($type_output != '' && $type_output != 'undefined' && $type_output != null) {
+				$query->where('type_output', 'LIKE', "%$type_output%");
+			}
+		});
+
+
+		$getTotalReportsController = new GetTotalReportsController;
+		$totals = $getTotalReportsController->getTotalReportExpenses($expenses->get());
+
+		return [
+			'expenses' => $expenses->paginate(isset($request->results) ? $request->results : self::NRO_RESULTS),
+			'totals' => $totals,
+		];
 	}
 }

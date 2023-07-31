@@ -44,12 +44,12 @@
                 </th>
                 <td v-if="$root.validatePermission('box.active')">
                   <button class="btn" :class="
-                    box.active == 1
+                    box.active == 0
                       ? 'btn-outline-danger'
                       : 'btn-outline-success'
                   " @click="changeState(box.id)">
-                    <i v-if="box.active == 1" class="bi bi-x-circle"></i>
-                    <i v-if="box.active == 0" class="bi bi-check-circle"></i>
+                    <i v-if="box.active == 0" class="bi bi-x-circle"></i>
+                    <i v-if="box.active == 1" class="bi bi-check-circle"></i>
                   </button>
                 </td>
                 <td>{{ box.base | currency }}</td>

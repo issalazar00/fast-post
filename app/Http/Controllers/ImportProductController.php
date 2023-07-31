@@ -15,11 +15,6 @@ use PhpOffice\PhpSpreadsheet\Helper\Sample; //eliminar
 
 class ImportProductController extends Controller
 {
-  // public function __construct()
-  // {
-  //   $this->middleware('can:product.store');
-  // }
-
   public function downloadExample()
   {
     $path = public_path('files/productos.xls');
@@ -30,7 +25,6 @@ class ImportProductController extends Controller
   {
     $request->validate([
       'file' => 'required|mimes:csv,xlx,xls,xlsx|max:4096'
-      // 'file' => 'required|mimes:csv,xlx,xls|max:2048'
     ]);
     // 'file' => 'required|mimes:csv,xlx,xls|max:2048'
 
@@ -154,6 +148,10 @@ class ImportProductController extends Controller
 
                 try {
                   $product->save();
+
+                  $kardexController = new KardexController();
+                  $kardexController->storeKardex($product->id, 'INVENTARIO INICIAL', $product->quantity, 'Ingreso a inventario inicial');
+
                   $item_saved += 1;
                 } catch (\Throwable $th) {
                   //throw $th;

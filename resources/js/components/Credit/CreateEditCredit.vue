@@ -460,13 +460,13 @@ export default {
               }
             })
             .finally(
-              setTimeout(() => {
-                this.$router.push({
-                  name: 'credits',
-                }),
-                  this.$router.go(0),
-                  (this.disabled = false)
-              }, 1000)
+              // setTimeout(() => {
+              //   this.$router.push({
+              //     name: 'credits',
+              //   }),
+              //     this.$router.go(0),
+              //     (this.disabled = false)
+              // }, 1000)
             );
         } else {
           if (this.credit.box_id > 0) {
@@ -490,10 +490,10 @@ export default {
                 }
               })
               .finally(
-                setTimeout(() => {
-                  this.$router.go(0),
-                    (this.disabled = false)
-                }, 1000)
+                // setTimeout(() => {
+                //   this.$router.go(0),
+                //     (this.disabled = false)
+                // }, 1000)
               );
           } else {
             alert("Selecciona una caja");

@@ -94,6 +94,19 @@
             </div>
             <div v-if="totalBalancePending > 0" class="mx-2">
               <table class="table table-sm table-bordered table-responsive-sm">
+                <tr class="h4">
+                  <th colspan="7">Abono</th>
+                  <th>
+                    <input
+                      class="form-control form-control-sm"
+                      type="number"
+                      value="0"
+                      step="any"
+                      v-model="paymentCredit.pay_payment"
+                      :max="totalBalancePending"
+                    />
+                  </th>
+                </tr>
                 <tr class="">
                   <th colspan="7">Efectivo:</th>
                   <th>
@@ -107,19 +120,7 @@
                     />
                   </th>
                 </tr>
-                <tr class="">
-                  <th colspan="7">Abono</th>
-                  <th>
-                    <input
-                      class="form-control form-control-sm"
-                      type="number"
-                      value="0"
-                      step="any"
-                      v-model="paymentCredit.pay_payment"
-                      :max="totalBalancePending"
-                    />
-                  </th>
-                </tr>
+               
                 <tr class="">
                   <th colspan="7">Cambio:</th>
                   <th>

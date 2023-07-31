@@ -158,9 +158,9 @@ class OrderController extends Controller
 			if ($order->state == 2 ||   $order->state == 5) {
 				$product = Product::find($details_order['product_id']);
 				if ($product['type'] == 3) {
-					$product_controller->searchKitById(1, $details_order['product_id'], $details_order['quantity'], 1);
+					$product_controller->searchKitById(1, $details_order['product_id'], $details_order['quantity'], $order->id);
 				} else {
-					$product_controller->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity']);
+					$product_controller->updateStockByBarcode(1, $details_order['barcode'], $details_order['quantity'], $order->id);
 				}
 			}
 		}
@@ -304,9 +304,9 @@ class OrderController extends Controller
 				$product = Product::find($detail_order['product_id']);
 
 				if ($product->type == 3) {
-					$product_controller->searchKitById(2, $detail_order['product_id'], $detail_order['quantity']);
+					$product_controller->searchKitById(2, $detail_order['product_id'], $detail_order['quantity'], $order->id);
 				} else {
-					$product_controller->updateStockByBarcode(2, $detail_order['barcode'], $detail_order['quantity']);
+					$product_controller->updateStockByBarcode(2, $detail_order['barcode'], $detail_order['quantity'], $order->id);
 				}
 			}
 		}
@@ -395,7 +395,7 @@ class OrderController extends Controller
 						->first();
 
 					if (!$continue) {
-						return abort(500);
+						return abort(500, 'Revisar la configuración de la caja');
 					}
 
 					$bill_number = $box->prefix . $continue->from_nro;
