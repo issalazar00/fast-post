@@ -47,7 +47,8 @@ class OrderController extends Controller
 
 		$orders = Order::whereHas('client', function (Builder $query) use ($request) {
 			if ($request->client != '') {
-				$query->where('name', 'like', "%$request->client%");
+				$query->where('name', 'like', "%$request->client%")
+					->orWhere('document', 'like', "%$request->client%");
 			}
 		});
 		if ($request->no_invoice != '') {
@@ -64,7 +65,7 @@ class OrderController extends Controller
 				->where('created_at', '<=', $to);
 		}
 
-		if ($from == '' && $to == '') {
+		if ($from == '' && $to == '' && !$request->client && !$request->no_invoice) {
 			$orders = $orders
 				->where('created_at', '>=', $today);
 		}
@@ -551,9 +552,6 @@ class OrderController extends Controller
 						'payment_methods->pay_payment' => $order->payment_methods->pay_payment += $request->pay_payment,
 						'payment_methods->cash' => $order->payment_methods->cash += $request->pay_payment
 					]);
-					echo $order->id . " ";
-
-					echo 'pago total';
 
 					$request->pay_payment = 0;
 				} else {
