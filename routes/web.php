@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ImportProductController;
+use App\Models\Configuration;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('layouts.app');
+    $dato = Configuration::firstOrFail();
+    $today = Carbon::now();
+    $expiration = new Carbon($dato->expiration_date);
+    return view('layouts.app', ['expiration' => $expiration, 'today' => $today]);
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/import/download-example-import', [ImportProductController::class, 'downloadExample']);
-

@@ -12,7 +12,7 @@ import { VueSpinners } from '@saeris/vue-spinners'
 import vSelect from 'vue-select'
 import JsonExcel from "vue-json-excel";
 import 'vue-select/dist/vue-select.css';
-import { dollarFilter } from './filters';
+import { dollarFilter, affectation } from './filters';
 import moment from 'moment'
 
 import Login from './components/Login.vue'
@@ -79,6 +79,7 @@ Vue.use(CKEditor)
 Vue.use(require('vue-moment'));
 
 Vue.filter('currency', dollarFilter)
+Vue.filter('affectation', affectation)
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component("downloadExcel", JsonExcel);

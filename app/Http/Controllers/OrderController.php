@@ -326,7 +326,8 @@ class OrderController extends Controller
 
 		$orders = Order::whereHas('client', function (Builder $query) use ($request) {
 			if ($request->client != '') {
-				$query->where('name', 'like', "%$request->client%");
+				$query->where('name', 'like', "%$request->client%")
+				->orWhere('document', 'like', "%$request->client%");
 			}
 		});
 		if ($request->no_invoice != '') {
@@ -343,7 +344,7 @@ class OrderController extends Controller
 				->where('created_at', '<=', $to);
 		}
 
-		if ($from == '' && $to == '') {
+		if ($from == '' && $to == '' && !$request->client && !$request->no_invoice) {
 			$orders = $orders
 				->where('created_at', '>=', $today);
 		}
@@ -516,7 +517,7 @@ class OrderController extends Controller
 		}
 		$orders = DB::table('orders as o')
 			->leftJoin('payment_credits as pc', 'pc.order_id', '=', 'o.id')
-			->select('o.id', 'o.total_paid', "o.payment_methods", DB::raw('SUM(pc.pay) as  paid_payment'))
+			->select('o.id', 'o.total_paid', DB::raw('ANY_VALUE(o.payment_methods) as payment_methods'), DB::raw('SUM(pc.pay) as  paid_payment'))
 			->where('o.client_id', $request->id_client)
 			->where('o.state', 5)
 			->groupByRaw('id, total_paid')
@@ -539,6 +540,7 @@ class OrderController extends Controller
 				$payment_methods = (object)['pay_payment' => 0, 'cash' => 0];
 
 				$order->payment_methods = $order->payment_methods ? json_decode($order->payment_methods) : $payment_methods;
+				$payPaymentOrder= $order->payment_methods->pay_payment ?? 0;
 				$pending = $order->total_paid - $order->paid_payment;
 
 				if ($pending > $request->pay_payment) {
@@ -549,7 +551,7 @@ class OrderController extends Controller
 					]);
 
 					Order::where('id', $order->id)->update([
-						'payment_methods->pay_payment' => $order->payment_methods->pay_payment += $request->pay_payment,
+						'payment_methods->pay_payment' => $payPaymentOrder += $request->pay_payment,
 						'payment_methods->cash' => $order->payment_methods->cash += $request->pay_payment
 					]);
 

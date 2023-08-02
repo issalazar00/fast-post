@@ -41,7 +41,7 @@
           </div>
           <div class="form-group col-md-3 col-12  ">
             <download-excel class="btn btn-primary w-100" :fields="json_fields" :data="ExpenseList.data"
-              name="report-headquarters-expenses.xls" type="xls">
+              name="report-expenses.xls" type="xls">
               <i class="bi bi-file-earmark-arrow-down-fill"></i> Descargar .xls
             </download-excel>
           </div>
@@ -54,7 +54,6 @@
           <thead>
             <tr class="text-center">
               <th>ID</th>
-              <th>Sede</th>
               <th>Tipo</th>
               <th>Afectación</th>
               <th>Valor</th>
@@ -65,7 +64,6 @@
             ">
             <tr v-for="r in ExpenseList.data" :key="r.id">
               <td>{{ r.id }}</td>
-              <td>{{ r.headquarter.headquarter }}</td>
               <td>{{ r.type_output }}</td>
               <td>{{ r.description | affectation('expense') }}</td>
               <td class="text-right">{{ r.price | currency }}</td>

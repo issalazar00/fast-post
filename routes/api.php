@@ -78,7 +78,7 @@ Route::middleware('auth:api')->group(function () {
 	Route::post('/products/search-product',  [ProductController::class, 'searchProduct']);
 	Route::post('/products/filter-product-list',  [ProductController::class, 'filterProductList']);
 	Route::post('/products/stock-update/{id}', [ProductController::class, 'updateStockById']);
-	
+
 	Route::resource('/kardexes',  KardexController::class);
 
 	Route::resource('/expenses',  ExpenseController::class);
@@ -104,7 +104,8 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/departments', [DepartmentController::class, 'index']);
 	Route::get('/departments/{id}/getMunicipalities', [DepartmentController::class, 'getMunicipalitiesByDepartment']);
 
-	Route::resource('/configurations', ConfigurationController::class)->except(['create', 'edit', 'destroy', 'show'])->middleware('can:configuration');;
+	Route::resource('/configurations', ConfigurationController::class)->except(['create', 'edit', 'destroy', 'show'])->middleware('can:configuration');
+
 	Route::get('/company-logo', function () {
 		$configuration = new Configuration();
 		$image = $configuration->select('logo')->first();
