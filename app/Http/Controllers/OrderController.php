@@ -517,7 +517,7 @@ class OrderController extends Controller
 		}
 		$orders = DB::table('orders as o')
 			->leftJoin('payment_credits as pc', 'pc.order_id', '=', 'o.id')
-			->select('o.id', 'o.total_paid', DB::raw('ANY_VALUE(o.payment_methods) as payment_methods'), DB::raw('SUM(pc.pay) as  paid_payment'))
+			->select('o.id', 'o.total_paid', DB::raw('(o.payment_methods) as payment_methods'), DB::raw('SUM(pc.pay) as  paid_payment'))
 			->where('o.client_id', $request->id_client)
 			->where('o.state', 5)
 			->groupByRaw('id, total_paid')

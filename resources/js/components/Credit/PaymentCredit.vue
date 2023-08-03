@@ -41,7 +41,7 @@
                   type="button"
                   @click="searchClient()"
                 >
-                  Añadir Cliente
+                  Buscar
                 </button>
                 <button
                   class="btn btn-outline-secondary"
@@ -145,7 +145,7 @@
             >
               Cancelar
             </button>
-            <button type="button" class="btn btn-primary" @click="payCredit()">Guardar</button>
+            <button v-if="paymentCredit.id_client" type="button" class="btn btn-primary" @click="payCredit()">Guardar</button>
           </div>
         </div>
       </div>
