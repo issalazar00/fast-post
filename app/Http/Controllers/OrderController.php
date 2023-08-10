@@ -562,10 +562,10 @@ class OrderController extends Controller
 						'order_id' => $order->id,
 						'pay' => $pending
 					]);
-					echo 'abono';
+
 					Order::where('id', $order->id)->update([
 						'state' => 2,
-						'payment_methods->pay_payment' => $order->payment_methods->pay_payment += $pending,
+						'payment_methods->pay_payment' => $payPaymentOrder += $pending,
 						'payment_methods->cash' => $order->payment_methods->cash += $pending
 
 					]);

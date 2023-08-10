@@ -71,6 +71,7 @@
         </thead>
         <tbody>
           <tr v-for="paidCredit in creditInformation.payment_credits" :key="paidCredit.id">
+           <template v-if="paidCredit.pay">
             <td>$ {{ paidCredit.pay }}</td>
             <td>{{ paidCredit.created_at }}</td>
             <td class="text-right">
@@ -83,6 +84,7 @@
                 <i class="bi bi-receipt-cutoff"></i> Ticket
               </button>
             </td>
+           </template>
           </tr>
         </tbody>
       </table>

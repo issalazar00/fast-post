@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/css" charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orden {{$creditInformation->id}}</title>
+    <title>Orden {{ $creditInformation->id }}</title>
     <link rel="stylesheet" href="myProjects/webProject/icofont/css/icofont.min.css">
     <style>
         body {
@@ -68,31 +68,31 @@
 
 <body>
     @if ($configuration)
-    <header>
+        <header>
 
-        <table>
+            <table>
 
-            <tr>
-                <td rowspan="3">
-                    <img class="logo" src="{{ $url.'/'.$configuration->logo}}" alt="logo">
-                </td>
+                <tr>
+                    <td rowspan="3">
+                        <img class="logo" src="{{ $url . '/' . $configuration->logo }}" alt="logo">
+                    </td>
 
-                <th>Entidad</th>
-                <td>{{ $configuration->name}}</td>
-            </tr>
-            <tr>
+                    <th>Entidad</th>
+                    <td>{{ $configuration->name }}</td>
+                </tr>
+                <tr>
 
-                <th>Representante</th>
-                <td>{{$configuration->legal_representative}}</td>
-            </tr>
-            <tr>
+                    <th>Representante</th>
+                    <td>{{ $configuration->legal_representative }}</td>
+                </tr>
+                <tr>
 
-                <th>Nit</th>
-                <td>{{$configuration->nit}}</td>
-            </tr>
-        </table>
+                    <th>Nit</th>
+                    <td>{{ $configuration->nit }}</td>
+                </tr>
+            </table>
 
-    </header>
+        </header>
     @endif
     <section>
         <div>
@@ -165,7 +165,7 @@
                     <tr>
                         <td colspan="6">Saldo</td>
                         <th class="text-right">
-                            $ {{ $creditInformation->total_iva_inc - $creditInformation->paid_payment}}
+                            $ {{ $creditInformation->total_iva_inc - $creditInformation->paid_payment }}
                         </th>
                     </tr>
                 </tbody>
@@ -183,20 +183,22 @@
                     </tr>
                 </thead>
                 <tbody class="">
-                    @foreach ( $creditInformation->paymentCredits as $key => $i)
-                    <tr>
-                        @if (!$payment_id)
-                        <td>{{ $key + 1 }}</td>
-                        <td>$ {{ $i->pay }}</td>
-                        <td>{{ $i->created_at }}</td>
-                        @endif
-                        @if ($payment_id && $payment_id == $i->id)
-                        <td>{{ $key + 1 }}</td>
-                        <td>$ {{ $i->pay }}</td>
-                        <td>{{ $i->created_at }}</td>
-                        @endif
+                    @foreach ($creditInformation->paymentCredits as $key => $i)
+                        @if ($i->pay)
+                            <tr>
+                                @if (!$payment_id)
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>$ {{ $i->pay }}</td>
+                                    <td>{{ $i->created_at }}</td>
+                                @endif
+                                @if ($payment_id && $payment_id == $i->id)
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>$ {{ $i->pay }}</td>
+                                    <td>{{ $i->created_at }}</td>
+                                @endif
 
-                    </tr>
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>
@@ -204,30 +206,30 @@
 
     </section>
     @if ($configuration)
-    <br>
-    <br>
-    <div>
-        <h4>Condiciones:</h4>
-        <p>
-            {!! $configuration->condition_quotation !!}
-        </p>
-    </div>
-    <footer class="text-center">
-        <h3>Informacion de contacto</h3>
+        <br>
+        <br>
+        <div>
+            <h4>Condiciones:</h4>
+            <p>
+                {!! $configuration->condition_quotation !!}
+            </p>
+        </div>
+        <footer class="text-center">
+            <h3>Informacion de contacto</h3>
 
-        <p>
-            <img class="icon" src="{{ $url.'/images/'.'email.png'}}">
-            {{$configuration->email}}
-        </p>
-        <p>
-            <img class="icon" src="{{ $url.'/images/'.'phone.png'}}">
-            {{$configuration->telephone.' - '.$configuration->mobile}}
-        </p>
-        <p>
-            <img class="icon" src="{{ $url.'/images/'.'location-pin.png'}}">
-            {{$configuration->address}}
-        </p>
-    </footer>
+            <p>
+                <img class="icon" src="{{ $url . '/images/' . 'email.png' }}">
+                {{ $configuration->email }}
+            </p>
+            <p>
+                <img class="icon" src="{{ $url . '/images/' . 'phone.png' }}">
+                {{ $configuration->telephone . ' - ' . $configuration->mobile }}
+            </p>
+            <p>
+                <img class="icon" src="{{ $url . '/images/' . 'location-pin.png' }}">
+                {{ $configuration->address }}
+            </p>
+        </footer>
     @endif
 </body>
 

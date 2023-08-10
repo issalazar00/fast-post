@@ -131,11 +131,11 @@ class ReportController extends Controller
 			->where(function ($query) use ($from, $to) {
 				if ($from != '' && $from != 'undefined' && $from != null) {
 					$from = Carbon::parse($from)->toDateTimeString();
-					$query->where('orders.created_at', '>=', $from);
+					$query->where('detail_orders.created_at', '>=', $from);
 				}
 				if ($to != '' && $to != 'undefined' && $to != null) {
 					$to = Carbon::parse($to)->addSeconds(59)->toDateTimeString();
-					$query->where('orders.created_at', '<=', $to);
+					$query->where('detail_orders.created_at', '<=', $to);
 				}
 			})
 			->where(function ($query) use ($product) {
