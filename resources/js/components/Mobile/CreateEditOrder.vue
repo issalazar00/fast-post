@@ -34,7 +34,7 @@
             </button>
           </div>
           <div class="toast-body text-dark h4">
-            No se ha encontrado coincidencias
+            No se ha encontrado coincidencias o el producto no cuenta con existencias en inventario
           </div>
         </div>
       </div>
@@ -405,7 +405,7 @@ export default {
       if (me.filters.product == "") {
         return false;
       }
-      var url = "api/products/search-product?product=" + me.filters.product;
+      var url = `api/products/search-product?product=${me.filters.product}&is_order=true`;
       axios
         .post(url, null, this.$root.config)
         .then(function (response) {

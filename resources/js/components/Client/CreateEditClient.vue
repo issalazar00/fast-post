@@ -43,7 +43,7 @@
                     class="form-control"
                     aria-label="Text input with dropdown button"
                     v-model="formClient.document"
-                    placeholder = "Ingresar documento de identificación"
+                    placeholder="Ingresar documento de identificación"
                   />
                 </div>
 

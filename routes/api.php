@@ -130,5 +130,6 @@ Route::middleware('auth:api')->group(function () {
 	Route::get('/boxes/{box}/getAssignUserByBox', [BoxController::class, 'getAssignUserByBox'])->middleware('can:box.index');
 	Route::post('/boxes/{box}/toAssignUserByBox', [BoxController::class, 'toAssignUserByBox'])->middleware('can:box.store');
 
+	Route::get('/zones/zone-list', [ZoneController::class, 'zoneList']);
 	Route::resource('/zones', ZoneController::class);
 });

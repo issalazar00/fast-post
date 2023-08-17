@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tax;
+use App\Models\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -121,6 +122,12 @@ class ImportProductController extends Controller
                   $brand_id = $brand->id;
                 }
 
+                $zone_id = NULL;
+                if (isset($p["M"]) && $p["M"] != '') {
+                  $zone = Zone::firstOrCreate(['zone' => $p["M"]]);
+                  $zone_id = $zone->id;
+                }
+
                 $product = new Product();
                 $product->barcode = $p["A"];
                 $product->product = $p["B"];
@@ -129,6 +136,7 @@ class ImportProductController extends Controller
                 $product->wholesale_price_tax_inc = $wholesale_price_tax_inc;
                 $product->category_id = $category_id;
                 $product->brand_id = $brand_id;
+                $product->zone_id = $zone_id;
                 $product->quantity = $quantity;
                 $product->minimum = $minimum;
                 $product->maximum = $maximum;

@@ -34,8 +34,14 @@ class Product extends Model
         'state',
         'category_id',
         'tax_id',
-        'brand_id'
+        'brand_id',
+        'zone_id'
     ];
+
+    protected $casts = [
+        'quantity' => 'decimal:2'
+    ];
+
     protected $with = [
         'category',
         'tax',

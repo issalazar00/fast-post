@@ -25,9 +25,10 @@
               <input
                 type="text"
                 class="form-control"
-                placeholder="Código de barras | Nombre de product"
+                placeholder="Código de barras | Nombre de productO"
                 aria-label=" with two button addons"
                 aria-describedby="button-addon4"
+                id="inputSearchProduct"
                 v-model="filters.product"
                 @keyup="listProducts()"
               />

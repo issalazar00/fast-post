@@ -26,7 +26,7 @@ class AddPrinterToBoxes extends Migration
     public function down()
     {
         Schema::table('boxes', function (Blueprint $table) {
-            //
+            $table->dropColumn("printer");
         });
     }
 }

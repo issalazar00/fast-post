@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddResolutionToBoxes extends Migration
+class AlterDocumentToTableSuppliers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddResolutionToBoxes extends Migration
      */
     public function up()
     {
-        Schema::table('boxes', function (Blueprint $table) {
-            $table->string('resolution', 255)->nullable()->after('prefix');
+        Schema::table('suppliers', function (Blueprint $table) {
+            $table->string('document', 255)->change();
         });
     }
 
@@ -25,8 +25,7 @@ class AddResolutionToBoxes extends Migration
      */
     public function down()
     {
-        Schema::table('boxes', function (Blueprint $table) {
-            $table->dropColumn("resolution");
+        Schema::table('suppliers', function (Blueprint $table) {
         });
     }
 }

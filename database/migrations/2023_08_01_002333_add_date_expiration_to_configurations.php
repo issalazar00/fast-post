@@ -29,7 +29,7 @@ class AddDateExpirationToConfigurations extends Migration
     public function down()
     {
         Schema::table('configurations', function (Blueprint $table) {
-            //
+            $table->dropColumn("expiration_date");
         });
     }
 }

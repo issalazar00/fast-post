@@ -99,13 +99,12 @@
                 </td>
                 <td>
                   <input type="number" class="form-control form-control-sm" name="discount_price" id="discount_price"
-                    step="2" placeholder="Descuento" disabled :value="
-                      (p.discount_price = (
-                        p.quantity *
-                        p.price_tax_inc *
-                        (p.discount_percentage / 100)
-                      ).toFixed(0))
-                    " readonly style="max-width: 100px" />
+                    step="2" placeholder="Descuento" disabled :value="(p.discount_price = (
+                      p.quantity *
+                      p.price_tax_inc *
+                      (p.discount_percentage / 100)
+                    ).toFixed(0))
+                      " readonly style="max-width: 100px" />
                 </td>
                 <td>
                   $
@@ -149,9 +148,10 @@
                     </h4>
 
                     <div class="form-group">
-                      <label class="h6" for="cashPayment">El cliente paga: {{order.payment_methods.cash|currency}}</label>
-                      <input type="number" autofocus class="form-control form-control-lg" id="cashPayment" aria-describedby="cashHelp"
-                        v-model="order.payment_methods.cash">
+                      <label class="h6" for="cashPayment">El cliente paga: {{ order.payment_methods.cash | currency
+                      }}</label>
+                      <input type="number" autofocus class="form-control form-control-lg" id="cashPayment"
+                        aria-describedby="cashHelp" v-model="order.payment_methods.cash">
                     </div>
 
                     <h4 class="font-weight-bold"> Cambio
@@ -162,15 +162,15 @@
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="button" :disabled="paid_value < total_tax_inc" class="btn btn-outline-primary btn-block"
-                    @click="createOrUpdateOrder(2)">
-                    <!-- Facturar -->
-                    <i class="bi bi-receipt"></i> <b>F1</b> Facturar
-                  </button>
-                  <button type="button" :disabled="paid_value < total_tax_inc" class="btn btn-outline-primary btn-block"
-                    @click="createOrUpdateOrder(4)">
-                    <!-- Facturar -->
-                    <i class="bi bi-receipt"></i> <b>F2</b> Facturar e imprimir
-                  </button>
+                      @click="createOrUpdateOrder(2)">
+                      <!-- Facturar -->
+                      <i class="bi bi-receipt"></i> <b>F1</b> Facturar
+                    </button>
+                    <button type="button" :disabled="paid_value < total_tax_inc" class="btn btn-outline-primary btn-block"
+                      @click="createOrUpdateOrder(4)">
+                      <!-- Facturar -->
+                      <i class="bi bi-receipt"></i> <b>F2</b> Facturar e imprimir
+                    </button>
 
                   </div>
                 </form>
@@ -304,7 +304,7 @@
       </div>
     </div>
 
-    <add-product @add-product="addProduct($event)" />
+    <add-product @add-product="addProduct($event)" :is_order="1" />
     <add-client @add-client="addClient($event)" />
     <modal-box ref="ModalBox"></modal-box>
   </div>
@@ -438,7 +438,7 @@ export default {
       if (me.filters.product == "") {
         return false;
       }
-      var url = "api/products/search-product?product=" + me.filters.product;
+      var url = `api/products/search-product?product=${me.filters.product}&is_order=true`;
       axios
         .post(url, null, this.$root.config)
         .then(function (response) {
@@ -535,7 +535,7 @@ export default {
         alert("Debe seleccionar un cliente válido");
         return false;
       }
-      if (this.productsOrderList.length) {        
+      if (this.productsOrderList.length) {
         shortcut.remove("F1")
         shortcut.remove("F2")
         this.order.productsOrder = this.productsOrderList;
@@ -575,7 +575,7 @@ export default {
             );
         } else {
           if (this.order.box_id > 0) {
-              axios
+            axios
               .post(`api/orders`, this.order, this.$root.config)
               .then((response) => {
                 Swal.fire({
@@ -653,6 +653,11 @@ export default {
 
       shortcut.add("F10", function () {
         $("#addProductModal").modal("show");
+        $('#addProductModal').on('shown.bs.modal', function () {
+          $("#inputSearchProduct").trigger('focus');
+        })
+
+        console.log($("#inputSearchProduct"))
       });
     },
 

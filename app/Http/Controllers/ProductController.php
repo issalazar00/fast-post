@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KitProduct;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
@@ -371,11 +372,22 @@ class ProductController extends Controller
 
 	public function searchProduct(Request $request)
 	{
+		$is_order = $request->is_order ??  $request->is_order;
 		$products = Product::select()
 			->where('barcode', 'LIKE', "$request->product")
-			//->orWhere('product', 'LIKE', "%$request->product%")
-			->where('state', 1)
-			->first();
+			->where('state', 1);
+
+		if ((bool)$is_order) {
+			$products = $products
+				->selectRaw('CASE WHEN type = 1 OR type = 3 THEN CASE WHEN quantity > 0 AND quantity IS NOT NULL THEN 1 ELSE 0 END ELSE 1 END AS valid');
+		}
+		$products = $products->first();
+
+		if ((bool)$is_order) {
+			if(!$products->valid) {
+				return ['products' => null];
+			}
+		}
 
 		return ['products' => $products];
 	}
@@ -387,7 +399,6 @@ class ProductController extends Controller
 
 		if ($request->product) {
 			$products = $products
-				->where('state', 1)
 				->where('barcode', 'LIKE', "%$request->product%")
 				->orWhere('product', 'LIKE', "%$request->product%");
 		}
@@ -397,12 +408,18 @@ class ProductController extends Controller
 				->where('category_id', $request->category_id);
 		}
 
-		if ($request->is_order) {
+		if ((bool)$request->is_order) {
 			$products = $products->where('state', 1)
-				->where('quantity', '>', 0)
+				->selectRaw('CASE WHEN type = 1 OR type = 2 THEN CASE WHEN quantity > 0 AND quantity IS NOT NULL THEN 1 ELSE 0 END ELSE 1 END AS valid')
 				->limit(5);
 		}
+
 		$products = $products->get();
+
+		if ((bool)$request->is_order) {
+			return $products->where('valid', 1);
+		}
+
 		return $products;
 	}
 

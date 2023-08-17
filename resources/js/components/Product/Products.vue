@@ -331,7 +331,13 @@ export default {
 						return value;
 					}
 				},
-				'P. Costo': {
+        'Fecha de vencimiento': {
+          field: 'expiration_date',
+          callback: (value) => {
+            return value;
+          }
+				},
+        'P. Costo': {
 					field: 'cost_price_tax_inc',
 					callback: (value) => {
 						return value;

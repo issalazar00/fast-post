@@ -10,9 +10,10 @@
         </div>
         <div class="modal-body">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Código de barras | Nombre de product"
-              aria-label=" with two button addons" aria-describedby="button-addon4" v-model="filters.product"
-              @keyup="searchProduct()" />
+
+            <input type="text" class="form-control" placeholder="Código de barras | Nombre de producto"
+              id="inputSearchProduct" aria-label=" with two button addons" aria-describedby="button-addon4"
+              v-model="filters.product" @keyup="searchProduct()" />
             <div class="input-group-append" id="button-addon4">
               <button class="btn btn-outline-secondary" type="button" @click="searchProduct()">
                 Buscar Producto
@@ -42,7 +43,7 @@
                   </td>
                   <td class="text-right">$ {{ product.sale_price_tax_inc }}</td>
                   <td>{{ product.quantity }}</td>
-  
+
                   <td>
                     <button class="btn btn-success" @click="$emit('add-product', product)">
                       <i class="bi bi-plus-circle"></i>
@@ -98,8 +99,7 @@ export default {
       if (me.filters.product == "") {
         return false;
       }
-      var url =
-        "api/products/filter-product-list?product=" + me.filters.product;
+      var url = `api/products/filter-product-list?product=${me.filters.product}&is_order=${this.is_order}`;
       if (me.filters.product.length >= 3) {
         axios
           .post(url, null, me.$root.config)
