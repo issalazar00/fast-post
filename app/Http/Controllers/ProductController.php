@@ -375,10 +375,11 @@ class ProductController extends Controller
 		$is_order = $request->is_order ??  $request->is_order;
 		$products = Product::select()
 			->where('barcode', 'LIKE', "$request->product")
-			->where('state', 1);
+			->orWhere('product',  "$request->product");
 
 		if ((bool)$is_order) {
 			$products = $products
+				->where('state', 1)
 				->selectRaw('CASE WHEN type = 1 OR type = 3 THEN CASE WHEN quantity > 0 AND quantity IS NOT NULL THEN 1 ELSE 0 END ELSE 1 END AS valid');
 		}
 		$products = $products->first();

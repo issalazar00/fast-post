@@ -102,8 +102,8 @@ class PrintOrderController extends Controller
 			$printer->text("Cajero(a): ");
 			$printer->text($system_user->name . "\n");
 			$printer->setEmphasis(false);
-			$printer->text("Fecha: ");
-			$printer->text(date('Y-m-d h:i:s A') .  "\n");
+			$printer->text("Fecha de venta: ");
+			$printer->text($order->created_at .  "\n");
 			$printer->text("N° Factura: ");
 
 			if (isset($order->bill_number)) {
@@ -232,8 +232,10 @@ class PrintOrderController extends Controller
 			$printer->setEmphasis(false);
 			$printer->setFont(Printer::MODE_FONT_B);
 			$printer->text($company->condition_order . "\n");
+			$printer->text("Fecha de impresión: ");
+			$printer->text(date('Y-m-d h:i:s A') .  "\n");
 			$printer->text("Tecnoplus");
-			$printer->text("\nwww.tecnoplus.com\n");
+			// $printer->text("\nwww.tecnoplus.com\n");
 			$printer->cut();
 			$printer->pulse();
 			$printer->close();
@@ -300,8 +302,8 @@ class PrintOrderController extends Controller
 			$printer->text("Cajero(a): ");
 			$printer->text($system_user->name . "\n");
 			$printer->setEmphasis(false);
-			$printer->text("Fecha: ");
-			$printer->text(date('Y-m-d h:i:s A') .  "\n");
+			$printer->text("Fecha de venta: ");
+			$printer->text($order->created_at .  "\n");
 			$printer->text("N° Factura: ");
 
 			if (isset($order->bill_number)) {
@@ -421,6 +423,8 @@ class PrintOrderController extends Controller
 			$printer->setLineSpacing(2);
 			$printer->setEmphasis(false);
 			$printer->setFont(Printer::MODE_FONT_B);
+			$printer->text("Fecha de impresión: ");
+			$printer->text(date('Y-m-d h:i:s A') .  "\n");
 			$printer->text($company->condition_order . "\n");
 			$printer->text("Tecnoplus");
 			$printer->text("\nwww.tecnoplus.com\n");
@@ -489,8 +493,8 @@ class PrintOrderController extends Controller
 			$printer->text("Cajero(a): ");
 			$printer->text($system_user->name . "\n");
 			$printer->setEmphasis(false);
-			$printer->text("Fecha: ");
-			$printer->text(date('Y-m-d h:i:s A') .  "\n");
+			$printer->text("Fecha de venta: ");
+			$printer->text($order->created_at .  "\n");
 			$printer->text("N° Factura: ");
 
 			if (isset($order->bill_number)) {
@@ -615,6 +619,8 @@ class PrintOrderController extends Controller
 			$printer->setEmphasis(false);
 			$printer->setFont(Printer::MODE_FONT_B);
 			$printer->text($company->condition_order . "\n");
+			$printer->text("Fecha de impresión: ");
+			$printer->text(date('Y-m-d h:i:s A') .  "\n");
 			$printer->text("Tecnoplus");
 			$printer->text("\nwww.tecnoplus.com\n");
 			$printer->cut();
@@ -678,8 +684,9 @@ class PrintOrderController extends Controller
 			$printer->setEmphasis(true);
 			$printer->text("Cajero(a): " . $system_user->name . "\n");
 			$printer->setEmphasis(false);
-			$printer->text("Fecha: ");
-			$printer->text(date('Y-m-d h:i:s A') .  "\n");
+			$printer->text("Fecha de compra: ");
+			$printer->text($billing->created_at .  "\n");
+			$printer->text("N° Factura: ");
 			$printer->text("N° compra: " . $billing->id . "\n");
 
 			if ($billing->state) {
@@ -765,6 +772,8 @@ class PrintOrderController extends Controller
 			$printer->setEmphasis(false);
 			$printer->setFont(Printer::MODE_FONT_B);
 			$printer->text($company->condition_order . "\n");
+			$printer->text("Fecha de impresión: ");
+			$printer->text(date('Y-m-d h:i:s A') .  "\n");
 			$printer->text("Tecnoplus");
 			$printer->text("\nwww.tecnoplus.com\n");
 			$printer->cut();
