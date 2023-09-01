@@ -165,16 +165,30 @@
                     value="0"
                     v-model="product.qty"
                   />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Descripción de movimiento"
+                    aria-label="Descripción de movimiento"
+                    aria-describedby="button-qty"
+                    v-model="product.subject"
+                  />
                   <div class="input-group-append">
                     <button
                       class="btn btn-outline-success"
                       type="button"
                       id="button-qty"
                       v-if="product.qty && product.qty != 0"
-                      @click="updateStock(product.id, product.qty)"
+                      @click="updateStock(product.id, product.qty, product.subject)"
                     >
                       <i class="bi bi-check2-circle"></i>
                     </button>
+                    <button  v-else
+                      class="btn btn-outline-secondary"
+                      type="button" 
+                      disabled>
+                        <i class="bi bi-check2-circle"></i>
+                      </button>
                   </div>
                 </div>
               </td>
@@ -269,12 +283,15 @@ export default {
           me.brandList = response.data.brands;
         });
     },
-    updateStock(id, quantity) {
+    updateStock(id, quantity, subject) {
       let me = this;
       axios
         .post(
           `api/products/stock-update/${id}`,
-          { quantity: quantity },
+          {
+            quantity: quantity,
+            subject: subject
+          },
           this.$root.config
         )
         .then(function (response) {

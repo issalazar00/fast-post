@@ -54,6 +54,7 @@ class KardexController extends Controller
                         ->orWhere('product', 'LIKE', "%$product%");
                 }
             })
+            ->orderBy('id','desc')
             ->paginate($nro_results);
 
 

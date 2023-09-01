@@ -335,6 +335,7 @@ class ProductController extends Controller
 		$product->save();
 	}
 
+	/** products/stock-update/{id} */
 	public function updateStockById(Request $request, $id)
 	{
 		$product = Product::findOrFail($id);
@@ -342,7 +343,8 @@ class ProductController extends Controller
 		$product->save();
 
 		$kardexController = new KardexController();
-		$kardexController->storeKardex($product->id, 'REINGRESO', $request->quantity, "Actualización de stock");
+		$subject = $request->subject ?: "Actualización de stock";
+		$kardexController->storeKardex($product->id, 'REINGRESO', $request->quantity, $subject);
 	}
 
 	/**
@@ -374,34 +376,40 @@ class ProductController extends Controller
 	{
 		$is_order = $request->is_order ??  $request->is_order;
 		$products = Product::select()
-			->where('barcode', 'LIKE', "$request->product")
-			->orWhere('product',  "$request->product");
+			->where(function ($query) use ($request) {
+				$query->where('barcode', $request->product);
+			});
 
-		if ((bool)$is_order) {
-			$products = $products
-				->where('state', 1)
-				->selectRaw('CASE WHEN type = 1 OR type = 3 THEN CASE WHEN quantity > 0 AND quantity IS NOT NULL THEN 1 ELSE 0 END ELSE 1 END AS valid');
+		if ((bool) $is_order) {
+			$products = $products->where(function ($query) {
+				$query->where(function ($query) {
+					$query->where('stock', false);
+				})->orWhere(function ($query) {
+					$query->where(function ($query) {
+						$query->where('type', 1)
+							->where('quantity', '>', 0);
+					})->orWhere(function ($query) {
+						$query->where('type', 3)
+							->where('quantity', '>', 0);
+					});
+				});
+			});
 		}
+
 		$products = $products->first();
-
-		if ((bool)$is_order) {
-			if(!$products->valid) {
-				return ['products' => null];
-			}
-		}
 
 		return ['products' => $products];
 	}
 
 	public function filterProductList(Request $request)
 	{
-
 		$products = Product::select();
 
 		if ($request->product) {
-			$products = $products
-				->where('barcode', 'LIKE', "%$request->product%")
-				->orWhere('product', 'LIKE', "%$request->product%");
+			$products = $products->where(function ($query) use ($request) {
+				$query->where('barcode', $request->product)
+				->orWhere('product',"LIKE", "%$request->product%");
+			});
 		}
 
 		if ($request->category_id) {
@@ -410,16 +418,23 @@ class ProductController extends Controller
 		}
 
 		if ((bool)$request->is_order) {
-			$products = $products->where('state', 1)
-				->selectRaw('CASE WHEN type = 1 OR type = 2 THEN CASE WHEN quantity > 0 AND quantity IS NOT NULL THEN 1 ELSE 0 END ELSE 1 END AS valid')
-				->limit(5);
+			$products = $products->where(function ($query) {
+				$query->where(function ($query) {
+					$query->where('stock', false);
+				})->orWhere(function ($query) {
+					$query->where(function ($query) {
+						$query->where('type', 1)
+							->where('quantity', '>', 0);
+					})->orWhere(function ($query) {
+						$query->where('type', 3)
+							->where('quantity', '>', 0);
+					});
+				});
+			})
+			->limit(5);
 		}
 
 		$products = $products->get();
-
-		if ((bool)$request->is_order) {
-			return $products->where('valid', 1);
-		}
 
 		return $products;
 	}
