@@ -358,9 +358,19 @@ export default {
         });
       me.filters.product = "";
     },
-    addProduct(new_product) {
+    
+    async addProduct(new_product) {
       let me = this;
       let result = false;
+
+      if (new_product.quantity <= 0) {
+      await  Swal.fire({
+          icon: "warning",
+          title: "Atención",
+          text: "Está añadiendo un producto con inventario negativo",
+        })
+      }
+
       // Verifica si el producto existe en la lista
       me.productsOrderList.filter((prod) => {
         if (new_product.barcode == prod.barcode) {
