@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-	Const NRO_RESULTS = 15;
+	const NRO_RESULTS = 15;
 
 	public function __construct()
 	{
@@ -127,6 +127,9 @@ class ReportController extends Controller
 
 		$detail_order = DetailOrder::select('product', 'barcode')
 			->selectRaw('SUM(quantity) as quantity_of_products')
+			->selectRaw('SUM(price_tax_inc) as price_tax_inc_of_products')
+			->selectRaw('SUM(price_tax_exc) as price_tax_exc_of_products')
+			->selectRaw('SUM(cost_price_tax_inc) as cost_price_tax_inc_of_products')
 			->groupBy('barcode', 'product')
 			->where(function ($query) use ($from, $to) {
 				if ($from != '' && $from != 'undefined' && $from != null) {
@@ -151,7 +154,10 @@ class ReportController extends Controller
 			})
 			->paginate($nro_results);
 
-		return $detail_order;
+		$getTotalReportsController = new GetTotalReportsController;
+		$total_products = $getTotalReportsController->getTotalReportProductSales($detail_order);
+
+		return ['detail_orders' => $detail_order, 'total_products' => $total_products];
 	}
 
 	public function reportTotalProducts(Request $request)
@@ -242,12 +248,12 @@ class ReportController extends Controller
 			})
 			->groupBy('date_paid')
 			->paginate($nro_results);
-		
+
 		$totals = (object) [];
 
 		$totals->total_sale = $orders->sum('total_sale');
 
-		return ['orders'=>$orders, 'totals'=>$totals];
+		return ['orders' => $orders, 'totals' => $totals];
 	}
 
 	public function ReportExpenses(Request $request)
@@ -267,7 +273,6 @@ class ReportController extends Controller
 			if ($to != '' && $to != 'undefined' && $to != null) {
 				$query->whereDate('date', '<=', $to);
 			}
-			
 		})->where(function ($query) use ($type_output) {
 			if ($type_output != '' && $type_output != 'undefined' && $type_output != null) {
 				$query->where('type_output', 'LIKE', "%$type_output%");

@@ -50,6 +50,8 @@
               <th>Producto</th>
               <th>Código de barras</th>
               <th>Cantidad productos vendidos</th>
+              <th>Valor de venta</th>
+              <th>Valor de ganancia</th>
             </tr>
           </thead>
           <tbody v-if="List.data">
@@ -58,15 +60,23 @@
                 {{ l.product }}
               </td>
               <td>
-                <span class="barcode">{{ l.barcode }}</span>
+                <span>{{ l.barcode }}</span>
               </td>
               <td>
                 {{ l.quantity_of_products }}
               </td>
+              <td>
+                {{ l.price_tax_inc_of_products | currency }}
+              </td>
+              <td>
+                {{ (l.price_tax_exc_of_products - l.cost_price_tax_inc_of_products) | currency }}
+              </td>
             </tr>
             <tr>
               <th colspan="2">Total:</th>
-              <th>{{ total_products }}</th>
+              <th>{{ TotalProducts.quantity_of_products }}</th>
+              <th>{{ TotalProducts.price_tax_inc_of_products | currency }}</th>
+              <th>{{ (TotalProducts.price_tax_exc_of_products - TotalProducts.cost_price_tax_inc_of_products) | currency }}</th>
             </tr>
           </tbody>
           <tbody v-else>
@@ -91,6 +101,7 @@ export default {
   data() {
     return {
       List: {},
+      TotalProducts:[],
       filter: {
         from: "",
         to: "",
@@ -121,13 +132,6 @@ export default {
       }
     };
   },
-  computed: {
-    total_products: function () {
-      return this.List.data.map(item => item.quantity_of_products).reduce((value1, value2) => {
-        return value1 + value2;
-      });
-    }
-  },
   methods: {
     getOrders(page = 1) {
       let me = this;
@@ -138,9 +142,11 @@ export default {
           this.$root.config
         )
         .then(function (response) {
-          me.List = response.data;
+          me.List = response.data.detail_orders;
+          me.TotalProducts = response.data.total_products;
         });
     },
+
     getCategories() {
       let me = this;
       axios.get('api/categories?paginate=0', this.$root.config).then(response => {
@@ -148,6 +154,7 @@ export default {
       });
     }
   },
+  
   mounted() {
     this.getOrders(1);
     this.getCategories();

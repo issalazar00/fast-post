@@ -33,4 +33,16 @@ class GetTotalReportsController extends Controller
         
         return $data;
     }
+
+    public function getTotalReportProductSales($results){
+        $data = [
+            'quantity_of_products' => $results->sum('quantity_of_products'),
+            'price_tax_inc_of_products' => $results->sum('price_tax_inc_of_products'),
+            'price_tax_exc_of_products' => $results->sum('price_tax_exc_of_products'),
+            'cost_price_tax_inc_of_products' => $results->sum('cost_price_tax_inc_of_products')
+        ];
+        
+        return $data;
+    }
+    
 }

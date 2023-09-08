@@ -381,19 +381,12 @@ class ProductController extends Controller
 			});
 
 		if ((bool) $is_order) {
-			$products = $products->where(function ($query) {
-				$query->where(function ($query) {
-					$query->where('stock', false);
-				})->orWhere(function ($query) {
-					$query->where(function ($query) {
-						$query->where('type', 1)
-							->where('quantity', '>', 0);
-					})->orWhere(function ($query) {
-						$query->where('type', 3)
-							->where('quantity', '>', 0);
-					});
-				});
-			});
+			// $products = $products->where(function ($query) {
+			// 	$query->where(function ($query) { $query->where('stock', false);
+			// 	})->orWhere(function ($query) { $query->where(function ($query) { $query->where('type', 1)->where('quantity', '>', 0);
+			// 		})->orWhere(function ($query) { $query->where('type', 3)->where('quantity', '>', 0);});
+			// 	})});
+			$products = $products->where("state", 1);
 		}
 
 		$products = $products->first();
@@ -408,7 +401,7 @@ class ProductController extends Controller
 		if ($request->product) {
 			$products = $products->where(function ($query) use ($request) {
 				$query->where('barcode', $request->product)
-				->orWhere('product',"LIKE", "%$request->product%");
+					->orWhere('product', "LIKE", "%$request->product%");
 			});
 		}
 
@@ -418,20 +411,16 @@ class ProductController extends Controller
 		}
 
 		if ((bool)$request->is_order) {
-			$products = $products->where(function ($query) {
-				$query->where(function ($query) {
-					$query->where('stock', false);
-				})->orWhere(function ($query) {
-					$query->where(function ($query) {
-						$query->where('type', 1)
-							->where('quantity', '>', 0);
-					})->orWhere(function ($query) {
-						$query->where('type', 3)
-							->where('quantity', '>', 0);
-					});
-				});
-			})
-			->limit(5);
+			// $products = $products->where(function ($query) {
+			// 	$query->where(function ($query) {$query->where('stock', false);
+			// 	})->orWhere(function ($query) {
+			// 		$query->where(function ($query) { $query->where('type', 1)->where('quantity', '>', 0);
+			// 		})->orWhere(function ($query) { $query->where('type', 3)->where('quantity', '>', 0);
+			// 		});
+			// })})
+
+			$products = $products->where("state", 1)
+				->limit(5);
 		}
 
 		$products = $products->get();
