@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\KitProduct;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
-use PhpParser\Node\Expr\Cast\Array_;
 
 class ProductController extends Controller
 {

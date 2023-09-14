@@ -87,6 +87,7 @@
               v-model="search_quantity_sign"
               id="search_quantity_sign"
             >
+              <option value="" selected>--Seleccionar--</option>
               <option value=">">Mayor que</option>
               <option value="<">Menor que</option>
               <option value="=">Igual a</option>
@@ -306,7 +307,7 @@ export default {
       search_barcode: "",
       search_category: 0,
       search_brand: 0,
-      search_quantity_sign: ">=",
+      search_quantity_sign: "",
       search_quantity: 0,
       search_expiration_date_from: "",
       search_expiration_date_to: "",
