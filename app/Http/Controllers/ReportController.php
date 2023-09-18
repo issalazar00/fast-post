@@ -125,11 +125,11 @@ class ReportController extends Controller
 		$category = $request->category;
 		$nro_results = $request->nro_results ?: self::NRO_RESULTS;
 
-		$detail_order = DetailOrder::select('product', 'barcode')
+		$detail_order = DetailOrder::select('product', 'barcode', 'product_id')
 			->selectRaw('SUM(quantity) as quantity_of_products')
-			->selectRaw('SUM(price_tax_inc) as price_tax_inc_of_products')
-			->selectRaw('SUM(price_tax_exc) as price_tax_exc_of_products')
-			->selectRaw('SUM(cost_price_tax_inc) as cost_price_tax_inc_of_products')
+			->selectRaw('SUM(price_tax_inc * quantity) as price_tax_inc_of_products')
+			->selectRaw('SUM(price_tax_exc * quantity) as price_tax_exc_of_products')
+			->selectRaw('SUM(cost_price_tax_inc * quantity) as cost_price_tax_inc_of_products')
 			->groupBy('barcode', 'product')
 			->where(function ($query) use ($from, $to) {
 				if ($from != '' && $from != 'undefined' && $from != null) {

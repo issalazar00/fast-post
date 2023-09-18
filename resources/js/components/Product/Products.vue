@@ -192,6 +192,7 @@
           <table class="table table-sm table-bordered table-responsive-sm">
             <thead class="thead-primary">
               <tr>
+                <th>ID</th>
                 <th>Código de barras</th>
                 <th scope="col">Producto</th>
                 <th>Categoria</th>
@@ -210,6 +211,7 @@
             </thead>
             <tbody>
               <tr v-for="product in ProductList.data" v-bind:key="product.id">
+                <td>{{ product.id }}</td>
                 <td class="barcode">{{ product.barcode }}</td>
                 <td>{{ product.product }}</td>                 
                 <td>{{ product.category.name }}</td>

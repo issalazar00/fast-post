@@ -47,6 +47,7 @@
         <table class="table table-sm table-bordered table-hover">
           <thead class=" thead-dark">
             <tr>
+              <th>ID</th>
               <th>Producto</th>
               <th>Código de barras</th>
               <th>Cantidad productos vendidos</th>
@@ -56,6 +57,9 @@
           </thead>
           <tbody v-if="List.data">
             <tr v-for="(l, index) in List.data" :key="index">
+              <td>
+                {{ l.product_id }}
+              </td>
               <td>
                 {{ l.product }}
               </td>
@@ -73,7 +77,7 @@
               </td>
             </tr>
             <tr>
-              <th colspan="2">Total:</th>
+              <th colspan="3">Total:</th>
               <th>{{ TotalProducts.quantity_of_products }}</th>
               <th>{{ TotalProducts.price_tax_inc_of_products | currency }}</th>
               <th>{{ (TotalProducts.price_tax_exc_of_products - TotalProducts.cost_price_tax_inc_of_products) | currency }}</th>
@@ -124,6 +128,12 @@ export default {
 					}
 				},
         'Cantidad vendida': {
+					field: 'quantity_of_products',
+					callback: (value) => {
+						return value;
+					}
+				},
+        'Valor de venta': {
 					field: 'quantity_of_products',
 					callback: (value) => {
 						return value;

@@ -29,7 +29,7 @@ class KardexController extends Controller
 
         $productData = null;
         if($request->filled('product') && $product != 'undefined'){
-            $productData = Product::where('barcode', 'LIKE', "%$product%")
+            $productData = Product::where('id', 'LIKE', "$product")
             ->orWhere('product', 'LIKE', "%$product%")
             ->firstOrFail();
         }
@@ -38,11 +38,12 @@ class KardexController extends Controller
             ->where(function ($query) use ($from, $to) {
                 if ($from != '' && $from != 'undefined' && $from != null) {
                     $from = Carbon::parse($from)->toDateTimeString();
-                    $query->where('date', '>=', $from);
+                    $query->where('created_at', '>=', $from);
                 }
                 if ($to != '' && $to != 'undefined' && $to != null) {
-                    $to = Carbon::parse($to)->toDateTimeString();
-                }
+					$to = Carbon::parse($to)->addSeconds(59)->toDateTimeString();
+					$query->where('created_at', '<=', $to);
+				}
             })
             ->whereHas('product', function ($query) use ($category, $product, $request) {
                 if ($request->filled('category') && $category != 'undefined') {
@@ -50,7 +51,7 @@ class KardexController extends Controller
                 }
 
                 if ($request->filled('product') && $product != 'undefined') {
-                    $query->where('barcode', 'LIKE', "%$product%")
+                    $query->where('id', 'LIKE', "$product")
                         ->orWhere('product', 'LIKE', "%$product%");
                 }
             })

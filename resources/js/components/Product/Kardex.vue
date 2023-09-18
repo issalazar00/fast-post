@@ -36,7 +36,7 @@
         </div>
         <div class="col my-4 col-3">
           <download-excel class="btn btn-outline-success mr-2 btn-block" :fields="json_fields" :data="List.data"
-            name="product-list.xls" type="xls">
+            name="product-list.xls" type="xlsx">
             <i class="bi bi-file-earmark-arrow-down-fill"></i> Exportar selección
           </download-excel>
         </div>
@@ -120,19 +120,31 @@ export default {
       categoriesList: [],
       json_fields: {
         'Producto': {
-          field: 'product',
+          field: 'product_id',
           callback: (value) => {
             return value;
           }
         },
-        'Código de barras': {
-          field: 'barcode',
+        'Cantidad': {
+          field: 'quantity',
           callback: (value) => {
             return value;
           }
         },
-        'Cantidad vendida': {
-          field: 'quantity_of_products',
+        'Tipo': {
+          field: 'type',
+          callback: (value) => {
+            return value;
+          }
+        },
+        'Afectación': {
+          field: 'description',
+          callback: (value) => {
+            return value;
+          }
+        },
+        'Fecha': {
+          field: 'date',
           callback: (value) => {
             return value;
           }
