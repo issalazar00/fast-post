@@ -24,40 +24,44 @@
     <script src="{{ asset('js/shortcut.js') }} "></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
-    @if ($expiration < $today)
-        <style>
-            .fondo-con-marca-de-agua {
-                position: fixed;
-                width: 100%;
-                height: 100vh;
-                background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.2) 25%, transparent 25%),
-                    linear-gradient(-45deg, rgba(0, 0, 0, 0.2) 25%, transparent 25%),
-                    linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.2) 75%),
-                    linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.2) 75%);
-                background-size: 20px 20px;
-                background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-                color: black;
-                /* Color del texto */
-                font-size: 24px;
-                text-align: center;
-                padding-top: 150px;
-				z-index: 100;
-            }
+    @if (isset($expiration))
 
-            .fondo-con-marca-de-agua::before {
-                content: "⚠️ LICENCIA VENCIDA ⚠️ LICENCIA VENCIDA ⚠️ LICENCIA VENCIDA ⚠️";
-                /* position: absolute; */
-                /* top: 50%; */
-                /* left: 50%; */
-				text-align: center;
-                /* transform: translate(-50%, -50%) rotate(-45deg); */
-                font-size: 5rem;
-                font-weight: bold;
-                color: rgba(241, 93, 93, 0.638);
-				
-                /* Color del texto de la marca de agua */
-            }
-        </style>
+        @if ($expiration < $today)
+            <style>
+                .fondo-con-marca-de-agua {
+                    position: fixed;
+                    width: 100%;
+                    height: 100vh;
+                    background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.2) 25%, transparent 25%),
+                        linear-gradient(-45deg, rgba(0, 0, 0, 0.2) 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.2) 75%),
+                        linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.2) 75%);
+                    background-size: 20px 20px;
+                    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+                    color: black;
+                    /* Color del texto */
+                    font-size: 24px;
+                    text-align: center;
+                    padding-top: 150px;
+                    z-index: 100;
+                }
+
+                .fondo-con-marca-de-agua::before {
+                    content: "⚠️ LICENCIA VENCIDA ⚠️ LICENCIA VENCIDA ⚠️ LICENCIA VENCIDA ⚠️";
+                    /* position: absolute; */
+                    /* top: 50%; */
+                    /* left: 50%; */
+                    text-align: center;
+                    /* transform: translate(-50%, -50%) rotate(-45deg); */
+                    font-size: 5rem;
+                    font-weight: bold;
+                    color: rgba(241, 93, 93, 0.638);
+
+                    /* Color del texto de la marca de agua */
+                }
+            </style>
+        @endif
+
     @endif
 
 </head>

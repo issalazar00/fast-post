@@ -242,6 +242,8 @@ class OrderController extends Controller
 
 		$order->update();
 
+		$this->getDifference($order->id, $order->detailOrders()->get(), collect($request->productsOrder));
+
 		if ($order->state == 5) {
 			if ($request->pay_payment > 0) {
 				$paymentCredit = $order->paymentCredits->first();
@@ -327,7 +329,7 @@ class OrderController extends Controller
 		$orders = Order::whereHas('client', function (Builder $query) use ($request) {
 			if ($request->client != '') {
 				$query->where('name', 'like', "%$request->client%")
-				->orWhere('document', 'like', "%$request->client%");
+					->orWhere('document', 'like', "%$request->client%");
 			}
 		});
 		if ($request->no_invoice != '') {
@@ -540,7 +542,7 @@ class OrderController extends Controller
 				$payment_methods = (object)['pay_payment' => 0, 'cash' => 0];
 
 				$order->payment_methods = $order->payment_methods ? json_decode($order->payment_methods) : $payment_methods;
-				$payPaymentOrder= $order->payment_methods->pay_payment ?? 0;
+				$payPaymentOrder = $order->payment_methods->pay_payment ?? 0;
 				$pending = $order->total_paid - $order->paid_payment;
 
 				if ($pending > $request->pay_payment) {
@@ -580,5 +582,32 @@ class OrderController extends Controller
 			'code' => 200,
 			'message' => 'Abonos realizados correctamente',
 		]);
+	}
+
+
+	public function getDifference($orderId, $ordenOriginal, $ordenModificada)
+	{
+		$products = $ordenModificada->map(function ($item) use ($ordenOriginal) {
+			$product_id = $item['product_id'];
+			$cantidadNueva = $item['quantity'];
+			$ordenNueva = $ordenOriginal->where('product_id', $product_id)->first()['quantity'] ?? 0;
+			return [
+				'product_id' => $product_id,
+				'barcode' => $item['barcode'],
+				'quantity' =>  $cantidadNueva - $ordenNueva,
+			];
+		});
+
+		$product_controller =  new ProductController();
+
+		foreach ($products as $product) {
+			$product = (object) $product;
+			if ($product->quantity < 0) {
+				// Resta a stock
+				$product_controller->updateStockByBarcode(2, $product->barcode, $product->quantity, $orderId);
+			} else {
+				$product_controller->updateStockByBarcode(1, $product->barcode, $product->quantity, $orderId);
+			}
+		}
 	}
 }

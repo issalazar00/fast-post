@@ -309,7 +309,7 @@ class ProductController extends Controller
 		}
 	}
 
-	/*
+	/** 
 	* @param integer $type
 	* 1 : resta a stock
 	* 2: suma a stock
@@ -425,7 +425,7 @@ class ProductController extends Controller
 		return $products;
 	}
 
-	/*
+	/** 
 	* @param integer $type
 	* 1 : resta a stock
 	* 2: suma a stock
