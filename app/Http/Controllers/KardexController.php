@@ -31,6 +31,7 @@ class KardexController extends Controller
         if($request->filled('product') && $product != 'undefined'){
             $productData = Product::where('id', 'LIKE', "$product")
             ->orWhere('product', 'LIKE', "%$product%")
+            ->orWhere('barcode', 'LIKE', "$product")
             ->firstOrFail();
         }
 
@@ -52,7 +53,8 @@ class KardexController extends Controller
 
                 if ($request->filled('product') && $product != 'undefined') {
                     $query->where('id', 'LIKE', "$product")
-                        ->orWhere('product', 'LIKE', "%$product%");
+                        ->orWhere('product', 'LIKE', "%$product%")
+                        ->orWhere('barcode', 'LIKE', "$product");
                 }
             })
             ->orderBy('id','desc')

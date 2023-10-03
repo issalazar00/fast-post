@@ -604,7 +604,7 @@ class OrderController extends Controller
 			$product = (object) $product;
 			if ($product->quantity < 0) {
 				// Resta a stock
-				$product_controller->updateStockByBarcode(2, $product->barcode, $product->quantity, $orderId);
+				$product_controller->updateStockByBarcode(2, $product->barcode, $product->quantity * -1, $orderId);
 			} else {
 				$product_controller->updateStockByBarcode(1, $product->barcode, $product->quantity, $orderId);
 			}
